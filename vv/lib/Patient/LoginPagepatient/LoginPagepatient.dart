@@ -19,7 +19,7 @@ class _LoginPagepatientState extends State<LoginPagepatient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff3B5998),
+      backgroundColor: Color.fromARGB(255, 211, 46, 9),
       resizeToAvoidBottomInset: false,
       body: Container(
         decoration: BoxDecoration(
