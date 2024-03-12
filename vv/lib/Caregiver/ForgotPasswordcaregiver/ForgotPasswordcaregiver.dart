@@ -14,7 +14,7 @@ class _ForgotPasswordcaregiverState extends State<ForgotPasswordcaregiver> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,//sadasdasdas
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
