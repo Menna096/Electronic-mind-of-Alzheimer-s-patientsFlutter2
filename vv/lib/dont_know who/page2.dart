@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vv/my_home_page/MyHomePage.dart';
+
 
 class Page2 extends StatelessWidget {
   @override
@@ -102,16 +102,16 @@ class Page2 extends StatelessWidget {
                 child: Container(
                   width: 150.0,
                   height: 50.0,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyHomePage()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: const Color.fromARGB(255, 37, 126, 199),
-                    ),
+                  // child: ElevatedButton(
+                  //   onPressed: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(builder: (context) => MyHomePage()),
+                  //     );
+                  //   },
+                  //   style: ElevatedButton.styleFrom(
+                  //     primary: const Color.fromARGB(255, 37, 126, 199),
+                  //   ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -125,7 +125,7 @@ class Page2 extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
+            
           ],
         ),
       ),

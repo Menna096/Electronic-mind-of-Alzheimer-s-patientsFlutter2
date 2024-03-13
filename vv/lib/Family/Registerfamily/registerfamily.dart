@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:vv/Family/LoginPagefamily/LoginPagefamily.dart';
+import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 
 class RegisterFamily extends StatefulWidget {
@@ -59,7 +59,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                       onPressed: () {
                         Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginPagefamily()),
+                      MaterialPageRoute(builder: (context) => LoginPageAll()),
                     );
                       },
                     ),
