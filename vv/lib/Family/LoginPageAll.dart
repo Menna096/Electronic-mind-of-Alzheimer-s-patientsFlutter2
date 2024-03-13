@@ -7,7 +7,6 @@ import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
 import 'package:vv/widgets/imagefingerandface.dart';
 
-
 class LoginPageAll extends StatefulWidget {
   @override
   _LoginPagefamilyState createState() => _LoginPagefamilyState();
@@ -140,8 +139,7 @@ class _LoginPagefamilyState extends State<LoginPageAll> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF0386D0),
-                    onPrimary: Color.fromARGB(255, 255, 255, 255),
+                    backgroundColor: Color(0xFF0386D0),
                     fixedSize: Size(151, 45),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(27.0),

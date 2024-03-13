@@ -92,12 +92,11 @@ class Languagefamily extends StatelessWidget {
                   // You can navigate to another page or perform any other action
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  onPrimary: Color(0xff3B5998),
+                  backgroundColor: Color(0xFF0386D0),
                   padding: EdgeInsets.symmetric(horizontal: 39, vertical: 19),
-                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(27.0),
-                    ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(27.0),
+                  ),
                 ),
                 child: Text(
                   'English',
@@ -118,15 +117,14 @@ class Languagefamily extends StatelessWidget {
                   // You can navigate to another page or perform any other action
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  onPrimary: Color(0xff3B5998),
+                  backgroundColor: Color(0xFF0386D0),
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(27.0),
-                    ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(27.0),
+                  ),
                 ),
                 child: Text(
-                'العربيه',
+                  'العربيه',
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,

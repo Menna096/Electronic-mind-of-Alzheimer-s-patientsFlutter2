@@ -21,7 +21,7 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ForgetPass_var_setpass_Text(text: 'Forgot Password'), 
+            ForgetPass_var_setpass_Text(text: 'Forgot Password'),
             SizedBox(height: 13),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -96,8 +96,7 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF0386D0),
-                  onPrimary: Color.fromARGB(255, 255, 255, 255),
+                  backgroundColor: Color(0xFF0386D0),
                   fixedSize: Size(100, 60),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0),
@@ -117,7 +116,3 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily> {
     );
   }
 }
-
-
-
-

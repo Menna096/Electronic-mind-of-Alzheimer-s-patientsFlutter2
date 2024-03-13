@@ -58,9 +58,10 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                       ),
                       onPressed: () {
                         Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPageAll()),
-                    );
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginPageAll()),
+                        );
                       },
                     ),
                   ],
@@ -228,20 +229,23 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                           );
 
                           // Display success message for 1000 milliseconds (1 second)
-                          _displaySuccessMessage(context, 'User was successfully created! Please verify your email before Login');
+                          _displaySuccessMessage(context,
+                              'User was successfully created! Please verify your email before Login');
                         } else {
                           // Password and confirm password do not match, show error message
-                          _displayErrorSnackBar(context, 'Passwords do not match.');
+                          _displayErrorSnackBar(
+                              context, 'Passwords do not match.');
                         }
                       } else {
                         // Handle invalid input case
-                        _displayErrorSnackBar(context, 'Please fill in all fields.');
+                        _displayErrorSnackBar(
+                            context, 'Please fill in all fields.');
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF0386D0),
-                      onPrimary: Color.fromARGB(255, 255, 255, 255),
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      backgroundColor: Color(0xFF0386D0),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(27.0),
                       ),
