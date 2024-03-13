@@ -1,71 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:vv/Patient/LoginPagepatient/LoginPagepatient.dart';
-import 'package:vv/Patient/Verificationpatient/Verificationpatient.dart';
+import 'package:vv/Family/background.dart';
+import 'package:vv/Family/Verificationfamily/Verificationfamily.dart';
+import 'package:vv/Family/text_forgot_var_set.dart';
 
-class ForgotPasswordpatient extends StatefulWidget {
+class ForgotPasswordfamily extends StatefulWidget {
   @override
-  _ForgotPasswordpatientState createState() => _ForgotPasswordpatientState();
+  _ForgotPasswordfamilyState createState() => _ForgotPasswordfamilyState();
 }
 
-class _ForgotPasswordpatientState extends State<ForgotPasswordpatient> {
+class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily> {
   TextEditingController _emailController = TextEditingController();
-  String _emailErrorText = '';
+  String _emailError = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xffFFFFFF),
-              Color(0xff3B5998),
-            ],
-          ),
-        ),
+      body: Background(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 45),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(28.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xFF526CA4).withOpacity(0.2),
-                    ),
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.grey),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginPagepatient()),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 0.5),
-            Padding(
-              padding: const EdgeInsets.only(left: 35.0),
-              child: Text(
-                'Forgot Password',
-                style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Outfit'),
-                textAlign: TextAlign.left,
-              ),
-            ),
+            ForgetPass_var_setpass_Text(text: 'Forgot Password'), 
             SizedBox(height: 13),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -86,16 +42,16 @@ class _ForgotPasswordpatientState extends State<ForgotPasswordpatient> {
               child: Text(
                 'Enter Your Email Address ',
                 style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Outfit'),
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Outfit',
+                ),
                 textAlign: TextAlign.left,
               ),
             ),
             SizedBox(height: 10),
             Padding(
-              padding: EdgeInsets.only(
-                  left: 30.0, right: 30), // Adjust left padding as needed
+              padding: EdgeInsets.only(left: 30.0, right: 30),
               child: TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
@@ -111,7 +67,7 @@ class _ForgotPasswordpatientState extends State<ForgotPasswordpatient> {
                   ),
                   filled: true,
                   fillColor: Colors.white,
-                  errorText: _emailErrorText,
+                  errorText: _emailError,
                 ),
               ),
             ),
@@ -120,21 +76,22 @@ class _ForgotPasswordpatientState extends State<ForgotPasswordpatient> {
               padding: EdgeInsets.only(left: 30.0, right: 30),
               child: ElevatedButton(
                 onPressed: () {
-                  // Validate email before sending OTP
                   if (_emailController.text.isEmpty) {
                     setState(() {
-                      _emailErrorText = 'Please enter your email.';
+                      _emailError = 'Please enter your email.';
                     });
                   } else {
+                    // Reset the error message
                     setState(() {
-                      _emailErrorText = '';
+                      _emailError = '';
                     });
 
-                    // Add logic to send OTP
+                    // Continue with the logic for sending OTP
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Verificationpatient()),
+                        builder: (context) => Verificationfamily(),
+                      ),
                     );
                   }
                 },
@@ -160,3 +117,7 @@ class _ForgotPasswordpatientState extends State<ForgotPasswordpatient> {
     );
   }
 }
+
+
+
+
