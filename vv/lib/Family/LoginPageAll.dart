@@ -3,6 +3,8 @@ import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/local_auth_api.dart';
 import 'package:vv/Family/Registerfamily/registerfamily.dart';
 import 'package:vv/Family/ForgotPasswordfamily.dart';
+import 'package:vv/widgets/backbutton.dart';
+import 'package:vv/widgets/background.dart';
 
 
 class LoginPageAll extends StatefulWidget {
@@ -20,44 +22,14 @@ class _LoginPagefamilyState extends State<LoginPageAll> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff3B5998),
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xffFFFFFF),
-              Color(0xff3B5998),
-            ],
-          ),
-        ),
-        padding: EdgeInsets.all(16.0),
+      body: Background(
         child: SingleChildScrollView(
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // SizedBox(height: 30),
-                // Row(
-                //   children: [
-                //     IconButton(
-                //       icon: Icon(
-                //         Icons.arrow_back_ios,
-                //         color: Color.fromARGB(255, 17, 140, 212),
-                //         size: 40,
-                //       ),
-                //       onPressed: () {
-                //         Navigator.push(
-                //           context,
-                //           MaterialPageRoute(builder: (context) => MyHomePage()),
-                //         );
-                //       },
-                //     ),
-                //   ],
-                // ),
+               backbutton(),
                 SizedBox(height: 0.5),
                 Text(
                   'Welcome',

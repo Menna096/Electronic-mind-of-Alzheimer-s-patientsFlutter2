@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:vv/Family/background.dart';
+import 'package:vv/widgets/background.dart';
 import 'package:vv/Family/Verificationfamily/Verificationfamily.dart';
-import 'package:vv/Family/text_forgot_var_set.dart';
+import 'package:vv/widgets/text_forgot_var_set.dart';
 
 class ForgotPasswordfamily extends StatefulWidget {
   @override
