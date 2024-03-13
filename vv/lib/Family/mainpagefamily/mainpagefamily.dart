@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
-
-
+import 'package:vv/Family/LoginPageAll.dart';
+import 'package:vv/Family/background.dart';
 
 class mainpagefamily extends StatelessWidget {
   @override
@@ -10,202 +10,122 @@ class mainpagefamily extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 84, 134, 235),
       ),
-      drawer: Drawer(
-        child: Container(
-          color: Color(0xffD6DCE9),
-          child: ListView(
-            children: [
-              DrawerHeader(
-                child: Center(
-                    child: Text(
+      drawer: buildDrawer(context),
+      resizeToAvoidBottomInset: false,
+      body: Background(
+        child: buildStack(),
+      ),
+    );
+  }
+
+  Widget buildDrawer(BuildContext context) {
+    return Drawer(
+      child: Container(
+        color: Color(0xffD6DCE9),
+        child: ListView(
+          children: [
+            DrawerHeader(
+              child: Center(
+                child: Text(
                   'Elder Helper',
                   style: TextStyle(
                     fontSize: 44,
                     fontFamily: 'Acme',
                     color: Color(0xFF0386D0),
                   ),
-                )),
-              ),
-              ListTile(
-                leading: Icon(Icons.manage_accounts_rounded),
-                title: Text(
-                  'Manage Profile',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF595858),
-                  ),
-                ),
-                // onTap: () {
-                //   Navigator.of(context).push(MaterialPageRoute(
-                //       builder: (context) => Manageprofilepatient()));
-                // },
-              ),
-               ListTile(
-                leading: Icon(Icons.person_add_alt_1_sharp),
-                title: Text(
-                  'Add Patient',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF595858),
-                  ),
-                ),
-                // onTap: () {
-                //   Navigator.of(context).push(MaterialPageRoute(
-                //       builder: (context) => Manageprofilepatient()));
-                // },
-              ),
-              ListTile(
-                leading: Icon(Icons.language),
-                title: Text(
-                  'Language',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF595858),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => Languagefamily()));
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.logout_outlined),
-                title: Text(
-                  'Log Out',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF595858),
-                  ),
-                ),
-                // onTap: () {
-                //   Navigator.of(context).push(
-                //       MaterialPageRoute(builder: (context) => MyHomePage()));
-                // },
-              ),
-            ],
-          ),
-        ),
-      ),
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xffECEFF5),
-              Color(0xff3B5998),
-            ],
-          ),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              bottom: 433,
-              child: Container(
-                child: Image.asset(
-                  'images/welcome2.png',
-                  width: 370,
-                  height: 370,
                 ),
               ),
             ),
-            Positioned(
-              top: 135,
-              left: 45,
-              child: Container(
-                child: Image.asset(
-                  'images/note.png',
-                  width: 134,
-                  height: 134,
-                ),
-              ),
+            buildDrawerItem(
+              Icons.manage_accounts_rounded,
+              'Manage Profile',
+              // onTap: () {
+              //   Navigator.of(context).push(MaterialPageRoute(
+              //       builder: (context) => Manageprofilepatient()));
+              // },
             ),
-            Positioned(
-              top: 290,
-              left: 45,
-              child: Container(
-                child: Image.asset(
-                  'images/Places.png',
-                  width: 130,
-                  height: 130,
-                ),
-              ),
+            buildDrawerItem(
+              Icons.person_add_alt_1_sharp,
+              'Add Patient',
+              // onTap: () {
+              //   Navigator.of(context).push(MaterialPageRoute(
+              //       builder: (context) => Manageprofilepatient()));
+              // },
             ),
-            Positioned(
-              top: 440,
-              left: 45,
-              child: Container(
-                child: Image.asset(
-                  'images/Pictures.png',
-                  width: 130,
-                  height: 130,
-                ),
-              ),
+            buildDrawerItem(
+              Icons.language,
+              'Language',
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => Languagefamily()));
+              },
             ),
-            Positioned(
-              top: 132,
-              left: 230,
-              child: Container(
-                child: Image.asset(
-                  'images/manageprof.png',
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 232,
-              left: 230,
-              child: Container(
-                child: Image.asset(
-                  'images/Appointments.png',
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 332,
-              left: 230,
-              child: Container(
-                child: Image.asset(
-                  'images/Files.png',
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 432,
-              left: 230,
-              child: Container(
-                child: Image.asset(
-                  'images/Pictures.png',
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 532,
-              left: 230,
-              child: Container(
-                child: Image.asset(
-                  'images/Games (1).png',
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(),
-              ],
+            buildDrawerItem(
+              Icons.logout_outlined,
+              'Log Out',
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => LoginPageAll()));
+              },
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildDrawerItem(IconData icon, String title, {Function? onTap}) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 20,
+          color: Color(0xFF595858),
+        ),
+      ),
+      onTap: onTap as void Function()?,
+    );
+  }
+
+  Widget buildStack() {
+    return Stack(
+      children: [
+        buildImageContainer('images/welcome2.png', 370, 370, 433, 45),
+        buildImageContainer('images/note.png', 134, 134, 135, 45),
+        buildImageContainer('images/Places.png', 130, 130, 290, 45),
+        buildImageContainer('images/Pictures.png', 130, 130, 440, 45),
+        buildImageContainer('images/manageprof.png', 110, 110, 132, 230),
+        buildImageContainer('images/Appointments.png', 110, 110, 232, 230),
+        buildImageContainer('images/Files.png', 110, 110, 332, 230),
+        buildImageContainer('images/Pictures.png', 110, 110, 432, 230),
+        buildImageContainer('images/Games (1).png', 110, 110, 532, 230),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget buildImageContainer(
+      String imagePath,
+       double width, 
+       double height, 
+       double top, 
+       double left
+       ) {
+    return Positioned(
+      top: top,
+      left: left,
+      child: Container(
+        child: Image.asset(
+          imagePath,
+          width: width,
+          height: height,
         ),
       ),
     );
