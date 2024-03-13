@@ -5,6 +5,7 @@ import 'package:vv/Family/Registerfamily/registerfamily.dart';
 import 'package:vv/Family/ForgotPasswordfamily.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
+import 'package:vv/widgets/imagefingerandface.dart';
 
 
 class LoginPageAll extends StatefulWidget {
@@ -29,7 +30,7 @@ class _LoginPagefamilyState extends State<LoginPageAll> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-               backbutton(),
+                backbutton(),
                 SizedBox(height: 0.5),
                 Text(
                   'Welcome',
@@ -198,17 +199,14 @@ class _LoginPagefamilyState extends State<LoginPageAll> {
                           );
                         }
                       },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 75),
-                        child: Image.asset(
-                          'images/fingerprint.png',
-                          width: 70,
-                          height: 70,
-                        ),
+                      child: Images(
+                        image: 'images/fingerprint.png',
+                        width: 70,
+                        height: 70,
                       ),
                     ),
-                    Image.asset(
-                      'images/face-recognition.png',
+                    Images(
+                      image: 'images/face-recognition.png',
                       width: 65,
                       height: 65,
                     ),
