@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/local_auth_api.dart';
-import 'package:vv/my_home_page/MyHomePage.dart';
-import 'package:vv/Family/ForgotPasswordfamily/ForgotPasswordfamily.dart';
 import 'package:vv/Family/Registerfamily/registerfamily.dart';
+import 'package:vv/Family/ForgotPasswordfamily.dart';
 
-class LoginPagefamily extends StatefulWidget {
+
+class LoginPageAll extends StatefulWidget {
   @override
   _LoginPagefamilyState createState() => _LoginPagefamilyState();
 }
 
-class _LoginPagefamilyState extends State<LoginPagefamily> {
+class _LoginPagefamilyState extends State<LoginPageAll> {
   bool _isPasswordVisible = false;
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -40,24 +40,24 @@ class _LoginPagefamilyState extends State<LoginPagefamily> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(height: 30),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.arrow_back_ios,
-                        color: Color.fromARGB(255, 17, 140, 212),
-                        size: 40,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MyHomePage()),
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                // SizedBox(height: 30),
+                // Row(
+                //   children: [
+                //     IconButton(
+                //       icon: Icon(
+                //         Icons.arrow_back_ios,
+                //         color: Color.fromARGB(255, 17, 140, 212),
+                //         size: 40,
+                //       ),
+                //       onPressed: () {
+                //         Navigator.push(
+                //           context,
+                //           MaterialPageRoute(builder: (context) => MyHomePage()),
+                //         );
+                //       },
+                //     ),
+                //   ],
+                // ),
                 SizedBox(height: 0.5),
                 Text(
                   'Welcome',

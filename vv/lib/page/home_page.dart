@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vv/Patient/Languagepatient/Languagepatient.dart';
-import 'package:vv/my_home_page/MyHomePage.dart';
+
+
 
 
 class mainpagepatient extends StatelessWidget {
@@ -49,10 +49,10 @@ class mainpagepatient extends StatelessWidget {
                     color: Color(0xFF595858),
                   ),
                 ),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => Languagepatient()));
-                },
+                // onTap: () {
+                //   Navigator.of(context).push(MaterialPageRoute(
+                //       builder: (context) => Languagepatient()));
+                // },
               ),
               ListTile(
                 leading: Icon(Icons.logout_outlined),
@@ -63,10 +63,10 @@ class mainpagepatient extends StatelessWidget {
                     color: Color(0xFF595858),
                   ),
                 ),
-                onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => MyHomePage()));
-                },
+                // onTap: () {
+                //   Navigator.of(context).push(
+                //       MaterialPageRoute(builder: (context) => MyHomePage()));
+                // },
               ),
             ],
           ),

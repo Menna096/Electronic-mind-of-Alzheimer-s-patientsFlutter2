@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:vv/Family/ForgotPasswordfamily/ForgotPasswordfamily.dart';
 import 'package:vv/Family/SetPasswordfamily/SetPasswordfamily.dart';
+import 'package:vv/Family/background.dart';
+import 'package:vv/Family/text_forgot_var_set.dart';
 
 class Verificationfamily extends StatefulWidget {
   @override
@@ -15,56 +16,12 @@ class _VerificationfamilyState extends State<Verificationfamily> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xffFFFFFF),
-              Color(0xff3B5998),
-            ],
-          ),
-        ),
+      body: Background(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 25),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(28.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xFF526CA4).withOpacity(0.2),
-                    ),
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.grey),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ForgotPasswordfamily()),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 30.0),
-              child: Text(
-                'Verification',
-                style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Outfit'),
-                textAlign: TextAlign.center,
-              ),
-            ),
+           ForgetPass_var_setpass_Text(text: 'Verification'),
             SizedBox(height: 0.4),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
