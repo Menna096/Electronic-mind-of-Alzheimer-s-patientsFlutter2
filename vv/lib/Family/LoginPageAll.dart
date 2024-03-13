@@ -10,10 +10,10 @@ import 'package:vv/widgets/imagefingerandface.dart';
 
 class LoginPageAll extends StatefulWidget {
   @override
-  _LoginPagefamilyState createState() => _LoginPagefamilyState();
+  _LoginPageAllState createState() => _LoginPageAllState();
 }
 
-class _LoginPagefamilyState extends State<LoginPageAll> {
+class _LoginPageAllState extends State<LoginPageAll> {
   bool _isPasswordVisible = false;
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
