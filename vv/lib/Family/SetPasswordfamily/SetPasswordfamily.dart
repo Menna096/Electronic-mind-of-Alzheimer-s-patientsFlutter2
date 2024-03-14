@@ -139,8 +139,7 @@ class _SetPasswordfamilyState extends State<SetPasswordfamily> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF0386D0),
-                  onPrimary: Color.fromARGB(255, 255, 255, 255),
+                  foregroundColor: Color.fromARGB(255, 255, 255, 255), backgroundColor: Color(0xFF0386D0),
                   fixedSize: Size(100, 60),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0),
