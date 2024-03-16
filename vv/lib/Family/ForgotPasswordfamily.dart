@@ -96,7 +96,9 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF0386D0),
+
+                  foregroundColor: Color.fromARGB(255, 255, 255, 255), backgroundColor: Color(0xFF0386D0),
+
                   fixedSize: Size(100, 60),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27.0),

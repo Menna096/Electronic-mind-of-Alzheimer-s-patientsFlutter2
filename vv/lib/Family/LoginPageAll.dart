@@ -9,10 +9,10 @@ import 'package:vv/widgets/imagefingerandface.dart';
 
 class LoginPageAll extends StatefulWidget {
   @override
-  _LoginPagefamilyState createState() => _LoginPagefamilyState();
+  _LoginPageAllState createState() => _LoginPageAllState();
 }
 
-class _LoginPagefamilyState extends State<LoginPageAll> {
+class _LoginPageAllState extends State<LoginPageAll> {
   bool _isPasswordVisible = false;
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -139,7 +139,9 @@ class _LoginPagefamilyState extends State<LoginPageAll> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF0386D0),
+
+                    foregroundColor: Color.fromARGB(255, 255, 255, 255), backgroundColor: Color(0xFF0386D0),
+
                     fixedSize: Size(151, 45),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(27.0),

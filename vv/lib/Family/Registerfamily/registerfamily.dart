@@ -96,6 +96,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                 SizedBox(height: 10),
                 SignUpButton(
                   onPressed: _handleSignUp,
+
                 ),
               ],
             ),

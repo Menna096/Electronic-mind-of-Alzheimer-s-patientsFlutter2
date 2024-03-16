@@ -74,6 +74,7 @@ class Languagefamily extends StatelessWidget {
               ),
             ),
             SizedBox(height: 70),
+
             LanguageButton(
               onPressed: () {},
               buttonText: 'English',
@@ -82,6 +83,7 @@ class Languagefamily extends StatelessWidget {
             LanguageButton(
               onPressed: () {},
               buttonText: 'العربيه',
+
             ),
           ],
         ),
