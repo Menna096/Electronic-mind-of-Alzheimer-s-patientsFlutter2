@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
+import 'package:vv/widgets/language_button.dart';
 
 class Languagefamily extends StatelessWidget {
   @override
@@ -32,17 +32,7 @@ class Languagefamily extends StatelessWidget {
                       shape: BoxShape.circle,
                       color: Color(0xFF526CA4).withOpacity(0.2),
                     ),
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.grey),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => mainpagefamily(),
-                          ),
-                        );
-                      },
-                    ),
+                    child: BackButton(),
                   ),
                 ),
               ],
@@ -57,7 +47,7 @@ class Languagefamily extends StatelessWidget {
                     height: 50,
                     width: 50,
                   ),
-                  SizedBox(width: 1),
+                  SizedBox(width: 10),
                   Text(
                     'Language',
                     style: TextStyle(
@@ -84,54 +74,16 @@ class Languagefamily extends StatelessWidget {
               ),
             ),
             SizedBox(height: 70),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Handle the action for the first button
-                  // You can navigate to another page or perform any other action
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Color(0xff3B5998), backgroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(horizontal: 39, vertical: 19),
-                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(27.0),
-                    ),
-                ),
-                child: Text(
-                  'English',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff3B5998),
-                  ),
-                ),
-              ),
+
+            LanguageButton(
+              onPressed: () {},
+              buttonText: 'English',
             ),
-            SizedBox(height: 1),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Handle the action for the second button
-                  // You can navigate to another page or perform any other action
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Color(0xff3B5998), backgroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(27.0),
-                    ),
-                ),
-                child: Text(
-                'العربيه',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff3B5998),
-                  ),
-                ),
-              ),
+            SizedBox(height: 10),
+            LanguageButton(
+              onPressed: () {},
+              buttonText: 'العربيه',
+
             ),
           ],
         ),
