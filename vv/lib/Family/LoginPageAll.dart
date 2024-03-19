@@ -139,9 +139,8 @@ class _LoginPageAllState extends State<LoginPageAll> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-
-                    foregroundColor: Color.fromARGB(255, 255, 255, 255), backgroundColor: Color(0xFF0386D0),
-
+                    foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                    backgroundColor: Color(0xFF0386D0),
                     fixedSize: Size(151, 45),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(27.0),
@@ -199,12 +198,16 @@ class _LoginPageAllState extends State<LoginPageAll> {
                           );
                         }
                       },
-                      child: Images(
-                        image: 'images/fingerprint.png',
-                        width: 70,
-                        height: 70,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 50),
+                        child: Images(
+                          image: 'images/fingerprint.png',
+                          width: 70,
+                          height: 70,
+                        ),
                       ),
                     ),
+                    
                     Images(
                       image: 'images/face-recognition.png',
                       width: 65,
