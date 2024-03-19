@@ -9,7 +9,7 @@ class PasswordTextField extends StatefulWidget {
     Key? key,
     required this.labelText,
     required this.controller,
-    this.errorText,
+    this.errorText, required IconData suffixIcon,
   }) : super(key: key);
 
   @override
