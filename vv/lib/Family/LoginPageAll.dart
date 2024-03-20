@@ -81,72 +81,6 @@ class _LoginPageAllState extends State<LoginPageAll> {
       });
     }
   }
-  // void initState() {
-  //   super.initState();
-  //   _dio.interceptors.add(
-  //     InterceptorsWrapper(
-  //       onRequest: (options, handler) async {
-  //         final String? token = await _secureStorage.read(key: 'token');
-  //         if (token != null) {
-  //           options.headers['Authorization'] = token;
-  //         }
-  //         return handler.next(options);
-  //       },
-  //     ),
-  //   );
-  // }
-
-  // Future<void> _login(BuildContext context) async {
-  //   final String email = _emailController.text;
-  //   final String password = _passwordController.text;
-
-  //   try {
-  //     final response = await _dio.post(
-  //       'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/Login',
-  //       data: {'email': email, 'password': password},
-  //     );
-
-  //     final token = response.data['token'];
-  //     await _secureStorage.write(key: 'token', value: token);
-  //     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
-  //     String userRole = decodedToken['role'];
-
-  //     print('Login successful! Token: $token');
-  //     print('User role: $userRole');
-  //     bool success = await APIService.login(email, password);
-  //     if (success) {
-  //       if (userRole == 'Family') {
-  //         Navigator.pushReplacement(
-  //           context,
-  //           MaterialPageRoute(builder: (context) => mainpagefamily()),
-  //         );
-  //       } else {
-  //         Navigator.pushReplacement(
-  //           context,
-  //           MaterialPageRoute(builder: (context) => maincaregiver()),
-  //         );
-  //       }
-  //     } else {
-  //       showDialog(
-  //         context: context,
-  //         builder: (context) => AlertDialog(
-  //           title: Text('Login Failed'),
-  //           content: Text('Invalid email or password. Please try again.'),
-  //           actions: [
-  //             TextButton(
-  //               onPressed: () => Navigator.pop(context),
-  //               child: Text('OK'),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     }
-  //   } catch (error) {
-  //     setState(() {
-  //       _errorMessage = 'Login failed. Please check your credentials.';
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +91,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 5),
+              SizedBox(height: 70),
               Text(
                 'Welcome',
                 style: TextStyle(
