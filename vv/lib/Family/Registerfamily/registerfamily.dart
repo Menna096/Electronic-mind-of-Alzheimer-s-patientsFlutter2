@@ -52,6 +52,31 @@ class _RegisterFamilyState extends State<RegisterFamily> {
   String _selectedRole = '';
 
   void _register(BuildContext context) async {
+    // Check if any field is null
+    if (_fullNameController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty ||
+        _phoneNumberController.text.isEmpty ||
+        _ageController.text.isEmpty ||
+        _usernameController.text.isEmpty ||
+        _selectedRole.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Registration Failed'),
+          content: Text('Please fill in all fields.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return; // Exit function if any field is null
+    }
+
     // Check if password matches confirm password
     if (_passwordController.text != _confirmPasswordController.text) {
       showDialog(
@@ -195,7 +220,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     );
                   }).toList(),
                   decoration: InputDecoration(
-                    labelText: '  You are...',
+                    labelText: '   You are...',
                     labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey),
@@ -205,7 +230,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     fillColor: Colors.white,
                     hintText: '  Select Role', // Add hint text here
                     hintStyle: TextStyle(color: Colors.grey),
-                    contentPadding: EdgeInsets.symmetric(vertical: 12.0),
+                    contentPadding: EdgeInsets.symmetric(vertical: 12.0,horizontal: 12),
                     // Customize hint text style if needed
                   ),
                 ),
@@ -238,3 +263,4 @@ class _RegisterFamilyState extends State<RegisterFamily> {
     );
   }
 }
+

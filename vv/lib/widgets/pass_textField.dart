@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class PasswordTextField extends StatefulWidget {
   final String labelText;
   final TextEditingController controller;
@@ -9,8 +10,7 @@ class PasswordTextField extends StatefulWidget {
     Key? key,
     required this.labelText,
     required this.controller,
-    this.errorText,
-    required IconData suffixIcon,
+    this.errorText, required IconData suffixIcon,
   }) : super(key: key);
 
   @override
@@ -19,6 +19,23 @@ class PasswordTextField extends StatefulWidget {
 
 class _PasswordTextFieldState extends State<PasswordTextField> {
   bool _isPasswordVisible = false;
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return '* Required';
+    } else if (value.length < 8) {
+      return 'Password should be at least 8 characters';
+    } else if (!RegExp(r'(?=.*[A-Z])').hasMatch(value)) {
+      return 'Password should contain at least one uppercase letter';
+    } else if (!RegExp(r'(?=.*[a-z])').hasMatch(value)) {
+      return 'Password should contain at least one lowercase letter';
+    } else if (!RegExp(r'(?=.*\d)').hasMatch(value)) {
+      return 'Password should contain at least one number';
+    } else if (!RegExp(r'(?=.*[@#$%^&*()_+!])').hasMatch(value)) {
+      return 'Password should contain at least one special character';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +62,12 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
         filled: true,
         fillColor: Colors.white,
         labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
-        errorText: widget.errorText,
-        contentPadding: EdgeInsets.symmetric(vertical: 12.0),
+        errorText: widget.errorText ?? _validatePassword(widget.controller.text),
+        contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
       ),
+      onChanged: (_) {
+        setState(() {}); // Trigger revalidation on text change
+      },
     );
   }
 }
