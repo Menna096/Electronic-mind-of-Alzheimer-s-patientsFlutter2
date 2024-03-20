@@ -1,7 +1,6 @@
 // import 'package:flutter/material.dart';
 // import 'package:vv/my_home_page/MyHomePage.dart';
 
-
 // class mainpagecaregiver extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
@@ -196,3 +195,23 @@
 //     );
 //   }
 // }
+
+
+import 'package:flutter/material.dart';
+
+class mainpagecaregiver extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Main Page - Caregiver'),
+      ),
+      body: Center(
+        child: Text(
+          'Welcome to the Caregiver Page!',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    );
+  }
+}

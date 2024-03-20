@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/Family/Registerfamily/registerfamily.dart';
 import 'package:vv/api/local_auth_api.dart';
 import 'package:vv/Family/ForgotPasswordfamily.dart';
@@ -41,9 +43,10 @@ class _LoginPageAllState extends State<LoginPageAll> {
     );
   }
 
-  Future<void> _login(BuildContext context) async {
+  Future<void> _login() async {
     final String email = _emailController.text;
     final String password = _passwordController.text;
+
     try {
       final response = await _dio.post(
         'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/Login',
@@ -52,36 +55,98 @@ class _LoginPageAllState extends State<LoginPageAll> {
 
       final token = response.data['token'];
       await _secureStorage.write(key: 'token', value: token);
-
       print('Login successful! Token: $token');
+      // Decode the JWT token
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+
+      // Extract user's role from the decoded token
+      String userRole =
+          decodedToken['roles']; // Assuming the role is stored in 'role' field
+
+      print('User role: $userRole');
+      if (userRole == 'Family') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => mainpagefamily()),
+        );
+      } else if (userRole == 'Caregiver') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => mainpagecaregiver()),
+        );
+      }
     } catch (error) {
       setState(() {
         _errorMessage = 'Login failed. Please check your credentials.';
       });
     }
-
-    bool success = await APIService.login(email, password);
-    if (success) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => mainpagefamily()),
-      );
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Login Failed'),
-          content: Text('Invalid email or password. Please try again.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
-    }
   }
+  // void initState() {
+  //   super.initState();
+  //   _dio.interceptors.add(
+  //     InterceptorsWrapper(
+  //       onRequest: (options, handler) async {
+  //         final String? token = await _secureStorage.read(key: 'token');
+  //         if (token != null) {
+  //           options.headers['Authorization'] = token;
+  //         }
+  //         return handler.next(options);
+  //       },
+  //     ),
+  //   );
+  // }
+
+  // Future<void> _login(BuildContext context) async {
+  //   final String email = _emailController.text;
+  //   final String password = _passwordController.text;
+
+  //   try {
+  //     final response = await _dio.post(
+  //       'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/Login',
+  //       data: {'email': email, 'password': password},
+  //     );
+
+  //     final token = response.data['token'];
+  //     await _secureStorage.write(key: 'token', value: token);
+  //     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+  //     String userRole = decodedToken['role'];
+
+  //     print('Login successful! Token: $token');
+  //     print('User role: $userRole');
+  //     bool success = await APIService.login(email, password);
+  //     if (success) {
+  //       if (userRole == 'Family') {
+  //         Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(builder: (context) => mainpagefamily()),
+  //         );
+  //       } else {
+  //         Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(builder: (context) => maincaregiver()),
+  //         );
+  //       }
+  //     } else {
+  //       showDialog(
+  //         context: context,
+  //         builder: (context) => AlertDialog(
+  //           title: Text('Login Failed'),
+  //           content: Text('Invalid email or password. Please try again.'),
+  //           actions: [
+  //             TextButton(
+  //               onPressed: () => Navigator.pop(context),
+  //               child: Text('OK'),
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     }
+  //   } catch (error) {
+  //     setState(() {
+  //       _errorMessage = 'Login failed. Please check your credentials.';
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -156,13 +221,12 @@ class _LoginPageAllState extends State<LoginPageAll> {
                 margin: EdgeInsets.only(right: 1, top: 0.5),
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ForgotPasswordfamily(),
-                      ),
-                    );
+                 onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ForgotPasswordfamily()),
+                      );
                   },
                   child: Text(
                     'Forgot Password?',
@@ -200,7 +264,8 @@ class _LoginPageAllState extends State<LoginPageAll> {
 
                   if (_emailController.text.isNotEmpty &&
                       _passwordController.text.isNotEmpty) {
-                    _login(context); // Call login function
+                    _login();
+                    // Call login function
                   }
                 },
                 style: ElevatedButton.styleFrom(
