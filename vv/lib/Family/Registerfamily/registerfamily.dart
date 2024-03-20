@@ -32,24 +32,6 @@ class APIService {
       return 'Registration failed: $error';
     }
   }
-
-  static Future<bool> login(String email, String password) async {
-    try {
-      Response response = await _dio.post(
-        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/Login',
-        data: {'email': email, 'password': password},
-      );
-
-      if (response.statusCode == 200) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      print('Login failed: $error');
-      return false;
-    }
-  }
 }
 
 class RegisterFamily extends StatefulWidget {
@@ -255,4 +237,3 @@ class _RegisterFamilyState extends State<RegisterFamily> {
     );
   }
 }
-
