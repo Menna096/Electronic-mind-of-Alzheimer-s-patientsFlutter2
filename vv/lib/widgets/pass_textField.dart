@@ -9,7 +9,8 @@ class PasswordTextField extends StatefulWidget {
     Key? key,
     required this.labelText,
     required this.controller,
-    this.errorText, required IconData suffixIcon,
+    this.errorText,
+    required IconData suffixIcon,
   }) : super(key: key);
 
   @override
@@ -45,6 +46,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
         fillColor: Colors.white,
         labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
         errorText: widget.errorText,
+        contentPadding: EdgeInsets.symmetric(vertical: 12.0),
       ),
     );
   }
