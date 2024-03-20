@@ -38,6 +38,7 @@ class CustomTextField extends StatelessWidget {
         filled: true,
         fillColor: Colors.white,
         errorText: errorText,
+        contentPadding: EdgeInsets.symmetric(vertical: 12.0),
       ),
       inputFormatters: inputFormatters,
       keyboardType: keyboardType,

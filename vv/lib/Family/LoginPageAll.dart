@@ -157,7 +157,6 @@ class _LoginPageAllState extends State<LoginPageAll> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              backbutton(),
               SizedBox(height: 5),
               Text(
                 'Welcome',
@@ -169,51 +168,57 @@ class _LoginPageAllState extends State<LoginPageAll> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 40),
-              TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email Address',
-                  labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  suffixIcon: Icon(
-                    Icons.email_outlined,
-                    size: 25,
-                    color: Color(0xFFD0D0D0),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  errorText: _emailErrorText,
-                ),
-              ),
-              SizedBox(height: 0),
-              TextField(
-                obscureText: !_isPasswordVisible,
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  suffixIcon: InkWell(
-                    onTap: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
-                    },
-                    child: Icon(
-                      _isPasswordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email Address',
+                    labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    suffixIcon: Icon(
+                      Icons.email_outlined,
                       size: 25,
                       color: Color(0xFFD0D0D0),
                     ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    errorText: _emailErrorText,
                   ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
-                  errorText: _passwordErrorText,
+                ),
+              ),
+              SizedBox(height: 0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: TextField(
+                  obscureText: !_isPasswordVisible,
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    suffixIcon: InkWell(
+                      onTap: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                      child: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        size: 25,
+                        color: Color(0xFFD0D0D0),
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
+                    errorText: _passwordErrorText,
+                  ),
                 ),
               ),
               SizedBox(height: 0),
@@ -221,12 +226,12 @@ class _LoginPageAllState extends State<LoginPageAll> {
                 margin: EdgeInsets.only(right: 1, top: 0.5),
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                 onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ForgotPasswordfamily()),
-                      );
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ForgotPasswordfamily()),
+                    );
                   },
                   child: Text(
                     'Forgot Password?',
@@ -239,47 +244,50 @@ class _LoginPageAllState extends State<LoginPageAll> {
                 ),
               ),
               SizedBox(height: .5),
-              ElevatedButton(
-                onPressed: () {
-                  // Validate email and password before login
-                  if (_emailController.text.isEmpty) {
-                    setState(() {
-                      _emailErrorText = 'Please enter your email.';
-                    });
-                  } else {
-                    setState(() {
-                      _emailErrorText = '';
-                    });
-                  }
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Validate email and password before login
+                    if (_emailController.text.isEmpty) {
+                      setState(() {
+                        _emailErrorText = 'Please enter your email.';
+                      });
+                    } else {
+                      setState(() {
+                        _emailErrorText = '';
+                      });
+                    }
 
-                  if (_passwordController.text.isEmpty) {
-                    setState(() {
-                      _passwordErrorText = 'Please enter your password.';
-                    });
-                  } else {
-                    setState(() {
-                      _passwordErrorText = '';
-                    });
-                  }
+                    if (_passwordController.text.isEmpty) {
+                      setState(() {
+                        _passwordErrorText = 'Please enter your password.';
+                      });
+                    } else {
+                      setState(() {
+                        _passwordErrorText = '';
+                      });
+                    }
 
-                  if (_emailController.text.isNotEmpty &&
-                      _passwordController.text.isNotEmpty) {
-                    _login();
-                    // Call login function
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Color.fromARGB(255, 255, 255, 255),
-                  backgroundColor: Color(0xFF0386D0),
-                  fixedSize: Size(151, 45),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(27.0),
+                    if (_emailController.text.isNotEmpty &&
+                        _passwordController.text.isNotEmpty) {
+                      _login();
+                      // Call login function
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                    backgroundColor: Color(0xFF0386D0),
+                    fixedSize: Size(151, 45),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(27.0),
+                    ),
                   ),
-                ),
-                child: Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: 18,
+                  child: Text(
+                    'Login',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               ),

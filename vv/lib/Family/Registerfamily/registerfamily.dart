@@ -149,35 +149,35 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                 ),
                 SizedBox(height: 18),
                 CustomTextField(
-                  labelText: 'Full Name',
+                  labelText: '  Full Name',
                   controller: _fullNameController,
                   suffixIcon: Icons.person_2_sharp,
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
                 CustomTextField(
-                  labelText: 'Username',
+                  labelText: '  Username',
                   controller: _usernameController,
                   suffixIcon: Icons.person_2_sharp,
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
                 CustomTextField(
-                  labelText: 'Email Address',
+                  labelText: '  Email Address',
                   controller: _emailController,
                   suffixIcon: Icons.email_outlined,
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
                 PasswordTextField(
-                  labelText: 'Password',
+                  labelText: '  Password',
                   controller: _passwordController,
                   suffixIcon: Icons.password_outlined,
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
                 PasswordTextField(
-                  labelText: 'Confirm Password',
+                  labelText: '  Confirm Password',
                   controller: _confirmPasswordController,
                   suffixIcon: Icons.password_outlined,
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
                 DropdownButtonFormField<String>(
                   value: _selectedRole.isNotEmpty ? _selectedRole : null,
                   onChanged: (String? newValue) {
@@ -195,7 +195,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     );
                   }).toList(),
                   decoration: InputDecoration(
-                    labelText: 'You are...',
+                    labelText: '  You are...',
                     labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey),
@@ -203,28 +203,29 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     ),
                     filled: true,
                     fillColor: Colors.white,
-                    hintText: 'Select Role', // Add hint text here
+                    hintText: '  Select Role', // Add hint text here
                     hintStyle: TextStyle(color: Colors.grey),
+                    contentPadding: EdgeInsets.symmetric(vertical: 12.0),
                     // Customize hint text style if needed
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
                 CustomTextField(
-                  labelText: 'Phone Number',
+                  labelText: '  Phone Number',
                   controller: _phoneNumberController,
                   suffixIcon: Icons.phone,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   keyboardType: TextInputType.number,
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 16),
                 CustomTextField(
-                  labelText: 'Age',
+                  labelText: '  Age',
                   controller: _ageController,
                   suffixIcon: Icons.date_range_rounded,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   keyboardType: TextInputType.number,
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: 60.0),
                 ElevatedButton(
                   onPressed: () => _register(context),
                   child: Text('Register'),
