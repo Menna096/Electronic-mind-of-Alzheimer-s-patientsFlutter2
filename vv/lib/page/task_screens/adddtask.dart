@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:temp/widgets/backbutton.dart';
-import '../../widgets/appbarscreens.dart';
-import '../../widgets/name_textfield.dart';
-import '../../widgets/details_container.dart';
-import '../../widgets/timeselectraw.dart';
-import '../../widgets/timeselectcontainer.dart';
-import '../../widgets/add_button.dart';
+
+import 'package:vv/widgets/backbutton.dart';
+import 'package:vv/widgets/task_widgets/add_button.dart';
+import 'package:vv/widgets/task_widgets/appbarscreens.dart';
+import 'package:vv/widgets/task_widgets/details_container.dart';
+import 'package:vv/widgets/task_widgets/name_textfield.dart';
+import 'package:vv/widgets/task_widgets/timeselectcontainer.dart';
+import 'package:vv/widgets/task_widgets/timeselectraw.dart';
+
 import '../../models/task.dart';
 
 class AddTaskScreen extends StatefulWidget {

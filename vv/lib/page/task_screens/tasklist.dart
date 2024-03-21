@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:temp/widgets/backbutton.dart';
-import 'package:temp/widgets/dayselect.dart';
-import 'package:temp/views/task_screens/details.dart';
-import 'package:temp/views/task_screens/adddtask.dart';
 
-import '../../widgets/yearmonth.dart';
+import 'package:vv/page/task_screens/adddtask.dart';
+import 'package:vv/page/task_screens/details.dart';
+import 'package:vv/widgets/backbutton.dart';
+import 'package:vv/widgets/task_widgets/dayselect.dart';
+import 'package:vv/widgets/task_widgets/yearmonth.dart';
+
+
 import '../../models/task.dart';
 
 class TaskListScreen extends StatefulWidget {

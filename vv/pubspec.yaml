@@ -92,6 +92,7 @@ flutter:
     - images/Verification.png
     - images/welcome2.png
     - images/eng.png
+    - images/icons8-task-100.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
