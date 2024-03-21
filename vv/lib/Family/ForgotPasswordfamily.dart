@@ -12,108 +12,62 @@ class ForgotPasswordfamily extends StatefulWidget {
 
 class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily>
     with SingleTickerProviderStateMixin {
-  TextEditingController _emailController = TextEditingController();
-  final Dio _dio = Dio();
-  final FlutterSecureStorage _storage = FlutterSecureStorage();
-  String _emailError = '';
-  final _scrollController = ScrollController();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-  double offset = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(onScroll);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void onScroll() {
-    setState(() {
-      offset = _scrollController.offset;
-    });
-  }
+  final _emailController = TextEditingController(); // For email input
+  final _dio = Dio(); // For network requests
+  final _storage = FlutterSecureStorage(); // For sensitive data storage
+  String _emailError = ''; // Error message for email input
+  final _scrollController = ScrollController(); // For UI scrolling control
+  final _scaffoldKey =
+      GlobalKey<ScaffoldState>(); // For accessing Scaffold widget
+  double offset = 0; // Offset value
 
   Future<void> _forgotPassword(String email) async {
     try {
-      String url =
-          'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/ForgetPassword';
-
-      // Define request body (empty for this case)
-      Map<String, dynamic> data = {};
-
-      // Define query parameters (email)
-      Map<String, dynamic> queryParameters = {'email': email};
-
-      // Send POST request using Dio
       Response response = await _dio.post(
-        url,
-        queryParameters: queryParameters,
-        data: data,
-        options: Options(
-          headers: {'Accept': '/'},
-        ),
+        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/ForgetPassword',
+        queryParameters: {'email': email},
+        data: {},
+        options: Options(headers: {'Accept': '/'}),
       );
 
-      if (response.statusCode == 200) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Success'),
-            content: Text(
-                'An email has been sent to $email with instructions to reset your password.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context); // Close the success dialog
-                  Navigator.pushReplacement( // Navigate to the login page
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPageAll()),
-                  );
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to send password recovery email.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-      }
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('An error occurred: $e'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
+      _showDialog(
+        response.statusCode == 200 ? 'Success' : 'Error',
+        response.statusCode == 200
+            ? 'An email has been sent to $email with instructions to reset your password.'
+            : 'Failed to send password recovery email.',
+        response.statusCode == 200
+            ? () {
+                Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPageAll()),
+                );
+              }
+            : () {
                 Navigator.pop(context);
               },
-              child: Text('OK'),
-            ),
-          ],
-        ),
       );
+    } catch (e) {
+      _showDialog('Error', 'An error occurred: $e', () {
+        Navigator.pop(context);
+      });
     }
+  }
+
+  void _showDialog(String title, String content, Function() onPressed) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: <Widget>[
+          TextButton(
+            onPressed: onPressed,
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override

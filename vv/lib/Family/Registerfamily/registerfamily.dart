@@ -13,20 +13,13 @@ class APIService {
   static Future<dynamic> register(Map<String, dynamic> userData) async {
     try {
       Response response = await _dio.post(
-        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/Register',
-        data: userData,
-      );
-
-      if (response.statusCode == 200) {
-        return true;
-      } else {
-        // Check if there's a message field in the response data
-        if (response.data != null && response.data['message'] != null) {
-          return response.data['message'];
-        } else {
-          return 'Registration failed with status code: ${response.statusCode}';
-        }
-      }
+          'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/Register',
+          data: userData);
+      return response.statusCode == 200
+          ? true
+          : response.data != null && response.data['message'] != null
+              ? response.data['message']
+              : 'Registration failed with status code: ${response.statusCode}';
     } catch (error) {
       print('Registration failed: $error');
       return 'Registration failed: $error';
@@ -113,8 +106,8 @@ class _RegisterFamilyState extends State<RegisterFamily> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text('Registration Successful'),
-          content: Text('You have Successfully Registered.      Please Confirm Email To Can Login.'),
-         
+          content: Text(
+              'You have Successfully Registered.      Please Confirm Email To Can Login.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -231,7 +224,8 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     fillColor: Colors.white,
                     hintText: '  Select Role', // Add hint text here
                     hintStyle: TextStyle(color: Colors.grey),
-                    contentPadding: EdgeInsets.symmetric(vertical: 12.0,horizontal: 12),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
                     // Customize hint text style if needed
                   ),
                 ),
@@ -264,4 +258,3 @@ class _RegisterFamilyState extends State<RegisterFamily> {
     );
   }
 }
-
