@@ -11,9 +11,9 @@ class ForgetPass_var_setpass_Text extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          SizedBox(height: 0.5),
+          SizedBox(height: 150),
           Padding(
-            padding:  EdgeInsets.only(right: 130.0),
+            padding:  EdgeInsets.only(right: 18),
             child: Text(
               text,
               style: TextStyle(
@@ -21,7 +21,6 @@ class ForgetPass_var_setpass_Text extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Outfit',
               ),
-              textAlign: TextAlign.left,
             ),
           ),
         ],

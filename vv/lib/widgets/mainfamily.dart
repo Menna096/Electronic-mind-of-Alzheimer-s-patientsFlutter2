@@ -76,15 +76,15 @@ Widget buildDrawer(BuildContext context) {
   Widget buildStack() {
     return Stack(
       children: [
-        buildImageContainer('images/welcome2.png', 370, 370, 433, 45),
-        buildImageContainer('images/note.png', 134, 134, 135, 45),
-        buildImageContainer('images/Places.png', 130, 130, 290, 45),
-        buildImageContainer('images/Pictures.png', 130, 130, 440, 45),
-        buildImageContainer('images/manageprof.png', 110, 110, 132, 230),
-        buildImageContainer('images/Appointments.png', 110, 110, 232, 230),
-        buildImageContainer('images/Files.png', 110, 110, 332, 230),
-        buildImageContainer('images/Pictures.png', 110, 110, 432, 230),
-        buildImageContainer('images/Games (1).png', 110, 110, 532, 230),
+        // buildImageContainer('images/welcome2.png', 370, 370, 433, 45),
+        // buildImageContainer('images/note.png', 134, 134, 135, 45),
+        // buildImageContainer('images/Places.png', 130, 130, 290, 45),
+        // buildImageContainer('images/Pictures.png', 130, 130, 440, 45),
+        // buildImageContainer('images/manageprof.png', 110, 110, 132, 230),
+        // buildImageContainer('images/Appointments.png', 110, 110, 232, 230),
+        // buildImageContainer('images/Files.png', 110, 110, 332, 230),
+        // buildImageContainer('images/Pictures.png', 110, 110, 432, 230),
+        // buildImageContainer('images/Games (1).png', 110, 110, 532, 230),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
