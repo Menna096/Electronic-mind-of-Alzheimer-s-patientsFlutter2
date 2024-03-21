@@ -76,6 +76,7 @@ Widget buildDrawer(BuildContext context) {
   Widget buildStack() {
     return Stack(
       children: [
+        
         // buildImageContainer('images/welcome2.png', 370, 370, 433, 45),
         // buildImageContainer('images/note.png', 134, 134, 135, 45),
         // buildImageContainer('images/Places.png', 130, 130, 290, 45),

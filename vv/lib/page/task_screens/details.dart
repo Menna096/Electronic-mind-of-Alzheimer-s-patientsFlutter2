@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:temp/widgets/appbarscreens.dart';
-import 'package:temp/models/task.dart';
 
-import '../../widgets/Edit_timepicker.dart';
+import 'package:vv/models/task.dart';
+import 'package:vv/widgets/task_widgets/Edit_timepicker.dart';
+import 'package:vv/widgets/task_widgets/appbarscreens.dart';
+
 
 class TaskDetailsScreen extends StatefulWidget {
   final Task task;
