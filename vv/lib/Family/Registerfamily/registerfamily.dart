@@ -113,7 +113,8 @@ class _RegisterFamilyState extends State<RegisterFamily> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text('Registration Successful'),
-          content: Text('You have successfully registered.'),
+          content: Text('You have Successfully Registered.      Please Confirm Email To Can Login.'),
+         
           actions: [
             TextButton(
               onPressed: () {
