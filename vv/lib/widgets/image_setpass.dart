@@ -15,7 +15,7 @@ class ImageWidget extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(top: 0.5),
           child: Image.asset(
-            'images/setpass.png', // Make sure to provide the correct image path
+            'images/setpass.png', 
             width: width,
             height: height,
           ),
