@@ -85,6 +85,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Background(
+        SingleChildScrollView: null,
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

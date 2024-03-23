@@ -76,6 +76,7 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily>
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       body: Background(
+        SingleChildScrollView: null,
         child: SingleChildScrollView(
           controller: _scrollController,
           child: Column(
