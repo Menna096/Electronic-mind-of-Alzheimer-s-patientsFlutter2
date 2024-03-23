@@ -12,6 +12,7 @@ class mainpagefamily extends StatelessWidget {
       drawer: buildDrawer(context),
       resizeToAvoidBottomInset: false,
       body: Background(
+        SingleChildScrollView: null,
         child: buildStack(),
       ),
     );
