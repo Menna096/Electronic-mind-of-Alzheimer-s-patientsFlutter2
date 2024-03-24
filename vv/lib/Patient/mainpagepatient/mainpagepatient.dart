@@ -1,8 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
 
+class ManageProfilePatient extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Manage Profile'),
+      ),
+      body: Center(
+        child: Text('This is the Manage Profile page'),
+      ),
+    );
+  }
+}
 
+class LanguagePatient extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Language'),
+      ),
+      body: Center(
+        child: Text('This is the Language page'),
+      ),
+    );
+  }
+}
 
-class mainpagepatient extends StatelessWidget {
+class MyHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home'),
+      ),
+      body: Center(
+        child: Text('This is the Home page'),
+      ),
+    );
+  }
+}
+
+class MainPagePatient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,14 +57,15 @@ class mainpagepatient extends StatelessWidget {
             children: [
               DrawerHeader(
                 child: Center(
-                    child: Text(
-                  'Elder Helper',
-                  style: TextStyle(
-                    fontSize: 44,
-                    fontFamily: 'Acme',
-                    color: Color(0xFF0386D0),
+                  child: Text(
+                    'Elder Helper',
+                    style: TextStyle(
+                      fontSize: 44,
+                      fontFamily: 'Acme',
+                      color: Color(0xFF0386D0),
+                    ),
                   ),
-                )),
+                ),
               ),
               ListTile(
                 leading: Icon(Icons.manage_accounts_rounded),
@@ -34,10 +76,13 @@ class mainpagepatient extends StatelessWidget {
                     color: Color(0xFF595858),
                   ),
                 ),
-                // onTap: () {
-                //   Navigator.of(context).push(MaterialPageRoute(
-                //       builder: (context) => Manageprofilepatient()));
-                // },
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ManageProfilePatient(),
+                    ),
+                  );
+                },
               ),
               ListTile(
                 leading: Icon(Icons.language),
@@ -48,10 +93,13 @@ class mainpagepatient extends StatelessWidget {
                     color: Color(0xFF595858),
                   ),
                 ),
-                // onTap: () {
-                //   Navigator.of(context).push(MaterialPageRoute(
-                //       builder: (context) => Languagepatient()));
-                // },
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => LanguagePatient(),
+                    ),
+                  );
+                },
               ),
               ListTile(
                 leading: Icon(Icons.logout_outlined),
@@ -62,10 +110,13 @@ class mainpagepatient extends StatelessWidget {
                     color: Color(0xFF595858),
                   ),
                 ),
-                // onTap: () {
-                //   Navigator.of(context).push(
-                //       MaterialPageRoute(builder: (context) => MyHomePage()));
-                // },
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => MyHomePage(),
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -98,123 +149,48 @@ class mainpagepatient extends StatelessWidget {
             Positioned(
               top: 132,
               left: 45,
-              child: Container(
-                child: Image.asset(
-                  'images/note.png',
-                  width: 110,
-                  height: 110,
+              child: GestureDetector(
+                onTap: () {
+                  // Navigate to the desired page when Notes icon is pressed
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>  Notes_view(),
+                    ),
+                  );
+                },
+                child: Container(
+                  child: Image.asset(
+                    'images/note.png',
+                    width: 110,
+                    height: 110,
+                  ),
                 ),
               ),
             ),
-            Positioned(
-              top: 232,
-              left: 45,
-              child: Container(
-                child: Image.asset(
-                  'images/Places.png',
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 332,
-              left: 45,
-              child: Container(
-                child: Image.asset(
-                  'images/Notes.png',
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 432,
-              left: 45,
-              child: Container(
-                child: Image.asset(
-                  'images/Persons.png',
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 532,
-              left: 45,
-              child: Container(
-                child: Image.asset(
-                  'images/Appointments.png',
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 132,
-              left: 230,
-              child: Container(
-                child: Image.asset(
-                  'images/Medicines.png',
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 232,
-              left: 230,
-              child: Container(
-                child: Image.asset(
-                  'images/Chatbot.png',
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 332,
-              left: 230,
-              child: Container(
-                child: Image.asset(
-                  'images/Files.png',
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 432,
-              left: 230,
-              child: Container(
-                child: Image.asset(
-                  'images/Pictures.png',
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 532,
-              left: 230,
-              child: Container(
-                child: Image.asset(
-                  'images/Games (1).png',
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(),
-              ],
-            ),
+            // Other Positioned widgets for other icons...
           ],
         ),
       ),
     );
   }
+}
+
+class YourNotesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Your Notes'),
+      ),
+      body: Center(
+        child: Text('This is the Your Notes page'),
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: MainPagePatient(),
+  ));
 }
