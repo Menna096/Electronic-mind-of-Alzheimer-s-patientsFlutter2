@@ -8,6 +8,7 @@ import 'package:vv/Family/Registerfamily/registerfamily.dart';
 import 'package:vv/api/local_auth_api.dart';
 import 'package:vv/Family/ForgotPasswordfamily.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
+import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
 import 'package:vv/widgets/imagefingerandface.dart';
 
@@ -25,6 +26,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
   String _emailErrorText = '';
   String _passwordErrorText = '';
   final Dio _dio = Dio();
+  bool _isBiometricEnabled = false;
 
   @override
   void initState() {
@@ -40,6 +42,17 @@ class _LoginPageAllState extends State<LoginPageAll> {
         },
       ),
     );
+    // Check if token exists in secure storage
+    _checkTokenAndEnableBiometric();
+  }
+
+  Future<void> _checkTokenAndEnableBiometric() async {
+    final String? token = await _secureStorage.read(key: 'token');
+    if (token != null) {
+      setState(() {
+        _isBiometricEnabled = true;
+      });
+    }
   }
 
   Future<void> _login() async {
@@ -74,10 +87,45 @@ class _LoginPageAllState extends State<LoginPageAll> {
           MaterialPageRoute(builder: (context) => mainpagecaregiver()),
         );
       }
+      if (_isBiometricEnabled) {
+        await _authenticateWithBiometric();
+      }
     } catch (error) {
       setState(() {
         _errorMessage = 'Login failed. Please check your credentials.';
       });
+    }
+  }
+
+  Future<void> _authenticateWithBiometric() async {
+    final isAuthenticated = await LocalAuthApi.authenticate();
+    if (isAuthenticated) {
+      // Handle successful fingerprint authentication
+      print('Fingerprint authentication successful!');
+
+      // Decode the JWT token
+      final token = await _secureStorage.read(key: 'token');
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token!);
+
+      // Extract user's role from the decoded token
+      String userRole = decodedToken['roles'];
+
+      // Navigate to the appropriate page based on the user's role
+      if (userRole == 'Family') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => mainpagefamily()),
+        );
+      } else if (userRole == 'Caregiver') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => mainpagecaregiver()),
+        );
+      }
+    } else {
+      // Handle failed fingerprint authentication
+      print('Fingerprint authentication failed.');
+      // Optionally, show a message to the user indicating authentication failure
     }
   }
 
@@ -91,7 +139,8 @@ class _LoginPageAllState extends State<LoginPageAll> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 70),
+              backbutton(),
+              SizedBox(height: 5),
               Text(
                 'Welcome',
                 style: TextStyle(
@@ -102,57 +151,51 @@ class _LoginPageAllState extends State<LoginPageAll> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 40),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: TextField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email Address',
-                    labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    suffixIcon: Icon(
-                      Icons.email_outlined,
-                      size: 25,
-                      color: Color(0xFFD0D0D0),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    errorText: _emailErrorText,
+              TextField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  labelText: 'Email Address',
+                  labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0),
                   ),
+                  suffixIcon: Icon(
+                    Icons.email_outlined,
+                    size: 25,
+                    color: Color(0xFFD0D0D0),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  errorText: _emailErrorText,
                 ),
               ),
               SizedBox(height: 0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: TextField(
-                  obscureText: !_isPasswordVisible,
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    suffixIcon: InkWell(
-                      onTap: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
-                      child: Icon(
-                        _isPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        size: 25,
-                        color: Color(0xFFD0D0D0),
-                      ),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
-                    errorText: _passwordErrorText,
+              TextField(
+                obscureText: !_isPasswordVisible,
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0),
                   ),
+                  suffixIcon: InkWell(
+                    onTap: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                    child: Icon(
+                      _isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      size: 25,
+                      color: Color(0xFFD0D0D0),
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
+                  errorText: _passwordErrorText,
                 ),
               ),
               SizedBox(height: 0),
@@ -178,50 +221,23 @@ class _LoginPageAllState extends State<LoginPageAll> {
                 ),
               ),
               SizedBox(height: .5),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Validate email and password before login
-                    if (_emailController.text.isEmpty) {
-                      setState(() {
-                        _emailErrorText = 'Please enter your email.';
-                      });
-                    } else {
-                      setState(() {
-                        _emailErrorText = '';
-                      });
-                    }
-
-                    if (_passwordController.text.isEmpty) {
-                      setState(() {
-                        _passwordErrorText = 'Please enter your password.';
-                      });
-                    } else {
-                      setState(() {
-                        _passwordErrorText = '';
-                      });
-                    }
-
-                    if (_emailController.text.isNotEmpty &&
-                        _passwordController.text.isNotEmpty) {
-                      _login();
-                      // Call login function
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Color.fromARGB(255, 255, 255, 255),
-                    backgroundColor: Color(0xFF0386D0),
-                    fixedSize: Size(151, 45),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(27.0),
-                    ),
-                  ),
-                  child: Text(
-                    'Login',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+              ElevatedButton(
+                onPressed: () {
+                  // Validate email and password before login
+                  if (_emailController.text.isEmpty ||
+                      _passwordController.text.isEmpty) {
+                    setState(() {
+                      _emailErrorText = 'Please enter your email.';
+                      _passwordErrorText = 'Please enter your password.';
+                    });
+                    return;
+                  }
+                  _login();
+                },
+                child: Text(
+                  'Login',
+                  style: TextStyle(
+                    fontSize: 18,
                   ),
                 ),
               ),
@@ -240,7 +256,6 @@ class _LoginPageAllState extends State<LoginPageAll> {
                   style: TextStyle(
                     fontSize: 17,
                     color: Color(0xFFffffff),
-                    fontFamily: 'Patua One',
                   ),
                 ),
               ),
@@ -265,15 +280,14 @@ class _LoginPageAllState extends State<LoginPageAll> {
                       alignment: Alignment.center,
                       child: GestureDetector(
                         onTap: () async {
-                          final isAuthenticated =
-                              await LocalAuthApi.authenticate();
-
-                          if (isAuthenticated) {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => mainpagefamily(),
-                              ),
-                            );
+                          // Authenticate with biometric if enabled
+                          if (_isBiometricEnabled) {
+                            await _authenticateWithBiometric();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  'Biometric authentication is not enabled.'),
+                            ));
                           }
                         },
                         child: Images(
