@@ -1,13 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/Family/Registerfamily/registerfamily.dart';
-import 'package:vv/api/local_auth_api.dart';
 import 'package:vv/Family/ForgotPasswordfamily.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
+import 'package:vv/api/local_auth_api.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
 import 'package:vv/widgets/imagefingerandface.dart';
@@ -21,11 +20,12 @@ class _LoginPageAllState extends State<LoginPageAll> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  final Dio _dio = Dio();
+
   String _errorMessage = '';
   bool _isPasswordVisible = false;
   String _emailErrorText = '';
   String _passwordErrorText = '';
-  final Dio _dio = Dio();
   bool _isBiometricEnabled = false;
 
   @override
@@ -42,8 +42,12 @@ class _LoginPageAllState extends State<LoginPageAll> {
         },
       ),
     );
-    // Check if token exists in secure storage
-    _checkTokenAndEnableBiometric();
+    _checkTokenAndEnableBiometric().then((_) {
+      // Perform biometric authentication if enabled
+      if (_isBiometricEnabled) {
+        _authenticateWithBiometric();
+      }
+    });
   }
 
   Future<void> _checkTokenAndEnableBiometric() async {
@@ -68,64 +72,65 @@ class _LoginPageAllState extends State<LoginPageAll> {
       final token = response.data['token'];
       await _secureStorage.write(key: 'token', value: token);
       print('Login successful! Token: $token');
-      // Decode the JWT token
-      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
-
-      // Extract user's role from the decoded token
-      String userRole =
-          decodedToken['roles']; // Assuming the role is stored in 'role' field
-
-      print('User role: $userRole');
-      if (userRole == 'Family') {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => mainpagefamily()),
-        );
-      } else if (userRole == 'Caregiver') {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => mainpagecaregiver()),
-        );
-      }
-      if (_isBiometricEnabled) {
-        await _authenticateWithBiometric();
-      }
+      _handleLoginSuccess(token);
     } catch (error) {
-      setState(() {
-        _errorMessage = 'Login failed. Please check your credentials.';
-      });
+      _handleLoginFailure();
     }
+  }
+
+  void _handleLoginSuccess(String token) {
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    String userRole = decodedToken['roles'];
+
+    if (userRole == 'Family') {
+      _navigateToMainPageFamily();
+    } else if (userRole == 'Caregiver') {
+      _navigateToMainPageCaregiver();
+    }
+
+    if (_isBiometricEnabled) {
+      _authenticateWithBiometric();
+    }
+  }
+
+  void _handleLoginFailure() {
+    setState(() {
+      _errorMessage = 'Login failed. Please check your credentials.';
+    });
   }
 
   Future<void> _authenticateWithBiometric() async {
     final isAuthenticated = await LocalAuthApi.authenticate();
     if (isAuthenticated) {
-      // Handle successful fingerprint authentication
-      print('Fingerprint authentication successful!');
-
-      // Decode the JWT token
-      final token = await _secureStorage.read(key: 'token');
-      Map<String, dynamic> decodedToken = JwtDecoder.decode(token!);
-
-      // Extract user's role from the decoded token
-      String userRole = decodedToken['roles'];
-
-      // Navigate to the appropriate page based on the user's role
-      if (userRole == 'Family') {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => mainpagefamily()),
-        );
-      } else if (userRole == 'Caregiver') {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => mainpagecaregiver()),
-        );
-      }
+      _navigateBasedOnUserRole();
     } else {
-      // Handle failed fingerprint authentication
       print('Fingerprint authentication failed.');
-      // Optionally, show a message to the user indicating authentication failure
+    }
+  }
+
+  void _navigateToMainPageFamily() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => mainpagefamily()),
+    );
+  }
+
+  void _navigateToMainPageCaregiver() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => mainpagecaregiver()),
+    );
+  }
+
+  Future<void> _navigateBasedOnUserRole() async {
+    final token = await _secureStorage.read(key: 'token');
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token!);
+    String userRole = decodedToken['roles'];
+
+    if (userRole == 'Family') {
+      _navigateToMainPageFamily();
+    } else if (userRole == 'Caregiver') {
+      _navigateToMainPageCaregiver();
     }
   }
 
@@ -151,164 +156,186 @@ class _LoginPageAllState extends State<LoginPageAll> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 40),
-              TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email Address',
-                  labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  suffixIcon: Icon(
-                    Icons.email_outlined,
-                    size: 25,
-                    color: Color(0xFFD0D0D0),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  errorText: _emailErrorText,
-                ),
-              ),
+              _buildEmailTextField(),
               SizedBox(height: 0),
-              TextField(
-                obscureText: !_isPasswordVisible,
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  suffixIcon: InkWell(
-                    onTap: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
-                    },
-                    child: Icon(
-                      _isPasswordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      size: 25,
-                      color: Color(0xFFD0D0D0),
-                    ),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
-                  errorText: _passwordErrorText,
-                ),
-              ),
+              _buildPasswordTextField(),
               SizedBox(height: 0),
-              Container(
-                margin: EdgeInsets.only(right: 1, top: 0.5),
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ForgotPasswordfamily()),
-                    );
-                  },
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF0386D0),
-                    ),
-                  ),
-                ),
-              ),
+              _buildForgotPasswordButton(),
               SizedBox(height: .5),
-              ElevatedButton(
-                onPressed: () {
-                  // Validate email and password before login
-                  if (_emailController.text.isEmpty ||
-                      _passwordController.text.isEmpty) {
-                    setState(() {
-                      _emailErrorText = 'Please enter your email.';
-                      _passwordErrorText = 'Please enter your password.';
-                    });
-                    return;
-                  }
-                  _login();
-                },
-                child: Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-              ),
+              _buildLoginButton(),
               SizedBox(height: 0.5),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RegisterFamily(),
-                    ),
-                  );
-                },
-                child: Text(
-                  'Don\'t have an account? Register Now.',
-                  style: TextStyle(
-                    fontSize: 17,
-                    color: Color(0xFFffffff),
-                  ),
-                ),
-              ),
+              _buildRegisterNowButton(),
               SizedBox(height: 30),
-              Center(
-                child: Text(
-                  'Login With',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFFffffff),
-                    fontFamily: 'Patua One',
-                  ),
-                ),
-              ),
-              SizedBox(height: 60),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: GestureDetector(
-                        onTap: () async {
-                          // Authenticate with biometric if enabled
-                          if (_isBiometricEnabled) {
-                            await _authenticateWithBiometric();
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(
-                                  'Biometric authentication is not enabled.'),
-                            ));
-                          }
-                        },
-                        child: Images(
-                          image: 'images/fingerprint.png',
-                          width: 70,
-                          height: 70,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Images(
-                    image: 'images/face-recognition.png',
-                    width: 65,
-                    height: 65,
-                  ),
-                ],
-              ),
+              _buildLoginWithOptions(),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildEmailTextField() {
+    return TextField(
+      controller: _emailController,
+      decoration: InputDecoration(
+        labelText: 'Email Address',
+        labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        suffixIcon: Icon(
+          Icons.email_outlined,
+          size: 25,
+          color: Color(0xFFD0D0D0),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        errorText: _emailErrorText,
+      ),
+    );
+  }
+
+  Widget _buildPasswordTextField() {
+    return TextField(
+      obscureText: !_isPasswordVisible,
+      controller: _passwordController,
+      decoration: InputDecoration(
+        labelText: 'Password',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        suffixIcon: InkWell(
+          onTap: () {
+            setState(() {
+              _isPasswordVisible = !_isPasswordVisible;
+            });
+          },
+          child: Icon(
+            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+            size: 25,
+            color: Color(0xFFD0D0D0),
+          ),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
+        errorText: _passwordErrorText,
+      ),
+    );
+  }
+
+  Widget _buildForgotPasswordButton() {
+    return Container(
+      margin: EdgeInsets.only(right: 1, top: 0.5),
+      alignment: Alignment.centerRight,
+      child: TextButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ForgotPasswordfamily()),
+          );
+        },
+        child: Text(
+          'Forgot Password?',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF0386D0),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoginButton() {
+    return ElevatedButton(
+      onPressed: () {
+        if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+          setState(() {
+            _emailErrorText = 'Please enter your email.';
+            _passwordErrorText = 'Please enter your password.';
+          });
+          return;
+        }
+        _login();
+      },
+      child: Text(
+        'Login',
+        style: TextStyle(
+          fontSize: 18,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRegisterNowButton() {
+    return TextButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RegisterFamily(),
+          ),
+        );
+      },
+      child: Text(
+        'Don\'t have an account? Register Now.',
+        style: TextStyle(
+          fontSize: 17,
+          color: Color(0xFFffffff),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoginWithOptions() {
+    return Column(
+      children: [
+        Center(
+          child: Text(
+            'Login With',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFFffffff),
+              fontFamily: 'Patua One',
+            ),
+          ),
+        ),
+        SizedBox(height: 60),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Expanded(
+            //   child: Align(
+            //     alignment: Alignment.center,
+            //     child: GestureDetector(
+            //       onTap: () async {
+            //         if (_isBiometricEnabled) {
+            //           await _authenticateWithBiometric();
+            //         } else {
+            //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            //             content:
+            //                 Text('Biometric authentication is not enabled.'),
+            //           ));
+            //         }
+            //       },
+            //       child: Images(
+            //         image: 'images/fingerprint.png',
+            //         width: 70,
+            //         height: 70,
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            Images(
+              image: 'images/face-recognition.png',
+              width: 65,
+              height: 65,
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
