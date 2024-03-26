@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:dio/dio.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/widgets/background.dart';
 import 'package:vv/widgets/text_forgot_var_set.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ForgotPasswordfamily extends StatefulWidget {
   @override
@@ -31,7 +31,7 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily>
         'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/ForgetPassword',
         queryParameters: {'email': email},
         data: {},
-        options: Options(headers: {'Accept': '/'}),
+        // options: Options(headers: {'Accept': '*/*'}),
       );
 
       _showDialog(

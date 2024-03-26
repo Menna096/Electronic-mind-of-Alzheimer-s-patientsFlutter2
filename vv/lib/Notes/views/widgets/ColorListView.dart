@@ -37,19 +37,15 @@ class _ColorListViewState extends State<ColorListView> {
   int currentindex = 0;
   List<Color> colors = [
     
-    Color(0xffD3D0C5),
-    Color(0xff9E898E),
-    Color(0xff886B69),
-    Color(0xff635757),
-    Color(0xff93776A),
-    Color(0xffDBD5CA),
-    Color(0xffB9AE99),
-    Color(0xff5C564B),
-    Color(0xff897F6E),
-    Color(0xff8F8D81),
-    Color(0xff6C5E2F),
-    Color(0xff957B5E),
-    Color(0xff754D36),
+    Color(0xFF90CAF9),
+    Color(0xFF42A5F5),
+    Color(0xFF64B5F6),
+    Color(0xFF1976D2),
+    Color(0xFF2196F3),
+    Color(0xFF1565C0),
+    Color(0xFF1E88E5),
+    Color(0xFF0D47A1),
+   
   ];
   @override
   Widget build(BuildContext context) {
