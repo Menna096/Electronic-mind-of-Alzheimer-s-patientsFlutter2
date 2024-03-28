@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vv/Notes/cubits/notes_cubit/notes_cubit.dart';
 import 'package:vv/Notes/views/widgets/CustomAppBar.dart';
 import 'package:vv/Notes/views/widgets/Notes_List_View.dart';
+import 'package:vv/Notes/voice/home/pages/home_page.dart';
 
 class NotesViewBody extends StatefulWidget {
   const NotesViewBody({Key? key}) : super(key: key);
@@ -32,6 +33,31 @@ class _NotesViewBodyState extends State<NotesViewBody> {
       ),
       child: Stack(
         children: [
+          Positioned(
+            top: 202.5,
+            left: 0,
+            right: 0,
+            child: Container(
+              alignment: Alignment.topCenter,
+              child: Column(
+                children: [
+                  Image.asset(
+                    'images/noteees.jpg',
+                    fit: BoxFit.cover,
+                    width: 100,
+                    height: 100,
+                  ),
+                  Text(
+                    "No Notes Yet!",
+                    style: TextStyle(
+                      color: const Color.fromARGB(255, 227, 226, 226),
+                      fontSize: 21,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
             child: Column(
@@ -39,9 +65,19 @@ class _NotesViewBodyState extends State<NotesViewBody> {
                 SizedBox(
                   height: 48,
                 ),
-                CustomAppBar(
-                  title: 'Notes',
-                  // Provide an icon here
+                GestureDetector(
+                  onTap: () {
+                    // Navigate to HomePage when the icon is pressed
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
+                  },
+                  child: CustomAppBar(
+                    title: 'Notes',
+                    icon: Icons.voice_chat,
+                    // Provide an icon here
+                  ),
                 ),
                 Expanded(child: NotesListView()),
               ],

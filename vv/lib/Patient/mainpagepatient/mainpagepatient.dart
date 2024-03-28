@@ -86,7 +86,7 @@ class mainpagepatient extends StatelessWidget {
         child: Stack(
           children: [
             Positioned(
-              bottom: 433,
+              bottom: 450,
               child: Container(
                 child: Image.asset(
                   'images/welcome2.png',
@@ -123,7 +123,7 @@ class mainpagepatient extends StatelessWidget {
               child: GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => Notes_view()));
+                      builder: (context) => Notes_View()));
                 },
                 child: Container(
                   child: Image.asset(

@@ -8,15 +8,16 @@ import 'package:vv/Notes/voice/home/manager/voice_notes_cubit/voice_notes_cubit.
 import 'package:vv/Notes/voice/home/model/voice_note_model.dart';
 import 'package:vv/Notes/voice/home/widgets/audio_player_view/audio_player_view.dart';
 import 'package:vv/Notes/voice/home/widgets/play_pause_button.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class VoiceNoteCard extends StatelessWidget {
   final VoiceNoteModel voiceNoteInfo;
-  const VoiceNoteCard({super.key, required this.voiceNoteInfo});
+  const VoiceNoteCard({Key? key, required this.voiceNoteInfo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         showAppBottomSheet(
           context,
           showCloseButton: true,
@@ -24,9 +25,10 @@ class VoiceNoteCard extends StatelessWidget {
             return AudioPlayerView(
               path: voiceNoteInfo.path,
             );
-          },);
+          },
+        );
       },
-      onLongPressStart: (details){
+      onLongPressStart: (details) {
         final offset = details.globalPosition;
 
         showMenu(
@@ -39,12 +41,15 @@ class VoiceNoteCard extends StatelessWidget {
           ),
           items: [
             PopupMenuItem(
-              onTap: (){
-               context.read<VoiceNotesCubit>().deleteRecordFile(voiceNoteInfo);
+              onTap: () {
+                context.read<VoiceNotesCubit>().deleteRecordFile(voiceNoteInfo);
               },
-              child: Text("Delete",style: AppTextStyles.medium(),),
+              child: Text(
+                "Delete",
+                style: AppTextStyles.medium(),
+              ),
             )
-          ]
+          ],
         );
       },
       child: Padding(
@@ -56,7 +61,7 @@ class VoiceNoteCard extends StatelessWidget {
             color: Colors.white,
             shape: RoundedRectangleBorder(
               side: const BorderSide(width: 1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(40),
             ),
           ),
           child: Row(
@@ -70,14 +75,14 @@ class VoiceNoteCard extends StatelessWidget {
                       child: Text(
                         voiceNoteInfo.name,
                         style: AppTextStyles.bold(
-                          color: AppColors.black900,
+                          color: const Color(0xff3B5998),
                           fontSize: 18,
                         ),
                       ),
                     ),
-
                     Expanded(
-                      child: Text(_formatDate(voiceNoteInfo.createAt),
+                      child: Text(
+                        _formatDate(voiceNoteInfo.createAt),
                         style: AppTextStyles.regular(
                           color: AppColors.grey,
                           fontSize: 14,
@@ -87,20 +92,29 @@ class VoiceNoteCard extends StatelessWidget {
                   ],
                 ),
               ),
-
               const PlayPauseButton(
                 isPlaying: false,
                 onTap: null,
-              )
+              ),
+              IconButton(
+                icon: const Icon(
+                  FontAwesomeIcons.trash,
+                  color: Color(0xffE2424A),
+                  size: 24,
+                ),
+                onPressed: () {
+                  // Add your trash icon action here
+                  context.read<VoiceNotesCubit>().deleteRecordFile(voiceNoteInfo);
+                },
+              ),
             ],
           ),
         ),
       ),
-
     );
   }
 
-  String _formatDate(DateTime dateTime){
+  String _formatDate(DateTime dateTime) {
     return DateFormat('HH:mm . dd MMM yyyy').format(dateTime);
   }
 }

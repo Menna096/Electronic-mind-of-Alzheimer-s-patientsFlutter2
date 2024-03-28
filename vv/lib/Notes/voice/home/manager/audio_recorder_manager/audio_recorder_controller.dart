@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
-import 'package:vv/Notes/voice/home/manager/audio_recorder_manager/audio_recorder_file_helper.dart';
 import 'package:path/path.dart' as path;
+import 'package:vv/Notes/voice/home/manager/audio_recorder_manager/audio_recorder_file_helper.dart';
 import 'package:vv/Notes/voice/home/model/voice_note_model.dart';
+
 
 class AudioRecorderController{
   final AudioRecorderFileHelper _audioRecorderFileHelper;
@@ -48,7 +49,7 @@ class AudioRecorderController{
     try{
       final filePath = path.join(
          (await _audioRecorderFileHelper.getRecordsDirectory).path,
-        "${DateTime.now().millisecondsSinceEpoch}.m4a" /////////////////////////////////////////
+        "${DateTime.now().millisecondsSinceEpoch}" /////////////////////////////////////////
       );
 
       await _audioRecorder.start(

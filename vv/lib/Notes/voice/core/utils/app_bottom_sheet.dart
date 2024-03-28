@@ -13,8 +13,8 @@ Future<T?> showAppBottomSheet<T>(BuildContext context,{
     enableDrag: false,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(35),
-        topRight: Radius.circular(35),
+        topLeft: Radius.circular(70),
+        topRight: Radius.circular(70),
       ),
     ),
     builder: (context) {
