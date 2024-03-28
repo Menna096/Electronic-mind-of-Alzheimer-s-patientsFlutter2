@@ -2,13 +2,16 @@ import 'package:vv/Notes/views/widgets/AddNoteBottomSheet.dart';
 import 'package:vv/Notes/views/widgets/NotesViewBody.dart';
 import 'package:flutter/material.dart';
 
-class Notes_view extends StatelessWidget {
+
+
+class Notes_View extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color.fromARGB(255, 236, 236, 236).withOpacity(0.9),
+        backgroundColor: const Color.fromARGB(255, 124, 147, 198).withOpacity(0.9),
         onPressed: () {
           showModalBottomSheet(
               isScrollControlled: true,
@@ -23,7 +26,7 @@ class Notes_view extends StatelessWidget {
         },
         child: Icon(
           Icons.add,
-          color: Color(0xFF2D2D2a),
+          color: Color.fromARGB(255, 248, 248, 247),
         ),
       ),
       body: NotesViewBody(),

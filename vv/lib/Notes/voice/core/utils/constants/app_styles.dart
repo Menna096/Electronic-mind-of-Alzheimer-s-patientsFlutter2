@@ -21,7 +21,7 @@ class AppTextStyles{
 
   static TextStyle medium({
     double fontSize = 16,
-    Color color = Colors.black,
+    Color color = const Color.fromARGB(255, 197, 36, 36),
     TextDecoration? textDecoration,
     double? height
   }){
