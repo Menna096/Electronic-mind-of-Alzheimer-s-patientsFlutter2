@@ -149,8 +149,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              backbutton(),
-              SizedBox(height: 5),
+              SizedBox(height: 110),
               Text(
                 'Welcome',
                 style: TextStyle(

@@ -136,37 +136,6 @@ class _RegisterFamilyState extends State<RegisterFamily> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: () async {
-      //     File image;
-      //     var imagePicker =
-      //         await ImagePicker.pickImage(source: ImageSource.gallery);
-      //     if (imagePicker != null) {
-      //       setState(() {
-      //         image = imagePicker;
-      //       });
-      //     }
-      //     try {
-      //       String filename = image.path.split('/').last;
-      //       FormData formData = new FormData.fromMap({
-      //         "image": await MultipartFile.fromFile(image.path,
-      //             filename: filename,
-      //             contentType: MediaType('image', 'png')),
-      //         "type": "image/png"
-      //       });
-      //        final Dio _dio = Dio();
-      //      Response response = await _dio.post("path",
-      //           data: formData,
-      //           options: Options(headers: {
-      //             "accept": "*/*",
-      //             "Authorization": "Bearer accresstoken",
-      //             "Content-Type": "multipart?form-data"
-      //           }));
-      //     } catch (e) {
-      //       print(e);
-      //     }
-      //   },
-      // ),
       backgroundColor: Color(0xff3B5998),
       resizeToAvoidBottomInset: false,
       body: Stack(
