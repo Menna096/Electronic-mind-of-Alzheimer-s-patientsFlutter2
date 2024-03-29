@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
+import 'package:vv/page/level_select.dart';
 
 class mainpagepatient extends StatelessWidget {
   @override
@@ -122,8 +123,8 @@ class mainpagepatient extends StatelessWidget {
               left: 45,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => Notes_View()));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => Notes_View()));
                 },
                 child: Container(
                   child: Image.asset(
@@ -203,11 +204,17 @@ class mainpagepatient extends StatelessWidget {
             Positioned(
               top: 532,
               left: 230,
-              child: Container(
-                child: Image.asset(
-                  'images/Games (1).png',
-                  width: 110,
-                  height: 110,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => LevelSelectionScreen()));
+                },
+                child: Container(
+                  child: Image.asset(
+                    'images/Games (1).png',
+                    width: 110,
+                    height: 110,
+                  ),
                 ),
               ),
             ),
