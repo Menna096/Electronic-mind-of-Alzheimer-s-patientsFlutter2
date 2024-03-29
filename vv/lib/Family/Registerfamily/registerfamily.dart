@@ -1,12 +1,16 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:vv/Family/LoginPageAll.dart';
+import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
 import 'package:vv/models/register.dart'; // Import your Register model
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/custom_Textfield.dart';
 import 'package:vv/widgets/pass_textField.dart';
 import 'package:dio/dio.dart';
+import 'package:vv/widgets/profile.dart';
 
 class APIService {
   static final Dio _dio = Dio();
@@ -45,7 +49,8 @@ class _RegisterFamilyState extends State<RegisterFamily> {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
 
@@ -126,10 +131,42 @@ class _RegisterFamilyState extends State<RegisterFamily> {
       });
     }
   }
-
+   
+          
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () async {
+      //     File image;
+      //     var imagePicker =
+      //         await ImagePicker.pickImage(source: ImageSource.gallery);
+      //     if (imagePicker != null) {
+      //       setState(() {
+      //         image = imagePicker;
+      //       });
+      //     }
+      //     try {
+      //       String filename = image.path.split('/').last;
+      //       FormData formData = new FormData.fromMap({
+      //         "image": await MultipartFile.fromFile(image.path,
+      //             filename: filename,
+      //             contentType: MediaType('image', 'png')),
+      //         "type": "image/png"
+      //       });
+      //        final Dio _dio = Dio();
+      //      Response response = await _dio.post("path",
+      //           data: formData,
+      //           options: Options(headers: {
+      //             "accept": "*/*",
+      //             "Authorization": "Bearer accresstoken",
+      //             "Content-Type": "multipart?form-data"
+      //           }));
+      //     } catch (e) {
+      //       print(e);
+      //     }
+      //   },
+      // ),
       backgroundColor: Color(0xff3B5998),
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -157,6 +194,9 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 18),
+                    ProfilePicture(),
+                    
+                    SizedBox(height: 18),
                     CustomTextField(
                       labelText: '  Full Name',
                       controller: _fullNameController,
@@ -177,8 +217,8 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     SizedBox(height: 15),
                     PasswordTextField(
                       labelText: '  Confirm Password',
-                      suffixIcon: Icons.password_outlined, 
-                      controller: _confirmPasswordController ,
+                      suffixIcon: Icons.password_outlined,
+                      controller: _confirmPasswordController,
                     ),
                     SizedBox(height: 15),
                     DropdownButtonFormField<String>(
@@ -259,5 +299,6 @@ class _RegisterFamilyState extends State<RegisterFamily> {
         ],
       ),
     );
+
   }
 }

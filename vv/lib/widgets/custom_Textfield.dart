@@ -8,15 +8,17 @@ class CustomTextField extends StatelessWidget {
   final String? errorText;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
+  bool? readOnly;
 
-  const CustomTextField({
+   CustomTextField({
     Key? key,
     required this.labelText,
     required this.controller,
     required this.suffixIcon,
+    this.readOnly,
     this.errorText,
     this.inputFormatters,
-    this.keyboardType, 
+    this.keyboardType,
   }) : super(key: key);
 
   @override
@@ -38,7 +40,7 @@ class CustomTextField extends StatelessWidget {
         filled: true,
         fillColor: Colors.white,
         errorText: errorText,
-        contentPadding: EdgeInsets.symmetric(vertical: 12.0,horizontal: 12),
+        contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
       ),
       inputFormatters: inputFormatters,
       keyboardType: keyboardType,
