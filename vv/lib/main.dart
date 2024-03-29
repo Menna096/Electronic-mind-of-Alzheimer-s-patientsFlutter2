@@ -31,7 +31,8 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => NotesCubit(),
       child: MaterialApp(
-        home: mainpagepatient(),
+        // home: mainpagepatient(),
+        home: LoginPageAll(),
         debugShowCheckedModeBanner: false,
       ),
     );
