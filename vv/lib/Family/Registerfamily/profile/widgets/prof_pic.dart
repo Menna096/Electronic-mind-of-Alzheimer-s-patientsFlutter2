@@ -4,11 +4,12 @@ import 'package:vv/Family/Registerfamily/profile/screen/photo_screen.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/choice_modal.dart';
 
 class ProfilePicture extends StatefulWidget {
-  const ProfilePicture({super.key});
+  final void Function(File?)? onImageSelected;
+
+  const ProfilePicture({Key? key, this.onImageSelected}) : super(key: key);
+
   @override
-  State<ProfilePicture> createState() {
-    return _ProfilePictureState();
-  }
+  State<ProfilePicture> createState() => _ProfilePictureState();
 }
 
 class _ProfilePictureState extends State<ProfilePicture> {
@@ -23,11 +24,13 @@ class _ProfilePictureState extends State<ProfilePicture> {
         onImageSelect: (image) {
           setState(() {
             _selectedImage = image;
+             widget.onImageSelected?.call(image);
           });
         },
         onImageDelete: () {
           setState(() {
             _selectedImage = null;
+            widget.onImageSelected?.call(null);
           });
         },
       )

@@ -3,36 +3,33 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
 import 'package:vv/models/register.dart'; // Import your Register model
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/custom_Textfield.dart';
 import 'package:vv/widgets/pass_textField.dart';
-import 'package:dio/dio.dart';
 import 'package:vv/widgets/profile.dart';
+import 'package:vv/Family/Registerfamily/profile/widgets/choice_modal.dart';
 
 class APIService {
   static final Dio _dio = Dio();
 
-  static Future<dynamic> register(Register userData) async {
+  static Future<dynamic> register(FormData formData) async {
     try {
+      _dio.options.headers['accept'] = '*/*';
+      _dio.options.headers['content-type'] = 'multipart/form-data';
       Response response = await _dio.post(
         'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/Register',
-        data: {
-          'fullName': userData.fullName,
-          'email': userData.email,
-          'password': userData.password,
-          'role': userData.role,
-          'phoneNumber': userData.phoneNumber,
-          'age': userData.age,
-        },
+        data: formData,
       );
       return response.statusCode == 200
           ? true
           : response.data != null && response.data['message'] != null
               ? response.data['message']
-              : 'Registration failed with status code: ${response.statusCode}';
+              : 'Registration failed with status code: ${response.data}';
     } catch (error) {
       print('Registration failed: $error');
       return 'Registration failed: $error';
@@ -56,6 +53,13 @@ class _RegisterFamilyState extends State<RegisterFamily> {
 
   String _selectedRole = '';
   bool _isLoading = false;
+  File? _selectedImage;
+
+  void _handleImageSelected(File? image) {
+    setState(() {
+      _selectedImage = image;
+    });
+  }
 
   void _register() async {
     setState(() {
@@ -69,23 +73,30 @@ class _RegisterFamilyState extends State<RegisterFamily> {
           _confirmPasswordController.text.isEmpty ||
           _phoneNumberController.text.isEmpty ||
           _ageController.text.isEmpty ||
-          _selectedRole.isEmpty) {
-        throw 'Please fill in all fields.';
+          _selectedRole.isEmpty ||
+          _selectedImage == null) {
+        throw 'Please fill in all fields and select an image.';
       }
       if (_passwordController.text != _confirmPasswordController.text) {
         throw 'Password and Confirm Password do not match.';
       }
 
-      Register userData = Register(
-        fullName: _fullNameController.text,
-        email: _emailController.text,
-        password: _passwordController.text,
-        role: _selectedRole,
-        phoneNumber: _phoneNumberController.text,
-        age: int.parse(_ageController.text),
-      );
+      var formData = FormData.fromMap({
+        'Avatar': await MultipartFile.fromFile(
+          _selectedImage!.path,
+          filename: _selectedImage!.path.split('/').last,
+          contentType: MediaType.parse(
+              '${_selectedImage!.path.split('.').last == 'jpg' || _selectedImage!.path.split('.').last == 'png' ? 'image' : 'video'}/${_selectedImage!.path.split('.').last}'),
+        ),
+        'fullName': _fullNameController.text,
+        'email': _emailController.text,
+        'password': _passwordController.text,
+        'role': _selectedRole,
+        'phoneNumber': _phoneNumberController.text,
+        'age': int.parse(_ageController.text),
+      });
 
-      dynamic response = await APIService.register(userData);
+      dynamic response = await APIService.register(formData);
 
       if (response == true) {
         showDialog(
@@ -131,8 +142,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
       });
     }
   }
-   
-          
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,8 +173,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 18),
-                    ProfilePicture(),
-                    
+                    ProfilePicture(onImageSelected: _handleImageSelected),
                     SizedBox(height: 18),
                     CustomTextField(
                       labelText: '  Full Name',
@@ -268,6 +277,5 @@ class _RegisterFamilyState extends State<RegisterFamily> {
         ],
       ),
     );
-
   }
 }
