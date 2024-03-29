@@ -1,15 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/Family/Registerfamily/registerfamily.dart';
 import 'package:vv/Family/ForgotPasswordfamily.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/local_auth_api.dart';
+import 'package:vv/utils/token_manage.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
 import 'package:vv/widgets/imagefingerandface.dart';
+// Import the TokenManager class
 
 class LoginPageAll extends StatefulWidget {
   @override
@@ -19,7 +20,6 @@ class LoginPageAll extends StatefulWidget {
 class _LoginPageAllState extends State<LoginPageAll> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
   final Dio _dio = Dio();
 
   String _errorMessage = '';
@@ -34,7 +34,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          final String? token = await _secureStorage.read(key: 'token');
+          final String? token = await TokenManager.getToken();
           if (token != null) {
             options.headers['Authorization'] = token;
           }
@@ -51,7 +51,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
   }
 
   Future<void> _checkTokenAndEnableBiometric() async {
-    final String? token = await _secureStorage.read(key: 'token');
+    final String? token = await TokenManager.getToken();
     if (token != null) {
       setState(() {
         _isBiometricEnabled = true;
@@ -70,7 +70,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
       );
 
       final token = response.data['token'];
-      await _secureStorage.write(key: 'token', value: token);
+      await TokenManager.setToken(token); // Store token using TokenManager
       print('Login successful! Token: $token');
       _handleLoginSuccess(token);
     } catch (error) {
@@ -91,6 +91,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
     if (_isBiometricEnabled) {
       _authenticateWithBiometric();
     }
+    _navigateBasedOnUserRole();
   }
 
   void _handleLoginFailure() {
@@ -123,14 +124,18 @@ class _LoginPageAllState extends State<LoginPageAll> {
   }
 
   Future<void> _navigateBasedOnUserRole() async {
-    final token = await _secureStorage.read(key: 'token');
-    Map<String, dynamic> decodedToken = JwtDecoder.decode(token!);
-    String userRole = decodedToken['roles'];
+    final token = await TokenManager.getToken();
+    if (token != null) {
+      if (token.isNotEmpty) {
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+        String userRole = decodedToken['roles'];
 
-    if (userRole == 'Family') {
-      _navigateToMainPageFamily();
-    } else if (userRole == 'Caregiver') {
-      _navigateToMainPageCaregiver();
+        if (userRole == 'Family') {
+          _navigateToMainPageFamily();
+        } else if (userRole == 'Caregiver') {
+          _navigateToMainPageCaregiver();
+        }
+      }
     }
   }
 
