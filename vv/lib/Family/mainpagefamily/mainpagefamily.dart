@@ -13,7 +13,7 @@ class mainpagefamily extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: Background(
         SingleChildScrollView: null,
-        child: buildStack(),
+        child: buildFamily(),
       ),
     );
   }
