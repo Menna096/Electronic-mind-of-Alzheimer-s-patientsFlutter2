@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
 import 'package:vv/page/level_select.dart';
 
@@ -63,10 +64,12 @@ class mainpagepatient extends StatelessWidget {
                     color: Color(0xFF595858),
                   ),
                 ),
-                // onTap: () {
-                //   Navigator.of(context).push(
-                //       MaterialPageRoute(builder: (context) => MyHomePage()));
-                // },
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPageAll()),
+                  );
+                },
               ),
             ],
           ),
@@ -86,27 +89,6 @@ class mainpagepatient extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            Positioned(
-              bottom: 450,
-              child: Container(
-                child: Image.asset(
-                  'images/welcome2.png',
-                  width: 355,
-                  height: 355,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 132,
-              left: 45,
-              child: Container(
-                child: Image.asset(
-                  'images/note.png',
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-            ),
             Positioned(
               top: 232,
               left: 45,
@@ -231,9 +213,3 @@ class mainpagepatient extends StatelessWidget {
     );
   }
 }
-
-// void main() {
-//   runApp(MaterialApp(
-//     home: mainpagepatient(),
-//   ));
-// }
