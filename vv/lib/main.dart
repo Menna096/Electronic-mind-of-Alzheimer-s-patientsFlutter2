@@ -3,16 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
-
-import 'package:vv/Family/LoginPageAll.dart';
+import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/Notes/cubits/notes_cubit/notes_cubit.dart';
 import 'package:vv/Notes/models/note_model.dart';
 import 'package:vv/Notes/simple_bloc_observer.dart';
-import 'package:vv/home/one.dart';
-import 'package:vv/page/home_page.dart';
-import 'package:vv/page/task_screens/adddtask.dart';
-import 'package:vv/page/task_screens/tasklist.dart';
+
+
 
 
 
@@ -35,7 +31,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => NotesCubit(),
       child:  MaterialApp(
-        home:  mainpagepatient(),
+        home:  mainpagefamily(),
         debugShowCheckedModeBanner: false,
       ),
     );

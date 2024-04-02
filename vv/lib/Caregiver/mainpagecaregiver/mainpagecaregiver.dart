@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
-import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
-import 'package:vv/page/level_select.dart';
-
 
 class mainpagecaregiver extends StatelessWidget {
   @override
@@ -47,6 +45,13 @@ class mainpagecaregiver extends StatelessWidget {
                     color: Color(0xFF595858),
                   ),
                 ),
+                onTap: () {
+                  // Navigate to the language page when Language is pressed
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Language()),
+                  );
+                },
               ),
               ListTile(
                 leading: Icon(Icons.logout_outlined),
@@ -58,9 +63,10 @@ class mainpagecaregiver extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => LoginPageAll()), // Navigate to loginpageall and remove all routes beneath it
-                    (Route<dynamic> route) => false, // Pop all routes except for the new one
+                  // Navigate to the login page when Log Out is pressed
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPageAll()),
                   );
                 },
               ),
@@ -68,7 +74,6 @@ class mainpagecaregiver extends StatelessWidget {
           ),
         ),
       ),
-      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -83,7 +88,7 @@ class mainpagecaregiver extends StatelessWidget {
         child: Stack(
           children: [
             Positioned(
-              top: 195,
+              top: 123,
               left: 45,
               child: Container(
                 child: Image.asset(
@@ -94,11 +99,11 @@ class mainpagecaregiver extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: 195,
+              top: 120,
               left: 230,
               child: Container(
                 child: Image.asset(
-                  'images/Medicines.png',
+                  'images/Medicinescare.png',
                   width: 110,
                   height: 110,
                 ),

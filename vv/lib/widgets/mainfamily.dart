@@ -44,7 +44,7 @@ Widget buildDrawer(BuildContext context) {
             'Language',
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => Languagefamily()));
+                  MaterialPageRoute(builder: (context) => Language()));
             },
           ),
           buildDrawerItem(
@@ -122,8 +122,7 @@ class _buildFamilyState extends State<buildFamily> {
                 children: [
                   CircleAvatar(
                     radius: 45.0,
-                    backgroundImage: NetworkImage(_photoUrl ??
-                        ''), // Placeholder image in case photo URL is not available
+                    backgroundImage: NetworkImage(_photoUrl ?? ''), 
                   ),
                   SizedBox(width: 16.0),
                   Column(
@@ -148,14 +147,53 @@ class _buildFamilyState extends State<buildFamily> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    width: 20,
-                  )
                 ],
               ),
             ),
           ),
         ),
+        Positioned(
+          top: 256,
+              left: 45,
+          child: Image.asset(
+            'images/picfam.png',
+            width: 110,
+            height: 110,
+          ),
+        ),
+         Positioned(
+              top: 255,
+              left: 214,
+              child: Container(
+                child: Image.asset(
+                  'images/patientprofile.png',
+                  width: 112,
+                  height: 112,
+                ),
+              ),
+            ),
+            Positioned(
+              top: 386,
+              left: 219,
+              child: Container(
+                child: Image.asset(
+                  'images/placefam.png',
+                  width: 109,
+                  height: 110,
+                ),
+              ),
+            ),
+             Positioned(
+              top: 385,
+              left: 46,
+              child: Container(
+                child: Image.asset(
+                  'images/appfam.png',
+                  width: 110,
+                  height: 110,
+                ),
+              ),
+            ),
       ],
     );
   }
