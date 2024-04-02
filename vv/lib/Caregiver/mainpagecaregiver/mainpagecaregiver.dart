@@ -27,16 +27,6 @@ class mainpagecaregiver extends StatelessWidget {
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.manage_accounts_rounded),
-                title: Text(
-                  'Manage Profile',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF595858),
-                  ),
-                ),
-              ),
-              ListTile(
                 leading: Icon(Icons.language),
                 title: Text(
                   'Language',

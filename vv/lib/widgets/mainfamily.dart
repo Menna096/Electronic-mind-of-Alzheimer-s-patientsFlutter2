@@ -23,14 +23,7 @@ Widget buildDrawer(BuildContext context) {
               ),
             ),
           ),
-          buildDrawerItem(
-            Icons.manage_accounts_rounded,
-            'Manage Profile',
-            // onTap: () {
-            //   Navigator.of(context).push(MaterialPageRoute(
-            //       builder: (context) => Manageprofilepatient()));
-            // },
-          ),
+          
           buildDrawerItem(
             Icons.person_add_alt_1_sharp,
             'Add Patient',
