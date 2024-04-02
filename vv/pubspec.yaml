@@ -126,6 +126,7 @@ flutter:
     - lib/page/task_screens/assets/icons/
     - lib/page/task_screens/assets/images/ 
     - lib/home/image/
+    - images/appoinmentcare.png
 
 
 
