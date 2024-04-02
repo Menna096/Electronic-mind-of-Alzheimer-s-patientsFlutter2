@@ -51,6 +51,7 @@ Widget buildDrawer(BuildContext context) {
             Icons.logout_outlined,
             'Log Out',
             onTap: () {
+              TokenManager.deleteToken();
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => LoginPageAll()));
             },
