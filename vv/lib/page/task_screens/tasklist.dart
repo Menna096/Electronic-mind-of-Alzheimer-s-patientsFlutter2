@@ -7,7 +7,6 @@ import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/task_widgets/dayselect.dart';
 import 'package:vv/widgets/task_widgets/yearmonth.dart';
 
-
 import '../../models/task.dart';
 
 class TaskListScreen extends StatefulWidget {
@@ -32,16 +31,17 @@ class _TaskListScreenState extends State<TaskListScreen> {
       body: Container(
         alignment: AlignmentDirectional.bottomCenter,
         decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-            Color(0xffFFFFFF),
-            Color(0xff3B5998),
-          ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+          gradient: LinearGradient(
+            colors: [Color(0xffFFFFFF), Color(0xff3B5998)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Material(
-              elevation: 2, // Adjust the elevation as needed
+              elevation: 2,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(39.0),
                 bottomRight: Radius.circular(39.0),
@@ -53,77 +53,64 @@ class _TaskListScreenState extends State<TaskListScreen> {
                   bottomRight: Radius.circular(39.0),
                 ),
                 child: Container(
-                  decoration: BoxDecoration(),
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: 40,
-                      ),
+                      SizedBox(height: 40),
                       Text(
-                        'Daily Tasks',
+                        'Medicines',
                         style: TextStyle(
                           fontSize: 30,
                         ),
                       ),
-                      backbutton(),
-                      SizedBox(
-                        height: 20,
-                      ),
+                      BackButtonWidget(),
+                      SizedBox(height: 20),
                       Row(
                         children: [
-                          SizedBox(
-                            width: 40,
-                          ),
+                          SizedBox(width: 40),
                           CurrentMonthYearWidget(),
-                          SizedBox(
-                            width: 40,
-                          ),
+                          SizedBox(width: 40),
                           ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          AddTaskScreen(onTaskAdded: addTask)),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      30), // Set circular border radius
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddTaskScreen(
+                                    onTaskAdded: addTask,
+                                  ),
                                 ),
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 16, horizontal: 30),
-                                // Increase vertical padding
-                                elevation: 4,
-                                backgroundColor:
-                                    pickedColor, // Add some elevation
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
                               ),
-                              child: Text('+Add Task'))
+                              padding: EdgeInsets.symmetric(
+                                vertical: 16,
+                                horizontal: 30,
+                              ),
+                              elevation: 4,
+                              backgroundColor: pickedColor,
+                            ),
+                            child: Text('+Add Medicine'),
+                          )
                         ],
                       ),
-                      SizedBox(
-                        height: 40,
-                      ),
+                      SizedBox(height: 40),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: DaySelector(),
                       ),
-                      SizedBox(
-                        height: 20,
-                      )
+                      SizedBox(height: 20),
                     ],
                   ),
                 ),
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
               child: Text(
-                'Tasks',
+                'Medicines',
                 style: TextStyle(
                   fontSize: 25,
                 ),
@@ -134,46 +121,51 @@ class _TaskListScreenState extends State<TaskListScreen> {
                 itemCount: tasks.length,
                 itemBuilder: (context, index) {
                   return Container(
-                      margin:
-                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(
-                            0.2), // Set white color with 50% opacity
-                        borderRadius:
-                            BorderRadius.circular(20.0), // Set circular edges
+                    margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: ListTile(
+                      leading: Image.asset(
+                        'lib/page/task_screens/assets/icon_small.png',
+                        width: 40,
+                        height: 40,
                       ),
-                      child: ListTile(
-                        leading: Image.asset(
-                          'assets/icons8-task-100.png', // Replace 'image_path.jpg' with your image asset path
-                          width: 40, // Set the width of the image
-                          height: 40, // Set the height of the image
+                      title: Text(
+                        tasks[index].name,
+                        style: TextStyle(
+                          decoration: tasks[index].completed
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
                         ),
-                        title: Text(tasks[index].name),
-                        subtitle: Text(
-                          '${DateTime.now().day}. ${DateFormat('MMM').format(DateTime.now())}. ${DateTime.now().year}',
-                        ),
-                        trailing: Checkbox(
-                          value: tasks[index].completed,
-                          onChanged: (value) {
-                            setState(() {
-                              tasks[index].completed = value!;
-                            });
-                          },
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => TaskDetailsScreen(
-                                task: tasks[index],
-                                onTaskUpdated: (editedTask) {
-                                  updateTask(tasks[index], editedTask);
-                                },
-                              ),
-                            ),
-                          );
+                      ),
+                      subtitle: Text(
+                        '${DateTime.now().day}. ${DateFormat('MMM').format(DateTime.now())}. ${DateTime.now().year}',
+                      ),
+                      trailing: Checkbox(
+                        value: tasks[index].completed,
+                        onChanged: (value) {
+                          setState(() {
+                            tasks[index].completed = value!;
+                          });
                         },
-                      ));
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TaskDetailsScreen(
+                              task: tasks[index],
+                              onTaskUpdated: (editedTask) {
+                                updateTask(tasks[index], editedTask);
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
                 },
               ),
             ),
@@ -189,3 +181,31 @@ class _TaskListScreenState extends State<TaskListScreen> {
     });
   }
 }
+
+class BackButtonWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      icon: Icon(Icons.arrow_back),
+    );
+  }
+}
+
+class CurrentMonthYearWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '${DateFormat('MMMM').format(DateTime.now())} ${DateTime.now().year}',
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+}
+
+
+

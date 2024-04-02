@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:vv/models/task.dart';
+import 'package:vv/page/task_screens/category_model.dart';
 import 'package:vv/widgets/task_widgets/Edit_timepicker.dart';
 import 'package:vv/widgets/task_widgets/appbarscreens.dart';
 
 
 class TaskDetailsScreen extends StatefulWidget {
+  List<CategoryModel> categories = CategoryModel.getCategories();
   final Task task;
   final Function(Task) onTaskUpdated;
 
@@ -20,10 +22,12 @@ class TaskDetailsScreen extends StatefulWidget {
 
 class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   late TextEditingController taskNameController;
+   late TextEditingController medicationTypeController;
   late TextEditingController startTimeController;
   late TextEditingController endTimeController;
   late TextEditingController descriptionController;
   bool _isEditing = false;
+   int _selectedCategoryIndex = -1;
 
   @override
   void initState() {
@@ -39,6 +43,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
 
   void _initializeControllers() {
     taskNameController = TextEditingController(text: widget.task.name);
+      medicationTypeController =
+        TextEditingController(text: widget.task.categories);
     startTimeController = TextEditingController(text: widget.task.startTime);
     endTimeController = TextEditingController(text: widget.task.endTime);
     descriptionController =
@@ -47,6 +53,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
 
   void _disposeControllers() {
     taskNameController.dispose();
+    medicationTypeController.dispose();
     startTimeController.dispose();
     endTimeController.dispose();
     descriptionController.dispose();
@@ -62,6 +69,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     if (_validateInputs()) {
       Task editedTask = Task(
         name: taskNameController.text,
+         categories: medicationTypeController.text,
         startTime: startTimeController.text,
         endTime: endTimeController.text,
         description: descriptionController.text,
@@ -81,7 +89,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar('Daily Task'),
+      appBar: buildAppBar('Medicines'),
       body: Container(
         alignment: AlignmentDirectional.bottomCenter,
         decoration: BoxDecoration(
@@ -115,7 +123,16 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
               child: TextField(
                 controller: taskNameController,
                 enabled: _isEditing,
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: InputDecoration(labelText: 'Medicine Name'),
+              ),
+            ),
+             SizedBox(height: 10),
+          Padding(
+           padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: medicationTypeController,
+                enabled: _isEditing,
+                decoration: InputDecoration(labelText: 'Categories'),
               ),
             ),
             SizedBox(height: 16.0),
@@ -156,7 +173,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         TextField(
                           controller: descriptionController,
                           enabled: _isEditing,
-                          decoration: InputDecoration(labelText: 'Description'),
+                          decoration: InputDecoration(labelText: 'Description (optional)'),
                           maxLines: null,
                         ),
                       ],

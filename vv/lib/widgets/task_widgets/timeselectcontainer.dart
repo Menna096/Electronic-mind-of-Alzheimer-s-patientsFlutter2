@@ -30,7 +30,7 @@ class TimeSelectionContainer extends StatelessWidget {
               Text(
                 label,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: Color.fromARGB(255, 2, 93, 184),
                   fontSize: 20.0,
                   fontWeight: FontWeight.w300,
                 ),
@@ -39,7 +39,7 @@ class TimeSelectionContainer extends StatelessWidget {
               Text(
                 time != null ? time!.format(context) : 'Select Time',
                 style: TextStyle(
-                  color: Colors.grey,
+                  color: Color.fromARGB(255, 113, 113, 113),
                   fontSize: 18.0,
                   fontWeight: FontWeight.w300,
                 ),
