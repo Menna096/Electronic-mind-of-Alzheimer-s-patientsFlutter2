@@ -121,6 +121,14 @@ flutter:
     - images/eng.png
     - images/icons8-task-100.png
     - images/noteees.jpg
+    - lib/page/task_screens/assets/
+    - lib/page/task_screens/assets/icon_small.png
+    - lib/page/task_screens/assets/icons/
+    - lib/page/task_screens/assets/images/ 
+    - lib/home/image/
+
+
+
 
 
    

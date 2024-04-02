@@ -8,8 +8,11 @@ import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Notes/cubits/notes_cubit/notes_cubit.dart';
 import 'package:vv/Notes/models/note_model.dart';
 import 'package:vv/Notes/simple_bloc_observer.dart';
-import 'package:vv/Patient/mainpagepatient/mainpagepatient.dart';
-import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
+import 'package:vv/home/one.dart';
+import 'package:vv/page/home_page.dart';
+import 'package:vv/page/task_screens/adddtask.dart';
+import 'package:vv/page/task_screens/tasklist.dart';
+
 
 
 
@@ -30,9 +33,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => NotesCubit(),
-      child: MaterialApp(
-        // home: mainpagepatient(),
-        home: LoginPageAll(),
+      child:  MaterialApp(
+        home:  Onboarding(showSignInScreen: () {  },),
         debugShowCheckedModeBanner: false,
       ),
     );
