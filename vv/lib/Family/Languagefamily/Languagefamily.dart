@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vv/widgets/language_button.dart';
 
-class Languagefamily extends StatelessWidget {
+class Language extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

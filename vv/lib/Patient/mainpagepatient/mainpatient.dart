@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
 import 'package:vv/page/level_select.dart';
 
-class mainpagepatient extends StatelessWidget {
+
+class mainpatient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,10 +38,6 @@ class mainpagepatient extends StatelessWidget {
                     color: Color(0xFF595858),
                   ),
                 ),
-                // onTap: () {
-                //   Navigator.of(context).push(MaterialPageRoute(
-                //       builder: (context) => Manageprofilepatient()));
-                // },
               ),
               ListTile(
                 leading: Icon(Icons.language),
@@ -50,10 +48,13 @@ class mainpagepatient extends StatelessWidget {
                     color: Color(0xFF595858),
                   ),
                 ),
-                // onTap: () {
-                //   Navigator.of(context).push(MaterialPageRoute(
-                //       builder: (context) => Languagepatient()));
-                // },
+                onTap: () {
+                  // Navigate to the language page when Language is pressed
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Language()),
+                  );
+                },
               ),
               ListTile(
                 leading: Icon(Icons.logout_outlined),
@@ -65,6 +66,7 @@ class mainpagepatient extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
+                  // Navigate to the login page when Log Out is pressed
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => LoginPageAll()),
@@ -75,7 +77,6 @@ class mainpagepatient extends StatelessWidget {
           ),
         ),
       ),
-      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -90,6 +91,25 @@ class mainpagepatient extends StatelessWidget {
         child: Stack(
           children: [
             Positioned(
+              top: 332,
+              left: 45,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Notes_View()),
+                  );
+                },
+                child: Container(
+                  child: Image.asset(
+                    'images/Notes.png',
+                    width: 110,
+                    height: 110,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
               top: 232,
               left: 45,
               child: Container(
@@ -100,23 +120,6 @@ class mainpagepatient extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(
-              top: 332,
-              left: 45,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => Notes_View()));
-                },
-                child: Container(
-                  child: Image.asset(
-                    'images/Notes.png',
-                    width: 110,
-                    height: 110,
-                  ),
-                ),
-              ),
-            ), // Corrected placement of closing bracket
             Positioned(
               top: 432,
               left: 45,
@@ -129,17 +132,17 @@ class mainpagepatient extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: 532,
+              top: 132,
               left: 45,
               child: Container(
                 child: Image.asset(
-                  'images/Appointments.png',
+                  'images/appoinmentpat.png',
                   width: 110,
                   height: 110,
                 ),
               ),
             ),
-            Positioned(
+             Positioned(
               top: 132,
               left: 230,
               child: Container(
@@ -183,9 +186,9 @@ class mainpagepatient extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(
+             Positioned(
               top: 532,
-              left: 230,
+              left: 135,
               child: GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
@@ -199,13 +202,6 @@ class mainpagepatient extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(),
-              ],
             ),
           ],
         ),
