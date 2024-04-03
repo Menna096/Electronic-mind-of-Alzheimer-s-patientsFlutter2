@@ -14,7 +14,7 @@ class DioService {
         onRequest: (options, handler) async {
           final String? token = await TokenManager.getToken();
           if (token != null) {
-            options.headers['Authorization'] = token;
+            options.headers['Authorization'] ='Bearer $token' ;
           }
           return handler.next(options);
         },

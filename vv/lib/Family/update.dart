@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/page/addpat.dart';
+import 'package:vv/page/manage_patient.dart';
 
 
 class update extends StatelessWidget {
@@ -17,8 +18,8 @@ class update extends StatelessWidget {
             );
           },
         ),
-        backgroundColor: Color.fromARGB(255, 100, 121, 165), // Set app bar color
-        elevation: 0, // Remove app bar shadow
+        backgroundColor: Color.fromARGB(255, 100, 121, 165),
+        elevation: 0,
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -47,10 +48,9 @@ class update extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 50), // Add space below the text
+            SizedBox(height: 50),
             ElevatedButton(
               onPressed: () {
-                // Navigate to Addpat page
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Addpat()),
@@ -71,10 +71,14 @@ class update extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20), // Add some space between buttons
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Implement action for second button
+                // Navigate to InputScreen page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => InputScreen()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Color(0xff3B5998),
