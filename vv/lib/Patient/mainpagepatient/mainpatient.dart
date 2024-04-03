@@ -3,7 +3,7 @@ import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
 import 'package:vv/page/level_select.dart';
-
+import 'package:vv/utils/token_manage.dart';
 
 class mainpatient extends StatelessWidget {
   @override
@@ -66,7 +66,7 @@ class mainpatient extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  // Navigate to the login page when Log Out is pressed
+                  TokenManager.deleteToken();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => LoginPageAll()),
@@ -142,7 +142,7 @@ class mainpatient extends StatelessWidget {
                 ),
               ),
             ),
-             Positioned(
+            Positioned(
               top: 132,
               left: 230,
               child: Container(
@@ -186,7 +186,7 @@ class mainpatient extends StatelessWidget {
                 ),
               ),
             ),
-             Positioned(
+            Positioned(
               top: 532,
               left: 135,
               child: GestureDetector(

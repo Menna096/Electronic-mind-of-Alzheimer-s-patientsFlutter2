@@ -4,6 +4,7 @@ import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/Family/Registerfamily/registerfamily.dart';
 import 'package:vv/Family/ForgotPasswordfamily.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
+import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/local_auth_api.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/token_manage.dart';
@@ -73,6 +74,11 @@ class _LoginPageAllState extends State<LoginPageAll> {
       _navigateToMainPageFamily();
     } else if (userRole == 'Caregiver') {
       _navigateToMainPageCaregiver();
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => mainpatient()),
+      );
     }
 
     if (_isBiometricEnabled) {
@@ -131,6 +137,11 @@ class _LoginPageAllState extends State<LoginPageAll> {
           _navigateToMainPageFamily();
         } else if (userRole == 'Caregiver') {
           _navigateToMainPageCaregiver();
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => mainpatient()),
+          );
         }
       }
     }
