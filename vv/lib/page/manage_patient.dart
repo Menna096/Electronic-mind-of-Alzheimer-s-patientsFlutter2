@@ -1,19 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
-
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: InputScreen(),
-    );
-  }
-}
 
 class InputScreen extends StatefulWidget {
   @override
@@ -39,6 +29,60 @@ class _InputScreenState extends State<InputScreen> {
         });
       }
     });
+  }
+
+  Future<void> updateUserProfile() async {
+    // Your API endpoint URL
+    String apiUrl = 'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/UpdatePatientProfile';
+
+    // Create Dio instance
+    Dio dio = Dio();
+
+    // Prepare the request body
+    Map<String, dynamic> requestBody = {
+      'phoneNumber': _phoneController.text,
+      'age': int.parse(_ageController.text),
+      'diagnosisDate': _selectedDate != null ? DateFormat('yyyy-MM-dd').format(_selectedDate!) : null,
+      'maximumDistance': _distanceController.text,
+    };
+
+    try {
+      // Make the API call
+      Response response = await dio.put(
+        apiUrl,
+        data: requestBody,
+        options: Options(
+          contentType: 'application/json; charset=UTF-8',
+        ),
+      );
+
+      // Check if the request was successful (status code 2xx)
+      if (response.statusCode == 200) {
+        // Successful update
+        print('User profile updated successfully');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('User profile updated successfully'),
+          ),
+        );
+      } else {
+        // Handle the error
+        print('Failed to update user profile. Status code: ${response.statusCode}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to update user profile. Status code: ${response.statusCode}'),
+          ),
+        );
+      }
+    } catch (error) {
+      // Handle any exceptions
+      print('An error occurred: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('An error occurred: $error'),
+        ),
+      );
+    }
   }
 
   @override
@@ -164,8 +208,9 @@ class _InputScreenState extends State<InputScreen> {
                     SizedBox(height: 60),
                     ElevatedButton(
                       child: Text('Update'),
-                      onPressed: () {
-                        // Submission logic can go here
+                      onPressed: () async {
+                        // Call the method to update user profile
+                        await updateUserProfile();
                       },
                     ),
                     SizedBox(
