@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
+import 'package:vv/Family/update.dart';
 import 'package:vv/utils/token_manage.dart';
 
 Widget buildDrawer(BuildContext context) {
@@ -27,10 +28,10 @@ Widget buildDrawer(BuildContext context) {
           buildDrawerItem(
             Icons.person_add_alt_1_sharp,
             'Add Patient',
-            // onTap: () {
-            //   Navigator.of(context).push(MaterialPageRoute(
-            //       builder: (context) => Manageprofilepatient()));
-            // },
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => update()));
+            },
           ),
           buildDrawerItem(
             Icons.language,
