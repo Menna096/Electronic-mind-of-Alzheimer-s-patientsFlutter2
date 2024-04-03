@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:vv/api/login_api.dart';
 
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
@@ -36,7 +37,7 @@ class _InputScreenState extends State<InputScreen> {
     String apiUrl = 'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/UpdatePatientProfile';
 
     // Create Dio instance
-    Dio dio = Dio();
+    Dio _dio = Dio();
 
     // Prepare the request body
     Map<String, dynamic> requestBody = {
@@ -48,7 +49,7 @@ class _InputScreenState extends State<InputScreen> {
 
     try {
       // Make the API call
-      Response response = await dio.put(
+      Response response = await DioService().dio.put(
         apiUrl,
         data: requestBody,
         options: Options(

@@ -18,8 +18,8 @@ class APIService {
 
   static Future<dynamic> Add(FormData formData) async {
     try {
-      _dio.options.headers['accept'] = '/';
-      _dio.options.headers['content-type'] = 'multipart/form-data';
+      DioService().dio.options.headers['accept'] = '/';
+     DioService().dio.options.headers['content-type'] = 'multipart/form-data';
       Response response = await DioService().dio.post(
         'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddPatient',
         data: formData,
