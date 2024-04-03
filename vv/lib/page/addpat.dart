@@ -2,19 +2,16 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
-import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
-import 'package:vv/models/register.dart'; // Import your Register model
+import 'package:vv/api/login_api.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/custom_Textfield.dart';
 import 'package:vv/widgets/pass_textField.dart';
-import 'package:vv/widgets/profile.dart';
-import 'package:vv/Family/Registerfamily/profile/widgets/choice_modal.dart';
+
 
 class APIService {
   static final Dio _dio = Dio();
@@ -23,7 +20,7 @@ class APIService {
     try {
       _dio.options.headers['accept'] = '/';
       _dio.options.headers['content-type'] = 'multipart/form-data';
-      Response response = await _dio.post(
+      Response response = await DioService().dio.post(
         'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddPatient',
         data: formData,
       );
@@ -237,9 +234,32 @@ class _AddpatState extends State<Addpat> {
                       controller: relationalityController,
                       suffixIcon: Icons.phone,
                     ),
+                     SizedBox(height: 30),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Diagnosis Date',
+                        labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        suffixIcon: Icon(Icons.calendar_today,
+                            size: 25, color: Color(0xFFD0D0D0)),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 12),
+                      ),
+                      controller: TextEditingController(
+                        text: selectedDate == null
+                            ? ''
+                            : DateFormat('yyyy-MM-dd').format(selectedDate!),
+                      ),
+                      readOnly: true,
+                      onTap: presentDatePicker,
+                    ),
                      SizedBox(height: 15),
                     CustomTextField(
-                      labelText: '  distance',
+                      labelText: '  Maximum Distance',
                       controller: distanceController,
                       suffixIcon: Icons.phone,
                     ),
