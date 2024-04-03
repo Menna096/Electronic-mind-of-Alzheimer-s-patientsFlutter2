@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
+import 'package:vv/page/addpat.dart';
+
 
 class update extends StatelessWidget {
   @override
@@ -48,7 +50,11 @@ class update extends StatelessWidget {
             SizedBox(height: 50), // Add space below the text
             ElevatedButton(
               onPressed: () {
-                // Implement action for first button
+                // Navigate to Addpat page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Addpat()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Color(0xff3B5998),
