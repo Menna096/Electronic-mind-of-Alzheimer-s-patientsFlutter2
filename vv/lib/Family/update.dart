@@ -3,7 +3,6 @@ import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/page/addpat.dart';
 import 'package:vv/page/manage_patient.dart';
 
-
 class update extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -77,7 +76,7 @@ class update extends StatelessWidget {
                 // Navigate to InputScreen page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => InputScreen()),
+                  MaterialPageRoute(builder: (context) => viewProfile()),
                 );
               },
               style: ElevatedButton.styleFrom(

@@ -6,16 +6,24 @@ import 'package:vv/api/login_api.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
 
-class InputScreen extends StatefulWidget {
+class viewProfile extends StatefulWidget {
   @override
-  _InputScreenState createState() => _InputScreenState();
+  _viewProfileState createState() => _viewProfileState();
 }
 
-class _InputScreenState extends State<InputScreen> {
+class _viewProfileState extends State<viewProfile> {
+  TextEditingController _fullNameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _relationalityController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _ageController = TextEditingController();
   TextEditingController _distanceController = TextEditingController();
   DateTime? _selectedDate;
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
 
   void _presentDatePicker() {
     showDatePicker(
@@ -32,30 +40,54 @@ class _InputScreenState extends State<InputScreen> {
     });
   }
 
+  Future<void> _fetchUserData() async {
+    try {
+      var response = await DioService().dio.get(
+          'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/GetPatientProfile');
+      if (response.statusCode == 200) {
+        setState(() {
+          _fullNameController.text = response.data['fullName'];
+          _emailController.text = response.data['email'];
+          _phoneController.text = response.data['phoneNumber'];
+          _ageController.text = response.data['age'].toString();
+          _relationalityController.text = response.data['relationality'];
+          _selectedDate =
+              DateFormat('dd/MM/yyyy').parse(response.data['diagnosisDate']);
+        });
+      } else {
+        print('Failed to fetch data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
+
   Future<void> updateUserProfile() async {
     // Your API endpoint URL
-    String apiUrl = 'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/UpdatePatientProfile';
+    String apiUrl =
+        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/UpdatePatientProfile';
 
     // Create Dio instance
-    Dio _dio = Dio();
 
     // Prepare the request body
     Map<String, dynamic> requestBody = {
       'phoneNumber': _phoneController.text,
       'age': int.parse(_ageController.text),
-      'diagnosisDate': _selectedDate != null ? DateFormat('yyyy-MM-dd').format(_selectedDate!) : null,
+      'diagnosisDate': _selectedDate != null
+          ? DateFormat('yyyy-MM-dd').format(_selectedDate!)
+          : null,
       'maximumDistance': _distanceController.text,
     };
 
     try {
       // Make the API call
       Response response = await DioService().dio.put(
-        apiUrl,
-        data: requestBody,
-        options: Options(
-          contentType: 'application/json; charset=UTF-8',
-        ),
-      );
+            apiUrl,
+            data: requestBody,
+            options: Options(
+              contentType: 'application/json; charset=UTF-8',
+            ),
+          );
 
       // Check if the request was successful (status code 2xx)
       if (response.statusCode == 200) {
@@ -68,10 +100,12 @@ class _InputScreenState extends State<InputScreen> {
         );
       } else {
         // Handle the error
-        print('Failed to update user profile. Status code: ${response.statusCode}');
+        print(
+            'Failed to update user profile. Status code: ${response.statusCode}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to update user profile. Status code: ${response.statusCode}'),
+            content: Text(
+                'Failed to update user profile. Status code: ${response.statusCode}'),
           ),
         );
       }
@@ -101,9 +135,9 @@ class _InputScreenState extends State<InputScreen> {
                       height: 40,
                     ),
                     backbutton(),
-                    SizedBox(
-                      height: 40,
-                    ),
+                    // SizedBox(
+                    //   height: 40,
+                    // ),
                     Text(
                       'Manage Patient',
                       style: TextStyle(fontSize: 30),
@@ -132,6 +166,43 @@ class _InputScreenState extends State<InputScreen> {
                     SizedBox(height: 15),
                     TextFormField(
                       decoration: InputDecoration(
+                        labelText: 'Full Name',
+                        labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        suffixIcon: Icon(Icons.account_circle,
+                            size: 25, color: Color(0xFFD0D0D0)),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 12),
+                      ),
+                      readOnly: true,
+                      controller: _fullNameController,
+                      keyboardType: TextInputType.phone,
+                    ),
+                    SizedBox(height: 15),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        suffixIcon: Icon(Icons.email,
+                            size: 25, color: Color(0xFFD0D0D0)),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 12),
+                      ),
+                      readOnly: true,
+                      controller: _emailController,
+                    ),
+                    SizedBox(height: 15),
+                    TextFormField(
+                      decoration: InputDecoration(
                         labelText: 'Phone Number',
                         labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
                         border: OutlineInputBorder(
@@ -147,7 +218,7 @@ class _InputScreenState extends State<InputScreen> {
                       controller: _phoneController,
                       keyboardType: TextInputType.phone,
                     ),
-                    SizedBox(height: 30),
+                    SizedBox(height: 15),
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Age',
@@ -165,7 +236,26 @@ class _InputScreenState extends State<InputScreen> {
                       controller: _ageController,
                       keyboardType: TextInputType.number,
                     ),
-                    SizedBox(height: 30),
+                    SizedBox(height: 15),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Relationality',
+                        labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        suffixIcon: Icon(Icons.person,
+                            size: 25, color: Color(0xFFD0D0D0)),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 12),
+                      ),
+                      readOnly: true,
+                      controller: _relationalityController,
+                      keyboardType: TextInputType.number,
+                    ),
+                    SizedBox(height: 15),
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Diagnosis Date',
@@ -188,7 +278,7 @@ class _InputScreenState extends State<InputScreen> {
                       readOnly: true,
                       onTap: _presentDatePicker,
                     ),
-                    SizedBox(height: 30),
+                    SizedBox(height: 15),
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Maximum Distance',
@@ -206,7 +296,7 @@ class _InputScreenState extends State<InputScreen> {
                       controller: _distanceController,
                       keyboardType: TextInputType.number,
                     ),
-                    SizedBox(height: 60),
+                    SizedBox(height: 30),
                     ElevatedButton(
                       child: Text('Update'),
                       onPressed: () async {
@@ -215,7 +305,7 @@ class _InputScreenState extends State<InputScreen> {
                       },
                     ),
                     SizedBox(
-                      height: 60,
+                      height: 30,
                     )
                   ],
                 ),
