@@ -4,7 +4,10 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/update.dart';
+import 'package:vv/page/manage_patient.dart';
+import 'package:vv/page/paitent_Id.dart';
 import 'package:vv/utils/token_manage.dart';
+import 'package:vv/widgets/add/get_code.dart';
 
 Widget buildDrawer(BuildContext context) {
   return Drawer(
@@ -24,21 +27,20 @@ Widget buildDrawer(BuildContext context) {
               ),
             ),
           ),
-          
           buildDrawerItem(
             Icons.person_add_alt_1_sharp,
             'Add Patient',
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => update()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => update()));
             },
           ),
           buildDrawerItem(
             Icons.language,
             'Language',
             onTap: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => Language()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Language()));
             },
           ),
           buildDrawerItem(
@@ -116,7 +118,7 @@ class _buildFamilyState extends State<buildFamily> {
                 children: [
                   CircleAvatar(
                     radius: 45.0,
-                    backgroundImage: NetworkImage(_photoUrl ?? ''), 
+                    backgroundImage: NetworkImage(_photoUrl ?? ''),
                   ),
                   SizedBox(width: 16.0),
                   Column(
@@ -148,46 +150,73 @@ class _buildFamilyState extends State<buildFamily> {
         ),
         Positioned(
           top: 256,
-              left: 45,
+          left: 45,
           child: Image.asset(
             'images/picfam.png',
             width: 110,
             height: 110,
           ),
         ),
-         Positioned(
-              top: 255,
-              left: 214,
-              child: Container(
-                child: Image.asset(
-                  'images/patientprofile.png',
-                  width: 112,
-                  height: 112,
-                ),
+        Positioned(
+          top: 255,
+          left: 214,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => viewProfile()),
+              );
+            },
+            child: Container(
+              child: Image.asset(
+                'images/patientprofile.png',
+                width: 112,
+                height: 112,
               ),
             ),
-            Positioned(
-              top: 386,
-              left: 219,
-              child: Container(
-                child: Image.asset(
-                  'images/placefam.png',
-                  width: 109,
-                  height: 110,
-                ),
+          ),
+        ),
+        Positioned(
+          top: 386,
+          left: 219,
+          child: Container(
+            child: Image.asset(
+              'images/placefam.png',
+              width: 109,
+              height: 110,
+            ),
+          ),
+        ),
+        Positioned(
+          top: 385,
+          left: 46,
+          child: Container(
+            child: Image.asset(
+              'images/appfam.png',
+              width: 110,
+              height: 110,
+            ),
+          ),
+        ),
+        Positioned(
+          top: 500,
+          left: 50,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => AddOrGetCode()),
+              );
+            },
+            child: Container(
+              child: Image.asset(
+                'images/appfam.png',
+                width: 110,
+                height: 110,
               ),
             ),
-             Positioned(
-              top: 385,
-              left: 46,
-              child: Container(
-                child: Image.asset(
-                  'images/appfam.png',
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-            ),
+          ),
+        ),
       ],
     );
   }
