@@ -86,13 +86,14 @@ class InputController {
   }
 
   NotificationDetails _androidNotificationDetails() {
-    const AndroidNotificationDetails androidNotificationDetails =
+     AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails('your channel id', 'your channel name',
             channelDescription: 'your channel description',
             importance: Importance.max,
             priority: Priority.high,
+            sound: RawResourceAndroidNotificationSound('wood.mp3'.split('.').first),
             ticker: 'ticker');
-    const NotificationDetails notificationDetails =
+     NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
     return notificationDetails;
   }
