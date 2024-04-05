@@ -55,7 +55,7 @@ post_install do |installer|
        'PERMISSION_EVENTS_FULL_ACCESS=0',
 
         ## dart: PermissionGroup.reminders
-        'PERMISSION_REMINDERS=0',
+        'PERMISSION_REMINDERS=1',
 
         ## dart: PermissionGroup.contacts
         'PERMISSION_CONTACTS=0',
@@ -70,13 +70,13 @@ post_install do |installer|
         'PERMISSION_SPEECH_RECOGNIZER=0',
 
         ## dart: PermissionGroup.photos
-        'PERMISSION_PHOTOS=0',
+        'PERMISSION_PHOTOS=1',
 
         ## dart: [PermissionGroup.location, PermissionGroup.locationAlways, PermissionGroup.locationWhenInUse]
         'PERMISSION_LOCATION=0',
 
         ## dart: PermissionGroup.notification
-        'PERMISSION_NOTIFICATIONS=0',
+        'PERMISSION_NOTIFICATIONS=1',
 
         ## dart: PermissionGroup.mediaLibrary
         'PERMISSION_MEDIA_LIBRARY=0',

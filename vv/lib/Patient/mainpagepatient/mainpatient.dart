@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
+import 'package:vv/daily_task/pages/home/home_page.dart';
 import 'package:vv/page/level_select.dart';
 import 'package:vv/utils/token_manage.dart';
+
 
 class mainpatient extends StatelessWidget {
   @override
@@ -132,6 +134,25 @@ class mainpatient extends StatelessWidget {
               ),
             ),
             Positioned(
+              top: 530,
+              left: 43,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => Home()),
+                  );
+                },
+                child: Container(
+                  child: Image.asset(
+                    'images/dailytasks.png',
+                    width: 115,
+                    height: 115,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
               top: 132,
               left: 45,
               child: Container(
@@ -188,7 +209,7 @@ class mainpatient extends StatelessWidget {
             ),
             Positioned(
               top: 532,
-              left: 135,
+              left: 233,
               child: GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
