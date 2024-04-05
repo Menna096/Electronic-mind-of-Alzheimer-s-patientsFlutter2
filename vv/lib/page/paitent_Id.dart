@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/login_api.dart';
+ 
 
 class AddPatientScreen extends StatefulWidget {
   @override
@@ -123,7 +125,10 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                   SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () {
-                      // Implement done button functionality
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => mainpagefamily()),
+                      );
                     },
                     child: Text('Done'),
                     style: ElevatedButton.styleFrom(

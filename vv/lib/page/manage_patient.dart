@@ -2,16 +2,16 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/api/login_api.dart';
-
 import 'package:vv/widgets/backbutton.dart';
+
 import 'package:vv/widgets/background.dart';
 
-class viewProfile extends StatefulWidget {
+class ViewProfile extends StatefulWidget {
   @override
-  _viewProfileState createState() => _viewProfileState();
+  _ViewProfileState createState() => _ViewProfileState();
 }
 
-class _viewProfileState extends State<viewProfile> {
+class _ViewProfileState extends State<ViewProfile> {
   TextEditingController _fullNameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _relationalityController = TextEditingController();
@@ -19,6 +19,7 @@ class _viewProfileState extends State<viewProfile> {
   TextEditingController _ageController = TextEditingController();
   TextEditingController _distanceController = TextEditingController();
   DateTime? _selectedDate;
+
   @override
   void initState() {
     super.initState();
@@ -63,13 +64,9 @@ class _viewProfileState extends State<viewProfile> {
   }
 
   Future<void> updateUserProfile() async {
-    // Your API endpoint URL
     String apiUrl =
         'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/UpdatePatientProfile';
 
-    // Create Dio instance
-
-    // Prepare the request body
     Map<String, dynamic> requestBody = {
       'phoneNumber': _phoneController.text,
       'age': int.parse(_ageController.text),
@@ -80,18 +77,15 @@ class _viewProfileState extends State<viewProfile> {
     };
 
     try {
-      // Make the API call
       Response response = await DioService().dio.put(
-            apiUrl,
-            data: requestBody,
-            options: Options(
-              contentType: 'application/json; charset=UTF-8',
-            ),
-          );
+        apiUrl,
+        data: requestBody,
+        options: Options(
+          contentType: 'application/json; charset=UTF-8',
+        ),
+      );
 
-      // Check if the request was successful (status code 2xx)
       if (response.statusCode == 200) {
-        // Successful update
         print('User profile updated successfully');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -99,7 +93,6 @@ class _viewProfileState extends State<viewProfile> {
           ),
         );
       } else {
-        // Handle the error
         print(
             'Failed to update user profile. Status code: ${response.statusCode}');
         ScaffoldMessenger.of(context).showSnackBar(
@@ -110,7 +103,6 @@ class _viewProfileState extends State<viewProfile> {
         );
       }
     } catch (error) {
-      // Handle any exceptions
       print('An error occurred: $error');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
