@@ -76,7 +76,7 @@ class update extends StatelessWidget {
                 // Navigate to InputScreen page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => viewProfile()),
+                  MaterialPageRoute(builder: (context) => ViewProfile()),
                 );
               },
               style: ElevatedButton.styleFrom(

@@ -159,19 +159,19 @@ class _buildFamilyState extends State<buildFamily> {
         ),
         Positioned(
           top: 255,
-          left: 214,
+          left: 217,
           child: GestureDetector(
             onTap: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => viewProfile()),
+                MaterialPageRoute(builder: (context) =>  AddOrGetCode()),
               );
             },
             child: Container(
               child: Image.asset(
-                'images/patientprofile.png',
-                width: 112,
-                height: 112,
+                'images/patcode.png',
+                width: 116,
+                height: 116,
               ),
             ),
           ),
@@ -195,25 +195,6 @@ class _buildFamilyState extends State<buildFamily> {
               'images/appfam.png',
               width: 110,
               height: 110,
-            ),
-          ),
-        ),
-        Positioned(
-          top: 500,
-          left: 50,
-          child: GestureDetector(
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => AddOrGetCode()),
-              );
-            },
-            child: Container(
-              child: Image.asset(
-                'images/appfam.png',
-                width: 110,
-                height: 110,
-              ),
             ),
           ),
         ),
