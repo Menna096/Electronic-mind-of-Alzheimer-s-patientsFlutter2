@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 
 import 'package:vv/api/login_api.dart';
+import 'package:vv/page/addpat.dart';
+import 'package:vv/widgets/backbutton.dart';
 
 class assignPatient extends StatefulWidget {
   @override
@@ -24,10 +27,24 @@ class _assignPatientState extends State<assignPatient> {
       if (response.statusCode == 200) {
         // Handle response
         print("Data sent successfully");
-        Navigator.of(context).pop(); // Close the screen on success
+        // Navigator.of(context).pop(); // Close the screen on success
+
+        // Show SnackBar on the previous screen (since the current one is popped)
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Patient assigned successfully"),
+            duration: Duration(seconds: 2),
+          ),
+        );
       } else {
         // Handle error
         print("Failed to send data");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Patient assign failed. Please try again"),
+            duration: Duration(seconds: 2),
+          ),
+        );
       }
     } catch (e) {
       print("Error sending data: $e");
@@ -68,12 +85,28 @@ class _assignPatientState extends State<assignPatient> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(
-                    'Add Patient Relation',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.close_rounded),
+                        tooltip: 'Exit',
+                        onPressed: () {
+                          // Navigate to the target screen when the button is pressed
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => mainpagefamily()),
+                          );
+                        },
+                      ),
+                      Text(
+                        'Assign Patient',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 24),
                   TextField(
@@ -94,7 +127,10 @@ class _assignPatientState extends State<assignPatient> {
                   SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: _submitPatientRelation,
-                    child: Text('Submit'),
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(color: Colors.white),
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       fixedSize: Size(150, 50),
@@ -103,6 +139,16 @@ class _assignPatientState extends State<assignPatient> {
                       ),
                     ),
                   ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Addpat()), // Ensure this is the correct class name for your Assign Patient Screen
+                        );
+                      },
+                      child: Text('create new patient account'))
                 ],
               ),
             ),

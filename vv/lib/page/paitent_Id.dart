@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/login_api.dart';
- 
+import 'package:vv/page/assign_patient.dart';
 
 class AddPatientScreen extends StatefulWidget {
   @override
@@ -10,7 +10,7 @@ class AddPatientScreen extends StatefulWidget {
 }
 
 class _AddPatientScreenState extends State<AddPatientScreen> {
-  String patientCode = 'Loading...'; // Initial text
+  String patientCode = 'Loading...';
 
   @override
   void initState() {
@@ -24,27 +24,45 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
           'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/GetPatientCode');
       if (response.statusCode == 200) {
         var responseData = response.data;
-        String code = responseData['code']; // Access the 'code' field
+        String code = responseData['code'];
         setState(() {
-          patientCode = code; // Update the patientCode with the fetched code
+          patientCode = code;
         });
       } else {
-        setState(() {
-          patientCode = 'You need to add Patient or assign him to you first';
-        });
+        _navigateToAssignPatientScreen(); // No patient code found, navigate directly
       }
     } catch (e) {
-      setState(() {
-        patientCode = 'You need to add Patient or assign him to you first';
-      });
+      _navigateToAssignPatientScreen(); // Error occurred, navigate directly
       print(e);
     }
   }
 
+  void _navigateToAssignPatientScreen() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  assignPatient()), // Ensure this is the correct class name for your Assign Patient Screen
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    // If patientCode is still 'Loading...', we show a loading indicator instead of immediately building the UI
+    if (patientCode == 'Loading...') {
+      return Scaffold(
+        backgroundColor: Colors.grey.shade300,
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    // Once patientCode is fetched, or if an error occurs (and is handled), the below UI is built
     return Scaffold(
-      backgroundColor: Colors.grey.shade300, // Light grey background
+      backgroundColor: Colors.grey.shade300,
       body: Center(
         child: Container(
           width: double.infinity,
@@ -59,7 +77,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
           child: Align(
             alignment: Alignment.center,
             child: Container(
-              width: 300, // Fixed width for the card
+              width: 300,
               padding: EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -86,17 +104,21 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                   TextField(
                     decoration: InputDecoration(
                       labelText: 'Patient ID',
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(8.0), // Rounded corners
+                        borderSide: BorderSide(
+                          color: Colors.black, // Default border color
+                          width: 1.0, // Default border width
+                        ),
+                      ),
                       contentPadding: EdgeInsets.symmetric(
-                          vertical: 20.0,
-                          horizontal: 10.0), // Adjust padding as needed
+                          vertical: 20.0, horizontal: 10.0),
                       suffixIcon: IconButton(
-                        icon: Icon(Icons.copy), // The copy icon
+                        icon: Icon(Icons.copy),
                         onPressed: () {
-                          // Copy the current text in the TextField to the clipboard
                           Clipboard.setData(ClipboardData(text: patientCode))
                               .then((_) {
-                            // Show a Snackbar or some other indication that the text has been copied
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content:
@@ -110,11 +132,9 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                     ),
                     readOnly: true,
                     controller: TextEditingController(text: patientCode),
-                    style:
-                        TextStyle(fontSize: 20), // Adjust font size as needed
-                    maxLines: null, // Allows for multiple lines
-                    keyboardType:
-                        TextInputType.multiline, // Allows for line breaks
+                    style: TextStyle(fontSize: 20),
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
                   ),
                   SizedBox(height: 24),
                   Text(
@@ -125,12 +145,17 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                   SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => mainpagefamily()),
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                mainpagefamily()), // Ensure this is the correct class name for your Main Page Family
                       );
                     },
-                    child: Text('Done'),
+                    child: Text(
+                      'Done',
+                      style: TextStyle(color: Colors.white),
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       fixedSize: Size(150, 50),
