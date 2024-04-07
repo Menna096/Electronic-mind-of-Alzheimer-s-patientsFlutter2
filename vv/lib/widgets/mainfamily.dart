@@ -164,7 +164,7 @@ class _buildFamilyState extends State<buildFamily> {
             onTap: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) =>  AddOrGetCode()),
+                MaterialPageRoute(builder: (context) => AddPatientScreen()),
               );
             },
             child: Container(
