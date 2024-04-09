@@ -269,17 +269,47 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       keyboardType: TextInputType.number,
                     ),
-                    SizedBox(height: 15),
-                    CustomTextField(
-                      labelText: "Longitude",
+                     SizedBox(height: 16),
+                    TextField(
                       controller: longitudeController,
-                      suffixIcon: Icons.gps_fixed,
+                      readOnly: true, // Set readOnly property to true
+                      decoration: InputDecoration(
+                        labelText: "longitude",
+                        labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
+                        suffixIcon: Icon(
+                          Icons.location_on,
+                          size: 25,
+                          color: Color(0xFFD0D0D0),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 12),
+                      ),
                     ),
-                    SizedBox(height: 15),
-                    CustomTextField(
-                      labelText: "Latitude",
+                     SizedBox(height: 16),
+                    TextField(
                       controller: latitudeController,
-                      suffixIcon: Icons.location_on,
+                      readOnly: true, // Set readOnly property to true
+                      decoration: InputDecoration(
+                        labelText: "Latitude",
+                        labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
+                        suffixIcon: Icon(
+                          Icons.location_on,
+                          size: 25,
+                          color: Color(0xFFD0D0D0),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 12),
+                      ),
                     ),
                     SizedBox(height: 40),
                     ElevatedButton(
