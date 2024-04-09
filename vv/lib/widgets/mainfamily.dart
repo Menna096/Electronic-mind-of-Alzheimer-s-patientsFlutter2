@@ -4,6 +4,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/update.dart';
+import 'package:vv/page/gallery_screen.dart';
 import 'package:vv/page/manage_patient.dart';
 import 'package:vv/page/paitent_Id.dart';
 import 'package:vv/utils/token_manage.dart';
@@ -151,10 +152,20 @@ class _buildFamilyState extends State<buildFamily> {
         Positioned(
           top: 256,
           left: 45,
-          child: Image.asset(
-            'images/picfam.png',
-            width: 110,
-            height: 110,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => GalleryScreen()),
+              );
+            },
+            child: Container(
+              child: Image.asset(
+                'images/picfam.png',
+                width: 110,
+                height: 110,
+              ),
+            ),
           ),
         ),
         Positioned(
