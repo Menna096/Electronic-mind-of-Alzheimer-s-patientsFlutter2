@@ -323,5 +323,3 @@ class _RegisterFamilyState extends State<RegisterFamily> {
     super.dispose();
   }
 }
-
-
