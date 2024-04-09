@@ -91,7 +91,7 @@ class InputController {
             channelDescription: 'your channel description',
             importance: Importance.max,
             priority: Priority.high,
-            sound: RawResourceAndroidNotificationSound('wood.mp3'.split('.').first),
+            sound: RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
             ticker: 'ticker');
      NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
