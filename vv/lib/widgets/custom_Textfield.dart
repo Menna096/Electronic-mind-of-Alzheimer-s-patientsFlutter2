@@ -8,9 +8,10 @@ class CustomTextField extends StatelessWidget {
   final String? errorText;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
+  
   bool? readOnly;
 
-   CustomTextField({
+  CustomTextField({
     Key? key,
     required this.labelText,
     required this.controller,
