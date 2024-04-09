@@ -2,17 +2,14 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
-import 'package:vv/models/register.dart'; // Import your Register model
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/custom_Textfield.dart';
 import 'package:vv/widgets/pass_textField.dart';
-import 'package:vv/widgets/profile.dart';
-import 'package:vv/Family/Registerfamily/profile/widgets/choice_modal.dart';
+import 'package:geolocator/geolocator.dart';
 
 class APIService {
   static final Dio _dio = Dio();
@@ -50,6 +47,30 @@ class _RegisterFamilyState extends State<RegisterFamily> {
       TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
+  TextEditingController longitudeController = TextEditingController();
+  TextEditingController latitudeController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getlocation();
+  }
+
+  void getlocation() async {
+    LocationPermission per = await Geolocator.checkPermission();
+    if (per == LocationPermission.denied ||
+        per == LocationPermission.deniedForever) {
+      print("permission denied");
+      LocationPermission per1 = await Geolocator.requestPermission();
+    } else {
+      Position currentLoc = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+      setState(() {
+        longitudeController.text = currentLoc.longitude.toString();
+        latitudeController.text = currentLoc.latitude.toString();
+      });
+    }
+  }
 
   String _selectedRole = '';
   bool _isLoading = false;
@@ -74,6 +95,8 @@ class _RegisterFamilyState extends State<RegisterFamily> {
           _phoneNumberController.text.isEmpty ||
           _ageController.text.isEmpty ||
           _selectedRole.isEmpty ||
+          longitudeController.text.isEmpty ||
+          latitudeController.text.isEmpty ||
           _selectedImage == null) {
         throw 'Please fill in all fields and select an image.';
       }
@@ -94,6 +117,8 @@ class _RegisterFamilyState extends State<RegisterFamily> {
         'role': _selectedRole,
         'phoneNumber': _phoneNumberController.text,
         'age': int.parse(_ageController.text),
+        'longitude': longitudeController.text,
+        'latitude': latitudeController.text,
       });
 
       dynamic response = await APIService.register(formData);
@@ -244,6 +269,18 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       keyboardType: TextInputType.number,
                     ),
+                    SizedBox(height: 15),
+                    CustomTextField(
+                      labelText: "Longitude",
+                      controller: longitudeController,
+                      suffixIcon: Icons.gps_fixed,
+                    ),
+                    SizedBox(height: 15),
+                    CustomTextField(
+                      labelText: "Latitude",
+                      controller: latitudeController,
+                      suffixIcon: Icons.location_on,
+                    ),
                     SizedBox(height: 40),
                     ElevatedButton(
                       onPressed: _isLoading ? null : _register,
@@ -278,4 +315,13 @@ class _RegisterFamilyState extends State<RegisterFamily> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    longitudeController.dispose();
+    latitudeController.dispose();
+    super.dispose();
+  }
 }
+
+

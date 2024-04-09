@@ -11,6 +11,10 @@
     <string>App needs access to photo lib for profile images</string>
 	<key>NSCameraUsageDescription</key>
     <string>To capture profile photo please grant camera access</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs access to location when open.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>This app needs access to location when in the background.</string>
 
 
 
@@ -58,6 +62,6 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSFaceIDUsageDescription</key>
-<string>Why is my app authenticating using face id?</string>
+    <string>Why is my app authenticating using face id?</string>
 </dict>
 </plist>
