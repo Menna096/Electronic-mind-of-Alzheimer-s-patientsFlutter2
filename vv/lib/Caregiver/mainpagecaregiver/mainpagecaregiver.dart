@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vv/Caregiver/mainpagecaregiver/caregiver_id.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 
@@ -96,6 +97,27 @@ class mainpagecaregiver extends StatelessWidget {
                   'images/Medicinescare.png',
                   width: 110,
                   height: 110,
+                ),
+              ),
+            ),
+            Positioned(
+              top: 300,
+              left: 115,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            caregiverCode()), // Ensure this is the correct class name for your Assign Patient Screen
+                  );
+                },
+                child: Container(
+                  child: Image.asset(
+                    'images/Medicinescare.png',
+                    width: 110,
+                    height: 110,
+                  ),
                 ),
               ),
             ),
