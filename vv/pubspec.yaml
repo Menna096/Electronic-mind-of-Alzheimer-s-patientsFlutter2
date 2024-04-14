@@ -75,6 +75,9 @@ dependencies:
   geolocator: ^11.0.0
   geocoding: ^3.0.0
   url_launcher: ^6.2.5
+  sizer: ^2.0.15
+  flare_flutter: ^3.0.2
+  shared_preferences: ^2.2.3
   
   
   
@@ -136,6 +139,7 @@ flutter:
     - lib/page/task_screens/assets/icons/
     - lib/page/task_screens/assets/images/ 
     - lib/home/image/
+    - lib/page/task_screens/assets/icons/tablet.gif
     - images/appoinmentcare.png
     - images/appoinmentpat.png
     - images/picfam.png
@@ -148,6 +152,7 @@ flutter:
     - images/wood.mp3
     - images/sound.m4a
     - images/vid.png
+   
 
 
 
