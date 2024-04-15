@@ -108,14 +108,14 @@ class _MyAppState extends State<MyApp> {
             ),
             //lets customize the timePicker theme
             timePickerTheme: TimePickerThemeData(
-              backgroundColor: kScaffoldColor,
-              hourMinuteColor: Color.fromARGB(255, 200, 200, 200), //////////////
+              backgroundColor: Color.fromARGB(255, 17, 18, 22),
+              hourMinuteColor: Color.fromARGB(255, 218, 218, 218), //////////////
               hourMinuteTextColor: Color.fromARGB(255, 126, 170, 218),
               dayPeriodColor: Color.fromARGB(255, 126, 170, 218), //////////////,
               dayPeriodTextColor: kScaffoldColor,
               dialBackgroundColor: Color.fromARGB(255, 126, 170, 218),
               dialHandColor: kPrimaryColor,
-              dialTextColor: kScaffoldColor,
+              dialTextColor: Color.fromARGB(255, 1, 1, 1),
               entryModeIconColor: kOtherColor,
               dayPeriodTextStyle: GoogleFonts.aBeeZee(
                 fontSize: 8.sp,

@@ -14,7 +14,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-         title: Text('Medication!',
+         title: Text('Medication',
           style: TextStyle(fontSize: 25),),
          
       ),
@@ -109,13 +109,18 @@ class BottomContainer extends StatelessWidget {
           return Container();
         } else if (snapshot.data!.isEmpty) {
           return Center(
+            
             child: Container(
+              alignment: Alignment.topCenter,
+  padding: EdgeInsets.only(top: 225),
               child: Text(
-                'No Medicine Yet!',
+                'No Medicine Yet👨‍⚕️',
                 style: Theme.of(context)
                     .textTheme
                     .headline3
-                    ?.copyWith(color: Colors.white), // Adjust text color
+                    ?.copyWith(color: Colors.white,
+                    fontFamily: 'ConcertOne',
+                    fontSize: 38), // Adjust text color
               ),
             ),
           );

@@ -8,7 +8,6 @@ import 'package:vv/Notes/models/note_model.dart';
 import 'package:vv/Notes/simple_bloc_observer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vv/daily_task/pages/home/bloc/home_bloc.dart';
-import 'package:vv/daily_task/pages/home/home_page.dart';
 import 'package:vv/daily_task/pages/input/bloc/input_bloc.dart';
 
 void main() async {
