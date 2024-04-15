@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vv/Caregiver/medical/constants.dart';
 import 'package:vv/Caregiver/medical/global_bloc.dart';
-import 'package:vv/Caregiver/medical/pages/new_entry/new_entry_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -110,11 +109,11 @@ class _MyAppState extends State<MyApp> {
             //lets customize the timePicker theme
             timePickerTheme: TimePickerThemeData(
               backgroundColor: kScaffoldColor,
-              hourMinuteColor: kTextColor,
-              hourMinuteTextColor: kScaffoldColor,
-              dayPeriodColor: kTextColor,
+              hourMinuteColor: Color.fromARGB(255, 200, 200, 200), //////////////
+              hourMinuteTextColor: Color.fromARGB(255, 126, 170, 218),
+              dayPeriodColor: Color.fromARGB(255, 126, 170, 218), //////////////,
               dayPeriodTextColor: kScaffoldColor,
-              dialBackgroundColor: kTextColor,
+              dialBackgroundColor: Color.fromARGB(255, 126, 170, 218),
               dialHandColor: kPrimaryColor,
               dialTextColor: kScaffoldColor,
               entryModeIconColor: kOtherColor,
