@@ -5,3 +5,10 @@ String convertTime(String minutes) {
     return minutes;
   }
 }
+String convertDate(String date) {
+  if (date.length == 1) {
+    return "0$date";
+  } else {
+    return date;
+  }
+}

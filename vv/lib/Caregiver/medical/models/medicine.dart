@@ -5,6 +5,7 @@ class Medicine {
   final String? medicineType;
   final int? interval;
   final String? startTime;
+  final DateTime? endTime;
 
   Medicine(
       {this.notificationIDs,
@@ -12,6 +13,7 @@ class Medicine {
       this.dosage,
       this.medicineType,
       this.startTime,
+      this.endTime,
       this.interval});
 
   //geters
@@ -20,6 +22,7 @@ class Medicine {
   String get getType => medicineType!;
   int get getInterval => interval!;
   String get getStartTime => startTime!;
+  DateTime get getEndTime => endTime!;
   List<dynamic> get getIDs => notificationIDs!;
 
   Map<String, dynamic> toJson() {
@@ -30,6 +33,7 @@ class Medicine {
       'type': medicineType,
       'interval': interval,
       'start': startTime,
+      'end': endTime,
     };
   }
 
@@ -41,6 +45,7 @@ class Medicine {
       medicineType: parsedJson['type'],
       interval: parsedJson['interval'],
       startTime: parsedJson['start'],
+      endTime: parsedJson['end'],
     );
   }
 }
