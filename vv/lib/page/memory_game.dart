@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/game_time_manage.dart';
 import 'package:vv/widgets/animation.dart';
 import 'package:vv/widgets/background.dart';
@@ -53,7 +55,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
     symbolsVisible = true; // Initially set to true to show symbols
     initializeGame();
     _timerManager = TimerManager(
-      initialSeconds: 30,
+      initialSeconds: 10,
       onTick: _updateTimer,
       onTimerFinish: gameOver,
     );
@@ -80,7 +82,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
     startTime = DateTime.now();
     final pairsCount = level * 6;
     cards = _generateCards(pairsCount);
-    timerSeconds = 30; // Set timer to 30 seconds
+    timerSeconds = 10;
     score = 0;
     maxLevel = 3;
     processing = false;
@@ -145,7 +147,35 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
     });
   }
 
+  Future<void> postScoreUsingDio() async {
+    FormData formData = FormData.fromMap({
+      'gameScoreName':
+          'Memory Card Game', // Fixed string value for the game name
+      'patientScore': score.toString(),
+      'difficultyGame': level.toString(),
+      'maxScore': score.toString(),
+    });
+    try {
+      var response = await DioService().dio.post(
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/AddGameScore', // Replace with your actual server URL
+            data: formData,
+          );
+
+      if (response.statusCode == 200) {
+        // If the server returns an OK response, handle data or notify user
+        print("Score posted successfully: ${response.data}");
+      } else {
+        // Handle errors
+        print("Failed to post score: ${response.statusCode}");
+      }
+    } catch (e) {
+      // Error handling if sending the request failed
+      print("Error posting score: $e");
+    }
+  }
+
   void gameOver() {
+    postScoreUsingDio();
     if (matchedIndices.length != cards.length) {
       showDialog(
         context: context,
@@ -184,7 +214,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
   void showCelebrationAnimation() {
     Duration timeTaken = DateTime.now().difference(startTime);
     String timeTakenString =
-        '${timeTaken.inMinutes} minutes ${timeTaken.inSeconds.remainder(30)} seconds';
+        '${timeTaken.inMinutes} minutes ${timeTaken.inSeconds.remainder(10)} seconds';
 
     showDialog(
       context: context,

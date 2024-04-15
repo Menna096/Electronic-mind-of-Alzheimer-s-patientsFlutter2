@@ -1,7 +1,7 @@
+import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/local_auth_api.dart';
 import 'package:vv/page/home_page.dart';
 import 'package:flutter/material.dart';
-
 
 class FingerprintPage extends StatelessWidget {
   @override
@@ -22,13 +22,12 @@ class FingerprintPage extends StatelessWidget {
 
   Widget buildAuthenticate(BuildContext context) => buildButton(
         text: 'Authenticate',
-        
         onClicked: () async {
           final isAuthenticated = await LocalAuthApi.authenticate();
 
           if (isAuthenticated) {
             Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => mainpagepatient()),
+              MaterialPageRoute(builder: (context) => mainpatient()),
             );
           }
         },
