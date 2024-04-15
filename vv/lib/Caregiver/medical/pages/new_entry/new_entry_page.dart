@@ -171,7 +171,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                     height: 8.h,
                     child: TextButton(
                       style: TextButton.styleFrom(
-                        backgroundColor: kPrimaryColor,
+                        backgroundColor: Color.fromARGB(255, 20, 191, 80),
                         shape: const StadiumBorder(),
                       ),
                       child: Center(
@@ -179,7 +179,10 @@ class _NewEntryPageState extends State<NewEntryPage> {
                           'Confirm',
                           style:
                               Theme.of(context).textTheme.subtitle2!.copyWith(
-                                    color: kScaffoldColor,
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                     fontFamily: ' ConcertOne',
+                                     fontWeight: FontWeight.bold,
                                   ),
                         ),
                       ),
