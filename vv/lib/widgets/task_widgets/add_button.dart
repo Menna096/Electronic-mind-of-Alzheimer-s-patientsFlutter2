@@ -20,8 +20,12 @@ class AddTaskButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 60),
         elevation: 4,
         backgroundColor: backgroundColor,
+        textStyle: TextStyle(color: Colors.white),
       ),
-      child: Text(buttonText),
+      child: Text(
+        buttonText,
+        style: TextStyle(color: Colors.white),
+      ),
     );
   }
 }

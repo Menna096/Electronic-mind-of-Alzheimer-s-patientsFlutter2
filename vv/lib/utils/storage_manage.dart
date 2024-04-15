@@ -10,4 +10,12 @@ class SecureStorageManager {
   Future<String?> getPatientId() async {
     return await _storage.read(key: 'patientId');
   }
+
+  Future<void> setPatientname(String patientId) async {
+    await _storage.write(key: 'patientName', value: patientId);
+  }
+
+  Future<String?> getPatientname() async {
+    return await _storage.read(key: 'patientName');
+  }
 }

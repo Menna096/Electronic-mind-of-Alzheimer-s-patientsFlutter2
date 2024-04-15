@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/storage_manage.dart';
+import 'package:vv/widgets/background.dart';
 
 class ReportListScreen extends StatefulWidget {
   @override
@@ -64,31 +66,44 @@ class _ReportListScreenState extends State<ReportListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Patient Reports'),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        mainpagecaregiver()), // Ensure this is the correct class name for your Assign Patient Screen
+              );
+            },
+            icon: Icon(Icons.arrow_back)),
         centerTitle: true,
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: reports.length,
-              itemBuilder: (context, index) {
-                final report = reports[index];
-                return Card(
-                  margin: EdgeInsets.all(10),
-                  child: ListTile(
-                    title: Text(report['reportContent'],
-                        style: TextStyle(fontSize: 18)),
-                    subtitle: Text(
-                        'From: ${report['fromDate']} To: ${report['toDate']}'),
-                    leading: Icon(Icons.report,
-                        color: Theme.of(context).primaryColor),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red),
-                      onPressed: () => _deleteReport(report[
-                          'reportId']), // Call delete method with reportId
+          : Background(
+              SingleChildScrollView: null,
+              child: ListView.builder(
+                itemCount: reports.length,
+                itemBuilder: (context, index) {
+                  final report = reports[index];
+                  return Card(
+                    margin: EdgeInsets.all(10),
+                    child: ListTile(
+                      title: Text(report['reportContent'],
+                          style: TextStyle(fontSize: 18)),
+                      subtitle: Text(
+                          'From: ${report['fromDate']} To: ${report['toDate']}'),
+                      leading: Icon(Icons.edit,
+                          color: Theme.of(context).primaryColor),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: () => _deleteReport(report[
+                            'reportId']), // Call delete method with reportId
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
     );
   }

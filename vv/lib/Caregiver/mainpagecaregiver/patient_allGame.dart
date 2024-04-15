@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart'; // Loading indicators
+import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/patient_list.dart';
 import 'package:vv/api/login_api.dart'; // Assuming Dio is set up here
 import 'package:vv/utils/storage_manage.dart'; // Secure storage for patient ID
@@ -53,7 +54,7 @@ class _PatientAllGameState extends State<PatientAllGame> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      PatientListScreen()), // Ensure this is the correct class name for your Assign Patient Screen
+                      mainpagecaregiver()), // Ensure this is the correct class name for your Assign Patient Screen
             );
           },
         ),

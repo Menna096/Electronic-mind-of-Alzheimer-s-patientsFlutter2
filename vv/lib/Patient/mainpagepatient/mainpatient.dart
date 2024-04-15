@@ -4,6 +4,7 @@ import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
 import 'package:vv/Patient/mainpagepatient/patient_media.dart';
+import 'package:vv/Patient/mainpagepatient/patient_prof.dart';
 import 'package:vv/daily_task/pages/home/home_page.dart';
 import 'package:vv/page/level_select.dart';
 import 'package:vv/utils/token_manage.dart';
@@ -66,6 +67,14 @@ class _mainpatientState extends State<mainpatient> {
                     color: Color(0xFF595858),
                   ),
                 ),
+                onTap: () {
+                  // Navigate to the language page when Language is pressed
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PatientProfManage()),
+                  );
+                },
               ),
               ListTile(
                 leading: Icon(Icons.language),

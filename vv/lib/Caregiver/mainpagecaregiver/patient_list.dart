@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:vv/Caregiver/mainpagecaregiver/caregiver_id.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/patient_allGame.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
@@ -121,6 +122,23 @@ class _PatientListScreenState extends State<PatientListScreen> {
                   );
                 },
               ),
+              ListTile(
+                leading: Icon(Icons.code),
+                title: Text(
+                  'Your Code',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Color(0xFF595858),
+                  ),
+                ),
+                onTap: () {
+                  // Navigate to the login page when Log Out is pressed
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => caregiverCode()),
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -208,6 +226,8 @@ class _PatientListScreenState extends State<PatientListScreen> {
                             ),
                           ),
                           onTap: () async {
+                            await storageManager
+                                .setPatientname(patient.patientName);
                             await storageManager
                                 .setPatientId(patient.patientId);
                             Navigator.pushReplacement(
