@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vv/Caregiver/medical/constants.dart';
 import 'package:vv/Caregiver/medical/global_bloc.dart';
 import 'package:vv/Caregiver/medical/models/medicine.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-
 
 class MedicineDetails extends StatefulWidget {
   const MedicineDetails(this.medicine, {Key? key}) : super(key: key);
@@ -23,44 +21,45 @@ class _MedicineDetailsState extends State<MedicineDetails> {
       appBar: AppBar(
         title: const Text('Details'),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(2.h),
-        child: Column(
-          children: [
-            MainSection(medicine: widget.medicine),
-            ExtendedSection(medicine: widget.medicine),
-            Spacer(),
-            SizedBox(
-              width: 100.w,
-              height: 7.h,
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: kSecondaryColor,
-                  shape: const StadiumBorder(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(2.h),
+          child: Column(
+            children: [
+              if (widget.medicine != null) ...[
+                MainSection(medicine: widget.medicine),
+                ExtendedSection(medicine: widget.medicine),
+                SizedBox(
+                  width: 100.w,
+                  height: 7.h,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: kSecondaryColor,
+                      shape: const StadiumBorder(),
+                    ),
+                    onPressed: () {
+                      openAlertBox(context, _globalBloc);
+                    },
+                    child: Text(
+                      'Delete',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1!
+                          .copyWith(color: kScaffoldColor),
+                    ),
+                  ),
                 ),
-                onPressed: () {
-                  //open alert dialog box,+global bloc, later
-                  //cool its working
-                  openAlertBox(context, _globalBloc);
-                },
-                child: Text(
-                  'Delete',
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle1!
-                      .copyWith(color: kScaffoldColor),
+                SizedBox(
+                  height: 2.h,
                 ),
-              ),
-            ),
-            SizedBox(
-              height: 2.h,
-            ),
-          ],
+              ] else
+                Text('No medicine data available'),
+            ],
+          ),
         ),
       ),
     );
   }
-  //lets delete a medicine from memory
 
   openAlertBox(BuildContext context, GlobalBloc _globalBloc) {
     return showDialog(
@@ -92,7 +91,6 @@ class _MedicineDetailsState extends State<MedicineDetails> {
             ),
             TextButton(
               onPressed: () {
-                //global block to delete medicine,later
                 _globalBloc.removeMedicine(widget.medicine);
                 Navigator.popUntil(context, ModalRoute.withName('/'));
               },
@@ -112,45 +110,45 @@ class _MedicineDetailsState extends State<MedicineDetails> {
 }
 
 class MainSection extends StatelessWidget {
-  const MainSection({Key? key, this.medicine}) : super(key: key);
+  const MainSection({Key? key, required this.medicine}) : super(key: key);
   final Medicine? medicine;
+
   Hero makeIcon(double size) {
-    if (medicine!.medicineType == 'Bottle') {
-      return Hero(
-        tag: medicine!.medicineName! + medicine!.medicineType!,
-        child: Image.asset(
-          'lib/page/task_screens/assets/icons/liquid.gif',
-          height: 14.h,
-        ),
-      );
-    } else if (medicine!.medicineType == 'Pill') {
-      return Hero(
-        tag: medicine!.medicineName! + medicine!.medicineType!,
-        child: Image.asset(
-          'lib/page/task_screens/assets/icons/pills.gif',
-          
-          height: 14.h,
-        ),
-      );
-    } else if (medicine!.medicineType == 'Syringe') {
-      return Hero(
-        tag: medicine!.medicineName! + medicine!.medicineType!,
-        child: Image.asset(
-          'lib/page/task_screens/assets/icons/syringe.gif',
-          
-          height: 14.h,
-        ),
-      );
-    } else if (medicine!.medicineType == 'Tablet') {
-      return Hero(
-        tag: medicine!.medicineName! + medicine!.medicineType!,
-        child: Image.asset(
-          'lib/page/task_screens/assets/icons/tablet.gif',
-          height: 14.h,
-        ),
-      );
+    if (medicine != null && medicine!.medicineType != null) {
+      if (medicine!.medicineType == 'Bottle') {
+        return Hero(
+          tag: medicine!.medicineName! + medicine!.medicineType!,
+          child: Image.asset(
+            'lib/page/task_screens/assets/icons/liquid.gif',
+            height: 14.h,
+          ),
+        );
+      } else if (medicine!.medicineType == 'Pill') {
+        return Hero(
+          tag: medicine!.medicineName! + medicine!.medicineType!,
+          child: Image.asset(
+            'lib/page/task_screens/assets/icons/pills.gif',
+            height: 14.h,
+          ),
+        );
+      } else if (medicine!.medicineType == 'Syringe') {
+        return Hero(
+          tag: medicine!.medicineName! + medicine!.medicineType!,
+          child: Image.asset(
+            'lib/page/task_screens/assets/icons/syringe.gif',
+            height: 14.h,
+          ),
+        );
+      } else if (medicine!.medicineType == 'Tablet') {
+        return Hero(
+          tag: medicine!.medicineName! + medicine!.medicineType!,
+          child: Image.asset(
+            'lib/page/task_screens/assets/icons/tablet.gif',
+            height: 14.h,
+          ),
+        );
+      }
     }
-    //in case of no medicine type icon selection
     return Hero(
       tag: medicine!.medicineName! + medicine!.medicineType!,
       child: Icon(
@@ -166,28 +164,29 @@ class MainSection extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        //lets try another one
-        //okz same here, the same problem, later i will solve that
         makeIcon(7.h),
         SizedBox(
           width: 2.w,
         ),
         Column(
           children: [
-            Hero(
-              tag: medicine!.medicineName!,
-              child: Material(
-                color: Colors.transparent,
-                child: MainInfoTab(
+            if (medicine != null && medicine!.medicineName != null)
+              Hero(
+                tag: medicine!.medicineName!,
+                child: Material(
+                  color: Colors.transparent,
+                  child: MainInfoTab(
                     fieldTitle: 'Medicine Name',
-                    fieldInfo: medicine!.medicineName!),
+                    fieldInfo: medicine!.medicineName!,
+                  ),
+                ),
               ),
-            ),
             MainInfoTab(
-                fieldTitle: 'Dosage',
-                fieldInfo: medicine!.dosage == 0
-                    ? 'Not Specified'
-                    : "${medicine!.dosage} mg"),
+              fieldTitle: 'Dosage',
+              fieldInfo: medicine != null && medicine!.dosage != null
+                  ? (medicine!.dosage == 0 ? 'Not Specified' : "${medicine!.dosage} mg")
+                  : 'Dosage not available',
+            ),
           ],
         )
       ],
@@ -229,7 +228,7 @@ class MainInfoTab extends StatelessWidget {
 }
 
 class ExtendedSection extends StatelessWidget {
-  const ExtendedSection({Key? key, this.medicine}) : super(key: key);
+  const ExtendedSection({Key? key, required this.medicine}) : super(key: key);
   final Medicine? medicine;
   @override
   Widget build(BuildContext context) {
@@ -238,20 +237,29 @@ class ExtendedSection extends StatelessWidget {
       children: [
         ExtendedInfoTab(
           fieldTitle: 'Medicine Type ',
-          fieldInfo: medicine!.medicineType! == 'None'
-              ? 'Not Specified'
-              : medicine!.medicineType!,
+          fieldInfo: medicine != null && medicine!.medicineType != null
+              ? (medicine!.medicineType == 'None' ? 'Not Specified' : medicine!.medicineType!)
+              : 'Medicine type not available',
         ),
         ExtendedInfoTab(
           fieldTitle: 'Dose Interval',
-          fieldInfo:
-              'Every ${medicine!.interval} hours   | ${medicine!.interval == 24 ? "One time a day" : "${(24 / medicine!.interval!).floor()} times a day"}',
+          fieldInfo: medicine != null && medicine!.interval != null
+              ? ('Every ${medicine!.interval} hours   | ${medicine!.interval == 24 ? "One time a day" : "${(24 / medicine!.interval!).floor()} times a day"}')
+              : 'Dose interval not available',
         ),
         ExtendedInfoTab(
           fieldTitle: 'Start Time',
-          fieldInfo:
-              '${medicine!.startTime![0]}${medicine!.startTime![1]}:${medicine!.startTime![2]}${medicine!.startTime![3]}',
+          fieldInfo: medicine != null && medicine!.startTime != null
+              ? ('${medicine!.startTime![0]}${medicine!.startTime![1]}:${medicine!.startTime![2]}${medicine!.startTime![3]}')
+              : 'Start time not available',
         ),
+       ExtendedInfoTab(
+  fieldTitle: 'End Date',
+  fieldInfo: medicine != null && medicine!.endTime != null
+      ? '${medicine!.endTime!.year}-${medicine!.endTime!.month}-${medicine!.endTime!.day}'
+      : 'End date not available',
+),
+
       ],
     );
   }
@@ -291,3 +299,4 @@ class ExtendedInfoTab extends StatelessWidget {
     );
   }
 }
+

@@ -13,6 +13,9 @@ class NewEntryBloc {
   BehaviorSubject<String>? _selectedTimeOfDay$;
   BehaviorSubject<String>? get selectedTimeOfDay$ => _selectedTimeOfDay$;
 
+  BehaviorSubject<DateTime>? _selectedDate$;
+  BehaviorSubject<DateTime>? get selectedDate$ => _selectedDate$;
+
   //error state
   BehaviorSubject<EntryError>? _errorState$;
   BehaviorSubject<EntryError>? get errorState$ => _errorState$;
@@ -22,6 +25,7 @@ class NewEntryBloc {
         BehaviorSubject<MedicineType>.seeded(MedicineType.None);
 
     _selectedTimeOfDay$ = BehaviorSubject<String>.seeded('none');
+    _selectedDate$ = BehaviorSubject<DateTime>.seeded(DateTime.now());
     _selectedInterval$ = BehaviorSubject<int>.seeded(0);
     _errorState$ = BehaviorSubject<EntryError>();
   }
@@ -29,6 +33,7 @@ class NewEntryBloc {
   void dispose() {
     _selectedMedicineType$!.close();
     _selectedTimeOfDay$!.close();
+    _selectedDate$!.close();
     _selectedInterval$!.close();
   }
 
@@ -43,6 +48,10 @@ class NewEntryBloc {
   void updateTime(String time) {
     _selectedTimeOfDay$!.add(time);
   }
+ void updateDate(DateTime date) {
+  _selectedDate$!.add(date);
+ }
+
 
   void updateSelectedMedicine(MedicineType type) {
     MedicineType _tempType = _selectedMedicineType$!.value;
