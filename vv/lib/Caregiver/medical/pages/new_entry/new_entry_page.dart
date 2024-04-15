@@ -100,7 +100,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                 SizedBox(
                   height: 1.h,
                 ),
-                const PanelTitle(title: 'Medicine Type', isRequired: false),
+                const PanelTitle(title: 'Medicine Type', isRequired: true),
                 Padding(
                   padding: EdgeInsets.only(top: 1.h),
                   child: StreamBuilder<MedicineType>(
@@ -155,7 +155,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                 const PanelTitle(title: 'Ending Day', isRequired: true),
                 const SelectDate(),
                 Text(
-                  "---------------------------------------------------------------------------------------",
+                  "_______________________________________________________",
                   style: TextStyle(color: Color(0xff3B5998)),
                 ),
                 SizedBox(
@@ -596,7 +596,7 @@ class MedicineTypeColumn extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3.h),
-                color: isSelected ? kOtherColor : Colors.white),
+                color: isSelected ? Color.fromARGB(255, 166, 169, 174) : Colors.white),
             child: Center(
               child: Padding(
                 padding: EdgeInsets.only(
@@ -616,7 +616,7 @@ class MedicineTypeColumn extends StatelessWidget {
               width: 20.w,
               height: 4.h,
               decoration: BoxDecoration(
-                color: isSelected ? kOtherColor : Colors.white,
+                color: isSelected ? Colors.green : Colors.white,
                 borderRadius: BorderRadius.circular(1.h),
               ),
               alignment: Alignment.center,
@@ -655,12 +655,6 @@ class PanelTitle extends StatelessWidget {
                   color: kTextColor,
                 ),
           ),
-          Text(
-            isRequired ? "*" : "",
-            style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                  color: kTextColor,
-                ),
-          )
         ],
       ),
     );

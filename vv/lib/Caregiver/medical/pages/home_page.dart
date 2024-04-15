@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vv/Caregiver/medical/constants.dart';
 import 'package:vv/Caregiver/medical/global_bloc.dart';
 import 'package:vv/Caregiver/medical/models/medicine.dart';
@@ -14,20 +13,33 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: EdgeInsets.all(2.h),
-        child: Column(
-          children: [
-            const TopContainer(),
-            SizedBox(
-              height: 2.h,
-            ),
-            //the widget take space as per need
-            const Flexible(
-              child: BottomContainer(),
-            ),
-          ],
+      appBar: AppBar(
+         title: Text('Medication!',
+          style: TextStyle(fontSize: 25),),
+         
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xffFFFFFF), Color(0xff3B5998)],
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(2.h),
+          child: Column(
+            children: [
+              const TopContainer(),
+              SizedBox(
+                height: 2.h,
+              ),
+              //the widget take space as per need
+              const Flexible(
+                child: BottomContainer(),
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: InkResponse(
@@ -49,9 +61,9 @@ class HomePage extends StatelessWidget {
               borderRadius: BorderRadius.circular(3.h),
             ),
             child: Icon(
-              Icons.add_outlined,
+              Icons.medication,
               color: kScaffoldColor,
-              size: 50.sp,
+              size: 30.sp,
             ),
           ),
         ),
@@ -65,7 +77,6 @@ class TopContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -74,28 +85,10 @@ class TopContainer extends StatelessWidget {
           padding: EdgeInsets.only(
             bottom: 1.h,
           ),
-          child: Text(
-            'Medicine.',
-            textAlign: TextAlign.start,
-            style: Theme.of(context).textTheme.headline4,
-          ),
         ),
         SizedBox(
           height: 2.h,
         ),
-        //lets show number of saved medicines from shared preferences
-        StreamBuilder<List<Medicine>>(
-            stream: globalBloc.medicineList$,
-            builder: (context, snapshot) {
-              return Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.only(bottom: 1.h),
-                child: Text(
-                  !snapshot.hasData ? '0' : snapshot.data!.length.toString(),
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-              );
-            }),
       ],
     );
   }
@@ -106,7 +99,7 @@ class BottomContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
+    final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
 
     return StreamBuilder(
       stream: globalBloc.medicineList$,
@@ -116,9 +109,14 @@ class BottomContainer extends StatelessWidget {
           return Container();
         } else if (snapshot.data!.isEmpty) {
           return Center(
-            child: Text(
-              'No Medicine',
-              style: Theme.of(context).textTheme.headline3,
+            child: Container(
+              child: Text(
+                'No Medicine Yet!',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline3
+                    ?.copyWith(color: Colors.white), // Adjust text color
+              ),
             ),
           );
         } else {
@@ -141,20 +139,13 @@ class BottomContainer extends StatelessWidget {
 class MedicineCard extends StatelessWidget {
   const MedicineCard({Key? key, required this.medicine}) : super(key: key);
   final Medicine medicine;
-  //for getting the current details of the saved items
 
-  //first we need to get the medicine type icon
-  //lets make a function
-
-  Hero makeIcon(double size) {
-    //here is the bug, the capital word of the first letter
-    //lets fix
+  Widget makeIcon(double size) {
     if (medicine.medicineType == 'Bottle') {
       return Hero(
         tag: medicine.medicineName! + medicine.medicineType!,
         child: Image.asset(
           'lib/page/task_screens/assets/icons/liquid.gif',
-          
           height: 13.5.h,
         ),
       );
@@ -163,8 +154,7 @@ class MedicineCard extends StatelessWidget {
         tag: medicine.medicineName! + medicine.medicineType!,
         child: Image.asset(
           'lib/page/task_screens/assets/icons/pills.gif',
-          
-          height:13.5.h,
+          height: 13.5.h,
         ),
       );
     } else if (medicine.medicineType == 'Syringe') {
@@ -172,8 +162,7 @@ class MedicineCard extends StatelessWidget {
         tag: medicine.medicineName! + medicine.medicineType!,
         child: Image.asset(
           'lib/page/task_screens/assets/icons/syringe.gif',
-         
-          height:13.5.h,
+          height: 13.5.h,
         ),
       );
     } else if (medicine.medicineType == 'Tablet') {
@@ -181,12 +170,10 @@ class MedicineCard extends StatelessWidget {
         tag: medicine.medicineName! + medicine.medicineType!,
         child: Image.asset(
           'lib/page/task_screens/assets/icons/tablet.gif',
-          
           height: 13.5.h,
         ),
       );
     }
-    //in case of no medicine type icon selection
     return Hero(
       tag: medicine.medicineName! + medicine.medicineType!,
       child: Icon(
@@ -203,8 +190,6 @@ class MedicineCard extends StatelessWidget {
       highlightColor: Colors.white,
       splashColor: Colors.grey,
       onTap: () {
-        //go to details activity with animation, later
-
         Navigator.of(context).push(
           PageRouteBuilder<void>(
             pageBuilder: (BuildContext context, Animation<double> animation,
@@ -235,11 +220,8 @@ class MedicineCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(),
-            //call the function here icon type
-            //later we will the icon issue
             makeIcon(7.h),
             const Spacer(),
-            //hero tag animation, later
             Hero(
               tag: medicine.medicineName!,
               child: Text(
@@ -252,7 +234,6 @@ class MedicineCard extends StatelessWidget {
             SizedBox(
               height: 0.3.h,
             ),
-            //time interval data with condition, later
             Text(
               medicine.interval == 1
                   ? "Every ${medicine.interval} hour"
