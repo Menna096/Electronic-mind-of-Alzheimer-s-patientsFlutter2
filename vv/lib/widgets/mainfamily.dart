@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
+import 'package:vv/Family/appoint_list.dart';
 import 'package:vv/Family/update.dart';
 import 'package:vv/page/assignPatCare.dart';
 import 'package:vv/page/gallery_screen.dart';
@@ -202,11 +203,19 @@ class _buildFamilyState extends State<buildFamily> {
         Positioned(
           top: 385,
           left: 46,
-          child: Container(
-            child: Image.asset(
-              'images/appfam.png',
-              width: 110,
-              height: 110,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => AppointListScreen()),
+              );
+            },
+            child: Container(
+              child: Image.asset(
+                'images/appfam.png',
+                width: 110,
+                height: 110,
+              ),
             ),
           ),
         ),

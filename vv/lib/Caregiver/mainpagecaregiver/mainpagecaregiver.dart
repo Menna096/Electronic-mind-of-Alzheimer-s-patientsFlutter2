@@ -6,6 +6,7 @@ import 'package:vv/Caregiver/mainpagecaregiver/patient_list.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/report_list.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
+import 'package:vv/utils/storage_manage.dart';
 
 class mainpagecaregiver extends StatefulWidget {
   @override
@@ -13,6 +14,13 @@ class mainpagecaregiver extends StatefulWidget {
 }
 
 class _mainpagecaregiverState extends State<mainpagecaregiver> {
+  String? _patientname;
+  @override
+  void initState() {
+    super.initState();
+    _getname();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,7 +124,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                       bottomRight: Radius.circular(50.0),
                     ),
                   ),
-                  child: Text('Patient Name:'),
+                  child: Text('Patient Name:$_patientname'),
                 ),
               ),
             ),
@@ -223,5 +231,10 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
           builder: (context) =>
               ReportListScreen()), // Ensure this is the correct class name for your Assign Patient Screen
     );
+  }
+
+  Future<void> _getname() async {
+    String? patientname = await SecureStorageManager().getPatientname();
+    _patientname = patientname;
   }
 }

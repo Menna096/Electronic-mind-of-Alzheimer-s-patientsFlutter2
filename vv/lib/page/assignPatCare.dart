@@ -97,10 +97,13 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
                             );
                           },
                         ),
+                        SizedBox(
+                          width: 20,
+                        ),
                         Text(
-                          'Assign Patient',
+                          'Assign Patient \n To Caregiver',
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
