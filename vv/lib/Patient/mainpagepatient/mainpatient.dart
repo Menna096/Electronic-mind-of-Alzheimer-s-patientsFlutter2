@@ -1,13 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
+import 'package:vv/Patient/mainpagepatient/patient_media.dart';
 import 'package:vv/daily_task/pages/home/home_page.dart';
 import 'package:vv/page/level_select.dart';
 import 'package:vv/utils/token_manage.dart';
 
+class mainpatient extends StatefulWidget {
+  @override
+  State<mainpatient> createState() => _mainpatientState();
+}
 
-class mainpatient extends StatelessWidget {
+class _mainpatientState extends State<mainpatient> {
+  String? _token;
+  String? _photoUrl;
+  String? _userName;
+  @override
+  void initState() {
+    super.initState();
+    _getDataFromToken();
+  }
+
+  Future<void> _getDataFromToken() async {
+    _token = await TokenManager.getToken();
+    if (_token != null) {
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(_token!);
+      setState(() {
+        _photoUrl = decodedToken['UserAvatar'];
+        _userName = decodedToken['FullName'];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,6 +118,52 @@ class mainpatient extends StatelessWidget {
         ),
         child: Stack(
           children: [
+            Positioned(
+              bottom: 570,
+              child: Center(
+                child: Container(
+                  padding: EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(50, 33, 149, 243),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(50.0),
+                      bottomRight: Radius.circular(50.0),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 45.0,
+                        backgroundImage: NetworkImage(_photoUrl ?? ''),
+                      ),
+                      SizedBox(width: 16.0),
+                      Column(
+                        children: [
+                          Text(
+                            'Welcome $_userName !',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            'To the Electronic mind',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            'of Alzheimer patient',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             Positioned(
               top: 332,
               left: 45,
@@ -199,11 +271,20 @@ class mainpatient extends StatelessWidget {
             Positioned(
               top: 432,
               left: 230,
-              child: Container(
-                child: Image.asset(
-                  'images/Pictures.png',
-                  width: 110,
-                  height: 110,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => GalleryScreenPatient()),
+                  );
+                },
+                child: Container(
+                  child: Image.asset(
+                    'images/Pictures.png',
+                    width: 110,
+                    height: 110,
+                  ),
                 ),
               ),
             ),
