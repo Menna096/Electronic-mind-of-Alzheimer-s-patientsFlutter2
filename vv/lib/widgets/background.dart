@@ -8,16 +8,17 @@ class Background extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff3B5998),
+      backgroundColor: const Color(0xff3B5998),
       resizeToAvoidBottomInset: false,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
               Color(0xffFFFFFF),
-              Color(0xff3B5998),
+              // ignore: unnecessary_const
+              const Color(0xff3B5998),
             ],
           ),
         ),

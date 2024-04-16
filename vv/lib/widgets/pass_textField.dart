@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 
 
@@ -6,7 +7,7 @@ class PasswordTextField extends StatefulWidget {
   final TextEditingController controller;
   final String? errorText;
 
-   PasswordTextField({
+   const PasswordTextField({
     Key? key,
     required this.labelText,
      required this.controller,
@@ -14,6 +15,7 @@ class PasswordTextField extends StatefulWidget {
   }) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _PasswordTextFieldState createState() => _PasswordTextFieldState();
 }
 
@@ -56,14 +58,14 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
           child: Icon(
             _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
             size: 25,
-            color: Color(0xFFD0D0D0),
+            color: const Color(0xFFD0D0D0),
           ),
         ),
         filled: true,
         fillColor: Colors.white,
-        labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
+        labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
         errorText: widget.errorText ?? _validatePassword(widget.controller.text),
-        contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
+        contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
       ),
       onChanged: (_) {
         setState(() {}); // Trigger revalidation on text change

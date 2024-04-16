@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ImageWidget extends StatelessWidget {
-   const ImageWidget({required this.height,required this.width});
+   const ImageWidget({super.key, required this.height,required this.width});
 
   final double height;
   final double width;
@@ -13,7 +13,7 @@ class ImageWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 0.5),
+          margin: const EdgeInsets.only(top: 0.5),
           child: Image.asset(
             'images/setpass.png', 
             width: width,

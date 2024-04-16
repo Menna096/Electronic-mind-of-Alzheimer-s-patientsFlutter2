@@ -5,6 +5,7 @@ class DaySelector extends StatefulWidget {
   const DaySelector({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _DaySelectorState createState() => _DaySelectorState();
 }
 
@@ -45,7 +46,7 @@ class _DaySelectorState extends State<DaySelector> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: _selectedDay == day
-                            ? Color.fromARGB(85, 33, 149, 243)
+                            ? const Color.fromARGB(85, 33, 149, 243)
                             : Colors.transparent,
                       ),
                       child: Column(
@@ -53,13 +54,13 @@ class _DaySelectorState extends State<DaySelector> {
                         children: [
                           Text(
                             dayName,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                             ),
                           ),
                           Text(
                             day.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.grey,
                               fontWeight: FontWeight.bold,
                             ),
@@ -68,7 +69,7 @@ class _DaySelectorState extends State<DaySelector> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   )
                 ],

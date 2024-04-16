@@ -56,11 +56,13 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
             textTheme: TextTheme(
+              // ignore: deprecated_member_use
               headline3: TextStyle(
                 fontSize: 28.sp,
                 color: kSecondaryColor,
                 fontWeight: FontWeight.w500,
               ),
+              // ignore: deprecated_member_use
               headline4: TextStyle(
                 fontSize: 24.sp,
                 fontWeight: FontWeight.w800,
@@ -77,10 +79,13 @@ class _MyAppState extends State<MyApp> {
                 fontWeight: FontWeight.w600,
                 letterSpacing: 1.0,
               ),
+              // ignore: deprecated_member_use
               subtitle1:
                   GoogleFonts.poppins(fontSize: 15.sp, color: kPrimaryColor),
+              // ignore: deprecated_member_use
               subtitle2:
                   GoogleFonts.poppins(fontSize: 12.sp, color: kTextLightColor),
+              // ignore: deprecated_member_use
               caption: GoogleFonts.poppins(
                 fontSize: 9.sp,
                 fontWeight: FontWeight.w400,
@@ -108,14 +113,14 @@ class _MyAppState extends State<MyApp> {
             ),
             //lets customize the timePicker theme
             timePickerTheme: TimePickerThemeData(
-              backgroundColor: Color.fromARGB(255, 17, 18, 22),
-              hourMinuteColor: Color.fromARGB(255, 218, 218, 218), //////////////
-              hourMinuteTextColor: Color.fromARGB(255, 126, 170, 218),
-              dayPeriodColor: Color.fromARGB(255, 126, 170, 218), //////////////,
+              backgroundColor: const Color.fromARGB(255, 17, 18, 22),
+              hourMinuteColor: const Color.fromARGB(255, 218, 218, 218), //////////////
+              hourMinuteTextColor: const Color.fromARGB(255, 126, 170, 218),
+              dayPeriodColor: const Color.fromARGB(255, 126, 170, 218), //////////////,
               dayPeriodTextColor: kScaffoldColor,
-              dialBackgroundColor: Color.fromARGB(255, 126, 170, 218),
+              dialBackgroundColor: const Color.fromARGB(255, 126, 170, 218),
               dialHandColor: kPrimaryColor,
-              dialTextColor: Color.fromARGB(255, 1, 1, 1),
+              dialTextColor: const Color.fromARGB(255, 1, 1, 1),
               entryModeIconColor: kOtherColor,
               dayPeriodTextStyle: GoogleFonts.aBeeZee(
                 fontSize: 8.sp,

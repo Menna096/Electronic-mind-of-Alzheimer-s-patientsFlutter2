@@ -31,7 +31,7 @@ class _assignPatientState extends State<assignPatient> {
 
         // Show SnackBar on the previous screen (since the current one is popped)
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text("Patient assigned successfully"),
             duration: Duration(seconds: 2),
           ),
@@ -40,7 +40,7 @@ class _assignPatientState extends State<assignPatient> {
         // Handle error
         print("Failed to send data");
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text("Patient assign failed. Please try again"),
             duration: Duration(seconds: 2),
           ),
@@ -70,12 +70,12 @@ class _assignPatientState extends State<assignPatient> {
             alignment: Alignment.center,
             child: Container(
               width: 300, // Fixed width for the card
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12.0),
                 boxShadow: [
-                  BoxShadow(
+                  const BoxShadow(
                     color: Colors.black26,
                     blurRadius: 8.0,
                     offset: Offset(0, 2),
@@ -88,7 +88,7 @@ class _assignPatientState extends State<assignPatient> {
                   Row(
                     children: [
                       IconButton(
-                        icon: Icon(Icons.close_rounded),
+                        icon: const Icon(Icons.close_rounded),
                         tooltip: 'Exit',
                         onPressed: () {
                           // Navigate to the target screen when the button is pressed
@@ -99,7 +99,7 @@ class _assignPatientState extends State<assignPatient> {
                           );
                         },
                       ),
-                      Text(
+                      const Text(
                         'Assign Patient',
                         style: TextStyle(
                           fontSize: 24,
@@ -108,32 +108,32 @@ class _assignPatientState extends State<assignPatient> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   TextField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Patient Code',
                       border: OutlineInputBorder(),
                     ),
                     controller: _patientCodeController,
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   TextField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Relation',
                       border: OutlineInputBorder(),
                     ),
                     controller: _relationController,
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: _submitPatientRelation,
-                    child: Text(
+                    child: const Text(
                       'Submit',
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
-                      fixedSize: Size(150, 50),
+                      fixedSize: const Size(150, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -148,7 +148,7 @@ class _assignPatientState extends State<assignPatient> {
                                   Addpat()), // Ensure this is the correct class name for your Assign Patient Screen
                         );
                       },
-                      child: Text('create new patient account'))
+                      child: const Text('create new patient account'))
                 ],
               ),
             ),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:vv/api/login_api.dart'; // Ensure this is correctly implemented
 import 'package:vv/models/family_data.dart'; // Ensure this is correctly implemented
 
+// ignore: use_key_in_widget_constructors
 class UnusualFamilyList extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _UnusualFamilyListState createState() => _UnusualFamilyListState();
 }
 
@@ -18,7 +18,7 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
   void initState() {
     super.initState();
     _controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _familyMembers = _fetchFamilyMembers();
     _controller.forward();
   }
@@ -39,7 +39,7 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Family Members"),
+        title: const Text("Family Members"),
         actions: <Widget>[
           IconButton(
             icon: AnimatedIcon(
@@ -80,13 +80,13 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(member.hisImageUrl),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios),
+                    trailing: const Icon(Icons.arrow_forward_ios),
                   ),
                 );
               },
             );
           } else {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
         },
       ),

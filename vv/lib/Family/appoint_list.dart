@@ -15,7 +15,7 @@ class AppointListScreen extends StatefulWidget {
 class _AppointListScreenState extends State<AppointListScreen> {
   List<Appointment> Appoints = [];
   Appointment? selectedAppoint;
-  Color pickedColor = Color(0xFF0386D0);
+  Color pickedColor = const Color(0xFF0386D0);
   void updateAppoint(Appointment oldAppoint, Appointment newAppoint) {
     setState(() {
       final index = Appoints.indexOf(oldAppoint);
@@ -28,7 +28,7 @@ class _AppointListScreenState extends State<AppointListScreen> {
     return Scaffold(
       body: Container(
         alignment: AlignmentDirectional.bottomCenter,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(colors: [
             Color(0xffFFFFFF),
             Color(0xff3B5998),
@@ -39,24 +39,24 @@ class _AppointListScreenState extends State<AppointListScreen> {
           children: [
             Material(
               elevation: 2, // Adjust the elevation as needed
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(39.0),
-                bottomRight: Radius.circular(39.0),
+                bottomRight: const Radius.circular(39.0),
               ),
-              color: Color.fromRGBO(255, 255, 255, 0.708),
+              color: const Color.fromRGBO(255, 255, 255, 0.708),
               child: ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(39.0),
                   bottomRight: Radius.circular(39.0),
                 ),
                 child: Container(
-                  decoration: BoxDecoration(),
+                  decoration: const BoxDecoration(),
                   child: Column(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 40,
                       ),
-                      Center(
+                      const Center(
                         child: Text(
                           'Appointments',
                           style: TextStyle(
@@ -64,17 +64,17 @@ class _AppointListScreenState extends State<AppointListScreen> {
                           ),
                         ),
                       ),
-                      backbutton(),
-                      SizedBox(
+                      const backbutton(),
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             width: 40,
                           ),
-                          CurrentMonthYearWidget(),
-                          SizedBox(
+                          const CurrentMonthYearWidget(),
+                          const SizedBox(
                             width: 40,
                           ),
                           ElevatedButton(
@@ -92,14 +92,14 @@ class _AppointListScreenState extends State<AppointListScreen> {
                                   borderRadius: BorderRadius.circular(
                                       30), // Set circular border radius
                                 ),
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     vertical: 16, horizontal: 30),
                                 // Increase vertical padding
                                 elevation: 4,
                                 backgroundColor:
                                     pickedColor, // Add some elevation
                               ),
-                              child: Column(
+                              child: const Column(
                                 children: [
                                   Text(
                                     'Add ',
@@ -111,14 +111,14 @@ class _AppointListScreenState extends State<AppointListScreen> {
                               ))
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 40,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
                         child: DaySelector(),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       )
                     ],
@@ -126,11 +126,11 @@ class _AppointListScreenState extends State<AppointListScreen> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0),
+            const Padding(
+              padding: EdgeInsets.only(left: 20.0),
               child: Text(
                 'Appointments',
                 style: TextStyle(
@@ -144,16 +144,16 @@ class _AppointListScreenState extends State<AppointListScreen> {
                 itemBuilder: (context, index) {
                   return Container(
                       margin:
-                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                          const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(168, 255, 255, 255).withOpacity(
+                        color: const Color.fromARGB(168, 255, 255, 255).withOpacity(
                             0.2), // Set white color with 50% opacity
                         borderRadius:
                             BorderRadius.circular(20.0), // Set circular edges
                       ),
                       child: ListTile(
                         //
-                        leading: Icon(
+                        leading: const Icon(
                           Icons.calendar_today_rounded,
                           color: Colors.white,
                         ),
@@ -163,7 +163,7 @@ class _AppointListScreenState extends State<AppointListScreen> {
                         ),
                         trailing: IconButton(
                           onPressed: () {},
-                          icon: Icon(Icons.delete),
+                          icon: const Icon(Icons.delete),
                           color: const Color.fromARGB(255, 63, 63, 63),
                         ),
                         onTap: () {

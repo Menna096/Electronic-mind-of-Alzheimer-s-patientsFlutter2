@@ -41,7 +41,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Game History"),
+        title: const Text("Game History"),
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
@@ -49,11 +49,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
         SingleChildScrollView: null,
         child: Center(
           child: isLoading
-              ? SpinKitFadingCircle(
+              ? const SpinKitFadingCircle(
                   color: Colors.blueAccent,
                   size: 50.0) // Improved loading indicator
               : gameHistories.isEmpty
-                  ? Text(
+                  ? const Text(
                       "No history available.",
                       style: TextStyle(fontSize: 18.0, color: Colors.black54),
                     )
@@ -68,8 +68,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               vertical: 8, horizontal: 10),
                           child: ListTile(
                             leading:
-                                Icon(Icons.gamepad, color: Colors.blueAccent),
-                            title: Text('Game Score',
+                                const Icon(Icons.gamepad, color: Colors.blueAccent),
+                            title: const Text('Game Score',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             subtitle: Text(
                                 'Difficulty: ${item['difficultyGame']}, Score: ${item['patientScore']}'),

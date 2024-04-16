@@ -4,7 +4,6 @@ import 'package:vv/Patient/mainpagepatient/fullscreenMedia.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/login_api.dart'; // Ensure this import has the necessary DioService setup
 import 'package:vv/models/media_patient.dart';
-import 'package:vv/page/full_screen_viewer.dart';
 import 'package:vv/widgets/background.dart';
 import 'package:vv/models/media_item.dart'; // Importing the modified MediaItem model
 

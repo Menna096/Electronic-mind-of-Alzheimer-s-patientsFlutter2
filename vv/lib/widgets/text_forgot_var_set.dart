@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 
 
+// ignore: camel_case_types
 class ForgetPass_var_setpass_Text extends StatelessWidget {
    final String text;
 
-  const ForgetPass_var_setpass_Text({required this.text});
+  const ForgetPass_var_setpass_Text({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
+    // ignore: avoid_unnecessary_containers
     return Container(
       child: Column(
         children: [
-          SizedBox(height: 150),
+          const SizedBox(height: 150),
           Padding(
-            padding:  EdgeInsets.only(right: 18),
+            padding:  const EdgeInsets.only(right: 18),
             child: Text(
               text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Outfit',

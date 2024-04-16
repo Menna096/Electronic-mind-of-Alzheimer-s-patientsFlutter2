@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 class CurrentMonthYearWidget extends StatelessWidget {
+  const CurrentMonthYearWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Get the current date
@@ -18,17 +20,18 @@ class CurrentMonthYearWidget extends StatelessWidget {
       children: [
         Text(
           currentMonth,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 30,
           ),
         ),
-        Text(',',
-            style: TextStyle(
+        const Text(',',
+            // ignore: unnecessary_const
+            style: const TextStyle(
               fontSize: 30,
             )),
         Text(
           currentYear,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 30,
           ),
         ),

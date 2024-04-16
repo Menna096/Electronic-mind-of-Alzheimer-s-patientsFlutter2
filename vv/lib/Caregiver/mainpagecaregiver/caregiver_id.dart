@@ -222,7 +222,7 @@ class _caregiverCodeState extends State<caregiverCode> {
     if (caregiverCode == 'Loading...') {
       return Scaffold(
         backgroundColor: Colors.grey.shade300,
-        body: Center(child: CircularProgressIndicator()),
+        body: const Center(child: CircularProgressIndicator()),
       );
     }
 
@@ -244,12 +244,12 @@ class _caregiverCodeState extends State<caregiverCode> {
             alignment: Alignment.center,
             child: Container(
               width: 300,
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12.0),
                 boxShadow: [
-                  BoxShadow(
+                  const BoxShadow(
                     color: Colors.black26,
                     blurRadius: 8.0,
                     offset: Offset(0, 2),
@@ -259,34 +259,34 @@ class _caregiverCodeState extends State<caregiverCode> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Your ID',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   TextField(
                     decoration: InputDecoration(
                       labelText: 'Caregiver ID',
                       border: OutlineInputBorder(
                         borderRadius:
                             BorderRadius.circular(8.0), // Rounded corners
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Colors.black, // Default border color
                           width: 1.0, // Default border width
                         ),
                       ),
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                           vertical: 20.0, horizontal: 10.0),
                       suffixIcon: IconButton(
-                        icon: Icon(Icons.copy),
+                        icon: const Icon(Icons.copy),
                         onPressed: () {
                           Clipboard.setData(ClipboardData(text: caregiverCode))
                               .then((_) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text('Your ID copied to clipboard!'),
                                 duration: Duration(seconds: 2),
                               ),
@@ -297,17 +297,17 @@ class _caregiverCodeState extends State<caregiverCode> {
                     ),
                     readOnly: true,
                     controller: TextEditingController(text: caregiverCode),
-                    style: TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   Text(
                     'Please send it to the family',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.grey.shade600),
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pushReplacement(
@@ -317,13 +317,13 @@ class _caregiverCodeState extends State<caregiverCode> {
                                 mainpagecaregiver()), // Ensure this is the correct class name for your Main Page Family
                       );
                     },
-                    child: Text(
+                    child: const Text(
                       'Done',
                       style: TextStyle(color: Colors.white),
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
-                      fixedSize: Size(150, 50),
+                      fixedSize: const Size(150, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),

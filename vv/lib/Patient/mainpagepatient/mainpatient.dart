@@ -6,6 +6,7 @@ import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
 import 'package:vv/Patient/mainpagepatient/all_families.dart';
 import 'package:vv/Patient/mainpagepatient/patient_media.dart';
 import 'package:vv/Patient/mainpagepatient/patient_prof.dart';
+import 'package:vv/Patient/mainpagepatient/vediooooo/show_sec.dart';
 import 'package:vv/daily_task/pages/home/home_page.dart';
 import 'package:vv/page/level_select.dart';
 import 'package:vv/utils/token_manage.dart';
@@ -279,6 +280,14 @@ class _mainpatientState extends State<mainpatient> {
             Positioned(
               top: 332,
               left: 230,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => FilePage()),
+                  );
+                },
+
               child: Container(
                 child: Image.asset(
                   'images/Files.png',
@@ -286,6 +295,7 @@ class _mainpatientState extends State<mainpatient> {
                   height: 110,
                 ),
               ),
+            ),
             ),
             Positioned(
               top: 432,

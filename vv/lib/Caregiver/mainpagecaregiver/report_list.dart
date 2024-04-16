@@ -48,11 +48,11 @@ class _ReportListScreenState extends State<ReportListScreen> {
               (report) => report['reportId'] == reportId); // Update UI
         });
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Report deleted successfully!")));
+            const SnackBar(content: Text("Report deleted successfully!")));
       } else {
         print("Failed to delete report.");
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Failed to delete report.")));
+            .showSnackBar(const SnackBar(content: Text("Failed to delete report.")));
       }
     } catch (e) {
       print('Error deleting report: $e');
@@ -65,7 +65,7 @@ class _ReportListScreenState extends State<ReportListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Patient Reports'),
+        title: const Text('Patient Reports'),
         leading: IconButton(
             onPressed: () {
               Navigator.pushReplacement(
@@ -75,11 +75,11 @@ class _ReportListScreenState extends State<ReportListScreen> {
                         mainpagecaregiver()), // Ensure this is the correct class name for your Assign Patient Screen
               );
             },
-            icon: Icon(Icons.arrow_back)),
+            icon: const Icon(Icons.arrow_back)),
         centerTitle: true,
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Background(
               SingleChildScrollView: null,
               child: ListView.builder(
@@ -87,16 +87,16 @@ class _ReportListScreenState extends State<ReportListScreen> {
                 itemBuilder: (context, index) {
                   final report = reports[index];
                   return Card(
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     child: ListTile(
                       title: Text(report['reportContent'],
-                          style: TextStyle(fontSize: 18)),
+                          style: const TextStyle(fontSize: 18)),
                       subtitle: Text(
                           'From: ${report['fromDate']} To: ${report['toDate']}'),
                       leading: Icon(Icons.edit,
                           color: Theme.of(context).primaryColor),
                       trailing: IconButton(
-                        icon: Icon(Icons.delete, color: Colors.red),
+                        icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () => _deleteReport(report[
                             'reportId']), // Call delete method with reportId
                       ),
