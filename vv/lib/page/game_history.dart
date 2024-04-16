@@ -69,10 +69,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           child: ListTile(
                             leading:
                                 Icon(Icons.gamepad, color: Colors.blueAccent),
-                            title: Text('Game: ${item['gameScoreName']}',
+                            title: Text('Game Score',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             subtitle: Text(
-                                'Difficulty: ${item['difficultyGame']}, Score: ${item['patientScore']},Max Score${item['maxScore']}'),
+                                'Difficulty: ${item['difficultyGame']}, Score: ${item['patientScore']}'),
                             // trailing: Icon(Icons.arrow_forward_ios),
                             // onTap: () {
                             //   // Implement tap action if necessary

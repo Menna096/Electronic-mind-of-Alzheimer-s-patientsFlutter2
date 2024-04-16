@@ -3,6 +3,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
+import 'package:vv/Patient/mainpagepatient/all_families.dart';
 import 'package:vv/Patient/mainpagepatient/patient_media.dart';
 import 'package:vv/Patient/mainpagepatient/patient_prof.dart';
 import 'package:vv/daily_task/pages/home/home_page.dart';
@@ -195,11 +196,20 @@ class _mainpatientState extends State<mainpatient> {
             Positioned(
               top: 232,
               left: 45,
-              child: Container(
-                child: Image.asset(
-                  'images/Places.png',
-                  width: 110,
-                  height: 110,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UnusualFamilyList()),
+                  );
+                },
+                child: Container(
+                  child: Image.asset(
+                    'images/Places.png',
+                    width: 110,
+                    height: 110,
+                  ),
                 ),
               ),
             ),

@@ -4,6 +4,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/appoint_list.dart';
+import 'package:vv/Family/patient_reports.dart';
 import 'package:vv/Family/update.dart';
 import 'package:vv/page/assignPatCare.dart';
 import 'package:vv/page/gallery_screen.dart';
@@ -221,12 +222,32 @@ class _buildFamilyState extends State<buildFamily> {
         ),
         Positioned(
           top: 500,
-          left: 112,
+          left: 250,
           child: GestureDetector(
             onTap: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => AssignPatientPage()),
+              );
+            },
+            child: Container(
+              child: Image.asset(
+                'images/patcode.png',
+                width: 116,
+                height: 116,
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 500,
+          left: 112,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ReportListScreenFamily()),
               );
             },
             child: Container(
