@@ -9,7 +9,7 @@ class update extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -17,11 +17,11 @@ class update extends StatelessWidget {
             );
           },
         ),
-        backgroundColor: Color.fromARGB(255, 100, 121, 165),
+        backgroundColor: const Color.fromARGB(255, 100, 121, 165),
         elevation: 0,
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -34,9 +34,9 @@ class update extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(
+            const Center(
               child: Padding(
-                padding: const EdgeInsets.only(top: 1.0),
+                padding: EdgeInsets.only(top: 1.0),
                 child: Text(
                   'Manage Patient Profile',
                   style: TextStyle(
@@ -47,7 +47,7 @@ class update extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -56,21 +56,21 @@ class update extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                foregroundColor: Color(0xff3B5998),
+                foregroundColor: const Color(0xff3B5998),
                 backgroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 90, vertical: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 90, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(27.0),
                 ),
               ),
-              child: Text(
+              child: const Text(
                 'Create Account',
                 style: TextStyle(
                   fontSize: 18,
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Navigate to InputScreen page
@@ -80,14 +80,14 @@ class update extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                foregroundColor: Color(0xff3B5998),
+                foregroundColor: const Color(0xff3B5998),
                 backgroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(27.0),
                 ),
               ),
-              child: Text(
+              child: const Text(
                 'Edit Account',
                 style: TextStyle(
                   fontSize: 18,

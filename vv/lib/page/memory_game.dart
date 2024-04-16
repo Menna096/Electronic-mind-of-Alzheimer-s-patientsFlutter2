@@ -116,7 +116,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
           processing = true;
         });
 
-        Timer(Duration(milliseconds: 50), () {
+        Timer(const Duration(milliseconds: 50), () {
           if (cards[selectedIndices[0]] == cards[selectedIndices[1]]) {
             setState(() {
               matchedIndices.addAll(selectedIndices);
@@ -127,7 +127,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
               gameOver();
             }
           } else {
-            Future.delayed(Duration(seconds: 1), () {
+            Future.delayed(const Duration(seconds: 1), () {
               setState(() {
                 selectedIndices = [];
               });
@@ -163,9 +163,11 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
 
       if (response.statusCode == 200) {
         // If the server returns an OK response, handle data or notify user
+        // ignore: avoid_print
         print("Score posted successfully: ${response.data}");
       } else {
         // Handle errors
+        // ignore: avoid_print
         print("Failed to post score: ${response.statusCode}");
       }
     } catch (e) {
@@ -180,11 +182,11 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Game Over'),
+          title: const Text('Game Over'),
           content: Text('You lost. Try again! Your score: $score'),
           actions: <Widget>[
             TextButton(
-              child: Text('Restart'),
+              child: const Text('Restart'),
               onPressed: () {
                 Navigator.of(context).pop();
                 restartGame(visibilityDuration: 3);
@@ -222,7 +224,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            VictoryAnimationScreen(),
+            const VictoryAnimationScreen(),
             Text(
                 'Congratulations! Your Score: $score\nTime Taken: $timeTakenString'),
             ElevatedButton(
@@ -230,11 +232,11 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
                 Navigator.of(context).pop(); // Close the dialog
                 restartGame(visibilityDuration: 1);
               },
-              child: Text('Restart'),
+              child: const Text('Restart'),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
-                backgroundColor: Color(0xFF0386D0),
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                backgroundColor: const Color(0xFF0386D0),
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(27.0),
                 ),
@@ -254,7 +256,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
     return GestureDetector(
       onTap: () => handleTap(index),
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         decoration: BoxDecoration(
           color: isSelected || isMatched ? Colors.grey : Colors.white,
           borderRadius: BorderRadius.circular(8.0),
@@ -263,7 +265,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
               color: Colors.black.withOpacity(0.3),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: Offset(0, 3),
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -272,7 +274,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
             symbolsVisible || isSelected || isMatched
                 ? symbol
                 : '', // Toggle visibility
-            style: TextStyle(fontSize: 40.0),
+            style: const TextStyle(fontSize: 40.0),
           ),
         ),
       ),
@@ -283,7 +285,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Memory Card Game'),
+        title: const Text('Memory Card Game'),
       ),
       body: Background(
         SingleChildScrollView: null,
@@ -292,8 +294,8 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Score: $score', style: TextStyle(fontSize: 20)),
-                Text('Time: $timerSeconds', style: TextStyle(fontSize: 20)),
+                Text('Score: $score', style: const TextStyle(fontSize: 20)),
+                Text('Time: $timerSeconds', style: const TextStyle(fontSize: 20)),
               ],
             ),
             Expanded(
@@ -314,17 +316,18 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
               onPressed: () {
                 restartGame(visibilityDuration: 3);
               },
-              child: Text('Restart'),
+              // ignore: sort_child_properties_last
+              child: const Text('Restart'),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
-                backgroundColor: Color(0xFF0386D0),
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                backgroundColor: const Color(0xFF0386D0),
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(27.0),
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
           ],

@@ -120,7 +120,7 @@ class _AddpatState extends State<Addpat> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Add Successful'),
+            title: const Text('Add Successful'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -130,7 +130,7 @@ class _AddpatState extends State<Addpat> {
                     MaterialPageRoute(builder: (context) => mainpagefamily()),
                   );
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           ),
@@ -142,12 +142,12 @@ class _AddpatState extends State<Addpat> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Add Failed'),
+          title: const Text('Add Failed'),
           content: Text(error.toString()),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         ),
@@ -162,65 +162,65 @@ class _AddpatState extends State<Addpat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff3B5998),
+      backgroundColor: const Color(0xff3B5998),
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [Color(0xffFFFFFF), Color(0xff3B5998)],
               ),
             ),
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    backbutton(),
-                    SizedBox(height: 0.5),
-                    Text(
+                    const backbutton(),
+                    const SizedBox(height: 0.5),
+                    const Text(
                       'Add Account',
                       style: TextStyle(fontSize: 40, fontFamily: 'Acme'),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 18),
+                    const SizedBox(height: 18),
                     ProfilePicture(onImageSelected: _handleImageSelected),
-                    SizedBox(height: 18),
+                    const SizedBox(height: 18),
                     CustomTextField(
                       labelText: '  Full Name',
                       controller: fullNameController,
                       suffixIcon: Icons.person_2_sharp,
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     CustomTextField(
                       labelText: '  Email Address',
                       controller: emailController,
                       suffixIcon: Icons.email_outlined,
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     PasswordTextField(
                       labelText: '  Password',
                       controller: passwordController,
                       suffixIcon: Icons.password_outlined,
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     PasswordTextField(
                       labelText: '  Confirm Password',
                       suffixIcon: Icons.password_outlined,
                       controller: confirmPasswordController,
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     CustomTextField(
                       labelText: '  Phone Number',
                       controller: phoneNumberController,
                       suffixIcon: Icons.phone,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     CustomTextField(
                       labelText: '  Age',
                       controller: ageController,
@@ -228,25 +228,25 @@ class _AddpatState extends State<Addpat> {
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       keyboardType: TextInputType.number,
                     ),
-                     SizedBox(height: 15),
+                     const SizedBox(height: 15),
                     CustomTextField(
                       labelText: '  relationality',
                       controller: relationalityController,
                       suffixIcon: Icons.phone,
                     ),
-                     SizedBox(height: 30),
+                     const SizedBox(height: 30),
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Diagnosis Date',
-                        labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
+                        labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        suffixIcon: Icon(Icons.calendar_today,
+                        suffixIcon: const Icon(Icons.calendar_today,
                             size: 25, color: Color(0xFFD0D0D0)),
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: EdgeInsets.symmetric(
+                        contentPadding: const EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 12),
                       ),
                       controller: TextEditingController(
@@ -257,24 +257,24 @@ class _AddpatState extends State<Addpat> {
                       readOnly: true,
                       onTap: presentDatePicker,
                     ),
-                     SizedBox(height: 15),
+                     const SizedBox(height: 15),
                     CustomTextField(
                       labelText: '  Maximum Distance',
                       controller: distanceController,
                       suffixIcon: Icons.phone,
                     ),
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
                     ElevatedButton(
                       onPressed: _isLoading ? null : _Add,
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Color.fromARGB(255, 255, 255, 255),
-                        backgroundColor: Color(0xFF0386D0),
-                        fixedSize: Size(151, 45),
+                        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor: const Color(0xFF0386D0),
+                        fixedSize: const Size(151, 45),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0),
                         ),
                       ),
-                      child: Text('Add'),
+                      child: const Text('Add'),
                     ),
                   ],
                 ),
@@ -284,7 +284,7 @@ class _AddpatState extends State<Addpat> {
           _isLoading
               ? Container(
                   color: Colors.black.withOpacity(0.5),
-                  child: Center(
+                  child: const Center(
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
                         Color(0xff3B5998),
@@ -292,7 +292,7 @@ class _AddpatState extends State<Addpat> {
                     ),
                   ),
                 )
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
         ],
       ),
     );

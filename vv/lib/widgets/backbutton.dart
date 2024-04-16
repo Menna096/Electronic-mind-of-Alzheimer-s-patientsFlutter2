@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class backbutton extends StatelessWidget {
+  const backbutton({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -10,17 +12,17 @@ class backbutton extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Color(0xFF526CA4).withOpacity(0.2),
+              color: const Color(0xFF526CA4).withOpacity(0.2),
             ),
             child: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.grey),
+              icon: const Icon(Icons.arrow_back, color: Colors.grey),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
           ),
         ),
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
       ],
     );
   }

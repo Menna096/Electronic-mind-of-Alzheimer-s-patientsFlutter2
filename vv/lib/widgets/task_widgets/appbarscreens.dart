@@ -7,7 +7,7 @@ AppBar buildAppBar(String title) {
     elevation: 0,
     title: Text(
       title,
-      style: TextStyle(
+      style: const TextStyle(
         color: Colors.black,
         fontSize: 30.0,
       ),

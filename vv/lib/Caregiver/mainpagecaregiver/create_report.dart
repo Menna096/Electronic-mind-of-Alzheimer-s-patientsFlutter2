@@ -1,3 +1,5 @@
+// ignore_for_file: sort_child_properties_last
+
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -43,9 +45,9 @@ class _ReportScreenState extends State<ReportScreen> {
         child: OutlinedButton(
           onPressed: () => _selectDate(context, controller),
           child: Text(controller.text.isEmpty ? "Select Date" : controller.text,
-              style: TextStyle(color: Colors.black)),
+              style: const TextStyle(color: Colors.black)),
           style: OutlinedButton.styleFrom(
-            side: BorderSide(color: Colors.blue),
+            side: const BorderSide(color: Colors.blue),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           ),
@@ -75,10 +77,10 @@ class _ReportScreenState extends State<ReportScreen> {
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Report submitted successfully!")));
+            const SnackBar(content: Text("Report submitted successfully!")));
       } else {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Failed to submit report.")));
+            .showSnackBar(const SnackBar(content: Text("Failed to submit report.")));
       }
     } catch (e) {
       ScaffoldMessenger.of(context)
@@ -90,7 +92,7 @@ class _ReportScreenState extends State<ReportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Caregiver Report Form'),
+        title: const Text('Caregiver Report Form'),
         centerTitle: true,
       ),
       body: Background(
@@ -100,7 +102,7 @@ class _ReportScreenState extends State<ReportScreen> {
             Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back),
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
@@ -121,34 +123,34 @@ class _ReportScreenState extends State<ReportScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Center(
+                        const Center(
                           child: Text(
                             'Select Date Range',
                             style: TextStyle(
                                 fontSize: 18.0, fontWeight: FontWeight.bold),
                           ),
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                         Row(
                           children: <Widget>[
                             _buildDateButton('Start Time', _fromDateController),
                             _buildDateButton('End Time', _toDateController),
                           ],
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                         TextFormField(
                           controller: _reportContentController,
                           decoration: InputDecoration(
                             labelText: 'Report Content',
                             hintText: 'Enter the details of the report here',
-                            contentPadding: EdgeInsets.symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                                 vertical: 15.0, horizontal: 10.0),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderSide:
-                                  BorderSide(color: Colors.blue, width: 2.0),
+                                  const BorderSide(color: Colors.blue, width: 2.0),
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                           ),
@@ -168,12 +170,12 @@ class _ReportScreenState extends State<ReportScreen> {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
-                child: Text('Submit Report'),
+                child: const Text('Submit Report'),
                 onPressed: _submitReport,
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),
@@ -182,7 +184,7 @@ class _ReportScreenState extends State<ReportScreen> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             )
           ],

@@ -5,10 +5,10 @@ class Language extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff3B5998),
+      backgroundColor: const Color(0xff3B5998),
       resizeToAvoidBottomInset: false,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -22,7 +22,7 @@ class Language extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 80),
+            const SizedBox(height: 80),
             Row(
               children: [
                 Padding(
@@ -30,14 +30,14 @@ class Language extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Color(0xFF526CA4).withOpacity(0.2),
+                      color: const Color(0xFF526CA4).withOpacity(0.2),
                     ),
-                    child: BackButton(),
+                    child: const BackButton(),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.only(left: 10.0),
               child: Row(
@@ -47,8 +47,8 @@ class Language extends StatelessWidget {
                     height: 50,
                     width: 50,
                   ),
-                  SizedBox(width: 10),
-                  Text(
+                  const SizedBox(width: 10),
+                  const Text(
                     'Language',
                     style: TextStyle(
                       fontSize: 40,
@@ -60,9 +60,9 @@ class Language extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 70),
-            Padding(
-              padding: const EdgeInsets.only(left: 17.0),
+            const SizedBox(height: 70),
+            const Padding(
+              padding: EdgeInsets.only(left: 17.0),
               child: Text(
                 'Select Your Language',
                 style: TextStyle(
@@ -73,13 +73,13 @@ class Language extends StatelessWidget {
                 textAlign: TextAlign.left,
               ),
             ),
-            SizedBox(height: 70),
+            const SizedBox(height: 70),
 
             LanguageButton(
               onPressed: () {},
               buttonText: 'English',
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             LanguageButton(
               onPressed: () {},
               buttonText: 'العربيه',

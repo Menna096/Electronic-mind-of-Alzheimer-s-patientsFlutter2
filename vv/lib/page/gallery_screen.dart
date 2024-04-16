@@ -30,13 +30,13 @@ class _GalleryScreenState extends State<GalleryScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: Icon(Icons.camera),
-              title: Text('Camera'),
+              leading: const Icon(Icons.camera),
+              title: const Text('Camera'),
               onTap: () => Navigator.pop(context, ImageSource.camera),
             ),
             ListTile(
-              leading: Icon(Icons.photo_library),
-              title: Text('Gallery'),
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Gallery'),
               onTap: () => Navigator.pop(context, ImageSource.gallery),
             ),
           ],
@@ -144,12 +144,12 @@ class _GalleryScreenState extends State<GalleryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Pictures and Videos')),
+      appBar: AppBar(title: const Text('Pictures and Videos')),
       body: Background(
         SingleChildScrollView: null,
         child: GridView.builder(
           gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
           itemCount: mediaItems.length,
           itemBuilder: (context, index) {
             var mediaItem = mediaItems[index];
@@ -161,8 +161,8 @@ class _GalleryScreenState extends State<GalleryScreen> {
                     borderRadius: BorderRadius.circular(16.0),
                     child: mediaItem.type == MediaType.image
                         ? Image.network(mediaItem.path, fit: BoxFit.cover)
-                        : DecoratedBox(
-                            decoration: BoxDecoration(
+                        : const DecoratedBox(
+                            decoration: const BoxDecoration(
                               image: DecorationImage(
                                 image: AssetImage(
                                     'images/vid.png'), // Use the placeholder image for videos
@@ -181,7 +181,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addMedia,
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

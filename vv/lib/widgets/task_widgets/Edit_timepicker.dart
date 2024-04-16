@@ -18,7 +18,7 @@ class TimePickerButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Color(0x200386D0),
+        color: const Color(0x200386D0),
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Padding(

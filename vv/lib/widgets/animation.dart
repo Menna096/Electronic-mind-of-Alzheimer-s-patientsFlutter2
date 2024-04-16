@@ -2,7 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class VictoryAnimationScreen extends StatefulWidget {
+  const VictoryAnimationScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _VictoryAnimationScreenState createState() => _VictoryAnimationScreenState();
 }
 
@@ -14,27 +17,27 @@ class _VictoryAnimationScreenState extends State<VictoryAnimationScreen> {
   }
 
   void startAnimation() {
-    Timer(Duration(seconds: 1), () {
+    Timer(const Duration(seconds: 1), () {
       setState(() {
         _emoji = '🎉';
       });
     });
-    Timer(Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 2), () {
       setState(() {
         _emoji = '🏆';
       });
     });
-    Timer(Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 3), () {
       setState(() {
         _emoji = '🌟';
       });
     });
-    Timer(Duration(seconds: 4), () {
+    Timer(const Duration(seconds: 4), () {
       setState(() {
         _emoji = '🎊';
       });
     });
-    Timer(Duration(seconds: 5), () {
+    Timer(const Duration(seconds: 5), () {
       setState(() {
         _emoji = '✨';
       });
@@ -49,15 +52,15 @@ class _VictoryAnimationScreenState extends State<VictoryAnimationScreen> {
       children: [
         Center(
           child: AnimatedSwitcher(
-            duration: Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 500),
             child: Text(
               _emoji,
               key: Key(_emoji), // Ensure unique key when the emoji changes
-              style: TextStyle(fontSize: 60),
+              style: const TextStyle(fontSize: 60),
             ),
           ),
         ),
-        Text('congratulations!')
+        const Text('congratulations!')
       ],
     );
   }

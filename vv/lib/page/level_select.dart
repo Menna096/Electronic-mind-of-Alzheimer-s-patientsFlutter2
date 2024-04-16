@@ -43,17 +43,17 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen> {
         child: Center(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
-              Text(
+              const Text(
                 'Memory Card Game',
                 style: TextStyle(fontSize: 35),
               ),
               Row(
                 children: [
-                  backbutton(),
-                  Spacer(
+                  const backbutton(),
+                  const Spacer(
                     flex: 1,
                   ),
                   Column(
@@ -66,7 +66,7 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen> {
                                   builder: (context) => HistoryScreen()),
                             );
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.history,
                             size: 40,
                             color: Colors.grey,
@@ -75,16 +75,16 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen> {
                   )
                 ],
               ),
-              Spacer(flex: 1),
-              Text(
+              const Spacer(flex: 1),
+              const Text(
                 'Welcome To Memory Card Game',
                 style: TextStyle(fontSize: 22),
               ),
-              Text(
+              const Text(
                 'Please select a level',
                 style: TextStyle(fontSize: 22),
               ),
-              Spacer(flex: 3),
+              const Spacer(flex: 3),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -97,24 +97,24 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen> {
                     child: Text('Recommended Level: $recommendedLevel'),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: Color(0xFF0386D0),
+                      backgroundColor: const Color(0xFF0386D0),
                       padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                          const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(27.0),
                       ),
                     ),
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   buildLevelButton(context, "Level 1 (6 pairs)", 1),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   buildLevelButton(context, "Level 2 (12 pairs)", 2),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   buildLevelButton(context, "Level 3 (18 pairs)", 3),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                 ],
               ),
-              Spacer(flex: 5)
+              const Spacer(flex: 5)
             ],
           ),
         ),
@@ -129,8 +129,8 @@ ElevatedButton buildLevelButton(BuildContext context, String text, int level) {
     child: Text(text),
     style: ElevatedButton.styleFrom(
       foregroundColor: Colors.white,
-      backgroundColor: Color(0xFF0386D0),
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+      backgroundColor: const Color(0xFF0386D0),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(27.0),
       ),

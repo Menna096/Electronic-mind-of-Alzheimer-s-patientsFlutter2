@@ -17,7 +17,7 @@ class TimeSelectionContainer extends StatelessWidget {
     return Container(
       width: 150,
       decoration: BoxDecoration(
-        color: Color(0x200386D0),
+        color: const Color(0x200386D0),
         borderRadius: BorderRadius.circular(18.0),
       ),
       child: Padding(
@@ -29,16 +29,16 @@ class TimeSelectionContainer extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Color.fromARGB(255, 2, 93, 184),
                   fontSize: 20.0,
                   fontWeight: FontWeight.w300,
                 ),
               ),
-              SizedBox(height: 4.0),
+              const SizedBox(height: 4.0),
               Text(
                 time != null ? time!.format(context) : 'Select Time',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Color.fromARGB(255, 113, 113, 113),
                   fontSize: 18.0,
                   fontWeight: FontWeight.w300,

@@ -78,6 +78,7 @@ dependencies:
   sizer: ^2.0.15
   flare_flutter: ^3.0.2
   shared_preferences: ^2.2.3
+  file_picker: ^8.0.0+1
   
   
   

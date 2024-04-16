@@ -17,14 +17,14 @@ class AddTaskButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 60),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 60),
         elevation: 4,
         backgroundColor: backgroundColor,
-        textStyle: TextStyle(color: Colors.white),
+        textStyle: const TextStyle(color: Colors.white),
       ),
       child: Text(
         buttonText,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
     );
   }
