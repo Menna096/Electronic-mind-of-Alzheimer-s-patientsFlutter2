@@ -82,6 +82,7 @@ dependencies:
   signalr_core: ^1.1.2
   flutter_pdfview: ^1.0.4
   chewie: ^1.2.2
+  webview_flutter: ^3.0.0
   
   
   
