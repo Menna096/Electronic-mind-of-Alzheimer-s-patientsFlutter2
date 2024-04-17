@@ -282,20 +282,19 @@ class _mainpatientState extends State<mainpatient> {
               left: 230,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => FilePage()),
-                  );
+                  // Navigator.pushReplacement(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => SecretFilePage()),
+                  // );
                 },
-
-              child: Container(
-                child: Image.asset(
-                  'images/Files.png',
-                  width: 110,
-                  height: 110,
+                child: Container(
+                  child: Image.asset(
+                    'images/Files.png',
+                    width: 110,
+                    height: 110,
+                  ),
                 ),
               ),
-            ),
             ),
             Positioned(
               top: 432,
