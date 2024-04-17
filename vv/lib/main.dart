@@ -7,7 +7,6 @@ import 'package:vv/Notes/cubits/notes_cubit/notes_cubit.dart';
 import 'package:vv/Notes/models/note_model.dart';
 import 'package:vv/Notes/simple_bloc_observer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:vv/Patient/mainpagepatient/vediooooo/show_sec.dart';
 import 'package:vv/daily_task/pages/home/bloc/home_bloc.dart';
 import 'package:vv/daily_task/pages/input/bloc/input_bloc.dart';
 
@@ -47,7 +46,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue), // Adjust this according to your color scheme
             // Other theme configurations
           ),
-          home: FilePage(),
+          home: LoginPageAll(),
         ),
       ),
     );
