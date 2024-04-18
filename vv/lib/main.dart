@@ -9,6 +9,7 @@ import 'package:vv/Notes/simple_bloc_observer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vv/daily_task/pages/home/bloc/home_bloc.dart';
 import 'package:vv/daily_task/pages/input/bloc/input_bloc.dart';
+import 'package:vv/home/one.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue), // Adjust this according to your color scheme
             // Other theme configurations
           ),
-          home: LoginPageAll(),
+          home: Onboarding(showSignInScreen: () {  },),
         ),
       ),
     );
