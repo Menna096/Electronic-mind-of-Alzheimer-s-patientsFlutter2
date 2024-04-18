@@ -1,34 +1,32 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vv/Family/Registerfamily/registerfamily.dart';
 import 'package:vv/GPS/map_location_picker.dart';
 import 'package:vv/GPS/autocomplete_view.dart';
 import 'package:vv/map_location_picker.dart';
 
-//import 'key.dart';
-
 void main() {
   runApp(
     const MaterialApp(
-      home: MyApp(),
+      home: Gps(),
       debugShowCheckedModeBanner: false,
     ),
   );
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+
+  class Gps extends StatefulWidget {
+  const Gps({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<Gps> createState() => _GpsState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _GpsState extends State<Gps> {
   late double Lati = 0.0;
   late double Long = 0.0;
-  String address = "null";
-  String autocompletePlace = "null";
+  String address = "No Information";
+  String autocompletePlace = "No Information";
   Prediction? initialValue;
 
   final TextEditingController _controller = TextEditingController();
@@ -98,7 +96,7 @@ class _MyAppState extends State<MyApp> {
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              "Google Map Location Picker\nMade By Arvind 😃 with Flutter 🚀",
+              "Google Map Location Picker 🚀",
               textAlign: TextAlign.center,
               textScaleFactor: 1.2,
               style: TextStyle(
@@ -108,7 +106,7 @@ class _MyAppState extends State<MyApp> {
           ),
           TextButton(
             onPressed: () => Clipboard.setData(
-              const ClipboardData(text: "https://www.mohesu.com"),
+              const ClipboardData(text: ""),
             ).then(
               (value) => ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -168,6 +166,7 @@ class _MyAppState extends State<MyApp> {
           const Spacer(
             flex: 3,
           ),
+          
         ],
       ),
     );
