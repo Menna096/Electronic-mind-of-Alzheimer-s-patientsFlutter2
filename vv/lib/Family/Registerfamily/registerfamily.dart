@@ -6,10 +6,15 @@ import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
+import 'package:vv/GPSTest.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/custom_Textfield.dart';
 import 'package:vv/widgets/pass_textField.dart';
-import 'package:geolocator/geolocator.dart';
+import 'dart:ffi';
+import 'package:flutter/services.dart';
+import 'package:vv/GPS/map_location_picker.dart';
+import 'package:vv/GPS/autocomplete_view.dart';
+import 'package:vv/map_location_picker.dart';
 
 class APIService {
   static final Dio _dio = Dio();
@@ -47,34 +52,17 @@ class _RegisterFamilyState extends State<RegisterFamily> {
       TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
-  TextEditingController longitudeController = TextEditingController();
-  TextEditingController latitudeController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    getlocation();
-  }
-
-  void getlocation() async {
-    LocationPermission per = await Geolocator.checkPermission();
-    if (per == LocationPermission.denied ||
-        per == LocationPermission.deniedForever) {
-      print("permission denied");
-      LocationPermission per1 = await Geolocator.requestPermission();
-    } else {
-      Position currentLoc = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
-      setState(() {
-        longitudeController.text = currentLoc.longitude.toString();
-        latitudeController.text = currentLoc.latitude.toString();
-      });
-    }
   }
 
   String _selectedRole = '';
   bool _isLoading = false;
   File? _selectedImage;
+  late double Lati = 0.0;
+  late double Long = 0.0;
 
   void _handleImageSelected(File? image) {
     setState(() {
@@ -95,15 +83,14 @@ class _RegisterFamilyState extends State<RegisterFamily> {
           _phoneNumberController.text.isEmpty ||
           _ageController.text.isEmpty ||
           _selectedRole.isEmpty ||
-          longitudeController.text.isEmpty ||
-          latitudeController.text.isEmpty ||
           _selectedImage == null) {
         throw 'Please fill in all fields and select an image.';
       }
       if (_passwordController.text != _confirmPasswordController.text) {
         throw 'Password and Confirm Password do not match.';
       }
-
+      GeocodingResult? result;
+      
       var formData = FormData.fromMap({
         'Avatar': await MultipartFile.fromFile(
           _selectedImage!.path,
@@ -117,8 +104,10 @@ class _RegisterFamilyState extends State<RegisterFamily> {
         'role': _selectedRole,
         'phoneNumber': _phoneNumberController.text,
         'age': int.parse(_ageController.text),
-        'longitude': longitudeController.text,
-        'latitude': latitudeController.text,
+        // ignore: dead_code
+        'longitude': result?.geometry.location.lat,
+        // ignore: dead_code
+        'latitude': result?.geometry.location.lng,
       });
 
       dynamic response = await APIService.register(formData);
@@ -269,47 +258,24 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       keyboardType: TextInputType.number,
                     ),
-                     SizedBox(height: 16),
-                    TextField(
-                      controller: longitudeController,
-                      readOnly: true, // Set readOnly property to true
-                      decoration: InputDecoration(
-                        labelText: "longitude",
-                        labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
-                        suffixIcon: Icon(
-                          Icons.location_on,
-                          size: 25,
-                          color: Color(0xFFD0D0D0),
+
+                    SizedBox(height: 10), // Add space between widgets
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Gps()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor: Colors.green, // Example color
+                        
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(27.0),
                         ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 12),
                       ),
-                    ),
-                     SizedBox(height: 16),
-                    TextField(
-                      controller: latitudeController,
-                      readOnly: true, // Set readOnly property to true
-                      decoration: InputDecoration(
-                        labelText: "Latitude",
-                        labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
-                        suffixIcon: Icon(
-                          Icons.location_on,
-                          size: 25,
-                          color: Color(0xFFD0D0D0),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 12),
-                      ),
+                      child: Text('Open Gps To Select Your Location'),
                     ),
                     SizedBox(height: 40),
                     ElevatedButton(
@@ -317,7 +283,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Color.fromARGB(255, 255, 255, 255),
                         backgroundColor: Color(0xFF0386D0),
-                        fixedSize: Size(151, 45),
+                        
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0),
                         ),
@@ -345,11 +311,5 @@ class _RegisterFamilyState extends State<RegisterFamily> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    longitudeController.dispose();
-    latitudeController.dispose();
-    super.dispose();
-  }
 }
+
