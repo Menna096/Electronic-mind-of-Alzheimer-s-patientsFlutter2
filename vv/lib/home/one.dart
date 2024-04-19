@@ -29,6 +29,7 @@ class _OnboardingState extends State<Onboarding> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -37,7 +38,7 @@ class _OnboardingState extends State<Onboarding> {
         child: AppBar(),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -60,7 +61,7 @@ class _OnboardingState extends State<Onboarding> {
                         style: GoogleFonts.poppins(
                           fontSize: 33,
                           fontWeight: FontWeight.w600,
-                          color: Color(0xff3B5998), // Change text color to white
+                          color: const Color(0xff3B5998), // Change text color to white
                         ),
                       ),
                     ],
@@ -175,25 +176,25 @@ class _OnboardingState extends State<Onboarding> {
                         style: ButtonStyle(
                           elevation: MaterialStateProperty.all(2),
                           shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
+                            const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(20),
                               ),
                             ),
                           ),
-                          backgroundColor: MaterialStateProperty.all(Color(0xffFFFFFF)),
+                          backgroundColor: MaterialStateProperty.all(const Color(0xffFFFFFF)),
                         ),
                         child: Text(
                           'Skip',
                           style: GoogleFonts.roboto(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xff3B5998), // Change text color to white
+                            color: const Color(0xff3B5998), // Change text color to white
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(width: 20), // Add space between the buttons
+                    const SizedBox(width: 20), // Add space between the buttons
                     Visibility(
                       visible: (currentIndex != contents.length - 1), // Check if it's not the last page
                       child: SizedBox(
@@ -217,13 +218,13 @@ class _OnboardingState extends State<Onboarding> {
                           style: ButtonStyle(
                             elevation: MaterialStateProperty.all(2),
                             shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
+                              const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(20),
                                 ),
                               ),
                             ),
-                            backgroundColor: MaterialStateProperty.all(Color(0xff3B5998)),
+                            backgroundColor: MaterialStateProperty.all(const Color(0xff3B5998)),
                           ),
                           child: Text(
                             'Next',

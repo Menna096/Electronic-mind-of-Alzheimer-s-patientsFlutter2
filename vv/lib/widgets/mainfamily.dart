@@ -8,10 +8,9 @@ import 'package:vv/Family/patient_reports.dart';
 import 'package:vv/Family/update.dart';
 import 'package:vv/page/assignPatCare.dart';
 import 'package:vv/page/gallery_screen.dart';
-import 'package:vv/page/manage_patient.dart';
 import 'package:vv/page/paitent_Id.dart';
 import 'package:vv/utils/token_manage.dart';
-import 'package:vv/widgets/add/get_code.dart';
+
 
 Widget buildDrawer(BuildContext context) {
   return Drawer(
@@ -153,8 +152,8 @@ class _buildFamilyState extends State<buildFamily> {
           ),
         ),
         Positioned(
-          top: 256,
-          left: 45,
+          top: 259,
+          left: 55,
           child: GestureDetector(
             onTap: () {
               Navigator.pushReplacement(
@@ -165,15 +164,15 @@ class _buildFamilyState extends State<buildFamily> {
             child: Container(
               child: Image.asset(
                 'images/picfam.png',
-                width: 110,
-                height: 110,
+                width: 94,
+                height: 94,
               ),
             ),
           ),
         ),
         Positioned(
-          top: 255,
-          left: 217,
+          top: 263,
+          left: 225,
           child: GestureDetector(
             onTap: () {
               Navigator.pushReplacement(
@@ -184,26 +183,26 @@ class _buildFamilyState extends State<buildFamily> {
             child: Container(
               child: Image.asset(
                 'images/patcode.png',
-                width: 116,
-                height: 116,
+                width: 94,
+                height: 94,
               ),
             ),
           ),
         ),
         Positioned(
-          top: 386,
-          left: 219,
+          top: 392,
+          left: 226,
           child: Container(
             child: Image.asset(
               'images/placefam.png',
-              width: 109,
-              height: 110,
+              width: 94,
+              height: 90,
             ),
           ),
         ),
         Positioned(
-          top: 385,
-          left: 46,
+          top: 524,
+          left: 226,
           child: GestureDetector(
             onTap: () {
               Navigator.pushReplacement(
@@ -214,15 +213,15 @@ class _buildFamilyState extends State<buildFamily> {
             child: Container(
               child: Image.asset(
                 'images/appfam.png',
-                width: 110,
-                height: 110,
+                width: 96,
+                height: 90,
               ),
             ),
           ),
         ),
         Positioned(
-          top: 500,
-          left: 250,
+          top: 389,
+          left: 55,
           child: GestureDetector(
             onTap: () {
               Navigator.pushReplacement(
@@ -232,16 +231,16 @@ class _buildFamilyState extends State<buildFamily> {
             },
             child: Container(
               child: Image.asset(
-                'images/patcode.png',
-                width: 116,
-                height: 116,
+                'images/asspat.png',
+                width: 99,
+                height: 94,
               ),
             ),
           ),
         ),
         Positioned(
-          top: 500,
-          left: 112,
+          top: 525,
+          left: 56,
           child: GestureDetector(
             onTap: () {
               Navigator.pushReplacement(
@@ -252,9 +251,9 @@ class _buildFamilyState extends State<buildFamily> {
             },
             child: Container(
               child: Image.asset(
-                'images/patcode.png',
-                width: 116,
-                height: 116,
+                'images/Rports.png',
+                width: 102,
+                height: 91.5,
               ),
             ),
           ),
