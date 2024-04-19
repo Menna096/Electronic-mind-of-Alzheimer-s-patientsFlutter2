@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
-import 'package:vv/GPSTest.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/custom_Textfield.dart';
 import 'package:vv/widgets/pass_textField.dart';
@@ -36,6 +35,8 @@ class APIService {
 }
 
 class RegisterFamily extends StatefulWidget {
+  const RegisterFamily({Key? key}) : super(key: key);
+
   @override
   _RegisterFamilyState createState() => _RegisterFamilyState();
 }
@@ -49,13 +50,8 @@ class _RegisterFamilyState extends State<RegisterFamily> {
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  String _selectedRole = '';
-  bool _isLoading = false;
+  late String _selectedRole = '';
+  late bool _isLoading = false;
   File? _selectedImage;
   late double Lati = 0.0;
   late double Long = 0.0;
@@ -85,7 +81,13 @@ class _RegisterFamilyState extends State<RegisterFamily> {
       if (_passwordController.text != _confirmPasswordController.text) {
         throw 'Password and Confirm Password do not match.';
       }
-      GeocodingResult? result;
+
+      // Email validation using regex
+      RegExp emailRegExp = RegExp(
+          r'^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com|outlook\.com|aol\.com|protonmail\.com|example\.com)$');
+      if (!emailRegExp.hasMatch(_emailController.text)) {
+        throw 'Invalid email address.\nPlease Enter Correct Email';
+      }
       
       var formData = FormData.fromMap({
         'Avatar': await MultipartFile.fromFile(
@@ -110,8 +112,8 @@ class _RegisterFamilyState extends State<RegisterFamily> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Registration Successful'),
-            content: Text(
+            title: const Text('Registration Successful'),
+            content: const Text(
                 'You have Successfully Registered. Please Confirm Email To Can Login.'),
             actions: [
               TextButton(
@@ -122,24 +124,25 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     MaterialPageRoute(builder: (context) => LoginPageAll()),
                   );
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           ),
         );
+      
       } else {
-        throw 'Registration failed. Please try again. Error: $response';
+        throw 'Registration failed.\nThis Email is Already registered. ';
       }
     } catch (error) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Registration Failed'),
+          title: const Text('Registration Failed'),
           content: Text(error.toString()),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         ),
@@ -154,59 +157,59 @@ class _RegisterFamilyState extends State<RegisterFamily> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff3B5998),
+      backgroundColor: const Color(0xff3B5998),
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [Color(0xffFFFFFF), Color(0xff3B5998)],
               ),
             ),
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    backbutton(),
-                    SizedBox(height: 0.5),
-                    Text(
+                    const backbutton(),
+                    const SizedBox(height: 0.5),
+                    const Text(
                       'Create Account',
                       style: TextStyle(fontSize: 40, fontFamily: 'Acme'),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 18),
+                    const SizedBox(height: 18),
                     ProfilePicture(onImageSelected: _handleImageSelected),
-                    SizedBox(height: 18),
+                    const SizedBox(height: 18),
                     CustomTextField(
                       labelText: '  Full Name',
                       controller: _fullNameController,
                       suffixIcon: Icons.person_2_sharp,
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     CustomTextField(
                       labelText: '  Email Address',
                       controller: _emailController,
                       suffixIcon: Icons.email_outlined,
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     PasswordTextField(
                       labelText: '  Password',
                       controller: _passwordController,
                       suffixIcon: Icons.password_outlined,
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     PasswordTextField(
                       labelText: '  Confirm Password',
                       suffixIcon: Icons.password_outlined,
                       controller: _confirmPasswordController,
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     DropdownButtonFormField<String>(
                       value: _selectedRole.isNotEmpty ? _selectedRole : null,
                       onChanged: (String? newValue) {
@@ -225,26 +228,26 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                       }).toList(),
                       decoration: InputDecoration(
                         labelText: '   You are...',
-                        labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
+                        labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
                         border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
+                          borderSide: const BorderSide(color: Colors.grey),
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                         filled: true,
                         fillColor: Colors.white,
                         hintText: '  Select Role',
-                        hintStyle: TextStyle(color: Colors.grey),
-                        contentPadding: EdgeInsets.symmetric(
+                        hintStyle: const TextStyle(color: Colors.grey),
+                        contentPadding: const EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 12),
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     CustomTextField(
                       labelText: '  Phone Number',
                       controller: _phoneNumberController,
                       suffixIcon: Icons.phone,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     CustomTextField(
                       labelText: '  Age',
                       controller: _ageController,
@@ -252,8 +255,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       keyboardType: TextInputType.number,
                     ),
-
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: _isLoading ? null : () async {
                         await Navigator.push(
@@ -268,9 +270,6 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                                   setState(() {
                                     Lati = result.geometry.location.lat;
                                     Long = result.geometry.location.lng;
-
-                                    print(Lati);
-                                    print(Long);
                                   });
                                 }
                               },
@@ -279,25 +278,25 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Color.fromARGB(255, 255, 255, 255),
-                        backgroundColor: Color.fromARGB(255, 3, 189, 56),
+                        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor: const Color.fromARGB(255, 3, 189, 56),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0),
                         ),
                       ),
-                      child: Text('Pick location'),
+                      child: const Text('Pick location'),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: _isLoading ? null : _register,
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Color.fromARGB(255, 255, 255, 255),
-                        backgroundColor: Color(0xFF0386D0),
+                        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor: const Color(0xFF0386D0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0),
                         ),
                       ),
-                      child: Text('Register'),
+                      child: const Text('Register'),
                     ),
                   ],
                 ),
@@ -307,7 +306,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
           _isLoading
               ? Container(
                   color: Colors.black.withOpacity(0.5),
-                  child: Center(
+                  child: const Center(
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
                         Color(0xff3B5998),
@@ -315,7 +314,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     ),
                   ),
                 )
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
         ],
       ),
     );
