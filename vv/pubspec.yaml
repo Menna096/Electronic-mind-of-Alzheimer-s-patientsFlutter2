@@ -148,7 +148,6 @@ flutter:
     - lib/page/task_screens/assets/icon_small.png
     - lib/page/task_screens/assets/icons/
     - lib/page/task_screens/assets/images/ 
-    - lib/home/image/
     - lib/page/task_screens/assets/icons/tablet.gif
     - images/appoinmentcare.png
     - images/appoinmentpat.png

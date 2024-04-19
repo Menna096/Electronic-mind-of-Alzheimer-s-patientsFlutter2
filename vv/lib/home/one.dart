@@ -87,7 +87,6 @@ class _OnboardingState extends State<Onboarding> {
                               child: Center(
                                 child: Image.asset(
                                   contents[i].image,
-                                  color: const Color.fromARGB(255, 241, 250, 251),
                                   colorBlendMode: BlendMode.darken,
                                 ),
                               ),
