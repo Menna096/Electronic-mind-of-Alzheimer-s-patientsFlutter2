@@ -10,10 +10,6 @@ import 'package:vv/GPSTest.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/custom_Textfield.dart';
 import 'package:vv/widgets/pass_textField.dart';
-import 'dart:ffi';
-import 'package:flutter/services.dart';
-import 'package:vv/GPS/map_location_picker.dart';
-import 'package:vv/GPS/autocomplete_view.dart';
 import 'package:vv/map_location_picker.dart';
 
 class APIService {
@@ -104,10 +100,8 @@ class _RegisterFamilyState extends State<RegisterFamily> {
         'role': _selectedRole,
         'phoneNumber': _phoneNumberController.text,
         'age': int.parse(_ageController.text),
-        // ignore: dead_code
-        'longitude': result?.geometry.location.lat,
-        // ignore: dead_code
-        'latitude': result?.geometry.location.lng,
+        'longitude': Long,
+        'latitude': Lati,
       });
 
       dynamic response = await APIService.register(formData);
@@ -259,31 +253,46 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                       keyboardType: TextInputType.number,
                     ),
 
-                    SizedBox(height: 10), // Add space between widgets
+                    SizedBox(height: 10),
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
+                      onPressed: _isLoading ? null : () async {
+                        await Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Gps()),
+                          MaterialPageRoute(
+                            builder: (context) => MapLocationPicker(
+                              apiKey: 'AIzaSyDc7BLNnR3cQAhlKRDUgpcZYssqgDIHWxc',
+                              popOnNextButtonTaped: true,
+                              currentLatLng: const LatLng(29.146727, 76.464895),
+                              onNext: (GeocodingResult? result) {
+                                if (result != null) {
+                                  setState(() {
+                                    Lati = result.geometry.location.lat;
+                                    Long = result.geometry.location.lng;
+
+                                    print(Lati);
+                                    print(Long);
+                                  });
+                                }
+                              },
+                            ),
+                          ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Color.fromARGB(255, 255, 255, 255),
-                        backgroundColor: Colors.green, // Example color
-                        
+                        backgroundColor: Color.fromARGB(255, 3, 189, 56),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0),
                         ),
                       ),
-                      child: Text('Open Gps To Select Your Location'),
+                      child: Text('Pick location'),
                     ),
-                    SizedBox(height: 40),
+                    SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: _isLoading ? null : _register,
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Color.fromARGB(255, 255, 255, 255),
                         backgroundColor: Color(0xFF0386D0),
-                        
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0),
                         ),
@@ -312,4 +321,3 @@ class _RegisterFamilyState extends State<RegisterFamily> {
     );
   }
 }
-
