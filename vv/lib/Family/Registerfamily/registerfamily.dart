@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:dio/dio.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http_parser/http_parser.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
@@ -28,6 +29,7 @@ class APIService {
               ? response.data['message']
               : 'Registration failed with status code: ${response.data}';
     } catch (error) {
+      // ignore: avoid_print
       print('Registration failed: $error');
       return 'Registration failed: $error';
     }
@@ -38,6 +40,7 @@ class RegisterFamily extends StatefulWidget {
   const RegisterFamily({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _RegisterFamilyState createState() => _RegisterFamilyState();
 }
 
@@ -53,7 +56,9 @@ class _RegisterFamilyState extends State<RegisterFamily> {
   late String _selectedRole = '';
   late bool _isLoading = false;
   File? _selectedImage;
+  // ignore: non_constant_identifier_names
   late double Lati = 0.0;
+  // ignore: non_constant_identifier_names
   late double Long = 0.0;
 
   void _handleImageSelected(File? image) {
@@ -110,6 +115,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
 
       if (response == true) {
         showDialog(
+          // ignore: use_build_context_synchronously
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('Registration Successful'),
@@ -135,6 +141,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
       }
     } catch (error) {
       showDialog(
+        // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Registration Failed'),
