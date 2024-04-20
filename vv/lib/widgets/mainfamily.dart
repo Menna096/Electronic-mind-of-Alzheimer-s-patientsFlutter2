@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore: unnecessary_import
 import 'package:flutter/widgets.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
@@ -15,10 +16,10 @@ import 'package:vv/utils/token_manage.dart';
 Widget buildDrawer(BuildContext context) {
   return Drawer(
     child: Container(
-      color: Color(0xffD6DCE9),
+      color: const Color(0xffD6DCE9),
       child: ListView(
         children: [
-          DrawerHeader(
+          const DrawerHeader(
             child: Center(
               child: Text(
                 'Elder Helper',
@@ -66,7 +67,7 @@ Widget buildDrawerItem(IconData icon, String title, {Function? onTap}) {
     leading: Icon(icon),
     title: Text(
       title,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 20,
         color: Color(0xFF595858),
       ),
@@ -75,11 +76,16 @@ Widget buildDrawerItem(IconData icon, String title, {Function? onTap}) {
   );
 }
 
+// ignore: camel_case_types
 class buildFamily extends StatefulWidget {
+  const buildFamily({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _buildFamilyState createState() => _buildFamilyState();
 }
 
+// ignore: camel_case_types
 class _buildFamilyState extends State<buildFamily> {
   String? _token;
   String? _photoUrl;
@@ -109,9 +115,9 @@ class _buildFamilyState extends State<buildFamily> {
           bottom: 510,
           child: Center(
             child: Container(
-              padding: EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(50, 33, 149, 243),
+              padding: const EdgeInsets.all(16.0),
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(50, 33, 149, 243),
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(50.0),
                   bottomRight: Radius.circular(50.0),
@@ -123,22 +129,22 @@ class _buildFamilyState extends State<buildFamily> {
                     radius: 45.0,
                     backgroundImage: NetworkImage(_photoUrl ?? ''),
                   ),
-                  SizedBox(width: 16.0),
+                  const SizedBox(width: 16.0),
                   Column(
                     children: [
                       Text(
                         'Welcome $_userName !',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18,
                         ),
                       ),
-                      Text(
+                      const Text(
                         'To the Electronic mind',
                         style: TextStyle(
                           fontSize: 18,
                         ),
                       ),
-                      Text(
+                      const Text(
                         'of Alzheimer patient',
                         style: TextStyle(
                           fontSize: 18,
@@ -161,6 +167,7 @@ class _buildFamilyState extends State<buildFamily> {
                 MaterialPageRoute(builder: (context) => GalleryScreen()),
               );
             },
+            // ignore: avoid_unnecessary_containers
             child: Container(
               child: Image.asset(
                 'images/picfam.png',
@@ -180,6 +187,7 @@ class _buildFamilyState extends State<buildFamily> {
                 MaterialPageRoute(builder: (context) => AddPatientScreen()),
               );
             },
+            // ignore: avoid_unnecessary_containers
             child: Container(
               child: Image.asset(
                 'images/patcode.png',
@@ -192,6 +200,7 @@ class _buildFamilyState extends State<buildFamily> {
         Positioned(
           top: 392,
           left: 226,
+          // ignore: avoid_unnecessary_containers
           child: Container(
             child: Image.asset(
               'images/placefam.png',
@@ -210,6 +219,7 @@ class _buildFamilyState extends State<buildFamily> {
                 MaterialPageRoute(builder: (context) => AppointListScreen()),
               );
             },
+            // ignore: avoid_unnecessary_containers
             child: Container(
               child: Image.asset(
                 'images/appfam.png',
@@ -229,6 +239,7 @@ class _buildFamilyState extends State<buildFamily> {
                 MaterialPageRoute(builder: (context) => AssignPatientPage()),
               );
             },
+            // ignore: avoid_unnecessary_containers
             child: Container(
               child: Image.asset(
                 'images/asspat.png',
@@ -249,6 +260,7 @@ class _buildFamilyState extends State<buildFamily> {
                     builder: (context) => ReportListScreenFamily()),
               );
             },
+            // ignore: avoid_unnecessary_containers
             child: Container(
               child: Image.asset(
                 'images/Rports.png',
@@ -268,6 +280,7 @@ Widget buildImageContainer(
   return Positioned(
     top: top,
     left: left,
+    // ignore: avoid_unnecessary_containers
     child: Container(
       child: Image.asset(
         imagePath,

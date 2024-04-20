@@ -7,11 +7,12 @@ import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
+import 'package:vv/GPS/map_location_picker.dart';
 import 'package:vv/api/login_api.dart';
+import 'package:vv/map_location_picker.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/custom_Textfield.dart';
 import 'package:vv/widgets/pass_textField.dart';
-
 
 class APIService {
   static final Dio _dio = Dio();
@@ -19,11 +20,11 @@ class APIService {
   static Future<dynamic> Add(FormData formData) async {
     try {
       DioService().dio.options.headers['accept'] = '/';
-     DioService().dio.options.headers['content-type'] = 'multipart/form-data';
+      DioService().dio.options.headers['content-type'] = 'multipart/form-data';
       Response response = await DioService().dio.post(
-        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddPatient',
-        data: formData,
-      );
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddPatient',
+            data: formData,
+          );
       return response.statusCode == 200
           ? true
           : response.data != null && response.data['message'] != null
@@ -52,6 +53,11 @@ class _AddpatState extends State<Addpat> {
   final TextEditingController relationalityController = TextEditingController();
   DateTime? selectedDate;
   TextEditingController distanceController = TextEditingController();
+
+  // ignore: non_constant_identifier_names
+  late double Lati = 0.0;
+  // ignore: non_constant_identifier_names
+  late double Long = 0.0;
   void presentDatePicker() {
     showDatePicker(
       context: context,
@@ -109,9 +115,13 @@ class _AddpatState extends State<Addpat> {
         'password': passwordController.text,
         'phoneNumber': phoneNumberController.text,
         'age': int.parse(ageController.text),
-        'relationality' : relationalityController.text,
-        'diagnosisDate': selectedDate != null ? DateFormat('yyyy-MM-dd').format(selectedDate!) : null,
-        'maximumDistance': distanceController.text,
+        'relationality': relationalityController.text,
+        'diagnosisDate': selectedDate != null
+            ? DateFormat('yyyy-MM-dd').format(selectedDate!)
+            : null,
+        'maxDistance': int.parse(distanceController.text),
+        'longitude': Long,
+        'latitude': Lati,
       });
 
       dynamic response = await APIService.Add(formData);
@@ -228,13 +238,13 @@ class _AddpatState extends State<Addpat> {
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       keyboardType: TextInputType.number,
                     ),
-                     const SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     CustomTextField(
                       labelText: '  relationality',
                       controller: relationalityController,
                       suffixIcon: Icons.phone,
                     ),
-                     const SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Diagnosis Date',
@@ -257,17 +267,56 @@ class _AddpatState extends State<Addpat> {
                       readOnly: true,
                       onTap: presentDatePicker,
                     ),
-                     const SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     CustomTextField(
                       labelText: '  Maximum Distance',
                       controller: distanceController,
-                      suffixIcon: Icons.phone,
+                      suffixIcon: Icons.location_on_sharp,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      keyboardType: TextInputType.number,
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: _isLoading
+                          ? null
+                          : () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MapLocationPicker(
+                                    apiKey:
+                                        'AIzaSyDc7BLNnR3cQAhlKRDUgpcZYssqgDIHWxc',
+                                    popOnNextButtonTaped: true,
+                                    currentLatLng:
+                                        const LatLng(29.146727, 76.464895),
+                                    onNext: (GeocodingResult? result) {
+                                      if (result != null) {
+                                        setState(() {
+                                          Lati = result.geometry.location.lat;
+                                          Long = result.geometry.location.lng;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor:
+                            const Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor: const Color.fromARGB(255, 3, 189, 56),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(27.0),
+                        ),
+                      ),
+                      child: const Text('Pick location'),
                     ),
                     const SizedBox(height: 40),
                     ElevatedButton(
                       onPressed: _isLoading ? null : _Add,
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        foregroundColor:
+                            const Color.fromARGB(255, 255, 255, 255),
                         backgroundColor: const Color(0xFF0386D0),
                         fixedSize: const Size(151, 45),
                         shape: RoundedRectangleBorder(

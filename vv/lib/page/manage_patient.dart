@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/widgets/backbutton.dart';
@@ -52,8 +53,10 @@ class _ViewProfileState extends State<ViewProfile> {
           _phoneController.text = response.data['phoneNumber'];
           _ageController.text = response.data['age'].toString();
           _relationalityController.text = response.data['relationality'];
+          _distanceController.text = response.data['maxDistance'].toString();
           _selectedDate =
               DateFormat('dd/MM/yyyy').parse(response.data['diagnosisDate']);
+             
         });
       } else {
         print('Failed to fetch data: ${response.statusCode}');
@@ -70,10 +73,11 @@ class _ViewProfileState extends State<ViewProfile> {
     Map<String, dynamic> requestBody = {
       'phoneNumber': _phoneController.text,
       'age': int.parse(_ageController.text),
+       'maximumDistance': int.parse(_distanceController.text),
       'diagnosisDate': _selectedDate != null
           ? DateFormat('yyyy-MM-dd').format(_selectedDate!)
           : null,
-      'maximumDistance': _distanceController.text,
+     
     };
 
     try {
@@ -272,7 +276,7 @@ class _ViewProfileState extends State<ViewProfile> {
                       readOnly: true,
                       onTap: _presentDatePicker,
                     ),
-                    const SizedBox(height: 15),
+                  const SizedBox(height: 15),
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Maximum Distance',
@@ -280,7 +284,7 @@ class _ViewProfileState extends State<ViewProfile> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        suffixIcon: const Icon(Icons.location_on,
+                        suffixIcon: const Icon(Icons.location_on_sharp,
                             size: 25, color: Color(0xFFD0D0D0)),
                         filled: true,
                         fillColor: Colors.white,
@@ -290,6 +294,7 @@ class _ViewProfileState extends State<ViewProfile> {
                       controller: _distanceController,
                       keyboardType: TextInputType.number,
                     ),
+                    
                     const SizedBox(height: 30),
                     ElevatedButton(
                       child: const Text('Update'),
