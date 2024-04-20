@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:dio/dio.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
+// ignore: unnecessary_import
 import 'package:vv/GPS/map_location_picker.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/map_location_picker.dart';
@@ -15,8 +17,10 @@ import 'package:vv/widgets/custom_Textfield.dart';
 import 'package:vv/widgets/pass_textField.dart';
 
 class APIService {
+  // ignore: unused_field
   static final Dio _dio = Dio();
 
+  // ignore: non_constant_identifier_names
   static Future<dynamic> Add(FormData formData) async {
     try {
       DioService().dio.options.headers['accept'] = '/';
@@ -31,6 +35,7 @@ class APIService {
               ? response.data['message']
               : 'Add failed with status code: ${response.data}';
     } catch (error) {
+      // ignore: avoid_print
       print('Add failed: $error');
       return 'Add failed: $error';
     }
@@ -38,7 +43,10 @@ class APIService {
 }
 
 class Addpat extends StatefulWidget {
+  const Addpat({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _AddpatState createState() => _AddpatState();
 }
 
@@ -55,9 +63,9 @@ class _AddpatState extends State<Addpat> {
   TextEditingController distanceController = TextEditingController();
 
   // ignore: non_constant_identifier_names
-  late double Lati = 0.0;
+  late double Lati;
   // ignore: non_constant_identifier_names
-  late double Long = 0.0;
+  late double Long;
   void presentDatePicker() {
     showDatePicker(
       context: context,
@@ -82,6 +90,7 @@ class _AddpatState extends State<Addpat> {
     });
   }
 
+  // ignore: non_constant_identifier_names
   void _Add() async {
     setState(() {
       _isLoading = true;
@@ -120,14 +129,15 @@ class _AddpatState extends State<Addpat> {
             ? DateFormat('yyyy-MM-dd').format(selectedDate!)
             : null,
         'maxDistance': int.parse(distanceController.text),
-        'longitude': Long,
-        'latitude': Lati,
+        'mainLongitude': Long,
+        'mainLatitude': Lati,
       });
 
       dynamic response = await APIService.Add(formData);
 
       if (response == true) {
         showDialog(
+          // ignore: use_build_context_synchronously
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('Add Successful'),
@@ -137,7 +147,7 @@ class _AddpatState extends State<Addpat> {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => mainpagefamily()),
+                    MaterialPageRoute(builder: (context) => const mainpagefamily()),
                   );
                 },
                 child: const Text('OK'),
@@ -150,6 +160,7 @@ class _AddpatState extends State<Addpat> {
       }
     } catch (error) {
       showDialog(
+        // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Add Failed'),

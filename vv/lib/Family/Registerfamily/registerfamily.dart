@@ -57,9 +57,10 @@ class _RegisterFamilyState extends State<RegisterFamily> {
   late bool _isLoading = false;
   File? _selectedImage;
   // ignore: non_constant_identifier_names
-  late double Lati = 0.0;
+  late double Lati;
   // ignore: non_constant_identifier_names
-  late double Long = 0.0;
+  late double Long;
+  Prediction? initialValue;
 
   void _handleImageSelected(File? image) {
     setState(() {
@@ -93,7 +94,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
       if (!emailRegExp.hasMatch(_emailController.text)) {
         throw 'Invalid email address.\nPlease Enter Correct Email';
       }
-      
+
       var formData = FormData.fromMap({
         'Avatar': await MultipartFile.fromFile(
           _selectedImage!.path,
@@ -107,10 +108,10 @@ class _RegisterFamilyState extends State<RegisterFamily> {
         'role': _selectedRole,
         'phoneNumber': _phoneNumberController.text,
         'age': int.parse(_ageController.text),
-        'longitude': Long,
-        'latitude': Lati,
+        'mainLongitude': Long,
+        'mainLatitude': Lati,
       });
-
+      
       dynamic response = await APIService.register(formData);
 
       if (response == true) {
@@ -135,7 +136,6 @@ class _RegisterFamilyState extends State<RegisterFamily> {
             ],
           ),
         );
-      
       } else {
         throw 'Registration failed.\nThis Email is Already registered. ';
       }
@@ -264,40 +264,47 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     ),
                     const SizedBox(height: 10),
                     ElevatedButton(
-                      onPressed: _isLoading ? null : () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MapLocationPicker(
-                              apiKey: 'AIzaSyDc7BLNnR3cQAhlKRDUgpcZYssqgDIHWxc',
-                              popOnNextButtonTaped: true,
-                              currentLatLng: const LatLng(29.146727, 76.464895),
-                              onNext: (GeocodingResult? result) {
-                                if (result != null) {
-                                  setState(() {
-                                    Lati = result.geometry.location.lat;
-                                    Long = result.geometry.location.lng;
-                                  });
-                                }
-                              },
-                            ),
-                          ),
-                        );
-                      },
+                      onPressed: _isLoading
+                          ? null
+                          : () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MapLocationPicker(
+                                    apiKey:
+                                        'AIzaSyDc7BLNnR3cQAhlKRDUgpcZYssqgDIHWxc',
+                                    popOnNextButtonTaped: true,
+                                    currentLatLng:
+                                        const LatLng(29.146727, 76.464895),
+                                    onNext: (GeocodingResult? result) {
+                                      if (result != null) {
+                                        setState(() {
+                                          Lati = result.geometry.location.lat;
+                                          Long = result.geometry.location.lng;
+                                         
+                                        });
+                                      }
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        foregroundColor:
+                            const Color.fromARGB(255, 255, 255, 255),
                         backgroundColor: const Color.fromARGB(255, 3, 189, 56),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0),
                         ),
                       ),
-                      child: const Text('Pick location'),
+                      child: const Text('Pick Your location'),
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: _isLoading ? null : _register,
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        foregroundColor:
+                            const Color.fromARGB(255, 255, 255, 255),
                         backgroundColor: const Color(0xFF0386D0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0),
