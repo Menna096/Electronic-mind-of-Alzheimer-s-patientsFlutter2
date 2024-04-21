@@ -11,9 +11,10 @@ class PatientProfManage extends StatefulWidget {
 
 class _PatientProfManageState extends State<PatientProfManage> {
   TextEditingController _fullNameController = TextEditingController();
+  TextEditingController _idController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _ageController = TextEditingController();
-  TextEditingController _distanceController = TextEditingController();
+  TextEditingController messageController = TextEditingController();
   DateTime? _selectedDate;
 
   @override
@@ -48,8 +49,8 @@ class _PatientProfManageState extends State<PatientProfManage> {
           _ageController.text = response.data['age'].toString();
           _selectedDate = DateFormat('yyyy-MM-ddTHH:mm:ss')
               .parse(response.data['diagnosisDate']);
-          _distanceController.text =
-              response.data['maximumDistance'].toString();
+          messageController.text = response.data['message'];
+          _idController.text = response.data['patientId'];
         });
       } else {
         print('Failed to fetch data: ${response.statusCode}');
@@ -65,20 +66,22 @@ class _PatientProfManageState extends State<PatientProfManage> {
     Map<String, dynamic> requestBody = {
       'phoneNumber': _phoneController.text,
       'age': int.parse(_ageController.text),
+      'patientId': _idController.text,
+      'fullName': _fullNameController.text,
       'diagnosisDate': _selectedDate != null
-          ? DateFormat('yyyy-MM-dd').format(_selectedDate!)
+          ? DateFormat('yyyy-MM-ddTHH:mm:ss').format(_selectedDate!)
           : null,
-      'maximumDistance': int.parse(_distanceController.text)
+      'message': messageController.text,
     };
 
     try {
       Response response = await DioService().dio.put(
-            apiUrl,
-            data: requestBody,
-            options: Options(
-              contentType: 'application/json; charset=UTF-8',
-            ),
-          );
+        apiUrl,
+        data: requestBody,
+        options: Options(
+          contentType: 'application/json; charset=UTF-8',
+        ),
+      );
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -104,59 +107,93 @@ class _PatientProfManageState extends State<PatientProfManage> {
       body: Background(
         SingleChildScrollView: null,
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(height: 20),
+                _buildTextField(
+                  labelText: 'Message',
+                  controller: messageController,
+                  maxLines: 3,
+                  readOnly: true,
+                ),
+                SizedBox(height: 20),
+                _buildTextField(
+                  labelText: 'Your ID',
+                  controller: _idController,
+                  readOnly: true,
+                ),
+                SizedBox(height: 20),
+                _buildTextField(
                   labelText: 'Full Name',
-                  prefixIcon: Icon(Icons.person),
+                  controller: _fullNameController,
+                  readOnly: true,
                 ),
-                controller: _fullNameController,
-                readOnly: true,
-              ),
-              // TextFormField(
-              //   decoration: InputDecoration(
-              //     labelText: 'Email',
-              //     prefixIcon: Icon(Icons.email),
-              //   ),
-              //   controller: _emailController,
-              //   readOnly: true,
-              // ),
-              TextFormField(
-                decoration: InputDecoration(
+                SizedBox(height: 20),
+                _buildTextField(
                   labelText: 'Phone Number',
-                  prefixIcon: Icon(Icons.phone),
+                  controller: _phoneController,
                 ),
-                controller: _phoneController,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
+                SizedBox(height: 20),
+                _buildTextField(
                   labelText: 'Age',
-                  prefixIcon: Icon(Icons.cake),
+                  controller: _ageController,
                 ),
-                controller: _ageController,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Maximum Distance',
-                  prefixIcon: Icon(Icons.directions_run),
+                SizedBox(height: 20),
+                ListTile(
+                  title: Text(
+                    'Diagnosis Date: ${_selectedDate != null ? DateFormat('yyyy-MM-dd').format(_selectedDate!) : "Not set"}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  trailing: Icon(Icons.calendar_today),
+                  onTap: null, // Disable onTap
                 ),
-                controller: _distanceController,
-              ),
-              ListTile(
-                title: Text(
-                    'Diagnosis Date: ${_selectedDate != null ? DateFormat('yyyy-MM-dd').format(_selectedDate!) : "Not set"}'),
-                trailing: Icon(Icons.calendar_today),
-                onTap: _presentDatePicker,
-              ),
-              ElevatedButton(
-                onPressed: updateUserProfile,
-                child: Text('Update Profile'),
-              ),
-            ],
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: updateUserProfile,
+                  child: Text('Update Profile'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildTextField({
+    required String labelText,
+    required TextEditingController controller,
+    int maxLines = 1,
+    bool readOnly = false,
+  }) {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: 'Enter $labelText',
+        hintStyle: TextStyle(color: Colors.grey[400]),
+        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide(color: Colors.blue),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide(color: Colors.blue, width: 2.0),
+        ),
+      ),
+      controller: controller,
+      readOnly: readOnly,
+      maxLines: maxLines,
     );
   }
 }
