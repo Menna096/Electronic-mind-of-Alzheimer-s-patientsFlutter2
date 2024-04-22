@@ -83,7 +83,6 @@ dependencies:
   flutter_pdfview: ^1.0.4
   chewie: ^1.2.2
   webview_flutter: ^3.0.0
-  google_maps_flutter: ^2.5.0
   flutter_typeahead: ^4.8.0
   google_maps_webapi: ^0.0.22
   http: ^1.1.0
@@ -91,6 +90,7 @@ dependencies:
   provider: ^6.1.2
   location: ^6.0.1
   flutter_polyline_points: ^2.0.0
+  google_maps_flutter: ^2.6.1
   
   
   
