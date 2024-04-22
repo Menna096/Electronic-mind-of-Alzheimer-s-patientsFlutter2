@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:vv/api/login_api.dart'; // Ensure this is correctly implemented
-import 'package:vv/models/family_data.dart'; // Ensure this is correctly implemented
+import 'package:vv/models/family_data.dart';
+import 'package:vv/utils/storage_manage.dart'; // Ensure this is correctly implemented
 
 // ignore: use_key_in_widget_constructors
 class UnusualFamilyList extends StatefulWidget {
@@ -13,6 +15,7 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
     with TickerProviderStateMixin {
   late Future<List<FamilyMember>> _familyMembers;
   late AnimationController _controller;
+  final SecureStorageManager storageManager = SecureStorageManager();
 
   @override
   void initState() {
@@ -68,19 +71,25 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
               itemBuilder: (context, index) {
                 var member = snapshot.data![index];
                 return Dismissible(
-                  key: Key(member
-                      .familyId), // Changed to use familyId for uniqueness
-                  onDismissed: (direction) {
-                    // Add custom logic on dismiss if needed
+                  key: Key(member.familyId), // Use familyId for uniqueness
+                  onDismissed: (direction) async {
+                    // Store familyId when the item is dismissed
                   },
                   child: ListTile(
                     title: Text(
-                        '${member.familyName} (${member.familyId})'), // Displaying familyId with familyName
+                        '${member.familyName} '), // Displaying familyId with familyName
                     subtitle: Text(member.relationility),
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(member.hisImageUrl),
                     ),
-                    trailing: const Icon(Icons.arrow_forward_ios),
+                    trailing: IconButton(
+                      onPressed: () async {
+                        await storageManager.savefamilyId(member.familyId);
+                        getFamilyLocation();
+                        print('Stored familyId: ${member.familyId}');
+                      },
+                      icon: Icon(Icons.location_on),
+                    ),
                   ),
                 );
               },
@@ -91,5 +100,21 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
         },
       ),
     );
+  }
+
+  Future<void> getFamilyLocation() async {
+    try {
+      String? familyId = await storageManager.getfamilyId();
+      if (familyId != null) {
+        Response response = await DioService().dio.get(
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/GetFamilyLocation/$familyId');
+        print('Family location: ${response.data}');
+        // Handle the response data as needed
+      } else {
+        print('Family ID is null');
+      }
+    } catch (e) {
+      print('Error fetching family location: $e');
+    }
   }
 }
