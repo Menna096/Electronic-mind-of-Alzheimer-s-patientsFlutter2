@@ -88,6 +88,7 @@ dependencies:
   google_maps_webapi: ^0.0.22
   http: ^1.1.0
   logger: ^2.0.2+1
+  provider: ^6.1.2
   
   
   
