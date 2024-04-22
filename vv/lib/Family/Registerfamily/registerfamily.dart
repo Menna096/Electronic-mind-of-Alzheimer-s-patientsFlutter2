@@ -57,9 +57,9 @@ class _RegisterFamilyState extends State<RegisterFamily> {
   late bool _isLoading = false;
   File? _selectedImage;
   // ignore: non_constant_identifier_names
-  late double Lati;
+  late double Latifam;
   // ignore: non_constant_identifier_names
-  late double Long;
+  late double Longfam;
   Prediction? initialValue;
 
   void _handleImageSelected(File? image) {
@@ -108,8 +108,8 @@ class _RegisterFamilyState extends State<RegisterFamily> {
         'role': _selectedRole,
         'phoneNumber': _phoneNumberController.text,
         'age': int.parse(_ageController.text),
-        'mainLongitude': Long,
-        'mainLatitude': Lati,
+        'mainLongitude': Longfam,
+        'mainLatitude': Latifam,
       });
       
       dynamic response = await APIService.register(formData);
@@ -279,8 +279,8 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                                     onNext: (GeocodingResult? result) {
                                       if (result != null) {
                                         setState(() {
-                                          Lati = result.geometry.location.lat;
-                                          Long = result.geometry.location.lng;
+                                          Latifam = result.geometry.location.lat;
+                                          Longfam = result.geometry.location.lng;
                                          
                                         });
                                       }
