@@ -18,4 +18,13 @@ class SecureStorageManager {
   Future<String?> getPatientname() async {
     return await _storage.read(key: 'patientName');
   }
+
+  Future<void> saveReminderId(String reminderId) async {
+    await _storage.write(key: 'reminderId', value: reminderId);
+  }
+
+  // Get the saved reminder ID from secure storage
+  Future<String?> getReminderId() async {
+    return await _storage.read(key: 'reminderId');
+  }
 }

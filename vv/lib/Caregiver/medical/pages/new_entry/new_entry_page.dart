@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:vv/Caregiver/medical/constants.dart';
@@ -10,6 +11,8 @@ import 'package:vv/Caregiver/medical/pages/new_entry/new_entry_bloc.dart';
 import 'package:vv/Caregiver/medical/pages/success_screen/success_screen.dart';
 import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
+import 'package:vv/api/login_api.dart';
+import 'package:vv/utils/storage_manage.dart';
 import '../../common/convert_time.dart';
 import '../../models/medicine_type.dart';
 
@@ -26,7 +29,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   late NewEntryBloc _newEntryBloc;
   late GlobalKey<ScaffoldState> _scaffoldKey;
-
+  final SecureStorageManager storageManager = SecureStorageManager();
   @override
   void dispose() {
     super.dispose();
@@ -45,6 +48,46 @@ class _NewEntryPageState extends State<NewEntryPage> {
     _scaffoldKey = GlobalKey<ScaffoldState>();
     initializeNotifications();
     initializeErrorListen();
+  }
+
+  Future<void> postMedicationData() async {
+    Dio dio = Dio();
+    final String apiUrl =
+        "https://electronicmindofalzheimerpatients.azurewebsites.net/Caregiver/AddMedicationReminder";
+
+    // Retrieve patient ID securely
+    String? patientId = await storageManager.getPatientId();
+    if (patientId == null) {
+      print("Error: Patient ID is null");
+      return; // Early return if patient ID is not found
+    }
+
+    // Full API URL with patient ID
+    final String fullApiUrl = "$apiUrl/$patientId";
+
+    // Data map with null safety checks
+    Map<String, dynamic> data = {
+      "medication_Name": nameController.text,
+      "dosage": dosageController.text,
+      "medicineType": _newEntryBloc
+          .selectedMedicineType?.value.index, // Directly as integer
+      "repeater": _newEntryBloc.selectIntervals?.value, // Directly as integer
+      "startDate": _newEntryBloc.selectedDate$?.value?.toIso8601String(),
+      "endDate": _newEntryBloc.selectedDate$?.value?.toIso8601String()
+    };
+
+    try {
+      // Send a POST request using Dio
+      Response response = await DioService().dio.post(fullApiUrl, data: data);
+      if (response.statusCode == 200) {
+        print("Success: ${response.data}");
+      } else {
+        print("Failed: ${response.statusCode} - ${response.data}");
+      }
+    } catch (e) {
+      print("Dio error: $e");
+      // Handle Dio-specific errors (e.g., network issues)
+    }
   }
 
   @override
@@ -181,38 +224,31 @@ class _NewEntryPageState extends State<NewEntryPage> {
                               Theme.of(context).textTheme.subtitle2!.copyWith(
                                     color: Colors.white,
                                     fontSize: 20,
-                                     fontFamily: ' ConcertOne',
-                                     fontWeight: FontWeight.bold,
+                                    fontFamily: 'ConcertOne',
+                                    fontWeight: FontWeight.bold,
                                   ),
                         ),
                       ),
-                      onPressed: () {
-                        //add medicine
-                        //some validations
-                        //go to success screen
+                      onPressed: () async {
                         String? medicineName;
                         int? dosage;
 
-                        //medicineName
-                        if (nameController.text == "") {
+                        if (nameController.text.isEmpty) {
                           _newEntryBloc.submitError(EntryError.nameNull);
                           return;
                         }
-                        if (nameController.text != "") {
-                          medicineName = nameController.text;
-                        }
-                        //dosage
-                        if (dosageController.text == "") {
+                        medicineName = nameController.text;
+
+                        if (dosageController.text.isEmpty) {
                           dosage = 0;
+                        } else {
+                          dosage = int.tryParse(dosageController.text) ?? 0;
                         }
-                        if (dosageController.text != "") {
-                          dosage = int.parse(dosageController.text);
-                        }
-                        for (var medicine in globalBloc.medicineList$!.value) {
-                          if (medicineName == medicine.medicineName) {
-                            _newEntryBloc.submitError(EntryError.nameDuplicate);
-                            return;
-                          }
+
+                        if (globalBloc.medicineList$!.value.any((medicine) =>
+                            medicineName == medicine.medicineName)) {
+                          _newEntryBloc.submitError(EntryError.nameDuplicate);
+                          return;
                         }
                         if (_newEntryBloc.selectIntervals!.value == 0) {
                           _newEntryBloc.submitError(EntryError.interval);
@@ -222,21 +258,19 @@ class _NewEntryPageState extends State<NewEntryPage> {
                           _newEntryBloc.submitError(EntryError.startTime);
                           return;
                         }
-                                             if (_newEntryBloc.selectedDate$!.value == null) {
-  _newEntryBloc.submitError(EntryError.endTime);
-  return;
-}
+                        if (_newEntryBloc.selectedDate$!.value == null) {
+                          _newEntryBloc.submitError(EntryError.endTime);
+                          return;
+                        }
 
                         String medicineType = _newEntryBloc
                             .selectedMedicineType!.value
                             .toString()
                             .substring(13);
-
                         int interval = _newEntryBloc.selectIntervals!.value;
                         String startTime =
                             _newEntryBloc.selectedTimeOfDay$!.value;
-                            var endTime =
-                            _newEntryBloc.selectedDate$!.value ;
+                        var endTime = _newEntryBloc.selectedDate$!.value;
 
                         List<int> intIDs =
                             makeIDs(24 / _newEntryBloc.selectIntervals!.value);
@@ -244,25 +278,32 @@ class _NewEntryPageState extends State<NewEntryPage> {
                             intIDs.map((i) => i.toString()).toList();
 
                         Medicine newEntryMedicine = Medicine(
-                            notificationIDs: notificationIDs,
-                            medicineName: medicineName,
-                            dosage: dosage,
-                            medicineType: medicineType,
-                            interval: interval,
-                            startTime: startTime,
-                            endTime: endTime
-                            );
+                          notificationIDs: notificationIDs,
+                          medicineName: medicineName,
+                          dosage: dosage,
+                          medicineType: medicineType,
+                          interval: interval,
+                          startTime: startTime,
+                          endTime: endTime,
+                        );
 
-                        //update medicine list via global bloc
                         globalBloc.updateMedicineList(newEntryMedicine);
-
-                        //schedule notification
                         scheduleNotification(newEntryMedicine);
 
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SuccessScreen()));
+                        try {
+                          await postMedicationData();
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SuccessScreen()));
+                        } catch (error) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Failed to add medication: $error"),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
                       },
                     ),
                   ),
@@ -294,7 +335,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
         case EntryError.startTime:
           displayError("Please select the reminder's starting time");
           break;
-           case EntryError.endTime:
+        case EntryError.endTime:
           displayError("Please select the reminder's Ending Day");
           break;
         default:
@@ -599,7 +640,9 @@ class MedicineTypeColumn extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3.h),
-                color: isSelected ? Color.fromARGB(255, 166, 169, 174) : Colors.white),
+                color: isSelected
+                    ? Color.fromARGB(255, 166, 169, 174)
+                    : Colors.white),
             child: Center(
               child: Padding(
                 padding: EdgeInsets.only(

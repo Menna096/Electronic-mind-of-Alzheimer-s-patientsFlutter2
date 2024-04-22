@@ -4,6 +4,7 @@ import 'package:vv/Caregiver/mainpagecaregiver/create_report.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/patient_allGame.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/patient_list.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/report_list.dart';
+import 'package:vv/Caregiver/medical/main.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/utils/storage_manage.dart';
@@ -152,11 +153,19 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
             Positioned(
               top: 180,
               left: 230,
-              child: Container(
-                child: Image.asset(
-                  'images/Medicinescare.png',
-                  width: 110,
-                  height: 110,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Pills()),
+                  );
+                },
+                child: Container(
+                  child: Image.asset(
+                    'images/Medicinescare.png',
+                    width: 110,
+                    height: 110,
+                  ),
                 ),
               ),
             ),
