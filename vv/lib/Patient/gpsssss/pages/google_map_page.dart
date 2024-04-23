@@ -10,7 +10,7 @@ import 'dart:math' show cos, sqrt, asin;
 class NavigationScreen extends StatefulWidget {
   final double lat;
   final double lng;
-  NavigationScreen(this.lat, this.lng);
+  const NavigationScreen(this.lat, this.lng, {super.key});
 
   @override
   State<NavigationScreen> createState() => _NavigationScreenState();
