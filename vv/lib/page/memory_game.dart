@@ -55,7 +55,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
     symbolsVisible = true; // Initially set to true to show symbols
     initializeGame();
     _timerManager = TimerManager(
-      initialSeconds: 10,
+      initialSeconds: 30,
       onTick: _updateTimer,
       onTimerFinish: gameOver,
     );
@@ -82,7 +82,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
     startTime = DateTime.now();
     final pairsCount = level * 6;
     cards = _generateCards(pairsCount);
-    timerSeconds = 10;
+    timerSeconds = 30;
     score = 0;
     maxLevel = 3;
     processing = false;
@@ -148,26 +148,30 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
   }
 
   Future<void> postScoreUsingDio() async {
-    FormData formData = FormData.fromMap({
-      'gameScoreName':
-          'Memory Card Game', // Fixed string value for the game name
-      'patientScore': score.toString(),
-      'difficultyGame': level.toString(),
-      'maxScore': score.toString(),
-    });
+    var jsonData = {
+      // Fixed string value for the game name
+      'patientScore': score, // Use integer directly
+      'difficultyGame': level - 1, // Use integer directly
+      // Use integer directly
+    };
+
     try {
       var response = await DioService().dio.post(
-            'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/AddGameScore', // Replace with your actual server URL
-            data: formData,
-          );
+          'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/AddGameScore',
+          data: jsonData,
+          options: Options(
+              headers: {
+                'Content-Type': 'application/json'
+              }, // Set headers for JSON
+              responseType: ResponseType
+                  .json // Ensuring JSON response (optional based on API)
+              ));
 
       if (response.statusCode == 200) {
         // If the server returns an OK response, handle data or notify user
-        // ignore: avoid_print
         print("Score posted successfully: ${response.data}");
       } else {
         // Handle errors
-        // ignore: avoid_print
         print("Failed to post score: ${response.statusCode}");
       }
     } catch (e) {
@@ -216,7 +220,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
   void showCelebrationAnimation() {
     Duration timeTaken = DateTime.now().difference(startTime);
     String timeTakenString =
-        '${timeTaken.inMinutes} minutes ${timeTaken.inSeconds.remainder(10)} seconds';
+        '${timeTaken.inMinutes} minutes ${timeTaken.inSeconds.remainder(30)} seconds';
 
     showDialog(
       context: context,
@@ -236,7 +240,8 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: const Color(0xFF0386D0),
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(27.0),
                 ),
@@ -295,7 +300,8 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Score: $score', style: const TextStyle(fontSize: 20)),
-                Text('Time: $timerSeconds', style: const TextStyle(fontSize: 20)),
+                Text('Time: $timerSeconds',
+                    style: const TextStyle(fontSize: 20)),
               ],
             ),
             Expanded(
@@ -321,7 +327,8 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: const Color(0xFF0386D0),
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(27.0),
                 ),

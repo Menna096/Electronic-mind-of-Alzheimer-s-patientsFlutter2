@@ -13,11 +13,14 @@ class LevelSelectionScreen extends StatefulWidget {
 
 class _LevelSelectionScreenState extends State<LevelSelectionScreen> {
   int? recommendedLevel;
-
+  int currentScore = 0;
+  int maxScore = 0;
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
     fetchRecommendedLevel();
+    _fetchScores();
   }
 
   Future<void> fetchRecommendedLevel() async {
@@ -31,6 +34,24 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen> {
       }
     } catch (e) {
       print('Failed to fetch recommended level: $e');
+    }
+  }
+
+  Future<void> _fetchScores() async {
+    try {
+      final response = await DioService().dio.get(
+          'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/GetCurrentAndMaxScore'); // Use your actual URL
+      setState(() {
+        currentScore = response.data['score']['currentScore'];
+        maxScore = response.data['score']['maxScore'];
+        isLoading = false;
+        print('$currentScore');
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        print('Failed to load scores: $e');
+      });
     }
   }
 
@@ -76,6 +97,42 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen> {
                 ],
               ),
               Spacer(flex: 1),
+              Row(
+                children: [
+                  Container(
+                    width: 150,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(50, 33, 149, 243),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(50.0),
+                        bottomRight: Radius.circular(50.0),
+                      ),
+                    ),
+                    child: Row(children: [
+                      Center(child: Text('Max score: $maxScore'))
+                    ]),
+                  ),
+                  Spacer(),
+                  Container(
+                    width: 150,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(50, 33, 149, 243),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(50.0),
+                        bottomLeft: Radius.circular(50.0),
+                      ),
+                    ),
+                    child: Row(children: [
+                      Center(child: Text('Current score: $currentScore'))
+                    ]),
+                  ),
+                ],
+              ),
+              Spacer(
+                flex: 1,
+              ),
               Text(
                 'Welcome To Memory Card Game',
                 style: TextStyle(fontSize: 22),
