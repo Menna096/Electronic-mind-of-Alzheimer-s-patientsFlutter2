@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:vv/Patient/gpsssss/pages/google_map_page.dart';
 import 'package:vv/api/login_api.dart'; // Ensure this is correctly implemented
 import 'package:vv/models/family_data.dart';
+
 import 'package:vv/utils/storage_manage.dart'; // Ensure this is correctly implemented
 
-// ignore: use_key_in_widget_constructors
 class UnusualFamilyList extends StatefulWidget {
   @override
-  // ignore: library_private_types_in_public_api
   _UnusualFamilyListState createState() => _UnusualFamilyListState();
 }
 
@@ -85,8 +85,18 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
                     trailing: IconButton(
                       onPressed: () async {
                         await storageManager.savefamilyId(member.familyId);
-                        getFamilyLocation();
-                        print('Stored familyId: ${member.familyId}');
+                        final familyLocationResponse = await DioService().dio.get(
+                          'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/GetFamilyLocation/${member.familyId}'
+                        );
+                        final familyLocationData = familyLocationResponse.data;
+                        final latitude = familyLocationData['latitude'];
+                        final longitude = familyLocationData['longitude'];
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NavigationScreen(latitude, longitude),
+                          ),
+                        );
                       },
                       icon: Icon(Icons.location_on),
                     ),
@@ -95,26 +105,10 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
               },
             );
           } else {
-            return const CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           }
         },
       ),
     );
-  }
-
-  Future<void> getFamilyLocation() async {
-    try {
-      String? familyId = await storageManager.getfamilyId();
-      if (familyId != null) {
-        Response response = await DioService().dio.get(
-            'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/GetFamilyLocation/$familyId');
-        print('Family location: ${response.data}');
-        // Handle the response data as needed
-      } else {
-        print('Family ID is null');
-      }
-    } catch (e) {
-      print('Error fetching family location: $e');
-    }
   }
 }

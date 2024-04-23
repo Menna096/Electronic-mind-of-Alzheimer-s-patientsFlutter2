@@ -7,8 +7,6 @@ import 'package:location/location.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:math' show cos, sqrt, asin;
 
-
-
 class NavigationScreen extends StatefulWidget {
   final double lat;
   final double lng;
@@ -89,7 +87,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                           ),
                           onPressed: () async {
                             await launchUrl(Uri.parse(
-                                'google.navigation:q=${widget.lat}, ${widget.lng}&key=AIzaSyDc7BLNnR3cQAhlKRDUgpcZYssqgDIHWxc'));
+                                'google.navigation:q=${widget.lat}, ${widget.lng}&key=AIzaSyDc7BLNnR3cQAhlKRDUgpcZYssqgDIHWxc')); // Replace YOUR_API_KEY with your actual API key
                           },
                         ),
                       ),
@@ -162,7 +160,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     List<LatLng> polylineCoordinates = [];
     List<dynamic> points = [];
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        'AIzaSyDc7BLNnR3cQAhlKRDUgpcZYssqgDIHWxc',
+        'AIzaSyDc7BLNnR3cQAhlKRDUgpcZYssqgDIHWxc', // Replace YOUR_API_KEY with your actual API key
         PointLatLng(curLocation.latitude, curLocation.longitude),
         PointLatLng(dst.latitude, dst.longitude),
         travelMode: TravelMode.driving);
