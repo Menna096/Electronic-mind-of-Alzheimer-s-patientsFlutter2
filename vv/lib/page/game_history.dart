@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart'; // A collection of loading indicators
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/widgets/background.dart';
 
@@ -37,6 +38,19 @@ class _HistoryScreenState extends State<HistoryScreen> {
     }
   }
 
+  String getDifficultyLabel(int difficulty) {
+    switch (difficulty) {
+      case 0:
+        return 'Easy';
+      case 1:
+        return 'Medium';
+      case 2:
+        return 'Hard';
+      default:
+        return 'Unknown'; // Optional: default case for unknown difficulty
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,21 +76,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       itemBuilder: (context, index) {
                         final item = gameHistories[index];
                         return Card(
-                          // Encapsulate each list item in a Card widget for better UI
                           elevation: 2.0,
                           margin: const EdgeInsets.symmetric(
                               vertical: 8, horizontal: 10),
                           child: ListTile(
-                            leading:
-                                const Icon(Icons.gamepad, color: Colors.blueAccent),
+                            leading: const Icon(Icons.gamepad,
+                                color: Colors.blueAccent),
                             title: const Text('Game Score',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             subtitle: Text(
-                                'Difficulty: ${item['difficultyGame']}, Score: ${item['patientScore']}'),
-                            // trailing: Icon(Icons.arrow_forward_ios),
-                            // onTap: () {
-                            //   // Implement tap action if necessary
-                            // },
+                              'Difficulty: ${getDifficultyLabel(item['difficultyGame'])}, Score: ${item['patientScore']},\nDate: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(item['gameDate']))},',
+                            ),
                           ),
                         );
                       },
