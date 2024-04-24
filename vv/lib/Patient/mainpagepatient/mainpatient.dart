@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:signalr_core/signalr_core.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
@@ -11,19 +15,27 @@ import 'package:vv/daily_task/pages/home/home_page.dart';
 import 'package:vv/page/level_select.dart';
 import 'package:vv/utils/token_manage.dart';
 
+
 class mainpatient extends StatefulWidget {
+  const mainpatient({super.key});
+
   @override
-  State<mainpatient> createState() => _mainpatientState();
+  // ignore: library_private_types_in_public_api
+  _mainpatientState createState() => _mainpatientState();
 }
 
+// ignore: camel_case_types
 class _mainpatientState extends State<mainpatient> {
   String? _token;
   String? _photoUrl;
   String? _userName;
+  late HubConnection _connection;
+  Timer? _locationTimer;
   @override
   void initState() {
     super.initState();
     _getDataFromToken();
+    initializeSignalR();
   }
 
   Future<void> _getDataFromToken() async {
@@ -37,18 +49,87 @@ class _mainpatientState extends State<mainpatient> {
     }
   }
 
+  Future<void> initializeSignalR() async {
+    final token = await TokenManager.getToken();
+    _connection = HubConnectionBuilder()
+        .withUrl(
+      'https://electronicmindofalzheimerpatients.azurewebsites.net/hubs/GPS',
+      HttpConnectionOptions(
+        accessTokenFactory: () => Future.value(token),
+        logging: (level, message) => print(message),
+      ),
+    )
+        .withAutomaticReconnect(
+            [0, 2000, 10000, 30000]) // Configuring automatic reconnect
+        .build();
+
+    _connection.onclose((error) async {
+      print('Connection closed. Error: $error');
+      // Optionally initiate a manual reconnect here if automatic reconnect is not sufficient
+      await reconnect();
+    });
+
+    try {
+      await _connection.start();
+      print('SignalR connection established.');
+      // Start sending location every minute after the connection is established
+      _locationTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
+        sendCurrentLocation();
+      });
+    } catch (e) {
+      print('Failed to start SignalR connection: $e');
+      await reconnect();
+    }
+  }
+
+  Future<void> reconnect() async {
+    int retryInterval = 1000; // Initial retry interval to 5 seconds
+    while (_connection.state != HubConnectionState.connected) {
+      await Future.delayed(Duration(milliseconds: retryInterval));
+      try {
+        await _connection.start();
+        print("Reconnected to SignalR server.");
+        return; // Exit the loop if connected
+      } catch (e) {
+        print("Reconnect failed: $e");
+        retryInterval = (retryInterval < 1000)
+            ? retryInterval + 1000
+            : 1000; // Increase retry interval, cap at 1 seconds
+      }
+    }
+  }
+
+  Future<void> sendCurrentLocation() async {
+    try {
+      final position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      await _connection.invoke('SendGPSToFamilies',
+          args: [position.latitude, position.longitude]);
+      print('Location sent: ${position.latitude}, ${position.longitude}');
+    } catch (e) {
+      print('Error sending location: $e');
+    }
+  }
+
+  @override
+  void dispose() {
+    _locationTimer?.cancel(); // Cancel the timer when the widget is disposed
+    _connection.stop(); // Optionally stop the connection
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 84, 134, 235),
+        backgroundColor: const Color.fromARGB(255, 84, 134, 235),
       ),
       drawer: Drawer(
         child: Container(
-          color: Color(0xffD6DCE9),
+          color: const Color(0xffD6DCE9),
           child: ListView(
             children: [
-              DrawerHeader(
+              const DrawerHeader(
                 child: Center(
                   child: Text(
                     'Elder Helper',
@@ -61,8 +142,8 @@ class _mainpatientState extends State<mainpatient> {
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.manage_accounts_rounded),
-                title: Text(
+                leading: const Icon(Icons.manage_accounts_rounded),
+                title: const Text(
                   'Manage Profile',
                   style: TextStyle(
                     fontSize: 20,
@@ -70,7 +151,6 @@ class _mainpatientState extends State<mainpatient> {
                   ),
                 ),
                 onTap: () {
-                  // Navigate to the language page when Language is pressed
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -79,8 +159,8 @@ class _mainpatientState extends State<mainpatient> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.language),
-                title: Text(
+                leading: const Icon(Icons.language),
+                title: const Text(
                   'Language',
                   style: TextStyle(
                     fontSize: 20,
@@ -88,7 +168,6 @@ class _mainpatientState extends State<mainpatient> {
                   ),
                 ),
                 onTap: () {
-                  // Navigate to the language page when Language is pressed
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => Language()),
@@ -96,8 +175,8 @@ class _mainpatientState extends State<mainpatient> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.logout_outlined),
-                title: Text(
+                leading: const Icon(Icons.logout_outlined),
+                title: const Text(
                   'Log Out',
                   style: TextStyle(
                     fontSize: 20,
@@ -117,7 +196,7 @@ class _mainpatientState extends State<mainpatient> {
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -133,9 +212,9 @@ class _mainpatientState extends State<mainpatient> {
               bottom: 570,
               child: Center(
                 child: Container(
-                  padding: EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(50, 33, 149, 243),
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(50, 33, 149, 243),
                     borderRadius: BorderRadius.only(
                       topRight: Radius.circular(50.0),
                       bottomRight: Radius.circular(50.0),
@@ -147,22 +226,22 @@ class _mainpatientState extends State<mainpatient> {
                         radius: 45.0,
                         backgroundImage: NetworkImage(_photoUrl ?? ''),
                       ),
-                      SizedBox(width: 16.0),
+                      const SizedBox(width: 16.0),
                       Column(
                         children: [
                           Text(
                             'Welcome $_userName !',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                             ),
                           ),
-                          Text(
+                          const Text(
                             'To the Electronic mind',
                             style: TextStyle(
                               fontSize: 18,
                             ),
                           ),
-                          Text(
+                          const Text(
                             'of Alzheimer patient',
                             style: TextStyle(
                               fontSize: 18,
@@ -232,7 +311,7 @@ class _mainpatientState extends State<mainpatient> {
                 onTap: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => Home()),
+                    MaterialPageRoute(builder: (context) => const Home()),
                   );
                 },
                 child: Container(

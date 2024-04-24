@@ -61,6 +61,9 @@ class _AddpatState extends State<Addpat> {
   final TextEditingController relationalityController = TextEditingController();
   DateTime? selectedDate;
   TextEditingController distanceController = TextEditingController();
+  // ignore: non_constant_identifier_names
+  TextEditingController DescriptionController = TextEditingController();
+
 
   // ignore: non_constant_identifier_names
   late double Lati;
@@ -105,6 +108,7 @@ class _AddpatState extends State<Addpat> {
           ageController.text.isEmpty ||
           relationalityController.text.isEmpty ||
           distanceController.text.isEmpty ||
+          
           selectedImage == null) {
         throw 'Please fill in all fields and select an image.';
       }
@@ -119,18 +123,19 @@ class _AddpatState extends State<Addpat> {
           contentType: MediaType.parse(
               '${selectedImage!.path.split('.').last == 'jpg' || selectedImage!.path.split('.').last == 'png' ? 'image' : 'video'}/${selectedImage!.path.split('.').last}'),
         ),
-        'fullName': fullNameController.text,
-        'email': emailController.text,
-        'password': passwordController.text,
-        'phoneNumber': phoneNumberController.text,
-        'age': int.parse(ageController.text),
+        'FullName': fullNameController.text,
+        'Email': emailController.text,
+        'Password': passwordController.text,
+        'PhoneNumber': phoneNumberController.text,
+        'Age': int.parse(ageController.text),
         'relationality': relationalityController.text,
-        'diagnosisDate': selectedDate != null
+        'DiagnosisDate': selectedDate != null
             ? DateFormat('yyyy-MM-dd').format(selectedDate!)
             : null,
-        'maxDistance': int.parse(distanceController.text),
-        'mainLongitude': Long,
-        'mainLatitude': Lati,
+        'MaximumDistance': int.parse(distanceController.text),
+        'MainLongitude': Long,
+        'MainLatitude': Lati,
+        'DescriptionForPatient' : DescriptionController.text,
       });
 
       dynamic response = await APIService.Add(formData);
@@ -216,6 +221,19 @@ class _AddpatState extends State<Addpat> {
                       labelText: '  Full Name',
                       controller: fullNameController,
                       suffixIcon: Icons.person_2_sharp,
+                    ),
+                    const SizedBox(height: 15),
+                    TextFormField(
+                      controller: DescriptionController,
+                      decoration: InputDecoration(
+                        labelText: '  Description For Patient',
+                        suffixIcon: const Icon(Icons.description),
+                        border: const OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 3,
                     ),
                     const SizedBox(height: 15),
                     CustomTextField(
