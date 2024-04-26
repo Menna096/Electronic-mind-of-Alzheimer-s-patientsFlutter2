@@ -149,7 +149,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                mainpagefamily()), // Ensure this is the correct class name for your Main Page Family
+                                MainPageFamily()), // Ensure this is the correct class name for your Main Page Family
                       );
                     },
                     child: Text(

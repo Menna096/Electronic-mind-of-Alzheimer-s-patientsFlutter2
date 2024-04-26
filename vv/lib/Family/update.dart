@@ -13,7 +13,7 @@ class update extends StatelessWidget {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => mainpagefamily()),
+              MaterialPageRoute(builder: (context) => MainPageFamily()),
             );
           },
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // ignore: unnecessary_import
 import 'package:flutter/widgets.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:vv/Family/AddPersonWithoutAccount.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/appoint_list.dart';
@@ -37,6 +38,14 @@ Widget buildDrawer(BuildContext context) {
             onTap: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => update()));
+            },
+          ),
+          buildDrawerItem(
+            Icons.person_add_alt_1_sharp,
+            'Add Person Without Account',
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => AddPerson()));
             },
           ),
           buildDrawerItem(

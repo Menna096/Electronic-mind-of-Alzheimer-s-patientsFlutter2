@@ -5,30 +5,23 @@ import 'package:flutter/services.dart';
 import 'package:dio/dio.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http_parser/http_parser.dart';
-import 'package:intl/intl.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
-// ignore: unnecessary_import
-import 'package:vv/GPS/map_location_picker.dart';
-import 'package:vv/api/login_api.dart';
-import 'package:vv/map_location_picker.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/custom_Textfield.dart';
-import 'package:vv/widgets/pass_textField.dart';
+import 'package:vv/map_location_picker.dart';
 
 class APIService {
-  // ignore: unused_field
   static final Dio _dio = Dio();
 
-  // ignore: non_constant_identifier_names
-  static Future<dynamic> Add(FormData formData) async {
+  static Future<dynamic> register(FormData formData) async {
     try {
-      DioService().dio.options.headers['accept'] = '/';
-      DioService().dio.options.headers['content-type'] = 'multipart/form-data';
-      Response response = await DioService().dio.post(
-            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddPatient',
-            data: formData,
-          );
+      _dio.options.headers['accept'] = '*/*';
+      _dio.options.headers['content-type'] = 'multipart/form-data';
+      Response response = await _dio.post(
+        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddPersonWithoutAccount',
+        data: formData,
+      );
       return response.statusCode == 200
           ? true
           : response.data != null && response.data['message'] != null
@@ -42,103 +35,64 @@ class APIService {
   }
 }
 
-class Addpat extends StatefulWidget {
-  const Addpat({super.key});
+class AddPerson extends StatefulWidget {
+  const AddPerson({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _AddpatState createState() => _AddpatState();
+  _AddPersonState createState() => _AddPersonState();
 }
 
-class _AddpatState extends State<Addpat> {
-  final TextEditingController fullNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
+class _AddPersonState extends State<AddPerson> {
+  final TextEditingController FullNameController = TextEditingController();
+  final TextEditingController PhoneNumberController = TextEditingController();
+  final TextEditingController DescriptionForPatientontroller =
       TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
-  final TextEditingController ageController = TextEditingController();
-  final TextEditingController relationalityController = TextEditingController();
-  DateTime? selectedDate;
-  TextEditingController distanceController = TextEditingController();
-  // ignore: non_constant_identifier_names
-  TextEditingController DescriptionController = TextEditingController();
 
-
+  late String Relationility = '';
+  late bool _isLoading = false;
+  File? _selectedImage;
   // ignore: non_constant_identifier_names
-  late double Lati;
+  late double Latt;
   // ignore: non_constant_identifier_names
-  late double Long;
-  void presentDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    ).then((pickedDate) {
-      if (pickedDate != null) {
-        setState(() {
-          selectedDate = pickedDate;
-        });
-      }
-    });
-  }
-
-  bool _isLoading = false;
-  File? selectedImage;
+  late double Longg;
+  Prediction? initialValue;
 
   void _handleImageSelected(File? image) {
     setState(() {
-      selectedImage = image;
+      _selectedImage = image;
     });
   }
 
-  // ignore: non_constant_identifier_names
   void _Add() async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      if (fullNameController.text.isEmpty ||
-          emailController.text.isEmpty ||
-          passwordController.text.isEmpty ||
-          confirmPasswordController.text.isEmpty ||
-          phoneNumberController.text.isEmpty ||
-          ageController.text.isEmpty ||
-          relationalityController.text.isEmpty ||
-          distanceController.text.isEmpty ||
-          
-          selectedImage == null) {
+      if (FullNameController.text.isEmpty ||
+          PhoneNumberController.text.isEmpty ||
+          Relationility.isEmpty ||
+          _selectedImage == null) {
         throw 'Please fill in all fields and select an image.';
-      }
-      if (passwordController.text != confirmPasswordController.text) {
-        throw 'Password and Confirm Password do not match.';
       }
 
       var formData = FormData.fromMap({
-        'Avatar': await MultipartFile.fromFile(
-          selectedImage!.path,
-          filename: selectedImage!.path.split('/').last,
+        'AvatarImage': await MultipartFile.fromFile(
+          _selectedImage!.path,
+          filename: _selectedImage!.path.split('/').last,
           contentType: MediaType.parse(
-              '${selectedImage!.path.split('.').last == 'jpg' || selectedImage!.path.split('.').last == 'png' ? 'image' : 'video'}/${selectedImage!.path.split('.').last}'),
+              '${_selectedImage!.path.split('.').last == 'jpg' || _selectedImage!.path.split('.').last == 'png' ? 'image' : 'video'}/${_selectedImage!.path.split('.').last}'),
         ),
-        'FullName': fullNameController.text,
-        'Email': emailController.text,
-        'Password': passwordController.text,
-        'PhoneNumber': phoneNumberController.text,
-        'Age': int.parse(ageController.text),
-        'relationality': relationalityController.text,
-        'DiagnosisDate': selectedDate != null
-            ? DateFormat('yyyy-MM-dd').format(selectedDate!)
-            : null,
-        'MaximumDistance': int.parse(distanceController.text),
-        'MainLongitude': Long,
-        'MainLatitude': Lati,
-        'DescriptionForPatient' : DescriptionController.text,
+        'FullName': FullNameController.text,
+        'Relationility': Relationility,
+        'PhoneNumber': PhoneNumberController.text,
+        'MainLongitude': Longg,
+        'MainLatitude': Latt,
+        'DescriptionForPatient': DescriptionForPatientontroller.text,
       });
 
-      dynamic response = await APIService.Add(formData);
+      dynamic response = await APIService.register(formData);
 
       if (response == true) {
         showDialog(
@@ -152,7 +106,7 @@ class _AddpatState extends State<Addpat> {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const MainPageFamily()),
+                    MaterialPageRoute(builder: (context) => MainPageFamily()),
                   );
                 },
                 child: const Text('OK'),
@@ -161,7 +115,7 @@ class _AddpatState extends State<Addpat> {
           ),
         );
       } else {
-        throw 'Add failed. Please try again. Error: $response';
+        throw 'Add failed.\nSomething Went Wrong Try Again Later ';
       }
     } catch (error) {
       showDialog(
@@ -210,21 +164,138 @@ class _AddpatState extends State<Addpat> {
                     const backbutton(),
                     const SizedBox(height: 0.5),
                     const Text(
-                      'Add Account',
+                      'Create Account',
                       style: TextStyle(fontSize: 40, fontFamily: 'Acme'),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 18),
                     ProfilePicture(onImageSelected: _handleImageSelected),
                     const SizedBox(height: 18),
-                    CustomTextField(
-                      labelText: '  Full Name',
-                      controller: fullNameController,
-                      suffixIcon: Icons.person_2_sharp,
+                    TextField(
+                      controller: FullNameController,
+                      decoration: InputDecoration(
+                        labelText: 'Full Name',
+                        labelStyle: TextStyle(
+                          color: Colors.grey[600],
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
+                        ),
+                        suffixIcon:
+                            Icon(Icons.person_2_sharp, color: Colors.blue),
+                      ),
+                      style: TextStyle(
+                        fontSize: 16,
+                        height: 0.5,
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    DropdownButtonFormField<String>(
+                      value: Relationility.isNotEmpty ? Relationility : null,
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            Relationility = newValue;
+                          });
+                        }
+                      },
+                      items: <String>[
+                        'Mother',
+                        'Father',
+                        'Brother',
+                        'Sister',
+                        'Grandmother',
+                        'Grandfather',
+                        ' Grandson',
+                        'Granddaughter',
+                        'Husband',
+                        'Wife',
+                        'Son',
+                        'Daughter',
+                        'Aunt',
+                        'Uncle',
+                        'Niece',
+                        'Nephew',
+                        'Cousin',
+                        'Mother-in-law',
+                        'Father-in-law',
+                        'Brother-in-law,',
+                        'Sister-in-law',
+                        'Stepfather',
+                        'Stepmother',
+                        'Stepbrother',
+                        'Stepsister',
+                        'Half-brother',
+                        'Half-sister'
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      decoration: InputDecoration(
+                        labelText: '   You are...',
+                        labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
+                        border: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: '  Select Relationility',
+                        hintStyle: const TextStyle(color: Colors.grey),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 12),
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+                    TextField(
+                      controller: PhoneNumberController,
+                      decoration: InputDecoration(
+                        labelText: 'Phone Number',
+                        labelStyle: TextStyle(
+                          color: Colors.grey[600],
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
+                        ),
+                        suffixIcon: Icon(Icons.phone, color: Colors.blue),
+                      ),
+                      style: TextStyle(
+                        fontSize: 16,
+                        height: 0.5,
+                      ),
+                    ),
+                     const SizedBox(height: 18),
+                    TextFormField(
+                      controller: DescriptionForPatientontroller,
+                      decoration: InputDecoration(
+                        labelText: 'Description For Patient',
+                        labelStyle: TextStyle(
+                          color: Colors.grey[600],
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
+                        ),
+                        suffixIcon: Icon(Icons.description, color: Colors.blue),
+                      ),
+                      style: TextStyle(
+                        fontSize: 16,
+                        height: 0.5,
+                      ),
                     ),
                     const SizedBox(height: 15),
                     TextFormField(
-                      controller: DescriptionController,
+                      controller: DescriptionForPatientontroller,
                       decoration: InputDecoration(
                         labelText: '  Description For Patient',
                         suffixIcon: const Icon(Icons.description),
@@ -234,75 +305,6 @@ class _AddpatState extends State<Addpat> {
                       ),
                       keyboardType: TextInputType.multiline,
                       maxLines: 3,
-                    ),
-                    const SizedBox(height: 15),
-                    CustomTextField(
-                      labelText: '  Email Address',
-                      controller: emailController,
-                      suffixIcon: Icons.email_outlined,
-                    ),
-                    const SizedBox(height: 15),
-                    PasswordTextField(
-                      labelText: '  Password',
-                      controller: passwordController,
-                      suffixIcon: Icons.password_outlined,
-                    ),
-                    const SizedBox(height: 15),
-                    PasswordTextField(
-                      labelText: '  Confirm Password',
-                      suffixIcon: Icons.password_outlined,
-                      controller: confirmPasswordController,
-                    ),
-                    const SizedBox(height: 15),
-                    CustomTextField(
-                      labelText: '  Phone Number',
-                      controller: phoneNumberController,
-                      suffixIcon: Icons.phone,
-                    ),
-                    const SizedBox(height: 16),
-                    CustomTextField(
-                      labelText: '  Age',
-                      controller: ageController,
-                      suffixIcon: Icons.date_range_rounded,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      keyboardType: TextInputType.number,
-                    ),
-                    const SizedBox(height: 15),
-                    CustomTextField(
-                      labelText: '  relationality',
-                      controller: relationalityController,
-                      suffixIcon: Icons.phone,
-                    ),
-                    const SizedBox(height: 30),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Diagnosis Date',
-                        labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        suffixIcon: const Icon(Icons.calendar_today,
-                            size: 25, color: Color(0xFFD0D0D0)),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 12),
-                      ),
-                      controller: TextEditingController(
-                        text: selectedDate == null
-                            ? ''
-                            : DateFormat('yyyy-MM-dd').format(selectedDate!),
-                      ),
-                      readOnly: true,
-                      onTap: presentDatePicker,
-                    ),
-                    const SizedBox(height: 15),
-                    CustomTextField(
-                      labelText: '  Maximum Distance',
-                      controller: distanceController,
-                      suffixIcon: Icons.location_on_sharp,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      keyboardType: TextInputType.number,
                     ),
                     const SizedBox(height: 10),
                     ElevatedButton(
@@ -321,8 +323,8 @@ class _AddpatState extends State<Addpat> {
                                     onNext: (GeocodingResult? result) {
                                       if (result != null) {
                                         setState(() {
-                                          Lati = result.geometry.location.lat;
-                                          Long = result.geometry.location.lng;
+                                          Latt = result.geometry.location.lat;
+                                          Longg = result.geometry.location.lng;
                                         });
                                       }
                                     },
@@ -338,16 +340,15 @@ class _AddpatState extends State<Addpat> {
                           borderRadius: BorderRadius.circular(27.0),
                         ),
                       ),
-                      child: const Text('Pick location'),
+                      child: const Text('Pick Location Here'),
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: _isLoading ? null : _Add,
                       style: ElevatedButton.styleFrom(
                         foregroundColor:
                             const Color.fromARGB(255, 255, 255, 255),
                         backgroundColor: const Color(0xFF0386D0),
-                        fixedSize: const Size(151, 45),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0),
                         ),
