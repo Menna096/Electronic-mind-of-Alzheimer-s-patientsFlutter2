@@ -116,7 +116,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
   void _navigateToMainPageFamily() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => mainpagefamily()),
+      MaterialPageRoute(builder: (context) => MainPageFamily()),
     );
   }
 

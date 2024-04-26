@@ -93,7 +93,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => mainpagefamily()),
+                                  builder: (context) => MainPageFamily()),
                             );
                           },
                         ),

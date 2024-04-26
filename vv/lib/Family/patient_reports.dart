@@ -48,7 +48,7 @@ class _ReportListScreenFamilyState extends State<ReportListScreenFamily> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        mainpagefamily()), // Ensure this is the correct class name for your Assign Patient Screen
+                        MainPageFamily()), // Ensure this is the correct class name for your Assign Patient Screen
               );
             },
             icon: Icon(Icons.arrow_back)),
