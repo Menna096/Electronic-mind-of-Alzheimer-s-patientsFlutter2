@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:vv/Family/appoint_list.dart';
 import 'package:vv/models/appoint.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
@@ -11,6 +13,31 @@ import 'package:vv/widgets/task_widgets/timeselectraw.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+
+class APIService {
+  static final Dio _dio = Dio();
+
+  static Future<dynamic> register(FormData formData) async {
+    try {
+      _dio.options.headers['accept'] = '*/*';
+      _dio.options.headers['content-type'] = 'multipart/form-data';
+      Response response = await _dio.post(
+        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddAppointment',
+        data: formData,
+      );
+      return response.statusCode == 200
+          ? true
+          : response.data != null && response.data['message'] != null
+              ? response.data['message']
+              : 'Add failed with status code: ${response.data}';
+    } catch (error) {
+      // ignore: avoid_print
+      print('Add failed: $error');
+      return 'Add failed: $error';
+    }
+  }
+}
+
 
 class NotificationService {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin =
@@ -61,28 +88,27 @@ class AddAppointmentScreen extends StatefulWidget {
 }
 
 class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
-  late TextEditingController appointNameController;
+ 
+  
   TimeOfDay? startTime;
   TimeOfDay? endTime;
-  late TextEditingController descriptionController;
-  late TextEditingController placeController;
+  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _noteController = TextEditingController();
   int selectedDayIndex = 1;
   Color pickedColor = Color(0xFF0386D0);
+   late bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    appointNameController = TextEditingController();
-    descriptionController = TextEditingController();
-    placeController = TextEditingController();
     NotificationService.init();
   }
 
   @override
   void dispose() {
-    appointNameController.dispose();
-    descriptionController.dispose();
-    placeController.dispose();
+    _locationController.dispose();
+     _noteController.dispose();
+   
     super.dispose();
   }
 
@@ -91,6 +117,67 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
     final dt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
     final format = DateFormat.jm(); //"6:00 AM"
     return format.format(dt);
+  }
+  void _load() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      if (_locationController.text.isEmpty ||
+          _noteController.text.isEmpty == null) {
+        throw 'Please fill in all fields';
+      }
+       var formData = FormData.fromMap({
+        'location': _locationController.text,
+        'notes': _noteController.text,
+      });
+      
+      dynamic response = await APIService.register(formData);
+
+      if (response == true) {
+        showDialog(
+          // ignore: use_build_context_synchronously
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Add Appointment Successful'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AppointListScreen()),
+                  );
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      } else {
+        throw 'Add failed.\nsomething went wrong try again later ';
+      }
+    } catch (error) {
+      showDialog(
+        // ignore: use_build_context_synchronously
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Add Failed'),
+          content: Text(error.toString()),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -118,10 +205,10 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
             ),
             backbutton(),
             TaskNameTextField(
-              controller: appointNameController,
-              labelText: 'Title',
+              controller: _locationController,
+              labelText: 'Location',
             ),
-            TaskNameTextField(controller: placeController, labelText: 'Place'),
+            TaskNameTextField(controller: _noteController, labelText: 'Notes'),
             ClipRRect(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(39.0),
@@ -147,13 +234,6 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                         Spacer(flex: 4),
                       ],
                     ),
-                    SizedBox(height: 10.0),
-                    TextField(
-                      controller: descriptionController,
-                      decoration: InputDecoration(labelText: 'Description'),
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                    ),
                     SizedBox(height: 200.0),
                     AddTaskButton(
                       onPressed: () {
@@ -162,7 +242,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                           DateTime startDateTime = DateTime(now.year, now.month,
                               now.day, startTime!.hour, startTime!.minute);
                           NotificationService.scheduleAppointmentNotification(
-                              startDateTime, appointNameController.text);
+                              startDateTime, _locationController.text);
                         }
                         if (validateInputs()) {
                           DateTime startDate = DateTime(
@@ -172,22 +252,21 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                               startTime!.hour,
                               startTime!.minute);
                           Appointment newAppoint = Appointment(
-                            name: appointNameController.text,
-                            place: placeController.text,
+                            location: _locationController.text,
+                            note: _noteController.text,
                             startTime: formatTimeOfDay(startTime!),
                             endTime: formatTimeOfDay(endTime!),
-                            description: descriptionController.text,
                             day: selectedDayIndex,
                             completed: false,
                           );
                           widget.onAppointAdded(newAppoint);
                           NotificationService.scheduleAppointmentNotification(
-                              startDate, appointNameController.text);
+                              startDate, _locationController.text);
                           Navigator.pop(context);
                         }
                       },
                       backgroundColor: pickedColor,
-                      buttonText: 'Add appointment',
+                      buttonText: 'Add Appointment',
                     ),
                     SizedBox(height: 20.0),
                   ],
@@ -201,10 +280,9 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
   }
 
   bool validateInputs() {
-    if (appointNameController.text.isEmpty ||
-        placeController.text.isEmpty ||
-        (startTime == null || endTime == null) ||
-        descriptionController.text.isEmpty) {
+    if (_locationController.text.isEmpty ||
+        _noteController.text.isEmpty ||
+        (startTime == null || endTime == null)) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
