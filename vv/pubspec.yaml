@@ -91,6 +91,7 @@ dependencies:
   location: ^6.0.1
   flutter_polyline_points: ^2.0.0
   google_maps_flutter: ^2.6.1
+  signalr_flutter: ^0.2.0
   
   
   

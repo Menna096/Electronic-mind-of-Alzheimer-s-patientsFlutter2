@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'dart:math';
 
 import 'package:signalr_core/signalr_core.dart';
 import 'package:vv/utils/token_manage.dart';
+import 'package:geolocator/geolocator.dart';
 
 class VideoCaptureScreen extends StatefulWidget {
   @override
