@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:location/location.dart' as loc;
 import 'package:location/location.dart';
+import 'package:signalr_core/signalr_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:math' show cos, sqrt, asin;
+
+import 'package:vv/utils/token_manage.dart';
 
 class NavigationScreen extends StatefulWidget {
   final double lat;
@@ -25,19 +29,87 @@ class _NavigationScreenState extends State<NavigationScreen> {
   loc.LocationData? _currentPosition;
   LatLng curLocation = LatLng(23.0525, 72.5667);
   StreamSubscription<loc.LocationData>? locationSubscription;
+  late HubConnection _connection;
+  Timer? _locationTimer;
 
   @override
   void initState() {
     super.initState();
     getNavigation();
     addMarker();
+    initializeSignalR();
   }
 
   @override
   void dispose() {
     locationSubscription?.cancel();
     super.dispose();
+    _locationTimer?.cancel(); // Cancel the timer when the widget is disposed
+    _connection.stop();
   }
+
+  Future<void> initializeSignalR() async {
+    final token = await TokenManager.getToken();
+    _connection = HubConnectionBuilder()
+        .withUrl(
+      'https://electronicmindofalzheimerpatients.azurewebsites.net/hubs/GPS',
+      HttpConnectionOptions(
+        accessTokenFactory: () => Future.value(token),
+        logging: (level, message) => print(message),
+      ),
+    )
+        .withAutomaticReconnect(
+            [0, 2000, 10000, 30000]) // Configuring automatic reconnect
+        .build();
+
+    _connection.onclose((error) async {
+      print('Connection closed. Error: $error');
+      // Optionally initiate a manual reconnect here if automatic reconnect is not sufficient
+      await reconnect();
+    });
+
+    try {
+      await _connection.start();
+      print('SignalR connection established.');
+      // Start sending location every minute after the connection is established
+      _locationTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
+        sendCurrentLocation();
+      });
+    } catch (e) {
+      print('Failed to start SignalR connection: $e');
+      await reconnect();
+    }
+  }
+
+  Future<void> reconnect() async {
+    int retryInterval = 1000; // Initial retry interval to 5 seconds
+    while (_connection.state != HubConnectionState.connected) {
+      await Future.delayed(Duration(milliseconds: retryInterval));
+      try {
+        await _connection.start();
+        print("Reconnected to SignalR server.");
+        return; // Exit the loop if connected
+      } catch (e) {
+        print("Reconnect failed: $e");
+        retryInterval = (retryInterval < 1000)
+            ? retryInterval + 1000
+            : 1000; // Increase retry interval, cap at 1 seconds
+      }
+    }
+  }
+
+  Future<void> sendCurrentLocation() async {
+    try {
+      final position = await Geolocator.getCurrentPosition();
+      await _connection.invoke('SendGPSToFamilies',
+          args: [position.latitude, position.longitude]);
+      print('Location sent: ${position.latitude}, ${position.longitude}');
+    } catch (e) {
+      print('Error sending location: $e');
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -141,10 +213,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
               position:
                   LatLng(currentLocation.latitude!, currentLocation.longitude!),
               infoWindow: InfoWindow(
-                  title: '${double.parse(
-                          (getDistance(LatLng(widget.lat, widget.lng))
-                              .toStringAsFixed(2)))} km'
-                     ),
+                  title:
+                      '${double.parse((getDistance(LatLng(widget.lat, widget.lng)).toStringAsFixed(2)))} km'),
               onTap: () {
                 print('market tapped');
               },
@@ -175,7 +245,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     addPolyLine(polylineCoordinates);
   }
 
-  addPolyLine(List<LatLng>polylineCoordinates) {
+  addPolyLine(List<LatLng> polylineCoordinates) {
     PolylineId id = PolylineId('poly');
     Polyline polyline = Polyline(
       polylineId: id,
@@ -187,7 +257,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     setState(() {});
   }
 
-   double calculateDistance(lat1, lon1, lat2, lon2) {
+  double calculateDistance(lat1, lon1, lat2, lon2) {
     var p = 0.017453292519943295;
     var c = cos;
     var a = 0.5 -
@@ -200,6 +270,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     return calculateDistance(curLocation.latitude, curLocation.longitude,
         destposition.latitude, destposition.longitude);
   }
+
   addMarker() {
     setState(() {
       sourcePosition = Marker(
