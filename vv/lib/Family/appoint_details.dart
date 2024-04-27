@@ -17,11 +17,10 @@ class AppointDetailsScreen extends StatefulWidget {
 }
 
 class _AppointDetailsScreenState extends State<AppointDetailsScreen> {
-  late TextEditingController appointNameController;
-  late TextEditingController placeController;
+  late TextEditingController _locationController;
+  late TextEditingController _noteController;
   late TextEditingController startTimeController;
   late TextEditingController endTimeController;
-  late TextEditingController descriptionController;
   bool _isEditing = false;
 
   @override
@@ -37,19 +36,17 @@ class _AppointDetailsScreenState extends State<AppointDetailsScreen> {
   }
 
   void _initializeControllers() {
-    appointNameController = TextEditingController(text: widget.appoint.name);
-    placeController = TextEditingController(text: widget.appoint.place);
+    _locationController = TextEditingController(text: widget.appoint.location);
+    _noteController = TextEditingController(text: widget.appoint.note);
     startTimeController = TextEditingController(text: widget.appoint.startTime);
     endTimeController = TextEditingController(text: widget.appoint.endTime);
-    descriptionController =
-        TextEditingController(text: widget.appoint.description);
   }
 
   void _disposeControllers() {
-    appointNameController.dispose();
+    _locationController.dispose();
     startTimeController.dispose();
     endTimeController.dispose();
-    descriptionController.dispose();
+    
   }
 
   void _toggleEditing() {
@@ -61,11 +58,10 @@ class _AppointDetailsScreenState extends State<AppointDetailsScreen> {
   void _saveChanges() {
     if (_validateInputs()) {
       Appointment editedAppoint = Appointment(
-        name: appointNameController.text,
-        place: placeController.text,
+        location: _locationController.text,
+        note: _noteController.text,
         startTime: startTimeController.text,
         endTime: endTimeController.text,
-        description: descriptionController.text,
         day: widget.appoint.day,
         completed: widget.appoint.completed,
       );
@@ -118,15 +114,15 @@ class _AppointDetailsScreenState extends State<AppointDetailsScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 16.0),
               child: TextField(
-                controller: appointNameController,
-                decoration: InputDecoration(labelText: 'Title'),
+                controller: _locationController,
+                decoration: InputDecoration(labelText: 'Location'),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 16.0),
               child: TextField(
-                controller: placeController,
-                decoration: InputDecoration(labelText: 'Place'),
+                controller: _noteController,
+                decoration: InputDecoration(labelText: 'Notes'),
               ),
             ),
             SizedBox(height: 16.0),
@@ -165,16 +161,7 @@ class _AppointDetailsScreenState extends State<AppointDetailsScreen> {
                       },
                     ),
                   ),
-                  SizedBox(height: 16.0),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 16.0, right: 16.0, bottom: 8.0),
-                    child: TextField(
-                      controller: descriptionController,
-                      decoration: InputDecoration(labelText: 'Description'),
-                      maxLines: null,
-                    ),
-                  ),
+                 
                 ],
               ),
             ),

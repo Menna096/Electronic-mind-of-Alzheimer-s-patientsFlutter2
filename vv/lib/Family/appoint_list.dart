@@ -264,7 +264,7 @@ class _AppointListScreenState extends State<AppointListScreen> {
                           Icons.calendar_today_rounded,
                           color: Colors.white,
                         ),
-                        title: Text(Appoints[index].name),
+                        title: Text(Appoints[index].location),
                         subtitle: Text(
                           '${DateTime.now().day}. ${DateFormat('MMM').format(DateTime.now())}. ${DateTime.now().year}',
                         ),
