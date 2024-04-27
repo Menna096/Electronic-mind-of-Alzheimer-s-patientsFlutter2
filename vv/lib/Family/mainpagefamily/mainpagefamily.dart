@@ -103,7 +103,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
     await _notificationsPlugin.show(
       0,
       'New Location Received',
-      'Latitude: $latitude, Longitude: $longitude',
+      'Patient is out of the zone',
       platformChannelSpecifics,
       payload: '$latitude,$longitude',
     );
