@@ -6,13 +6,13 @@ import 'package:vv/Family/AddPersonWithoutAccount.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/appoint_list.dart';
+import 'package:vv/Family/patientLocToday.dart';
 import 'package:vv/Family/patient_reports.dart';
 import 'package:vv/Family/update.dart';
 import 'package:vv/page/assignPatCare.dart';
 import 'package:vv/page/gallery_screen.dart';
 import 'package:vv/page/paitent_Id.dart';
 import 'package:vv/utils/token_manage.dart';
-
 
 Widget buildDrawer(BuildContext context) {
   return Drawer(
@@ -210,11 +210,20 @@ class _buildFamilyState extends State<buildFamily> {
           top: 392,
           left: 226,
           // ignore: avoid_unnecessary_containers
-          child: Container(
-            child: Image.asset(
-              'images/placefam.png',
-              width: 94,
-              height: 90,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PatientLocationsScreen()),
+              );
+            },
+            child: Container(
+              child: Image.asset(
+                'images/placefam.png',
+                width: 94,
+                height: 90,
+              ),
             ),
           ),
         ),
