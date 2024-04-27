@@ -1,15 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/models/appoint.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
 import 'package:vv/widgets/task_widgets/add_button.dart';
-import 'package:vv/widgets/task_widgets/appbarscreens.dart';
 import 'package:vv/widgets/task_widgets/details_container.dart';
 import 'package:vv/widgets/task_widgets/name_textfield.dart';
 import 'package:vv/widgets/task_widgets/timeselectcontainer.dart';
 import 'package:vv/widgets/task_widgets/timeselectraw.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
+class NotificationService {
+  static final FlutterLocalNotificationsPlugin _notificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  static Future<void> init() async {
+    tz.initializeTimeZones();
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+    final InitializationSettings settings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    await _notificationsPlugin.initialize(settings);
+
+    print("Notifications initialized");
+  }
+
+  static Future<void> scheduleAppointmentNotification(
+      DateTime scheduledTime, String appointmentName) async {
+    print(
+        "Scheduling notification at $scheduledTime for appointment $appointmentName");
+
+    var androidDetails = const AndroidNotificationDetails(
+        'appointment_id', 'appointment_notifications',
+        importance: Importance.max, priority: Priority.high);
+    var platformDetails = NotificationDetails(android: androidDetails);
+    await _notificationsPlugin.zonedSchedule(
+        0,
+        'Appointment Reminder',
+        'You have an appointment: $appointmentName',
+        tz.TZDateTime.from(scheduledTime, tz.local),
+        platformDetails,
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time);
+
+    print("Notification scheduled");
+  }
+}
 
 class AddAppointmentScreen extends StatefulWidget {
   final Function(Appointment) onAppointAdded;
@@ -35,6 +75,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
     appointNameController = TextEditingController();
     descriptionController = TextEditingController();
     placeController = TextEditingController();
+    NotificationService.init();
   }
 
   @override
@@ -116,21 +157,32 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                     SizedBox(height: 200.0),
                     AddTaskButton(
                       onPressed: () {
+                        if (startTime != null) {
+                          DateTime now = DateTime.now();
+                          DateTime startDateTime = DateTime(now.year, now.month,
+                              now.day, startTime!.hour, startTime!.minute);
+                          NotificationService.scheduleAppointmentNotification(
+                              startDateTime, appointNameController.text);
+                        }
                         if (validateInputs()) {
+                          DateTime startDate = DateTime(
+                              DateTime.now().year,
+                              DateTime.now().month,
+                              DateTime.now().day,
+                              startTime!.hour,
+                              startTime!.minute);
                           Appointment newAppoint = Appointment(
                             name: appointNameController.text,
                             place: placeController.text,
-                            startTime: startTime != null
-                                ? formatTimeOfDay(startTime!)
-                                : '',
-                            endTime: endTime != null
-                                ? formatTimeOfDay(endTime!)
-                                : '',
+                            startTime: formatTimeOfDay(startTime!),
+                            endTime: formatTimeOfDay(endTime!),
                             description: descriptionController.text,
                             day: selectedDayIndex,
                             completed: false,
                           );
                           widget.onAppointAdded(newAppoint);
+                          NotificationService.scheduleAppointmentNotification(
+                              startDate, appointNameController.text);
                           Navigator.pop(context);
                         }
                       },

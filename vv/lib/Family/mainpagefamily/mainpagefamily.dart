@@ -72,7 +72,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
           _locationReceived = true;
         });
         _showNotification(latitude, longitude);
-        print('Location received: Latitude $latitude, Longitude $longitude');
+        print('Patient is out of the zone!!');
       }
     });
 
