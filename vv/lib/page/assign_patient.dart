@@ -14,7 +14,7 @@ class assignPatient extends StatefulWidget {
 class _assignPatientState extends State<assignPatient> {
   final TextEditingController _patientCodeController = TextEditingController();
   final TextEditingController _relationController = TextEditingController();
-
+  final TextEditingController _descriptionContrller = TextEditingController();
   Future<void> _submitPatientRelation() async {
     try {
       final response = await DioService().dio.put(
@@ -22,6 +22,7 @@ class _assignPatientState extends State<assignPatient> {
         data: {
           "patientCode": _patientCodeController.text,
           "relationility": _relationController.text,
+          "descriptionForPatient": _descriptionContrller.text,
         },
       );
       if (response.statusCode == 200) {
@@ -116,7 +117,7 @@ class _assignPatientState extends State<assignPatient> {
                     ),
                     controller: _patientCodeController,
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 12),
                   TextField(
                     decoration: const InputDecoration(
                       labelText: 'Relation',
@@ -124,7 +125,15 @@ class _assignPatientState extends State<assignPatient> {
                     ),
                     controller: _relationController,
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 12),
+                  TextField(
+                    decoration: const InputDecoration(
+                      labelText: 'Description For Patient',
+                      border: OutlineInputBorder(),
+                    ),
+                    controller: _descriptionContrller,
+                  ),
+                  const SizedBox(height: 12),
                   ElevatedButton(
                     onPressed: _submitPatientRelation,
                     child: const Text(

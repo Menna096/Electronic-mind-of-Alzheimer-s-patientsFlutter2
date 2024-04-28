@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/Family/appoint_list.dart';
+import 'package:vv/api/login_api.dart';
 import 'package:vv/models/appoint.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
@@ -17,27 +20,25 @@ import 'package:timezone/timezone.dart' as tz;
 class APIService {
   static final Dio _dio = Dio();
 
-  static Future<dynamic> register(FormData formData) async {
+  static Future<dynamic> register(String jsonData) async {
     try {
-      _dio.options.headers['accept'] = '*/*';
-      _dio.options.headers['content-type'] = 'multipart/form-data';
-      Response response = await _dio.post(
-        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddAppointment',
-        data: formData,
-      );
+      _dio.options.headers['accept'] = 'application/json';
+      _dio.options.headers['content-type'] = 'application/json';
+      Response response = await DioService().dio.post(
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddAppointment',
+            data: jsonData,
+          );
       return response.statusCode == 200
           ? true
           : response.data != null && response.data['message'] != null
               ? response.data['message']
-              : 'Add failed with status code: ${response.data}';
+              : 'Add failed with status code: ${response.statusCode}';
     } catch (error) {
-      // ignore: avoid_print
       print('Add failed: $error');
       return 'Add failed: $error';
     }
   }
 }
-
 
 class NotificationService {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin =
@@ -88,15 +89,13 @@ class AddAppointmentScreen extends StatefulWidget {
 }
 
 class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
- 
-  
   TimeOfDay? startTime;
   TimeOfDay? endTime;
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
   int selectedDayIndex = 1;
   Color pickedColor = Color(0xFF0386D0);
-   late bool _isLoading = false;
+  late bool _isLoading = false;
 
   @override
   void initState() {
@@ -107,8 +106,8 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
   @override
   void dispose() {
     _locationController.dispose();
-     _noteController.dispose();
-   
+    _noteController.dispose();
+
     super.dispose();
   }
 
@@ -118,22 +117,26 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
     final format = DateFormat.jm(); //"6:00 AM"
     return format.format(dt);
   }
+
   void _load() async {
+    if (!mounted) return; // Check if the widget is still mounted
+
     setState(() {
       _isLoading = true;
     });
-
     try {
       if (_locationController.text.isEmpty ||
           _noteController.text.isEmpty == null) {
         throw 'Please fill in all fields';
       }
-       var formData = FormData.fromMap({
+      final Map<String, dynamic> requestData = {
+        'date': DateTime.now().toIso8601String(),
         'location': _locationController.text,
         'notes': _noteController.text,
-      });
-      
-      dynamic response = await APIService.register(formData);
+      };
+      String jsonData = jsonEncode(requestData);
+
+      dynamic response = await APIService.register(jsonData);
 
       if (response == true) {
         showDialog(
@@ -147,7 +150,8 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AppointListScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => AppointListScreen()),
                   );
                 },
                 child: const Text('OK'),
@@ -174,9 +178,12 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
         ),
       );
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        // Check if the widget is still mounted before calling setState
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -237,6 +244,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                     SizedBox(height: 200.0),
                     AddTaskButton(
                       onPressed: () {
+                        _load();
                         if (startTime != null) {
                           DateTime now = DateTime.now();
                           DateTime startDateTime = DateTime(now.year, now.month,
