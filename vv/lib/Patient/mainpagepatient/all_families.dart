@@ -97,7 +97,7 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
   Future<List<FamilyMember>> _fetchFamilyMembers() async {
     try {
       final response = await DioService().dio.get(
-          'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/GetPatientFamilies');
+          'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/GetPatientRelatedMembers');
       return (response.data as List)
           .map((x) => FamilyMember.fromJson(x))
           .toList();
@@ -142,7 +142,15 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
                 child: ListTile(
                   title: Text(
                       '${member.familyName} '), // Displaying familyId with familyName
-                  subtitle: Text(member.relationility),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(member.relationility),
+                      if (member.familyDescriptionForPatient != null)
+                        Text(member.familyDescriptionForPatient!),
+                    ],
+                  ),
+
                   leading: CircleAvatar(
                     backgroundImage: NetworkImage(member.hisImageUrl),
                   ),
