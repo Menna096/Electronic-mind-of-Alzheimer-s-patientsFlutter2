@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
+import 'package:vv/api/login_api.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/custom_Textfield.dart';
 import 'package:vv/map_location_picker.dart';
@@ -18,10 +19,10 @@ class APIService {
     try {
       _dio.options.headers['accept'] = '*/*';
       _dio.options.headers['content-type'] = 'multipart/form-data';
-      Response response = await _dio.post(
-        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddPersonWithoutAccount',
-        data: formData,
-      );
+      Response response = await DioService().dio.post(
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddPersonWithoutAccount',
+            data: formData,
+          );
       return response.statusCode == 200
           ? true
           : response.data != null && response.data['message'] != null
@@ -272,7 +273,7 @@ class _AddPersonState extends State<AddPerson> {
                         height: 0.5,
                       ),
                     ),
-                     const SizedBox(height: 18),
+                    const SizedBox(height: 18),
                     TextFormField(
                       controller: DescriptionForPatientontroller,
                       decoration: InputDecoration(
@@ -294,18 +295,18 @@ class _AddPersonState extends State<AddPerson> {
                       ),
                     ),
                     const SizedBox(height: 15),
-                    TextFormField(
-                      controller: DescriptionForPatientontroller,
-                      decoration: InputDecoration(
-                        labelText: '  Description For Patient',
-                        suffixIcon: const Icon(Icons.description),
-                        border: const OutlineInputBorder(),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 3,
-                    ),
+                    // TextFormField(
+                    //   controller: DescriptionForPatientontroller,
+                    //   decoration: InputDecoration(
+                    //     labelText: '  Description For Patient',
+                    //     suffixIcon: const Icon(Icons.description),
+                    //     border: const OutlineInputBorder(),
+                    //     filled: true,
+                    //     fillColor: Colors.white,
+                    //   ),
+                    //   keyboardType: TextInputType.multiline,
+                    //   maxLines: 3,
+                    // ),
                     const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: _isLoading
