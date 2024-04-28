@@ -92,6 +92,7 @@ dependencies:
   flutter_polyline_points: ^2.0.0
   google_maps_flutter: ^2.6.1
   signalr_flutter: ^0.2.0
+  camera: ^0.10.5+9
   
   
   
