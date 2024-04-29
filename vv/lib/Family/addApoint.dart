@@ -1,11 +1,12 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 import 'package:vv/Family/appoint_list.dart';
 import 'package:vv/api/login_api.dart';
-import 'package:vv/models/appoint.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
 import 'package:vv/widgets/task_widgets/add_button.dart';
@@ -13,9 +14,6 @@ import 'package:vv/widgets/task_widgets/details_container.dart';
 import 'package:vv/widgets/task_widgets/name_textfield.dart';
 import 'package:vv/widgets/task_widgets/timeselectcontainer.dart';
 import 'package:vv/widgets/task_widgets/timeselectraw.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 class APIService {
   static final Dio _dio = Dio();
@@ -25,9 +23,9 @@ class APIService {
       _dio.options.headers['accept'] = 'application/json';
       _dio.options.headers['content-type'] = 'application/json';
       Response response = await DioService().dio.post(
-            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddAppointment',
-            data: jsonData,
-          );
+        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddAppointment',
+        data: jsonData,
+      );
       return response.statusCode == 200
           ? true
           : response.data != null && response.data['message'] != null
@@ -88,7 +86,7 @@ class AddAppointmentScreen extends StatefulWidget {
 
 class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
   TimeOfDay? startTime;
-  TimeOfDay? endTime;
+  DateTime? selectedDate;
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
   int selectedDayIndex = 1;
@@ -105,7 +103,6 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
   void dispose() {
     _locationController.dispose();
     _noteController.dispose();
-
     super.dispose();
   }
 
@@ -117,18 +114,22 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
   }
 
   void _load() async {
-    if (!mounted) return; // Check if the widget is still mounted
+    if (!mounted) return; 
 
     setState(() {
       _isLoading = true;
     });
     try {
       if (_locationController.text.isEmpty ||
-          _noteController.text.isEmpty == null) {
+          _noteController.text.isEmpty) {
         throw 'Please fill in all fields';
       }
+      if (startTime == null || selectedDate == null) {
+        throw 'Please select both start time and start day';
+      }
+
       final Map<String, dynamic> requestData = {
-        'date': DateTime.now().toIso8601String(),
+        'date': selectedDate!.toIso8601String(),
         'location': _locationController.text,
         'notes': _noteController.text,
       };
@@ -138,7 +139,6 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
 
       if (response == true) {
         showDialog(
-          // ignore: use_build_context_synchronously
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('Add Appointment Successful'),
@@ -148,8 +148,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => AppointListScreen()),
+                    MaterialPageRoute(builder: (context) => AppointListScreen()),
                   );
                 },
                 child: const Text('OK'),
@@ -162,7 +161,6 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
       }
     } catch (error) {
       showDialog(
-        // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Add Failed'),
@@ -177,7 +175,6 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
       );
     } finally {
       if (mounted) {
-        // Check if the widget is still mounted before calling setState
         setState(() {
           _isLoading = false;
         });
@@ -188,13 +185,16 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: buildAppBar('Appointments'),
       resizeToAvoidBottomInset: true,
       body: buildBody(),
     );
   }
 
   Widget buildBody() {
+    String? formattedSelectedDate = selectedDate != null
+        ? DateFormat('yyyy-MM-dd').format(selectedDate!)
+        : null;
+
     return Background(
       SingleChildScrollView: null,
       child: SingleChildScrollView(
@@ -230,45 +230,39 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                           onPressed: () => _selectStartTime(context),
                           time: startTime,
                         ),
-                        Spacer(flex: 1),
-                        TimeSelectionContainer(
-                          label: 'End Time',
-                          onPressed: () => _selectEndTime(context),
-                          time: endTime,
-                        ),
                         Spacer(flex: 4),
                       ],
                     ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () => _selectStartDate(context),
+                      child: Text('Select Start Date'),
+                    ),
+                    SizedBox(height: 10),
+                    // Conditionally render the text based on selectedDate
+                    if (formattedSelectedDate != null)
+                      Text(
+                        'Selected Date: $formattedSelectedDate',
+                        style: TextStyle(fontSize: 16),
+                      )
+                    else
+                      Container(), // Empty container if no date is selected
                     SizedBox(height: 200.0),
                     AddTaskButton(
                       onPressed: () {
                         _load();
-                        if (startTime != null) {
-                          DateTime now = DateTime.now();
-                          DateTime startDateTime = DateTime(now.year, now.month,
-                              now.day, startTime!.hour, startTime!.minute);
-                          NotificationService.scheduleAppointmentNotification(
-                              startDateTime, _locationController.text);
-                        }
-                        if (validateInputs()) {
-                          DateTime startDate = DateTime(
-                              DateTime.now().year,
-                              DateTime.now().month,
-                              DateTime.now().day,
-                              startTime!.hour,
-                              startTime!.minute);
-                          Appointment newAppoint = Appointment(
-                            location: _locationController.text,
-                            note: _noteController.text,
-                            startTime: formatTimeOfDay(startTime!),
-                            endTime: formatTimeOfDay(endTime!),
-                            day: selectedDayIndex,
-                            completed: false,
+                        if (startTime != null && selectedDate != null) {
+                          DateTime startDateTime = DateTime(
+                            selectedDate!.year,
+                            selectedDate!.month,
+                            selectedDate!.day,
+                            startTime!.hour,
+                            startTime!.minute,
                           );
-                          // widget.onAppointAdded(newAppoint);
-                          // NotificationService.scheduleAppointmentNotification(
-                          //     startDate, _locationController.text);
-                          // Navigator.pop(context);
+                          NotificationService.scheduleAppointmentNotification(
+                            startDateTime,
+                            _locationController.text,
+                          );
                         }
                       },
                       backgroundColor: pickedColor,
@@ -288,7 +282,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
   bool validateInputs() {
     if (_locationController.text.isEmpty ||
         _noteController.text.isEmpty ||
-        (startTime == null || endTime == null)) {
+        startTime == null) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -321,14 +315,16 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
     }
   }
 
-  Future<void> _selectEndTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
+  Future<void> _selectStartDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(Duration(days: 365)),
     );
     if (picked != null) {
       setState(() {
-        endTime = picked;
+        selectedDate = picked;
       });
     }
   }

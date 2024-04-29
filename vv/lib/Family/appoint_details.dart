@@ -39,7 +39,7 @@ class _AppointDetailsScreenState extends State<AppointDetailsScreen> {
     _locationController = TextEditingController(text: widget.appoint.location);
     _noteController = TextEditingController(text: widget.appoint.note);
     startTimeController = TextEditingController(text: widget.appoint.startTime);
-    endTimeController = TextEditingController(text: widget.appoint.endTime);
+  
   }
 
   void _disposeControllers() {
@@ -61,7 +61,7 @@ class _AppointDetailsScreenState extends State<AppointDetailsScreen> {
         location: _locationController.text,
         note: _noteController.text,
         startTime: startTimeController.text,
-        endTime: endTimeController.text,
+       
         day: widget.appoint.day,
         completed: widget.appoint.completed,
       );
