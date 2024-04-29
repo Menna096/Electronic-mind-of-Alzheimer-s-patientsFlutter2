@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:signalr_core/signalr_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vv/Family/appoint_details.dart';
+import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/token_manage.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/task_widgets/dayselect.dart';
@@ -19,7 +20,7 @@ class AppointListScreen extends StatefulWidget {
 }
 
 class _AppointListScreenState extends State<AppointListScreen> {
-  List<Appointment> Appoints = [];
+  List<dynamic> appointments = [];
   Appointment? selectedAppoint;
   late HubConnection _connection;
   String _currentLocation = "Waiting for location...";
@@ -27,11 +28,29 @@ class _AppointListScreenState extends State<AppointListScreen> {
   final FlutterLocalNotificationsPlugin _notificationsPlugin =
       FlutterLocalNotificationsPlugin(); //
   Color pickedColor = const Color(0xFF0386D0);
-  void updateAppoint(Appointment oldAppoint, Appointment newAppoint) {
-    setState(() {
-      final index = Appoints.indexOf(oldAppoint);
-      Appoints[index] = newAppoint;
-    });
+  // void updateAppoint(Appointment oldAppoint, Appointment newAppoint) {
+  //   setState(() {
+  //     final index = Appoints.indexOf(oldAppoint);
+  //     Appoints[index] = newAppoint;
+  //   });
+  // }
+  @override
+  void initState() {
+    super.initState();
+
+    fetchAppointments();
+  }
+
+  Future<void> fetchAppointments() async {
+    try {
+      final response = await DioService().dio.get(
+          'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/GetPatientAppointments');
+      setState(() {
+        appointments = response.data;
+      });
+    } catch (e) {
+      print('Error fetching appointments: $e');
+    }
   }
 
   Future<void> initNotifications() async {
@@ -189,8 +208,7 @@ class _AppointListScreenState extends State<AppointListScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          AddAppointmentScreen(
-                                              onAppointAdded: addAppoint)),
+                                          AddAppointmentScreen()),
                                 );
                               },
                               style: ElevatedButton.styleFrom(
@@ -246,47 +264,24 @@ class _AppointListScreenState extends State<AppointListScreen> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: Appoints.length,
+                itemCount: appointments.length,
                 itemBuilder: (context, index) {
-                  return Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 16.0),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(168, 255, 255, 255)
-                            .withOpacity(
-                                0.2), // Set white color with 50% opacity
-                        borderRadius:
-                            BorderRadius.circular(20.0), // Set circular edges
-                      ),
-                      child: ListTile(
-                        //
-                        leading: const Icon(
-                          Icons.calendar_today_rounded,
-                          color: Colors.white,
-                        ),
-                        title: Text(Appoints[index].location),
-                        subtitle: Text(
-                          '${DateTime.now().day}. ${DateFormat('MMM').format(DateTime.now())}. ${DateTime.now().year}',
-                        ),
-                        trailing: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.delete),
-                          color: const Color.fromARGB(255, 63, 63, 63),
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AppointDetailsScreen(
-                                appoint: Appoints[index],
-                                onAppointUpdated: (editedAppoint) {
-                                  updateAppoint(Appoints[index], editedAppoint);
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                      ));
+                  final appointment = appointments[index];
+                  return ListTile(
+                    leading: Icon(Icons.calendar_today_rounded),
+                    title: Text(appointment['location']),
+                    subtitle: Text(
+                      DateFormat('yyyy-MM-dd HH:mm')
+                          .format(DateTime.parse(appointment['date'])),
+                    ),
+                    trailing: IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.delete),
+                    ),
+                    onTap: () {
+                      // Handle tap
+                    },
+                  );
                 },
               ),
             ),
@@ -294,11 +289,5 @@ class _AppointListScreenState extends State<AppointListScreen> {
         ),
       ),
     );
-  }
-
-  void addAppoint(Appointment appoint) {
-    setState(() {
-      Appoints.add(appoint);
-    });
   }
 }
