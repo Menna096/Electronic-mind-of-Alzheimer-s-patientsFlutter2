@@ -80,9 +80,7 @@ class NotificationService {
 }
 
 class AddAppointmentScreen extends StatefulWidget {
-  final Function(Appointment) onAppointAdded;
-
-  const AddAppointmentScreen({required this.onAppointAdded});
+  const AddAppointmentScreen();
 
   @override
   _AddAppointmentScreenState createState() => _AddAppointmentScreenState();
@@ -267,10 +265,10 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                             day: selectedDayIndex,
                             completed: false,
                           );
-                          widget.onAppointAdded(newAppoint);
-                          NotificationService.scheduleAppointmentNotification(
-                              startDate, _locationController.text);
-                          Navigator.pop(context);
+                          // widget.onAppointAdded(newAppoint);
+                          // NotificationService.scheduleAppointmentNotification(
+                          //     startDate, _locationController.text);
+                          // Navigator.pop(context);
                         }
                       },
                       backgroundColor: pickedColor,
