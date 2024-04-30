@@ -5,6 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:signalr_core/signalr_core.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vv/Family/FinalapponitDetail.dart';
 import 'package:vv/Family/appoint_details.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/token_manage.dart';
@@ -267,6 +268,9 @@ class _AppointListScreenState extends State<AppointListScreen> {
                 itemCount: appointments.length,
                 itemBuilder: (context, index) {
                   final appointment = appointments[index];
+                  final bool canDelete = appointment['canDeleted'] ??
+                      false; // Default to false if not present
+
                   return ListTile(
                     leading: Icon(Icons.calendar_today_rounded),
                     title: Text(appointment['location']),
@@ -274,12 +278,16 @@ class _AppointListScreenState extends State<AppointListScreen> {
                       DateFormat('yyyy-MM-dd HH:mm')
                           .format(DateTime.parse(appointment['date'])),
                     ),
-                    trailing: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.delete),
-                    ),
+                    trailing: canDelete
+                        ? IconButton(
+                            onPressed: () {
+                              _deleteAppointment(appointment['appointmentId']);
+                            },
+                            icon: Icon(Icons.delete),
+                          )
+                        : null, // Null if can't delete
                     onTap: () {
-                      // Handle tap
+                      _navigateToAppointmentDetails(appointment);
                     },
                   );
                 },
@@ -289,5 +297,36 @@ class _AppointListScreenState extends State<AppointListScreen> {
         ),
       ),
     );
+  }
+
+  void _navigateToAppointmentDetails(Map<String, dynamic> appointment) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            AppointmentDetailsScreen(appointment: appointment),
+      ),
+    );
+  }
+
+  void _deleteAppointment(String appointmentId) async {
+    try {
+      // Make delete request to the endpoint
+      await DioService().dio.delete(
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/DeleteAppointment/$appointmentId',
+          );
+      // If successful, refresh the list of appointments
+      await fetchAppointments();
+      // Optionally, show a success message or perform any other actions
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Appointment deleted successfully')),
+      );
+    } catch (e) {
+      // Handle errors, e.g., show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete appointment: $e')),
+      );
+      print('Failed to delete appointment: $e');
+    }
   }
 }

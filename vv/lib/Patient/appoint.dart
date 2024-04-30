@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:signalr_core/signalr_core.dart';
 import 'package:vv/utils/token_manage.dart';
@@ -21,7 +23,7 @@ class _SignalRWidgetState extends State<SignalRWidget> {
       .build();
 
   String action = '';
-  String appointmentData = '';
+  dynamic appointmentData;
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -40,7 +42,7 @@ class _SignalRWidgetState extends State<SignalRWidget> {
     setupListener();
   }
 
-  Future<void> _showNotification(String title, String jsonString) async {
+  Future<void> _showNotification(String title, dynamic appointmentData) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'your_channel_id', // Change this to your own channel ID
       'your_channel_name', // Change this to your own channel name
@@ -54,7 +56,7 @@ class _SignalRWidgetState extends State<SignalRWidget> {
     await flutterLocalNotificationsPlugin.show(
       0,
       title,
-      jsonString, // Use the JSON string representation in the notification body
+      appointmentData.toString(), // Use the appointmentData directly
       platformChannelSpecifics,
       payload: 'New Notification',
     );
@@ -78,7 +80,12 @@ class _SignalRWidgetState extends State<SignalRWidget> {
           print('Action: $action');
           appointmentData = arguments[1];
           print('Appointment Data: $appointmentData');
-          _showNotification('New Appointment', appointmentData);
+
+          // Check if parsing was successful
+          if (appointmentData != null) {
+            // Show the notification with appointmentData
+            _showNotification('New Appointment', appointmentData);
+          }
         });
       } else {
         print('Invalid arguments received');
@@ -97,7 +104,17 @@ class _SignalRWidgetState extends State<SignalRWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text('Action: $action'),
-            Text('Appointment Data: $appointmentData'),
+            // Check if appointmentData is not null
+            if (appointmentData != null) ...[
+              Text('Appointment ID: ${appointmentData["appointmentId"]}'),
+              Text('Date: ${appointmentData["date"]}'),
+              Text('Location: ${appointmentData["location"]}'),
+              Text('Notes: ${appointmentData["notes"]}'),
+              Text(
+                  'Family Name: ${appointmentData["familyNameWhoCreatedAppointemnt"]}'),
+              Text('Can Deleted: ${appointmentData["canDeleted"]}'),
+            ] else
+              Text('No appointment data available'),
           ],
         ),
       ),
