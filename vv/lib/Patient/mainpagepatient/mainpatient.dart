@@ -7,7 +7,7 @@ import 'package:signalr_core/signalr_core.dart';
 import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
-import 'package:vv/Patient/mainpagepatient/PatientAppoint.dart';
+import 'package:vv/Patient/appoint.dart';
 import 'package:vv/Patient/mainpagepatient/all_families.dart';
 import 'package:vv/Patient/mainpagepatient/patient_media.dart';
 import 'package:vv/Patient/mainpagepatient/patient_prof.dart';
