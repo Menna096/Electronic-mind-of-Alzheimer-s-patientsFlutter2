@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -20,17 +21,16 @@ class mainpatient extends StatefulWidget {
   const mainpatient({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _mainpatientState createState() => _mainpatientState();
 }
 
-// ignore: camel_case_types
 class _mainpatientState extends State<mainpatient> {
   String? _token;
   String? _photoUrl;
   String? _userName;
   late HubConnection _connection;
   Timer? _locationTimer;
+
   @override
   void initState() {
     super.initState();
@@ -65,14 +65,12 @@ class _mainpatientState extends State<mainpatient> {
 
     _connection.onclose((error) async {
       print('Connection closed. Error: $error');
-      // Optionally initiate a manual reconnect here if automatic reconnect is not sufficient
       await reconnect();
     });
 
     try {
       await _connection.start();
       print('SignalR connection established.');
-      // Start sending location every minute after the connection is established
       _locationTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
         sendCurrentLocation();
       });
@@ -83,7 +81,7 @@ class _mainpatientState extends State<mainpatient> {
   }
 
   Future<void> reconnect() async {
-    int retryInterval = 1000; // Initial retry interval to 5 seconds
+    int retryInterval = 1000; // Initial retry interval to 1 second
     while (_connection.state != HubConnectionState.connected) {
       await Future.delayed(Duration(milliseconds: retryInterval));
       try {
@@ -92,9 +90,9 @@ class _mainpatientState extends State<mainpatient> {
         return; // Exit the loop if connected
       } catch (e) {
         print("Reconnect failed: $e");
-        retryInterval = (retryInterval < 1000)
+        retryInterval = (retryInterval < 5000)
             ? retryInterval + 1000
-            : 1000; // Increase retry interval, cap at 1 seconds
+            : 5000; // Cap retry interval at 5 seconds
       }
     }
   }
@@ -103,19 +101,39 @@ class _mainpatientState extends State<mainpatient> {
     try {
       final position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
-      await _connection.invoke('SendGPSToFamilies',
-          args: [position.latitude, position.longitude]);
-      print('Location sent: ${position.latitude}, ${position.longitude}');
+
+      // Decode token to get main latitude, longitude, and max distance
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(_token!);
+      double mainLat = double.parse(decodedToken['MainLatitude']);
+      double mainLon = double.parse(decodedToken['MainLongitude']);
+      double maxDistance = double.parse(decodedToken['MaxDistance']);
+
+      // Calculate distance using Haversine formula
+      double distance = HaversineCalculator.haversine(
+          position.latitude, mainLat, position.longitude, mainLon);
+      print('$maxDistance,mainlong$mainLon,mainlat$mainLat,$position');
+      print('$distance');
+      // Check if the distance is greater than the maximum allowed distance
+      if (distance > maxDistance) {
+        // If distance is greater, perform the invoke function
+        await _connection.invoke('SendGPSToFamilies',
+            args: [position.latitude, position.longitude]);
+        print('Location sent: ${position.latitude}, ${position.longitude}');
+      } else {
+        print('Distance less than max distance. Location not sent.');
+      }
     } catch (e) {
       print('Error sending location: $e');
     }
   }
 
-  @override
-  void dispose() {
-   
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // Dispose any resources
+  //   _locationTimer?.cancel();
+  //   _connection.stop();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -423,5 +441,27 @@ class _mainpatientState extends State<mainpatient> {
         ),
       ),
     );
+  }
+}
+
+class HaversineCalculator {
+  static double haversine(
+      double newLat1, double mainLat2, double newLon1, double mainLon2) {
+    const double r = 6371e3; // meters
+    var dLat = _toRadians(mainLat2 - newLat1);
+    var dLon = _toRadians(mainLon2 - newLon1);
+
+    var a = pow(sin(dLat / 2), 2) +
+        cos(_toRadians(newLat1)) *
+            cos(_toRadians(mainLat2)) *
+            pow(sin(dLon / 2), 2);
+    var c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+    var d = r * c;
+    return d; // return distance in meters
+  }
+
+  static double _toRadians(double degree) {
+    return degree * pi / 180;
   }
 }
