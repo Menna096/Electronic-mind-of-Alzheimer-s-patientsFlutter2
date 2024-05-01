@@ -27,7 +27,7 @@ class _FaceLoginScreenState extends State<FaceLoginScreen> {
   void _initCamera() async {
     final cameras = await availableCameras();
     final frontCamera = cameras.firstWhere(
-      (camera) => camera.lensDirection == CameraLensDirection.front,
+      (camera) => camera.lensDirection == CameraLensDirection.back,
       orElse: () => cameras.first,
     );
 
