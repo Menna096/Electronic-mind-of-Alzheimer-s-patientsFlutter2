@@ -3,12 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:dio/dio.dart';
-// ignore: depend_on_referenced_packages
 import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
-// ignore: unnecessary_import
 import 'package:vv/GPS/map_location_picker.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/map_location_picker.dart';
@@ -17,10 +15,8 @@ import 'package:vv/widgets/custom_Textfield.dart';
 import 'package:vv/widgets/pass_textField.dart';
 
 class APIService {
-  // ignore: unused_field
   static final Dio _dio = Dio();
 
-  // ignore: non_constant_identifier_names
   static Future<dynamic> Add(FormData formData) async {
     try {
       DioService().dio.options.headers['accept'] = '/';
@@ -33,9 +29,8 @@ class APIService {
           ? true
           : response.data != null && response.data['message'] != null
               ? response.data['message']
-              : 'Add failed with status code: ${response.data}';
+              : 'Add failed with status code: ${response.statusCode}';
     } catch (error) {
-      // ignore: avoid_print
       print('Add failed: $error');
       return 'Add failed: $error';
     }
@@ -46,7 +41,6 @@ class Addpat extends StatefulWidget {
   const Addpat({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _AddpatState createState() => _AddpatState();
 }
 
@@ -59,16 +53,35 @@ class _AddpatState extends State<Addpat> {
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
   final TextEditingController relationalityController = TextEditingController();
-  DateTime? selectedDate;
   TextEditingController distanceController = TextEditingController();
-  // ignore: non_constant_identifier_names
-  TextEditingController DescriptionController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  DateTime? selectedDate;
+  late double lati;
+  late double long;
+  int? selectedDistance;
+  List<int> distances = [
+    150,
+    200,
+    250,
+    300,
+    350,
+    400,
+    450,
+    500,
+    550,
+    600,
+    650,
+    700,
+    750,
+    800,
+    850,
+    900,
+    950,
+    1000
+  ];
+  File? selectedImage;
+  bool _isLoading = false;
 
-
-  // ignore: non_constant_identifier_names
-  late double Lati;
-  // ignore: non_constant_identifier_names
-  late double Long;
   void presentDatePicker() {
     showDatePicker(
       context: context,
@@ -84,16 +97,12 @@ class _AddpatState extends State<Addpat> {
     });
   }
 
-  bool _isLoading = false;
-  File? selectedImage;
-
   void _handleImageSelected(File? image) {
     setState(() {
       selectedImage = image;
     });
   }
 
-  // ignore: non_constant_identifier_names
   void _Add() async {
     setState(() {
       _isLoading = true;
@@ -107,10 +116,9 @@ class _AddpatState extends State<Addpat> {
           phoneNumberController.text.isEmpty ||
           ageController.text.isEmpty ||
           relationalityController.text.isEmpty ||
-          distanceController.text.isEmpty ||
-          
-          selectedImage == null) {
-        throw 'Please fill in all fields and select an image.';
+          selectedImage == null ||
+          selectedDistance == null) {
+        throw 'Please fill in all fields, select an image, and choose a maximum distance.';
       }
       if (passwordController.text != confirmPasswordController.text) {
         throw 'Password and Confirm Password do not match.';
@@ -128,21 +136,20 @@ class _AddpatState extends State<Addpat> {
         'Password': passwordController.text,
         'PhoneNumber': phoneNumberController.text,
         'Age': int.parse(ageController.text),
-        'relationality': relationalityController.text,
+        'Relationality': relationalityController.text,
         'DiagnosisDate': selectedDate != null
             ? DateFormat('yyyy-MM-dd').format(selectedDate!)
             : null,
-        'MaximumDistance': int.parse(distanceController.text),
-        'MainLongitude': Long,
-        'MainLatitude': Lati,
-        'DescriptionForPatient' : DescriptionController.text,
+        'MaximumDistance': selectedDistance,
+        'MainLongitude': long,
+        'MainLatitude': lati,
+        'DescriptionForPatient': descriptionController.text,
       });
 
       dynamic response = await APIService.Add(formData);
 
       if (response == true) {
         showDialog(
-          // ignore: use_build_context_synchronously
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('Add Successful'),
@@ -152,7 +159,8 @@ class _AddpatState extends State<Addpat> {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const MainPageFamily()),
+                    MaterialPageRoute(
+                        builder: (context) => const MainPageFamily()),
                   );
                 },
                 child: const Text('OK'),
@@ -165,7 +173,6 @@ class _AddpatState extends State<Addpat> {
       }
     } catch (error) {
       showDialog(
-        // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Add Failed'),
@@ -207,7 +214,7 @@ class _AddpatState extends State<Addpat> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const backbutton(),
+                    const BackButton(),
                     const SizedBox(height: 0.5),
                     const Text(
                       'Add Account',
@@ -218,15 +225,15 @@ class _AddpatState extends State<Addpat> {
                     ProfilePicture(onImageSelected: _handleImageSelected),
                     const SizedBox(height: 18),
                     CustomTextField(
-                      labelText: '  Full Name',
+                      labelText: 'Full Name',
                       controller: fullNameController,
-                      suffixIcon: Icons.person_2_sharp,
+                      suffixIcon: Icons.person,
                     ),
                     const SizedBox(height: 15),
                     TextFormField(
-                      controller: DescriptionController,
+                      controller: descriptionController,
                       decoration: InputDecoration(
-                        labelText: '  Description For Patient',
+                        labelText: 'Description For Patient',
                         suffixIcon: const Icon(Icons.description),
                         border: const OutlineInputBorder(),
                         filled: true,
@@ -237,72 +244,64 @@ class _AddpatState extends State<Addpat> {
                     ),
                     const SizedBox(height: 15),
                     CustomTextField(
-                      labelText: '  Email Address',
+                      labelText: 'Email Address',
                       controller: emailController,
-                      suffixIcon: Icons.email_outlined,
+                      suffixIcon: Icons.email,
                     ),
                     const SizedBox(height: 15),
                     PasswordTextField(
-                      labelText: '  Password',
+                      labelText: 'Password',
                       controller: passwordController,
-                      suffixIcon: Icons.password_outlined,
+                      suffixIcon: Icons.lock_outline,
                     ),
                     const SizedBox(height: 15),
                     PasswordTextField(
-                      labelText: '  Confirm Password',
-                      suffixIcon: Icons.password_outlined,
+                      labelText: 'Confirm Password',
                       controller: confirmPasswordController,
+                      suffixIcon: Icons.lock_outline,
                     ),
                     const SizedBox(height: 15),
                     CustomTextField(
-                      labelText: '  Phone Number',
+                      labelText: 'Phone Number',
                       controller: phoneNumberController,
                       suffixIcon: Icons.phone,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 15),
                     CustomTextField(
-                      labelText: '  Age',
+                      labelText: 'Age',
                       controller: ageController,
-                      suffixIcon: Icons.date_range_rounded,
+                      suffixIcon: Icons.cake,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       keyboardType: TextInputType.number,
                     ),
                     const SizedBox(height: 15),
                     CustomTextField(
-                      labelText: '  relationality',
+                      labelText: 'Relationality',
                       controller: relationalityController,
-                      suffixIcon: Icons.phone,
+                      suffixIcon: Icons.group,
                     ),
-                    const SizedBox(height: 30),
-                    TextFormField(
+                    const SizedBox(height: 15),
+                    DropdownButtonFormField<int>(
                       decoration: InputDecoration(
-                        labelText: 'Diagnosis Date',
-                        labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
+                        labelText: 'Maximum Distance',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        suffixIcon: const Icon(Icons.calendar_today,
-                            size: 25, color: Color(0xFFD0D0D0)),
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 12),
                       ),
-                      controller: TextEditingController(
-                        text: selectedDate == null
-                            ? ''
-                            : DateFormat('yyyy-MM-dd').format(selectedDate!),
-                      ),
-                      readOnly: true,
-                      onTap: presentDatePicker,
-                    ),
-                    const SizedBox(height: 15),
-                    CustomTextField(
-                      labelText: '  Maximum Distance',
-                      controller: distanceController,
-                      suffixIcon: Icons.location_on_sharp,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      keyboardType: TextInputType.number,
+                      value: selectedDistance,
+                      items: distances.map<DropdownMenuItem<int>>((int value) {
+                        return DropdownMenuItem<int>(
+                          value: value,
+                          child: Text(value.toString()),
+                        );
+                      }).toList(),
+                      onChanged: (int? newValue) {
+                        setState(() {
+                          selectedDistance = newValue;
+                        });
+                      },
                     ),
                     const SizedBox(height: 10),
                     ElevatedButton(
@@ -321,8 +320,8 @@ class _AddpatState extends State<Addpat> {
                                     onNext: (GeocodingResult? result) {
                                       if (result != null) {
                                         setState(() {
-                                          Lati = result.geometry.location.lat;
-                                          Long = result.geometry.location.lng;
+                                          lati = result.geometry.location.lat;
+                                          long = result.geometry.location.lng;
                                         });
                                       }
                                     },
