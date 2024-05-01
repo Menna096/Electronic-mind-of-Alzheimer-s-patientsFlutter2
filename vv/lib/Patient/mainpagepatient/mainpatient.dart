@@ -113,8 +113,7 @@ class _mainpatientState extends State<mainpatient> {
 
   @override
   void dispose() {
-    _locationTimer?.cancel(); // Cancel the timer when the widget is disposed
-    _connection.stop(); // Optionally stop the connection
+   
     super.dispose();
   }
 
@@ -327,12 +326,12 @@ class _mainpatientState extends State<mainpatient> {
               top: 132,
               left: 45,
               child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => SignalRWidget()),
-                  );
-                },
+                // onTap: () {
+                //   Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(builder: (context) => SignalRWidget()),
+                //   );
+                // },
                 child: Container(
                   child: Image.asset(
                     'images/appoinmentpat.png',
