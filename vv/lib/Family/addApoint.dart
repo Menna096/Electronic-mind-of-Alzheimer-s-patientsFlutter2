@@ -49,7 +49,7 @@ class NotificationService {
     final InitializationSettings settings =
         InitializationSettings(android: initializationSettingsAndroid);
     await _notificationsPlugin.initialize(settings);
-
+//
     print("Notifications initialized");
   }
 

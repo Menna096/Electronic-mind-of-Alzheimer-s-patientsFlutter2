@@ -8,7 +8,7 @@ class SignalRWidget extends StatefulWidget {
   @override
   _SignalRWidgetState createState() => _SignalRWidgetState();
 }
-
+//
 class _SignalRWidgetState extends State<SignalRWidget> {
   late HubConnection appointmentHubConnection;
   String action = '';
