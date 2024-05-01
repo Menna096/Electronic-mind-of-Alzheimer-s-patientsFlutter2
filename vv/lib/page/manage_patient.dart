@@ -17,8 +17,6 @@ class ViewProfile extends StatefulWidget {
 }
 
 class _ViewProfileState extends State<ViewProfile> {
-  late HubConnection _connection;
-  Timer? _locationTimer; // Initialize Dio
   TextEditingController _fullNameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _relationalityController = TextEditingController();
@@ -30,79 +28,10 @@ class _ViewProfileState extends State<ViewProfile> {
   @override
   void initState() {
     super.initState();
-     initializeSignalR();
+
     _fetchUserData();
   }
 
-
- Future<void> initializeSignalR() async {
-    final token = await TokenManager.getToken();
-    _connection = HubConnectionBuilder()
-        .withUrl(
-      'https://electronicmindofalzheimerpatients.azurewebsites.net/hubs/GPS',
-      HttpConnectionOptions(
-        accessTokenFactory: () => Future.value(token),
-        logging: (level, message) => print(message),
-      ),
-    )
-        .withAutomaticReconnect(
-            [0, 2000, 10000, 30000]) // Configuring automatic reconnect
-        .build();
-
-    _connection.onclose((error) async {
-      print('Connection closed. Error: $error');
-      // Optionally initiate a manual reconnect here if automatic reconnect is not sufficient
-      await reconnect();
-    });
-
-    try {
-      await _connection.start();
-      print('SignalR connection established.');
-      // Start sending location every minute after the connection is established
-      _locationTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
-        sendCurrentLocation();
-      });
-    } catch (e) {
-      print('Failed to start SignalR connection: $e');
-      await reconnect();
-    }
-  }
-
-  Future<void> reconnect() async {
-    int retryInterval = 1000; // Initial retry interval to 5 seconds
-    while (_connection.state != HubConnectionState.connected) {
-      await Future.delayed(Duration(milliseconds: retryInterval));
-      try {
-        await _connection.start();
-        print("Reconnected to SignalR server.");
-        return; // Exit the loop if connected
-      } catch (e) {
-        print("Reconnect failed: $e");
-        retryInterval = (retryInterval < 1000)
-            ? retryInterval + 1000
-            : 1000; // Increase retry interval, cap at 1 seconds
-      }
-    }
-  }
-
-  Future<void> sendCurrentLocation() async {
-    try {
-      final position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      await _connection.invoke('SendGPSToFamilies',
-          args: [position.latitude, position.longitude]);
-      print('Location sent: ${position.latitude}, ${position.longitude}');
-    } catch (e) {
-      print('Error sending location: $e');
-    }
-  }
-
-  @override
-  void dispose() {
-    _locationTimer?.cancel(); // Cancel the timer when the widget is disposed
-    _connection.stop(); // Optionally stop the connection
-    super.dispose();
-  }
   void _presentDatePicker() {
     showDatePicker(
       context: context,
@@ -132,7 +61,6 @@ class _ViewProfileState extends State<ViewProfile> {
           _distanceController.text = response.data['maxDistance'].toString();
           _selectedDate =
               DateFormat('dd/MM/yyyy').parse(response.data['diagnosisDate']);
-             
         });
       } else {
         print('Failed to fetch data: ${response.statusCode}');
@@ -149,21 +77,20 @@ class _ViewProfileState extends State<ViewProfile> {
     Map<String, dynamic> requestBody = {
       'phoneNumber': _phoneController.text,
       'age': int.parse(_ageController.text),
-       'maximumDistance': int.parse(_distanceController.text),
+      'maximumDistance': int.parse(_distanceController.text),
       'diagnosisDate': _selectedDate != null
           ? DateFormat('yyyy-MM-dd').format(_selectedDate!)
           : null,
-     
     };
 
     try {
       Response response = await DioService().dio.put(
-        apiUrl,
-        data: requestBody,
-        options: Options(
-          contentType: 'application/json; charset=UTF-8',
-        ),
-      );
+            apiUrl,
+            data: requestBody,
+            options: Options(
+              contentType: 'application/json; charset=UTF-8',
+            ),
+          );
 
       if (response.statusCode == 200) {
         print('User profile updated successfully');
@@ -352,7 +279,7 @@ class _ViewProfileState extends State<ViewProfile> {
                       readOnly: true,
                       onTap: _presentDatePicker,
                     ),
-                  const SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Maximum Distance',
@@ -370,7 +297,6 @@ class _ViewProfileState extends State<ViewProfile> {
                       controller: _distanceController,
                       keyboardType: TextInputType.number,
                     ),
-                    
                     const SizedBox(height: 30),
                     ElevatedButton(
                       child: const Text('Update'),
