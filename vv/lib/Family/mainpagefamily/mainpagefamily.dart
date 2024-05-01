@@ -33,7 +33,6 @@ class _MainPageFamilyState extends State<MainPageFamily> {
     final InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
-    
     );
     await _notificationsPlugin.initialize(
       initializationSettings,
@@ -88,7 +87,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
   }
 
   Future<void> _showNotification(double latitude, double longitude) async {
-     AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       'your channel id',
       'your channel name',
@@ -98,7 +97,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
       ticker: 'ticker',
       sound: RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
     );
-     NotificationDetails platformChannelSpecifics =
+    NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await _notificationsPlugin.show(
       0,
@@ -118,11 +117,11 @@ class _MainPageFamilyState extends State<MainPageFamily> {
     }
   }
 
-  @override
-  void dispose() {
-    _connection.stop();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _connection.stop();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
