@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
                     Colors.blue), // Adjust this according to your color scheme
             // Other theme configurations
           ),
-          home: LoginPageAll(),
+          home: FaceLoginScreen(),
         ),
       ),
     );
