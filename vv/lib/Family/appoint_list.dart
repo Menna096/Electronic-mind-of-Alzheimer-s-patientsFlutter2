@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:signalr_core/signalr_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vv/Family/FinalapponitDetail.dart';
-import 'package:vv/api/login_api.dart';  // Ensure this import is correct for your project
+import 'package:vv/api/login_api.dart'; // Ensure this import is correct for your project
 import 'package:vv/utils/token_manage.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/task_widgets/dayselect.dart';
@@ -20,41 +20,17 @@ class AppointListScreen extends StatefulWidget {
 
 class _AppointListScreenState extends State<AppointListScreen> {
   List<dynamic> appointments = [];
-  late HubConnection _connection;
-  final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  final FlutterLocalNotificationsPlugin _notificationsPlugin =
+      FlutterLocalNotificationsPlugin();
   Color pickedColor = const Color(0xFF0386D0);
 
   @override
   void initState() {
     super.initState();
     initNotifications();
-    initializeSignalR();
+
     fetchAppointments();
-  }
-
-  Future<void> initializeSignalR() async {
-    _connection = HubConnectionBuilder()
-        .withUrl(
-          'https://electronicmindofalzheimerpatients.azurewebsites.net/hubs/appointment',
-          HttpConnectionOptions(
-            accessTokenFactory: () async => await TokenManager.getToken(),
-            logging: (level, message) => print(message),
-          ),
-        )
-        .withAutomaticReconnect()
-        .build();
-
-    _connection.on('NewAppointmentAdded', (arguments) {
-      print('New appointment added: $arguments');
-      fetchAppointments();  // Re-fetch the appointments to update the UI
-    });
-
-    try {
-      await _connection.start();
-      print('SignalR connection established.');
-    } catch (e) {
-      print('Failed to start SignalR connection: $e');
-    }
   }
 
   Future<void> fetchAppointments() async {
@@ -82,7 +58,6 @@ class _AppointListScreenState extends State<AppointListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Appointments List'),
-     
       ),
       body: Container(
         alignment: AlignmentDirectional.bottomCenter,
@@ -106,11 +81,14 @@ class _AppointListScreenState extends State<AppointListScreen> {
                   return ListTile(
                     leading: Icon(Icons.calendar_today_rounded),
                     title: Text(appointment['title']),
-                    subtitle: Text(DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(appointment['date']))),
+                    subtitle: Text(DateFormat('yyyy-MM-dd HH:mm')
+                        .format(DateTime.parse(appointment['date']))),
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => AppointmentDetailsScreen(appointment: appointment)),
+                        MaterialPageRoute(
+                            builder: (context) => AppointmentDetailsScreen(
+                                appointment: appointment)),
                       );
                     },
                   );
@@ -135,7 +113,6 @@ class _AppointListScreenState extends State<AppointListScreen> {
 
   @override
   void dispose() {
-    _connection.stop();
     super.dispose();
   }
 }
