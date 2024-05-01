@@ -344,12 +344,12 @@ class _mainpatientState extends State<mainpatient> {
               top: 132,
               left: 45,
               child: GestureDetector(
-                // onTap: () {
-                //   Navigator.pushReplacement(
-                //     context,
-                //     MaterialPageRoute(builder: (context) => SignalRWidget()),
-                //   );
-                // },
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignalRWidget()),
+                  );
+                },
                 child: Container(
                   child: Image.asset(
                     'images/appoinmentpat.png',
