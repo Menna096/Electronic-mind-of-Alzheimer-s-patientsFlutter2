@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
+import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/utils/token_manage.dart';
@@ -27,7 +28,7 @@ class _FaceLoginScreenState extends State<FaceLoginScreen> {
   void _initCamera() async {
     final cameras = await availableCameras();
     final frontCamera = cameras.firstWhere(
-      (camera) => camera.lensDirection == CameraLensDirection.back,
+      (camera) => camera.lensDirection == CameraLensDirection.front,
       orElse: () => cameras.first,
     );
 
@@ -68,11 +69,17 @@ class _FaceLoginScreenState extends State<FaceLoginScreen> {
           // For example, you might use the 'flutter_secure_storage' package to store the token
           // and Navigator.pushReplacement to change screens.
         } else {
-          Navigator.pushReplacementNamed(context, '/LoginPageAll');
+        Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPageAll()),
+              );
         }
       } catch (e) {
         print(e);
-        Navigator.pushReplacementNamed(context, '/LoginPageAll');
+       Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPageAll()),
+              );
       }
     }
   }
