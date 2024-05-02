@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:vv/api/login_api.dart';
 
 class ImageItem {
@@ -20,55 +21,69 @@ class UploadImagesPage extends StatefulWidget {
 class _UploadImagesPageState extends State<UploadImagesPage> {
   final ImagePicker _picker = ImagePicker();
   List<ImageItem> _images = [];
-  int _nextImageIndex = 0;
   Dio _dio = Dio(); // Instance of Dio
   List<dynamic> _imageSamplesWithInstructions = [];
 
   Future<void> _fetchImagesWithInstructions() async {
     try {
       final response = await DioService().dio.get(
-            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
-            options: Options(
-              headers: {
-                'accept': '*/*',
-                'Authorization': 'Bearer your_access_token_here',
-              },
-            ),
-          );
+        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
+        options: Options(
+          headers: {
+            'accept': '*/*',
+            'Authorization': 'Bearer your_access_token_here',
+          },
+        ),
+      );
       setState(() {
-        _imageSamplesWithInstructions =
-            response.data['imagesSamplesWithInstractions'];
+        _imageSamplesWithInstructions = response.data['imagesSamplesWithInstractions'];
       });
     } catch (e) {
       print('Error fetching images and instructions: $e');
     }
   }
 
-  Future<void> _pickImage() async {
-    if (_nextImageIndex < _imageSamplesWithInstructions.length) {
-      final imageUrl =
-          _imageSamplesWithInstructions[_nextImageIndex]['imageSampleUrl'];
-      final instruction =
-          _imageSamplesWithInstructions[_nextImageIndex]['instraction'];
-
+  Future<void> _pickImage({int? replaceIndex}) async {
+    if (replaceIndex != null || _images.length < _imageSamplesWithInstructions.length) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Instructions'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.network(imageUrl),
-                SizedBox(height: 10),
-                Text(instruction),
-              ],
+            title: Text('Instructions for Image ${replaceIndex != null ? replaceIndex + 1 : _images.length + 1}'),
+            content: FutureBuilder(
+              future: _fetchInstructionData(replaceIndex),
+              builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: SpinKitCircle(
+                      color: Colors.blue, // Adjust color as needed
+                      size: 50.0, // Adjust size as needed
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Error fetching instructions: ${snapshot.error}');
+                } else {
+                  final instructionData = _imageSamplesWithInstructions[replaceIndex != null ? replaceIndex : _images.length];
+                  final imageUrl = instructionData['imageSampleUrl'];
+                  final instruction = instructionData['instraction'];
+
+                  return SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Image.network(imageUrl),
+                        SizedBox(height: 10),
+                        Text(instruction),
+                      ],
+                    ),
+                  );
+                }
+              },
             ),
-            actions: [
+            actions: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  _captureImage();
+                  _captureImage(replaceIndex);
                 },
                 child: Text('Capture Image'),
               ),
@@ -77,29 +92,19 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
         },
       );
     } else {
-      _captureImage();
+      _captureImage(replaceIndex);
     }
   }
 
-  Future<void> _captureImage() async {
+  Future<void> _captureImage(int? replaceIndex) async {
     final XFile? image = await _picker.pickImage(source: ImageSource.camera);
     if (image != null) {
       setState(() {
-        _images.add(ImageItem(file: image));
-        _nextImageIndex++;
-      });
-      Timer(Duration(seconds: 3), () {
-        setState(() {
-          if (_images.length < 5) {
-            for (var img in _images) {
-              img.isVisible = false;
-            }
-          } else {
-            for (var img in _images) {
-              img.isVisible = true;
-            }
-          }
-        });
+        if (replaceIndex != null) {
+          _images[replaceIndex] = ImageItem(file: image);
+        } else {
+          _images.add(ImageItem(file: image));
+        }
       });
     }
   }
@@ -109,21 +114,19 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
     for (var imageItem in _images) {
       formData.files.add(MapEntry(
         'TrainingImages',
-        await MultipartFile.fromFile(imageItem.file.path,
-            filename: imageItem.file.name),
+        await MultipartFile.fromFile(imageItem.file.path, filename: imageItem.file.name),
       ));
     }
 
     _dio.options.headers = {
       'accept': '*/*',
-      'Authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4MDUwM2YyMi0xNmFiLTRmY2MtYWQ0Ni0wMTdiNDY1ZDkzOTEiLCJlbWFpbCI6ImZhbWlseTI1MTIwMDNAZ21haWwuY29tIiwiRnVsbE5hbWUiOiJNZW5uYS1BbGxhaCIsIlBob25lTnVtYmVyIjoiMDEyMjQ5MjAwMiIsInVpZCI6IjFkN2U5NTI0LTM1NGMtNDNkNy1iYmUwLTEzZmQzOWRiZjBlNCIsIlVzZXJBdmF0YXIiOiJodHRwczovL2VsZWN0cm9uaWNtaW5kb2ZhbHpoZWltZXJwYXRpZW50cy5henVyZXdlYnNpdGVzLm5ldC9Vc2VyIEF2YXRhci8xZDdlOTUyNC0zNTRjLTQzZDctYmJlMC0xM2ZkMzlkYmYwZTRfNGNiZjdjOWEtYjU3YS00YzQ0LTgzN2EtZjZlODcwYTkwY2IyLmpwZyIsIk1haW5MYXRpdHVkZSI6IjI5Ljk1NDc2NTYiLCJNYWluTG9uZ2l0dWRlIjoiMzIuNDk1NDY5NTAwMDAwMDA2Iiwicm9sZXMiOiJGYW1pbHkiLCJleHAiOjE3MjIzODU4NzEsImlzcyI6IkFydE9mQ29kaW5nIiwiYXVkIjoiQWx6aGVpbWFyQXBwIn0.A9CzjnQDmsfpNHNeal8VQXSiTB83X68NF78UKBMWPdc'
+      'Authorization': 'Bearer your_access_token',
     };
 
     try {
       var response = await _dio.post(
-          'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyTrainingImages',
-          data: formData);
+        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyTrainingImages',
+        data: formData);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Upload successful! Status: ${response.statusCode}"),
         backgroundColor: Colors.green,
@@ -151,35 +154,37 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
       ),
       body: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 500),
+          if (_images.length < _imageSamplesWithInstructions.length)
+            Padding(
+              padding: const EdgeInsets.all(20.0),
               child: ElevatedButton(
-                key: ValueKey<int>(_nextImageIndex),
-                onPressed: _pickImage,
-                child: Text('Capture Image'),
+                onPressed: () => _pickImage(),
+                child: Text('Add Image ${_images.length + 1}'),
               ),
             ),
-          ),
           Expanded(
             child: ListView.builder(
               itemCount: _images.length,
               itemBuilder: (context, index) {
-                return Visibility(
-                  visible: _images[index].isVisible,
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Container(
-                      height: 100, // Height of the image
-                      child: Image.file(File(_images[index].file.path)),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Adjust vertical spacing here
+                  child: ListTile(
+                    leading: Container(
+                      height: 100,
+                      width: 100,
+                      child: Image.file(File(_images[index].file.path), fit: BoxFit.cover),
+                    ),
+                    title: Text('Image ${index + 1}'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.camera_alt),
+                      onPressed: () => _pickImage(replaceIndex: index),
                     ),
                   ),
                 );
               },
             ),
           ),
-          if (_images.length == 5 && _images.every((img) => img.isVisible))
+          if (_images.length == _imageSamplesWithInstructions.length)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               child: ElevatedButton(
@@ -191,4 +196,26 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
       ),
     );
   }
+
+  Future<void> _fetchInstructionData(int? replaceIndex) async {
+    try {
+      final response = await DioService().dio.get(
+        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
+        options: Options(
+          headers: {
+            'accept': '*/*',
+            'Authorization': 'Bearer your_access_token_here',
+          },
+        ),
+      );
+      setState(() {
+        _imageSamplesWithInstructions = response.data['imagesSamplesWithInstractions'];
+      });
+    } catch (e) {
+      print('Error fetching images and instructions: $e');
+      throw e;
+    }
+  }
 }
+
+
