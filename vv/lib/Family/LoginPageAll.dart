@@ -1,9 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/patient_list.dart';
 import 'package:vv/Family/Registerfamily/registerfamily.dart';
 import 'package:vv/Family/ForgotPasswordfamily.dart';
+import 'package:vv/Family/enterimage.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/local_auth_api.dart';
@@ -72,7 +74,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
     String userRole = decodedToken['roles'];
 
     if (userRole == 'Family') {
-      _navigateToMainPageFamily();
+      checkTrain();
     } else if (userRole == 'Caregiver') {
       _navigateToMainPageCaregiver();
     } else {
@@ -127,6 +129,32 @@ class _LoginPageAllState extends State<LoginPageAll> {
     );
   }
 
+  Future<void> checkTrain() async {
+    try {
+      Response response = await DioService().dio.get(
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
+          );
+      if (response.statusCode == 200) {
+        bool needTraining = response.data['needATraining'];
+        if (needTraining) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    UploadImagesPage()), // Replace YourScreen with your screen widget
+          );
+          print('need to train');
+        } else {
+          _navigateToMainPageFamily();
+        }
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
   Future<void> _navigateBasedOnUserRole() async {
     final token = await TokenManager.getToken();
     if (token != null) {
@@ -135,7 +163,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         String userRole = decodedToken['roles'];
 
         if (userRole == 'Family') {
-          _navigateToMainPageFamily();
+          checkTrain();
         } else if (userRole == 'Caregiver') {
           _navigateToMainPageCaregiver();
         } else {
