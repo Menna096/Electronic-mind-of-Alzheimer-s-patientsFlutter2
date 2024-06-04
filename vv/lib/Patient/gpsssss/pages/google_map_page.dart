@@ -97,7 +97,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                           ),
                           onPressed: () async {
                             await launchUrl(Uri.parse(
-                                'google.navigation:q=${widget.lat}, ${widget.lng}&key=AIzaSyDc7BLNnR3cQAhlKRDUgpcZYssqgDIHWxc')); // Replace YOUR_API_KEY with your actual API key
+                                'google.navigation:q=${widget.lat}, ${widget.lng}&key=AIzaSyCuTilAfnGfkZtIx0T3qf-eOmWZ_N2LpoY')); // Replace YOUR_API_KEY with your actual API key
                           },
                         ),
                       ),
