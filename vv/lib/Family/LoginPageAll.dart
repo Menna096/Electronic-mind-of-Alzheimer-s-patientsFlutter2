@@ -11,7 +11,6 @@ import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/local_auth_api.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/token_manage.dart';
-import 'package:vv/widgets/background.dart';
 // Import the TokenManager class
 
 class LoginPageAll extends StatefulWidget {
@@ -179,13 +178,24 @@ class _LoginPageAllState extends State<LoginPageAll> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Background(
-        SingleChildScrollView: null,
+      backgroundColor: Color(0xff3B5998),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xffFFFFFF), // White
+              Color(0xff3B5998), // Facebook Blue
+            ],
+          ),
+        ),
         child: SingleChildScrollView(
-          child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 110),
                 Text(
@@ -197,16 +207,18 @@ class _LoginPageAllState extends State<LoginPageAll> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 60),
+                SizedBox(height: 50.0),
                 _buildEmailTextField(),
+                
+                SizedBox(height: 11), // Added space between email and password fields
                 _buildPasswordTextField(),
-                SizedBox(height: .5),
-                _buildForgotPasswordButton(),
-                SizedBox(height: .5),
+                
+                SizedBox(height: 50.0),
                 _buildLoginButton(),
-                SizedBox(height: 0.5),
+                SizedBox(height: 10.0),
                 _buildRegisterNowButton(),
-                SizedBox(height: 30),
+                SizedBox(height: 10.0),
+               _buildforgotpasswordButton(),
               ],
             ),
           ),
@@ -216,105 +228,84 @@ class _LoginPageAllState extends State<LoginPageAll> {
   }
 
   Widget _buildEmailTextField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: TextField(
-        controller: _emailController,
-        decoration: InputDecoration(
-          labelText: 'Email Address',
-          labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          suffixIcon: Icon(
-            Icons.email_outlined,
-            size: 25,
-            color: Color(0xFFD0D0D0),
-          ),
-          filled: true,
-          fillColor: Colors.white,
-          errorText: _emailErrorText,
+    return TextFormField(
+      controller: _emailController,
+      decoration: InputDecoration(
+        hintText: 'Email Address',
+        prefixIcon: Icon(
+          Icons.email,
+          color: Colors.white,
         ),
+        filled: true,
+        fillColor: Colors.white.withOpacity(0.2),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25.0),
+          borderSide: BorderSide.none,
+        ),
+        errorText: _emailErrorText,
       ),
     );
   }
 
   Widget _buildPasswordTextField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: TextField(
-        obscureText: !_isPasswordVisible,
-        controller: _passwordController,
-        decoration: InputDecoration(
-          labelText: 'Password',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          suffixIcon: InkWell(
-            onTap: () {
-              setState(() {
-                _isPasswordVisible = !_isPasswordVisible;
-              });
-            },
-            child: Icon(
-              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-              size: 25,
-              color: Color(0xFFD0D0D0),
-            ),
-          ),
-          filled: true,
-          fillColor: Colors.white,
-          labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
-          errorText: _passwordErrorText,
+    return TextFormField(
+      obscureText: !_isPasswordVisible,
+      controller: _passwordController,
+      decoration: InputDecoration(
+        hintText: 'Password',
+        prefixIcon: Icon(
+          Icons.lock,
+          color: Colors.white,
         ),
+        suffixIcon: IconButton(
+          onPressed: () {
+            setState(() {
+              _isPasswordVisible = !_isPasswordVisible;
+            });
+          },
+          icon: Icon(
+            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+            color: Colors.white,
+          ),
+        ),
+        filled: true,
+        fillColor: Colors.white.withOpacity(0.2),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25.0),
+          borderSide: BorderSide.none,
+        ),
+        errorText: _passwordErrorText,
       ),
     );
   }
 
-  Widget _buildForgotPasswordButton() {
-    return Container(
-      margin: EdgeInsets.only(right: 1, top: 0.5),
-      alignment: Alignment.centerRight,
-      child: TextButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ForgotPasswordfamily()),
-          );
-        },
-        child: Text(
-          'Forgot Password?',
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 4, 96, 150),
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildLoginButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: ElevatedButton(
-        onPressed: () {
-          if (_emailController.text.isEmpty ||
-              _passwordController.text.isEmpty) {
-            setState(() {
-              _emailErrorText = 'Please enter your email.';
-              _passwordErrorText = 'Please enter your password.';
-            });
-            return;
-          }
-          _login();
-        },
-        child: Text(
-          'Login',
-          style:
-              TextStyle(fontSize: 18, color: Color.fromARGB(255, 4, 96, 150)),
+    return ElevatedButton(
+      onPressed: () {
+        if (_emailController.text.isEmpty ||
+            _passwordController.text.isEmpty) {
+          setState(() {
+            _emailErrorText = 'Please enter your email.';
+            _passwordErrorText = 'Please enter your password.';
+          });
+          return;
+        }
+        _login();
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white,
+        padding: EdgeInsets.symmetric(horizontal: 145.0, vertical: 15.0),
+        textStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Color(0xFF4568DC), // Purple
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25.0),
         ),
       ),
+      child: Text('Login'),
     );
   }
 
@@ -329,12 +320,60 @@ class _LoginPageAllState extends State<LoginPageAll> {
           ),
         );
       },
-      child: Text(
-        'Don\'t have an account? Register Now.',
-        style: TextStyle(
-          fontSize: 17,
-          color: Color(0xFFffffff),
+      style: TextButton.styleFrom(
+        foregroundColor: Colors.green, // Set the text color to green
+      ),
+      child: RichText(
+        text: TextSpan(
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+          ),
+          children: <TextSpan>[
+            TextSpan(text: 'Don\'t have an account? ', style: TextStyle(color: Colors.white)), // White color for "Don't have an account?"
+            TextSpan(
+              text: 'Register Now.',
+              style: TextStyle(
+                color: Colors.green, // Green color for "Register Now"
+              ),
+            ),
+          ],
         ),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+    Widget _buildforgotpasswordButton() {
+    return TextButton(
+      onPressed: () {
+        TokenManager.deleteToken();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ForgotPasswordfamily(),
+          ),
+        );
+      },
+      style: TextButton.styleFrom(
+        foregroundColor: Colors.green, // Set the text color to green
+      ),
+      child: RichText(
+        text: TextSpan(
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+          ),
+          children: <TextSpan>[
+            TextSpan(text: 'Help? ', style: TextStyle(color: Colors.white)), // White color for "Don't have an account?"
+            TextSpan(
+              text: 'Forgot Password.',
+              style: TextStyle(
+                color: Colors.green, // Green color for "Register Now"
+              ),
+            ),
+          ],
+        ),
+        textAlign: TextAlign.center,
       ),
     );
   }
