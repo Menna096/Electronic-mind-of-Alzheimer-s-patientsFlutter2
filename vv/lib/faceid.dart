@@ -60,26 +60,22 @@ class _FaceLoginScreenState extends State<FaceLoginScreen> {
         if (response.statusCode == 200) {
           var token = response.data['token'];
           await TokenManager.setToken(token);
-          _handleLoginSuccess;
+          _handleLoginSuccess(token); // Pass the token to the handler
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Login Successful')),
           );
-
-          // Store the token securely, and navigate to the next screen
-          // For example, you might use the 'flutter_secure_storage' package to store the token
-          // and Navigator.pushReplacement to change screens.
         } else {
-        Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPageAll()),
-              );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => LoginPageAll()),
+          );
         }
       } catch (e) {
         print(e);
-       Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPageAll()),
-              );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPageAll()),
+        );
       }
     }
   }
@@ -88,20 +84,15 @@ class _FaceLoginScreenState extends State<FaceLoginScreen> {
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
     String userRole = decodedToken['roles'];
 
-    if (userRole == 'Family') {
+    if (userRole == 'Patient') {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const MainPageFamily()),
-      );
-    } else if (userRole == 'Caregiver') {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => mainpagecaregiver()),
+        MaterialPageRoute(builder: (context) => mainpatient()),
       );
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => mainpatient()),
+        MaterialPageRoute(builder: (context) => LoginPageAll()),
       );
     }
   }
