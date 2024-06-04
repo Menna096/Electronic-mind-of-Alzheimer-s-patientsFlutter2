@@ -1,82 +1,56 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:signalr_core/signalr_core.dart';
+import 'package:dio/dio.dart';
+import 'package:vv/api/login_api.dart';
 
-class Pagee extends StatefulWidget {
-  @override
-  _PageeState createState() => _PageeState();
+void main() {
+  runApp(MyApp());
 }
 
-class _PageeState extends State<Pagee> {
-  HubConnection? medicineReminderHubConnection;
-  List<Medicine> medicines = [];
-  final Dio _dio = Dio();
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Medicines List',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MedicinesPage(),
+    );
+  }
+}
+
+class MedicinesPage extends StatefulWidget {
+  @override
+  _MedicinesPageState createState() => _MedicinesPageState();
+}
+
+class _MedicinesPageState extends State<MedicinesPage> {
+  List<dynamic> medicines = [];
+  bool isLoading = true;
+  String errorMessage = '';
 
   @override
   void initState() {
     super.initState();
-    connectToHub();
-    fetchInitialMedicines();
+    fetchMedicines();
   }
 
-  @override
-  void dispose() {
-    medicineReminderHubConnection?.stop();
-    super.dispose();
-  }
-
-  Future<void> connectToHub() async {
-    medicineReminderHubConnection = HubConnectionBuilder()
-        .withUrl(
-            'https://electronicmindofalzheimerpatients.azurewebsites.net/hubs/medicineReminder')
-        .build();
-
-    // Listen for updates
-    medicineReminderHubConnection!.on('ReceiveMedicineReminder', (arguments) {
-      final action = arguments?[0] as String?;
-      final medicationData = arguments?[1] as Map<String, dynamic>?;
-
-      if (action != null && medicationData != null) {
-        if (action == 'add') {
-          final medicine = Medicine.fromJson(medicationData);
-          setState(() {
-            medicines.add(medicine);
-          });
-        } else if (action == 'delete') {
-          final medicineId = medicationData['reminderId']; // Assuming 'reminderId' is the ID field
-          setState(() {
-            medicines.removeWhere((medicine) => medicine.reminderId == medicineId);
-          });
-        }
-      }
-    });
-
-    await medicineReminderHubConnection!.start();
-  }
-
-  Future<void> fetchInitialMedicines() async {
-    final url =
+  Future<void> fetchMedicines() async {
+    Dio dio = Dio();
+    String url =
         'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/GetAllMedicines';
-    final headers = {
-      'accept': '*/*',
-      'Authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlZDE0NTUwYi1hMTU0LTQ0MTQtOTcxYy1kZDI5OGZhNjY4MjAiLCJlbWFpbCI6Im1lbm5hcmFnYWIyMjBAZ21haWwuY29tIiwiRnVsbE5hbWUiOiJtZW5uYSIsIlBob25lTnVtYmVyIjoiMTExMTExMSIsInVpZCI6IjEyMjBhYzFjLWM4MDAtNDE5NC05MzNhLTY3NTg2MDczZTRkNCIsIlVzZXJBdmF0YXIiOiJodHRwczovL2VsZWN0cm9uaWNtaW5kb2ZhbHpoZWltZXJwYXRpZW50cy5henVyZXdlYnNpdGVzLm5ldC9Vc2VyIEF2YXRhci8xMjIwYWMxYy1jODAwLTQxOTQtOTMzYS02NzU4NjA3M2U0ZDRfODFjMzY3NjctZmY0Ni00MjY3LWIzYmUtYWY0YTdiMjllY2MxLmpwZWciLCJNYWluTGF0aXR1ZGUiOiIyOS45Nzc5NzE1ODMzMzMzMzYiLCJNYWluTG9uZ2l0dWRlIjoiMzIuNTI4ODg3NSIsInJvbGVzIjoiUGF0aWVudCIsIk1heERpc3RhbmNlIjoiMTUwIiwiZXhwIjoxNzI1MzE0Mzg5LCJpc3MiOiJBcnTOZkNvZGluZyIsImF1ZCI6IkFsemhlaW1hckFwcCJ9.aIo5lVCOWLLmSUHWk77OZdyO8_8g-9VtG6iLumhHr7w',
-    };
 
     try {
-      final response = await _dio.get(url, options: Options(headers: headers));
-
-      if (response.statusCode == 200) {
-        final jsonData = response.data as List<dynamic>;
-        setState(() {
-          medicines =
-              jsonData.map((medicine) => Medicine.fromJson(medicine)).toList();
-        });
-      } else {
-        print('Failed to fetch medicines: ${response.statusCode}');
-      }
+      Response response = await DioService().dio.get(url);
+      setState(() {
+        medicines = response.data;
+        isLoading = false;
+      });
     } catch (e) {
-      print('Error fetching medicines: $e');
+      setState(() {
+        errorMessage = 'Error fetching medicines: $e';
+        isLoading = false;
+      });
     }
   }
 
@@ -84,38 +58,46 @@ class _PageeState extends State<Pagee> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Medicine Reminder'),
+        title: Text('Medicines List'),
       ),
-      body: ListView.builder(
-        itemCount: medicines.length,
-        itemBuilder: (context, index) {
-          final medicine = medicines[index];
-          return ListTile(
-            title: Text(medicine.medication_Name), // Assuming 'medication_Name' is the name field
-            subtitle: Text('Dosage: ${medicine.dosage}'),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class Medicine {
-  final String reminderId;
-  final String medication_Name;
-  final String dosage;
-
-  Medicine({
-    required this.reminderId,
-    required this.medication_Name,
-    required this.dosage,
-  });
-
-  factory Medicine.fromJson(Map<String, dynamic> json) {
-    return Medicine(
-      reminderId: json['reminderId'],
-      medication_Name: json['medication_Name'],
-      dosage: json['dosage'],
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : errorMessage.isNotEmpty
+              ? Center(child: Text(errorMessage))
+              : ListView.builder(
+                  itemCount: medicines.length,
+                  itemBuilder: (context, index) {
+                    var medicine = medicines[index];
+                    return Card(
+                      margin: EdgeInsets.all(10),
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Medication Name: ${medicine['medication_Name']}',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text('Dosage: ${medicine['dosage']}'),
+                            SizedBox(height: 5),
+                            Text('Medicine Type: ${medicine['medcineType']}'),
+                            SizedBox(height: 5),
+                            Text('Repeater: ${medicine['repeater']}'),
+                            SizedBox(height: 5),
+                            Text('Start Date: ${medicine['startDate']}'),
+                            SizedBox(height: 5),
+                            Text('End Date: ${medicine['endDate']}'),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
     );
   }
 }

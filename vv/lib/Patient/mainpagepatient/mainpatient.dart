@@ -364,22 +364,21 @@ class _mainpatientState extends State<mainpatient> {
             Positioned(
               top: 132,
               left: 230,
-               child: GestureDetector(
+              child: GestureDetector(
                 onTap: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => Pagee()),
+                    MaterialPageRoute(builder: (context) => MedicinesPage()),
                   );
                 },
-              child: Container(
-                child: Image.asset(
-                  'images/Medicines.png',
-                  width: 110,
-                  height: 110,
+                child: Container(
+                  child: Image.asset(
+                    'images/Medicines.png',
+                    width: 110,
+                    height: 110,
+                  ),
                 ),
               ),
-               ),
             ),
             Positioned(
               top: 232,
