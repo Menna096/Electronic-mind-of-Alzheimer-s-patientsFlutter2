@@ -22,7 +22,27 @@ class _ViewProfileState extends State<ViewProfile> {
   TextEditingController _relationalityController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _ageController = TextEditingController();
-  TextEditingController _distanceController = TextEditingController();
+  int? selectedDistance;
+  List<int> distances = [
+    150,
+    200,
+    250,
+    300,
+    350,
+    400,
+    450,
+    500,
+    550,
+    600,
+    650,
+    700,
+    750,
+    800,
+    850,
+    900,
+    950,
+    1000
+  ];
   DateTime? _selectedDate;
 
   @override
@@ -58,7 +78,7 @@ class _ViewProfileState extends State<ViewProfile> {
           _phoneController.text = response.data['phoneNumber'];
           _ageController.text = response.data['age'].toString();
           _relationalityController.text = response.data['relationality'];
-          _distanceController.text = response.data['maxDistance'].toString();
+          selectedDistance = response.data['maxDistance'].toString() as int?;
           _selectedDate =
               DateFormat('dd/MM/yyyy').parse(response.data['diagnosisDate']);
         });
@@ -77,7 +97,7 @@ class _ViewProfileState extends State<ViewProfile> {
     Map<String, dynamic> requestBody = {
       'phoneNumber': _phoneController.text,
       'age': int.parse(_ageController.text),
-      'maximumDistance': int.parse(_distanceController.text),
+      'maximumDistance': selectedDistance,
       'diagnosisDate': _selectedDate != null
           ? DateFormat('yyyy-MM-dd').format(_selectedDate!)
           : null,
@@ -280,22 +300,27 @@ class _ViewProfileState extends State<ViewProfile> {
                       onTap: _presentDatePicker,
                     ),
                     const SizedBox(height: 15),
-                    TextFormField(
+                    DropdownButtonFormField<int>(
                       decoration: InputDecoration(
                         labelText: 'Maximum Distance',
-                        labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        suffixIcon: const Icon(Icons.location_on_sharp,
-                            size: 25, color: Color(0xFFD0D0D0)),
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 12),
                       ),
-                      controller: _distanceController,
-                      keyboardType: TextInputType.number,
+                      value: selectedDistance,
+                      items: distances.map<DropdownMenuItem<int>>((int value) {
+                        return DropdownMenuItem<int>(
+                          value: value,
+                          child: Text(value.toString()),
+                        );
+                      }).toList(),
+                      onChanged: (int? newValue) {
+                        setState(() {
+                          selectedDistance = newValue;
+                        });
+                      },
                     ),
                     const SizedBox(height: 30),
                     ElevatedButton(
