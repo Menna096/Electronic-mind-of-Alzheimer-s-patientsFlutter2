@@ -27,16 +27,17 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
   Future<void> _fetchImagesWithInstructions() async {
     try {
       final response = await DioService().dio.get(
-        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
-        options: Options(
-          headers: {
-            'accept': '*/*',
-            'Authorization': 'Bearer your_access_token_here',
-          },
-        ),
-      );
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
+            options: Options(
+              headers: {
+                'accept': '*/*',
+                'Authorization': 'Bearer your_access_token_here',
+              },
+            ),
+          );
       setState(() {
-        _imageSamplesWithInstructions = response.data['imagesSamplesWithInstractions'];
+        _imageSamplesWithInstructions =
+            response.data['imagesSamplesWithInstractions'];
       });
     } catch (e) {
       print('Error fetching images and instructions: $e');
@@ -44,12 +45,14 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
   }
 
   Future<void> _pickImage({int? replaceIndex}) async {
-    if (replaceIndex != null || _images.length < _imageSamplesWithInstructions.length) {
+    if (replaceIndex != null ||
+        _images.length < _imageSamplesWithInstructions.length) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Instructions for Image ${replaceIndex != null ? replaceIndex + 1 : _images.length + 1}'),
+            title: Text(
+                'Instructions for Image ${replaceIndex != null ? replaceIndex + 1 : _images.length + 1}'),
             content: FutureBuilder(
               future: _fetchInstructionData(replaceIndex),
               builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
@@ -63,7 +66,8 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
                 } else if (snapshot.hasError) {
                   return Text('Error fetching instructions: ${snapshot.error}');
                 } else {
-                  final instructionData = _imageSamplesWithInstructions[replaceIndex != null ? replaceIndex : _images.length];
+                  final instructionData = _imageSamplesWithInstructions[
+                      replaceIndex != null ? replaceIndex : _images.length];
                   final imageUrl = instructionData['imageSampleUrl'];
                   final instruction = instructionData['instraction'];
 
@@ -114,19 +118,14 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
     for (var imageItem in _images) {
       formData.files.add(MapEntry(
         'TrainingImages',
-        await MultipartFile.fromFile(imageItem.file.path, filename: imageItem.file.name),
+        await MultipartFile.fromFile(imageItem.file.path,
+            filename: imageItem.file.name),
       ));
     }
-
-    _dio.options.headers = {
-      'accept': '*/*',
-      'Authorization': 'Bearer your_access_token',
-    };
-
     try {
-      var response = await _dio.post(
-        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyTrainingImages',
-        data: formData);
+      var response = await DioService().dio.post(
+          'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyTrainingImages',
+          data: formData);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Upload successful! Status: ${response.statusCode}"),
         backgroundColor: Colors.green,
@@ -167,12 +166,14 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
               itemCount: _images.length,
               itemBuilder: (context, index) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Adjust vertical spacing here
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Adjust vertical spacing here
                   child: ListTile(
                     leading: Container(
                       height: 100,
                       width: 100,
-                      child: Image.file(File(_images[index].file.path), fit: BoxFit.cover),
+                      child: Image.file(File(_images[index].file.path),
+                          fit: BoxFit.cover),
                     ),
                     title: Text('Image ${index + 1}'),
                     trailing: IconButton(
@@ -200,16 +201,17 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
   Future<void> _fetchInstructionData(int? replaceIndex) async {
     try {
       final response = await DioService().dio.get(
-        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
-        options: Options(
-          headers: {
-            'accept': '*/*',
-            'Authorization': 'Bearer your_access_token_here',
-          },
-        ),
-      );
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
+            options: Options(
+              headers: {
+                'accept': '*/*',
+                'Authorization': 'Bearer your_access_token_here',
+              },
+            ),
+          );
       setState(() {
-        _imageSamplesWithInstructions = response.data['imagesSamplesWithInstractions'];
+        _imageSamplesWithInstructions =
+            response.data['imagesSamplesWithInstractions'];
       });
     } catch (e) {
       print('Error fetching images and instructions: $e');
@@ -217,5 +219,3 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
     }
   }
 }
-
-

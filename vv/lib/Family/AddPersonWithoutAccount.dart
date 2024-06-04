@@ -1,17 +1,18 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:dio/dio.dart';
-// ignore: depend_on_referenced_packages
-import 'package:http_parser/http_parser.dart';
+import 'package:vv/Family/Registerfamily/registerfamily.dart';
+import 'package:vv/GPS/map_location_picker.dart';
+import 'package:vv/api/login_api.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
-import 'package:vv/api/login_api.dart';
+import 'package:vv/Family/trainingForPreson.dart';
+import 'package:vv/map_location_picker.dart';
 import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/custom_Textfield.dart';
-import 'package:vv/map_location_picker.dart';
 
+// Import the second screen
 class APIService {
   static final Dio _dio = Dio();
 
@@ -29,7 +30,6 @@ class APIService {
               ? response.data['message']
               : 'Add failed with status code: ${response.data}';
     } catch (error) {
-      // ignore: avoid_print
       print('Add failed: $error');
       return 'Add failed: $error';
     }
@@ -40,64 +40,48 @@ class AddPerson extends StatefulWidget {
   const AddPerson({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _AddPersonState createState() => _AddPersonState();
 }
 
 class _AddPersonState extends State<AddPerson> {
-  final TextEditingController FullNameController = TextEditingController();
-  final TextEditingController PhoneNumberController = TextEditingController();
-  final TextEditingController DescriptionForPatientontroller =
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController descriptionForPatientController =
       TextEditingController();
-
-  late String Relationility = '';
+  late String relationility = '';
   late bool _isLoading = false;
-  File? _selectedImage;
-  // ignore: non_constant_identifier_names
+  List<File> capturedImages = [];
   late double Latt;
-  // ignore: non_constant_identifier_names
   late double Longg;
-  Prediction? initialValue;
 
-  void _handleImageSelected(File? image) {
-    setState(() {
-      _selectedImage = image;
-    });
-  }
-
-  void _Add() async {
+  void _add() async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      if (FullNameController.text.isEmpty ||
-          PhoneNumberController.text.isEmpty ||
-          Relationility.isEmpty ||
-          _selectedImage == null) {
-        throw 'Please fill in all fields and select an image.';
+      if (fullNameController.text.isEmpty ||
+          phoneNumberController.text.isEmpty ||
+          relationility.isEmpty) {
+        throw 'Please fill in all fields, select an image, and provide latitude and longitude.';
       }
 
       var formData = FormData.fromMap({
-        'AvatarImage': await MultipartFile.fromFile(
-          _selectedImage!.path,
-          filename: _selectedImage!.path.split('/').last,
-          contentType: MediaType.parse(
-              '${_selectedImage!.path.split('.').last == 'jpg' || _selectedImage!.path.split('.').last == 'png' ? 'image' : 'video'}/${_selectedImage!.path.split('.').last}'),
-        ),
-        'FullName': FullNameController.text,
-        'Relationility': Relationility,
-        'PhoneNumber': PhoneNumberController.text,
+        'FullName': fullNameController.text,
+        'Relationility': relationility,
+        'PhoneNumber': phoneNumberController.text,
         'MainLongitude': Longg,
         'MainLatitude': Latt,
-        'DescriptionForPatient': DescriptionForPatientontroller.text,
+        'DescriptionForPatient': descriptionForPatientController.text,
+        'TraningImage': capturedImages
+            .map((image) => MultipartFile.fromFileSync(image.path))
+            .toList(),
       });
 
       dynamic response = await APIService.register(formData);
 
       if (response == true) {
         showDialog(
-          // ignore: use_build_context_synchronously
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('Add Successful'),
@@ -116,11 +100,10 @@ class _AddPersonState extends State<AddPerson> {
           ),
         );
       } else {
-        throw 'Add failed.\nSomething Went Wrong Try Again Later ';
+        throw 'Add failed.\nSomething went wrong. Please try again later.';
       }
     } catch (error) {
       showDialog(
-        // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Add Failed'),
@@ -138,6 +121,13 @@ class _AddPersonState extends State<AddPerson> {
         _isLoading = false;
       });
     }
+  }
+
+  // Function to receive captured images from the second screen
+  void receiveImages(List<File> images) {
+    setState(() {
+      capturedImages = images;
+    });
   }
 
   @override
@@ -162,7 +152,7 @@ class _AddPersonState extends State<AddPerson> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const backbutton(),
+                    const BackButton(),
                     const SizedBox(height: 0.5),
                     const Text(
                       'Create Account',
@@ -170,10 +160,10 @@ class _AddPersonState extends State<AddPerson> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 18),
-                    ProfilePicture(onImageSelected: _handleImageSelected),
-                    const SizedBox(height: 18),
+                    // ProfilePicture(onImageSelected: _handleImageSelected),
+                    // const SizedBox(height: 18),
                     TextField(
-                      controller: FullNameController,
+                      controller: fullNameController,
                       decoration: InputDecoration(
                         labelText: 'Full Name',
                         labelStyle: TextStyle(
@@ -195,11 +185,11 @@ class _AddPersonState extends State<AddPerson> {
                     ),
                     const SizedBox(height: 15),
                     DropdownButtonFormField<String>(
-                      value: Relationility.isNotEmpty ? Relationility : null,
+                      value: relationility.isNotEmpty ? relationility : null,
                       onChanged: (String? newValue) {
                         if (newValue != null) {
                           setState(() {
-                            Relationility = newValue;
+                            relationility = newValue;
                           });
                         }
                       },
@@ -254,7 +244,7 @@ class _AddPersonState extends State<AddPerson> {
                     ),
                     const SizedBox(height: 18),
                     TextField(
-                      controller: PhoneNumberController,
+                      controller: phoneNumberController,
                       decoration: InputDecoration(
                         labelText: 'Phone Number',
                         labelStyle: TextStyle(
@@ -275,7 +265,7 @@ class _AddPersonState extends State<AddPerson> {
                     ),
                     const SizedBox(height: 18),
                     TextFormField(
-                      controller: DescriptionForPatientontroller,
+                      controller: descriptionForPatientController,
                       decoration: InputDecoration(
                         labelText: 'Description For Patient',
                         labelStyle: TextStyle(
@@ -343,18 +333,40 @@ class _AddPersonState extends State<AddPerson> {
                       ),
                       child: const Text('Pick Location Here'),
                     ),
-                    const SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: _isLoading ? null : _Add,
+                      onPressed: () async {
+                        List<File>? images = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UploadImagesPagePerson(
+                              fullName: fullNameController.text,
+                              phoneNumber: phoneNumberController.text,
+                              relation: relationility,
+                              latitude: Latt,
+                              longitude: Longg,
+                              description: descriptionForPatientController.text,
+                            ),
+                          ),
+                        );
+
+                        if (images != null) {
+                          // Handle the received images, along with the other data
+                          receiveImages(images);
+                        }
+                      },
+                      child: Text('Go to Upload Images Page'),
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: _isLoading ? null : _add,
                       style: ElevatedButton.styleFrom(
-                        foregroundColor:
-                            const Color.fromARGB(255, 255, 255, 255),
-                        backgroundColor: const Color(0xFF0386D0),
+                        foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor: Color(0xFF0386D0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0),
                         ),
                       ),
-                      child: const Text('Add'),
+                      child: Text('Add'),
                     ),
                   ],
                 ),
@@ -364,7 +376,7 @@ class _AddPersonState extends State<AddPerson> {
           _isLoading
               ? Container(
                   color: Colors.black.withOpacity(0.5),
-                  child: const Center(
+                  child: Center(
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
                         Color(0xff3B5998),
@@ -372,7 +384,7 @@ class _AddPersonState extends State<AddPerson> {
                     ),
                   ),
                 )
-              : const SizedBox.shrink(),
+              : SizedBox.shrink(),
         ],
       ),
     );
