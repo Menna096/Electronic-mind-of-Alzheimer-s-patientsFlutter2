@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:dio/dio.dart';
+import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/Caregiver/medical/constants.dart';
 import 'package:vv/Caregiver/medical/global_bloc.dart';
+import 'package:vv/Caregiver/medical/models/medicine.dart';
+import 'package:vv/Caregiver/medical/pages/medicine_details/medicine_details.dart';
 import 'package:vv/Caregiver/medical/pages/new_entry/new_entry_page.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/storage_manage.dart';
@@ -11,13 +14,26 @@ import 'package:provider/provider.dart';
 Future<List<dynamic>> fetchMedicationData() async {
   final SecureStorageManager storageManager = SecureStorageManager();
   String? patientId = await storageManager.getPatientId();
-  var response = await DioService().dio.get(
-      'https://electronicmindofalzheimerpatients.azurewebsites.net/Caregiver/GetMedicationRemindersForPatient/$patientId');
-  if (response.statusCode == 200) {
-    return response.data
-        as List<dynamic>; // Assuming response.data is already a List
-  } else {
-    throw Exception('Failed to load medication data');
+
+  if (patientId == null) {
+    return []; // Return an empty list if there's no patient ID
+  }
+
+  try {
+    var response = await DioService().dio.get(
+        'https://electronicmindofalzheimerpatients.azurewebsites.net/Caregiver/GetMedicationRemindersForPatient/$patientId');
+
+    if (response.statusCode == 200) {
+      var data = response.data as List<dynamic>;
+      if (data.isNotEmpty) {
+        await storageManager.saveReminderId(data[0]['reminderId'].toString());
+      }
+      return data;
+    } else {
+      return []; // Return an empty list for any non-200 response
+    }
+  } catch (e) {
+    return []; // Return an empty list in case of any error
   }
 }
 
@@ -42,6 +58,17 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Medication', style: TextStyle(fontSize: 25)),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => mainpagecaregiver(),
+              ),
+            );
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -63,20 +90,17 @@ class _HomePageState extends State<HomePage> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Text("Error: ${snapshot.error}");
-                    } else if (snapshot.data!.isEmpty) {
-                      return const Center(
-                          child: Text("No Medication Yet👨‍⚕️"));
+                    } else if (snapshot.hasError || snapshot.data!.isEmpty) {
+                      return BottomContainer();
                     } else {
                       return GridView.builder(
                         padding: EdgeInsets.only(top: 1.h),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                        ),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2),
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
+                          print(
+                              "Medicine Type in GridView: ${snapshot.data![index]['medcineType']}");
                           return MedicineCard(data: snapshot.data![index]);
                         },
                       );
@@ -90,7 +114,6 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: InkResponse(
         onTap: () {
-          // go to new entry page
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -190,54 +213,52 @@ class MedicineCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String medicineType =
-        data['medcineType'].toString(); // Medicine type as a string
-    String medicineName = data['medication_Name']; // Medicine name
+    String medicineName = data['medication_Name'] ?? 'Unknown';
+    int medicineType = (data['medcineType'] as int?) ?? 0;
+    String dosage = data['dosage']?.toString() ?? '0';
 
-    // Widget to display the appropriate icon based on the medicine type
     Widget icon = _makeIcon(medicineType);
+    print(
+        "Rendering with type: $medicineType for $medicineName"); // Debugging print
 
-    // Return a card with the medicine information
-    return Card(
-      color: Colors.white, // Background color of the card
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Hero(
-            tag: "$medicineName$medicineType", // Unique tag for Hero animation
-            child: icon,
-          ),
-          Text(
-            medicineName,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          Text(
-            'Dosage: ${data['dosage']} mg',
-            style: Theme.of(context).textTheme.subtitle1,
-          ),
-        ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MedicineDetails(data: data)),
+        );
+      },
+      child: Card(
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Hero(tag: "$medicineName$medicineType", child: icon),
+            Text(medicineName, style: Theme.of(context).textTheme.headline6),
+            Text('Dosage: ${dosage} mg',
+                style: Theme.of(context).textTheme.subtitle1),
+          ],
+        ),
       ),
     );
   }
+}
 
-  // Helper method to determine which icon to use
-  Widget _makeIcon(String type) {
-    switch (type) {
-      case '0': // Pill
-        return Image.asset('lib/page/task_screens/assets/icons/pills.gif',
-            height: 13.5.h);
-      case '1': // Syringe
-        return Image.asset('lib/page/task_screens/assets/icons/syringe.gif',
-            height: 13.5.h);
-      case '2': // Bottle
-        return Image.asset('lib/page/task_screens/assets/icons/liquid.gif',
-            height: 13.5.h);
-      case '3': // Tablet
-        return Image.asset('lib/page/task_screens/assets/icons/tablet.gif',
-            height: 13.5.h);
-      default:
-        return Icon(Icons.error,
-            size: 24.sp); // Default icon if type is unknown
-    }
+Widget _makeIcon(int type) {
+  switch (type) {
+    case 0:
+      return Image.asset('lib/page/task_screens/assets/icons/pills.gif',
+          height: 13.5.h);
+    case 1:
+      return Image.asset('lib/page/task_screens/assets/icons/syringe.gif',
+          height: 13.5.h);
+    case 2:
+      return Image.asset('lib/page/task_screens/assets/icons/liquid.gif',
+          height: 13.5.h);
+    case 3:
+      return Image.asset('lib/page/task_screens/assets/icons/tablet.gif',
+          height: 13.5.h);
+    default:
+      return Icon(Icons.error, size: 24.sp); // Default icon if type is unknown
   }
 }

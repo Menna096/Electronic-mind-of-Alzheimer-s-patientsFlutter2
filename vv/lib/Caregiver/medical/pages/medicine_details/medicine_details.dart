@@ -1,16 +1,21 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:vv/Caregiver/medical/constants.dart';
-import 'package:vv/Caregiver/medical/global_bloc.dart';
-import 'package:vv/Caregiver/medical/models/medicine.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:vv/Caregiver/medical/constants.dart';
+import 'package:vv/Caregiver/medical/global_bloc.dart';
+import 'package:vv/Caregiver/medical/pages/home_page.dart';
+import 'package:vv/api/login_api.dart';
+import 'package:vv/utils/storage_manage.dart';
 
 class MedicineDetails extends StatefulWidget {
-  const MedicineDetails(this.medicine, {Key? key}) : super(key: key);
-  final Medicine medicine;
+  final dynamic data; // Accepting dynamic data directly
+
+  const MedicineDetails({Key? key, required this.data}) : super(key: key);
 
   @override
-  State<MedicineDetails> createState() => _MedicineDetailsState();
+  _MedicineDetailsState createState() => _MedicineDetailsState();
 }
 
 class _MedicineDetailsState extends State<MedicineDetails> {
@@ -26,32 +31,33 @@ class _MedicineDetailsState extends State<MedicineDetails> {
           padding: EdgeInsets.all(2.h),
           child: Column(
             children: [
-              if (widget.medicine != null) ...[
-                MainSection(medicine: widget.medicine),
-                ExtendedSection(medicine: widget.medicine),
+              if (widget.data != null) ...[
+                MainSection(data: widget.data),
+                ExtendedSection(data: widget.data),
                 SizedBox(
                   width: 100.w,
                   height: 7.h,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: kSecondaryColor,
-                      shape: const StadiumBorder(),
-                    ),
-                    onPressed: () {
-                      openAlertBox(context, _globalBloc);
-                    },
-                    child: Text(
-                      'Delete',
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1!
-                          .copyWith(color: kScaffoldColor),
+                  child: Builder(
+                    // Use Builder to provide correct context
+                    builder: (context) => TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: kSecondaryColor,
+                        shape: const StadiumBorder(),
+                      ),
+                      onPressed: () {
+                        openAlertBox(context);
+                      },
+                      child: Text(
+                        'Delete',
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(color: kScaffoldColor),
+                      ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 2.h,
-                ),
+                SizedBox(height: 2.h),
               ] else
                 Text('No medicine data available'),
             ],
@@ -61,10 +67,11 @@ class _MedicineDetailsState extends State<MedicineDetails> {
     );
   }
 
-  openAlertBox(BuildContext context, GlobalBloc _globalBloc) {
-    return showDialog(
+  void openAlertBox(BuildContext context) {
+    final SecureStorageManager storageManager = SecureStorageManager();
+    showDialog(
       context: context,
-      builder: (context) {
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
           backgroundColor: kScaffoldColor,
           shape: const RoundedRectangleBorder(
@@ -81,18 +88,41 @@ class _MedicineDetailsState extends State<MedicineDetails> {
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                'Cancel',
-                style: Theme.of(context).textTheme.caption,
-              ),
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text('Cancel', style: Theme.of(context).textTheme.caption),
             ),
             TextButton(
-              onPressed: () {
-                _globalBloc.removeMedicine(widget.medicine);
-                Navigator.popUntil(context, ModalRoute.withName('/'));
+              onPressed: () async {
+                try {
+                  String? reminderId = await storageManager.getReminderId();
+                  print("Reminder ID: $reminderId"); // Debug print
+                  if (reminderId != null) {
+                    var response = await DioService().dio.delete(
+                        'https://electronicmindofalzheimerpatients.azurewebsites.net/Caregiver/DeleteMedicationReminder/$reminderId');
+                    print(
+                        "Response Status: ${response.statusCode}"); // Debug print
+                    if (response.statusCode == 200) {
+                      ScaffoldMessenger.of(dialogContext).showSnackBar(SnackBar(
+                          content: Text('Reminder Deleted Successfully')));
+                    } else {
+                      ScaffoldMessenger.of(dialogContext).showSnackBar(SnackBar(
+                          content: Text(
+                              'Failed to Delete Reminder: ${response.statusCode}')));
+                    }
+                  } else {
+                    ScaffoldMessenger.of(dialogContext).showSnackBar(
+                        SnackBar(content: Text('No Reminder ID Found')));
+                  }
+                } catch (e) {
+                  print("Error: $e"); // Debug print
+                  ScaffoldMessenger.of(dialogContext)
+                      .showSnackBar(SnackBar(content: Text('Error: $e')));
+                } finally {
+                  // Ensuring navigation even if an error occurs
+                  Navigator.of(dialogContext).pop(); // Close the dialog
+                  Navigator.push(dialogContext,
+                      MaterialPageRoute(builder: (context) => HomePage()));
+                }
               },
               child: Text(
                 'OK',
@@ -110,82 +140,84 @@ class _MedicineDetailsState extends State<MedicineDetails> {
 }
 
 class MainSection extends StatelessWidget {
-  const MainSection({Key? key, required this.medicine}) : super(key: key);
-  final Medicine? medicine;
+  final dynamic data;
+  const MainSection({Key? key, required this.data}) : super(key: key);
 
-  Hero makeIcon(double size) {
-    if (medicine != null && medicine!.medicineType != null) {
-      if (medicine!.medicineType == 'Bottle') {
-        return Hero(
-          tag: medicine!.medicineName! + medicine!.medicineType!,
-          child: Image.asset(
-            'lib/page/task_screens/assets/icons/liquid.gif',
-            height: 14.h,
-          ),
-        );
-      } else if (medicine!.medicineType == 'Pill') {
-        return Hero(
-          tag: medicine!.medicineName! + medicine!.medicineType!,
-          child: Image.asset(
-            'lib/page/task_screens/assets/icons/pills.gif',
-            height: 14.h,
-          ),
-        );
-      } else if (medicine!.medicineType == 'Syringe') {
-        return Hero(
-          tag: medicine!.medicineName! + medicine!.medicineType!,
-          child: Image.asset(
-            'lib/page/task_screens/assets/icons/syringe.gif',
-            height: 14.h,
-          ),
-        );
-      } else if (medicine!.medicineType == 'Tablet') {
-        return Hero(
-          tag: medicine!.medicineName! + medicine!.medicineType!,
-          child: Image.asset(
-            'lib/page/task_screens/assets/icons/tablet.gif',
-            height: 14.h,
-          ),
-        );
-      }
+  // This function returns the widget for the icon based on the medicine type
+  Widget _makeIcon(int type, double size) {
+    switch (type) {
+      case 0:
+        return Image.asset('lib/page/task_screens/assets/icons/pills.gif',
+            height: size);
+      case 1:
+        return Image.asset('lib/page/task_screens/assets/icons/syringe.gif',
+            height: size);
+      case 2:
+        return Image.asset('lib/page/task_screens/assets/icons/liquid.gif',
+            height: size);
+      case 3:
+        return Image.asset('lib/page/task_screens/assets/icons/tablet.gif',
+            height: size);
+      default:
+        return Icon(Icons.error,
+            color: kOtherColor, size: size); // Default icon if type is unknown
     }
-    return Hero(
-      tag: medicine!.medicineName! + medicine!.medicineType!,
-      child: Icon(
-        Icons.error,
-        color: kOtherColor,
-        size: size,
-      ),
-    );
+  }
+
+  // This function converts the medicine type integer to a descriptive string
+  String _getTypeName(int type) {
+    switch (type) {
+      case 0:
+        return 'Pill';
+      case 1:
+        return 'Syringe';
+      case 2:
+        return 'Bottle';
+      case 3:
+        return 'Tablet';
+      default:
+        return 'Unknown Type';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    String medicineName = data['medication_Name'] ?? 'Unknown';
+    int medicineType = data['medcineType']
+        as int; // Make sure this key matches your data exactly
+    String dosage = data['dosage'] ?? 'Not specified';
+    String typeName = _getTypeName(medicineType); // Convert type to string name
+
+    // Structure to layout the icon and type description
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        makeIcon(7.h),
-        SizedBox(
-          width: 2.w,
-        ),
         Column(
           children: [
-            if (medicine != null && medicine!.medicineName != null)
-              Hero(
-                tag: medicine!.medicineName!,
-                child: Material(
-                  color: Colors.transparent,
-                  child: MainInfoTab(
-                    fieldTitle: 'Medicine Name',
-                    fieldInfo: medicine!.medicineName!,
-                  ),
+            _makeIcon(medicineType, 7.h), // Display the icon
+            Text(typeName,
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle1), // Display the type name below the icon
+          ],
+        ),
+        SizedBox(width: 2.w),
+        Column(
+          children: [
+            Hero(
+              tag:
+                  "$medicineName-${medicineType.toString()}-${dosage}", // Unique tag for Hero widget
+              child: Material(
+                color: Colors.transparent,
+                child: MainInfoTab(
+                  fieldTitle: 'Medicine Name',
+                  fieldInfo: medicineName,
                 ),
               ),
+            ),
             MainInfoTab(
               fieldTitle: 'Dosage',
-              fieldInfo: medicine != null && medicine!.dosage != null
-                  ? (medicine!.dosage == 0 ? 'Not Specified' : "${medicine!.dosage} mg")
-                  : 'Dosage not available',
+              fieldInfo: dosage,
             ),
           ],
         )
@@ -194,12 +226,67 @@ class MainSection extends StatelessWidget {
   }
 }
 
+class ExtendedSection extends StatelessWidget {
+  final dynamic data;
+  const ExtendedSection({Key? key, required this.data}) : super(key: key);
+
+  // Method to convert medicine type code to string description
+  static String _getTypeName(int type) {
+    switch (type) {
+      case 0:
+        return 'Pill';
+      case 1:
+        return 'Syringe';
+      case 2:
+        return 'Bottle';
+      case 3:
+        return 'Tablet';
+      default:
+        return 'Unknown Type';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Ensure medicineType is treated as an integer and safely fallback to 'Unknown Type' if null
+    String medicineTypeString = _getTypeName(
+        data['medcineType'] as int? ?? -1); // Safely handle possible null
+
+    return ListView(
+      shrinkWrap: true,
+      children: [
+        ExtendedInfoTab(
+          fieldTitle: 'Medicine Type',
+          fieldInfo: medicineTypeString, // Use the converted type name
+        ),
+        ExtendedInfoTab(
+          fieldTitle: 'Dose Interval',
+          fieldInfo: '${data['repeater'] ?? "Interval not available"} hours',
+        ),
+        ExtendedInfoTab(
+          fieldTitle: 'Start Time',
+          fieldInfo: data['startDate'] != null
+              ? DateFormat('HH:mm').format(DateTime.parse(data['startDate']))
+              : 'Start time not available',
+        ),
+        ExtendedInfoTab(
+          fieldTitle: 'End Date',
+          fieldInfo: data['endDate'] != null
+              ? DateFormat('yyyy-MM-dd').format(DateTime.parse(data['endDate']))
+              : 'End date not available',
+        ),
+      ],
+    );
+  }
+}
+
 class MainInfoTab extends StatelessWidget {
+  final String fieldTitle;
+  final String fieldInfo;
   const MainInfoTab(
       {Key? key, required this.fieldTitle, required this.fieldInfo})
       : super(key: key);
-  final String fieldTitle;
-  final String fieldInfo;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -209,58 +296,13 @@ class MainInfoTab extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              fieldTitle,
-              style: Theme.of(context).textTheme.subtitle2,
-            ),
-            SizedBox(
-              height: 0.3.h,
-            ),
-            Text(
-              fieldInfo,
-              style: Theme.of(context).textTheme.headline5,
-            ),
+            Text(fieldTitle, style: Theme.of(context).textTheme.subtitle2),
+            SizedBox(height: 0.3.h),
+            Text(fieldInfo,
+                style: Theme.of(context).textTheme.headline5), // Corrected line
           ],
         ),
       ),
-    );
-  }
-}
-
-class ExtendedSection extends StatelessWidget {
-  const ExtendedSection({Key? key, required this.medicine}) : super(key: key);
-  final Medicine? medicine;
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
-      children: [
-        ExtendedInfoTab(
-          fieldTitle: 'Medicine Type ',
-          fieldInfo: medicine != null && medicine!.medicineType != null
-              ? (medicine!.medicineType == 'None' ? 'Not Specified' : medicine!.medicineType!)
-              : 'Medicine type not available',
-        ),
-        ExtendedInfoTab(
-          fieldTitle: 'Dose Interval',
-          fieldInfo: medicine != null && medicine!.interval != null
-              ? ('Every ${medicine!.interval} hours   | ${medicine!.interval == 24 ? "One time a day" : "${(24 / medicine!.interval!).floor()} times a day"}')
-              : 'Dose interval not available',
-        ),
-        ExtendedInfoTab(
-          fieldTitle: 'Start Time',
-          fieldInfo: medicine != null && medicine!.startTime != null
-              ? ('${medicine!.startTime![0]}${medicine!.startTime![1]}:${medicine!.startTime![2]}${medicine!.startTime![3]}')
-              : 'Start time not available',
-        ),
-       ExtendedInfoTab(
-  fieldTitle: 'End Date',
-  fieldInfo: medicine != null && medicine!.endTime != null
-      ? '${medicine!.endTime!.year}-${medicine!.endTime!.month}-${medicine!.endTime!.day}'
-      : 'End date not available',
-),
-
-      ],
     );
   }
 }
@@ -299,4 +341,3 @@ class ExtendedInfoTab extends StatelessWidget {
     );
   }
 }
-
