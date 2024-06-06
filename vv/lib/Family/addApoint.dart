@@ -23,9 +23,9 @@ class APIService {
       _dio.options.headers['accept'] = 'application/json';
       _dio.options.headers['content-type'] = 'application/json';
       Response response = await DioService().dio.post(
-        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddAppointment',
-        data: jsonData,
-      );
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddAppointment',
+            data: jsonData,
+          );
       return response.statusCode == 200
           ? true
           : response.data != null && response.data['message'] != null
@@ -49,7 +49,7 @@ class NotificationService {
     final InitializationSettings settings =
         InitializationSettings(android: initializationSettingsAndroid);
     await _notificationsPlugin.initialize(settings);
-//
+
     print("Notifications initialized");
   }
 
@@ -107,29 +107,36 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
   }
 
   String formatTimeOfDay(TimeOfDay time) {
-    final now = new DateTime.now();
+    final now = DateTime.now();
     final dt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
     final format = DateFormat.jm(); //"6:00 AM"
     return format.format(dt);
   }
 
   void _load() async {
-    if (!mounted) return; 
+    if (!mounted) return;
 
     setState(() {
       _isLoading = true;
     });
     try {
-      if (_locationController.text.isEmpty ||
-          _noteController.text.isEmpty) {
+      if (_locationController.text.isEmpty || _noteController.text.isEmpty) {
         throw 'Please fill in all fields';
       }
       if (startTime == null || selectedDate == null) {
         throw 'Please select both start time and start day';
       }
 
+      final DateTime combinedDateTime = DateTime(
+        selectedDate!.year,
+        selectedDate!.month,
+        selectedDate!.day,
+        startTime!.hour,
+        startTime!.minute,
+      );
+
       final Map<String, dynamic> requestData = {
-        'date': selectedDate!.toIso8601String(),
+        'date': combinedDateTime.toIso8601String(),
         'location': _locationController.text,
         'notes': _noteController.text,
       };
@@ -148,7 +155,8 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AppointListScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => AppointListScreen()),
                   );
                 },
                 child: const Text('OK'),
