@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/patient_list.dart';
 import 'package:vv/Family/Registerfamily/registerfamily.dart';
 import 'package:vv/Family/ForgotPasswordfamily.dart';
@@ -27,6 +26,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
   String _emailErrorText = '';
   String _passwordErrorText = '';
   bool _isBiometricEnabled = false;
+  bool _isLoading = false; // Add this to control loading state
 
   @override
   void initState() {
@@ -49,6 +49,9 @@ class _LoginPageAllState extends State<LoginPageAll> {
   }
 
   Future<void> _login() async {
+    setState(() {
+      _isLoading = true; // Set loading to true
+    });
     final String email = _emailController.text;
     final String password = _passwordController.text;
 
@@ -65,6 +68,10 @@ class _LoginPageAllState extends State<LoginPageAll> {
     } catch (error) {
       _showErrorDialog(
           'Login failed. Please check your credentials.'); // Show error dialog
+    } finally {
+      setState(() {
+        _isLoading = false; // Set loading to false after the operation
+      });
     }
   }
 
@@ -214,7 +221,9 @@ class _LoginPageAllState extends State<LoginPageAll> {
                 _buildPasswordTextField(),
                 
                 SizedBox(height: 50.0),
-                _buildLoginButton(),
+                _isLoading 
+                    ? CircularProgressIndicator() // Show loading indicator
+                    : _buildLoginButton(), 
                 SizedBox(height: 10.0),
                 _buildRegisterNowButton(),
                 SizedBox(height: 10.0),
@@ -234,7 +243,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         hintText: 'Email Address',
         prefixIcon: Icon(
           Icons.email,
-          color: Colors.white,
+          color: Color.fromARGB(255, 60, 111, 212),
         ),
         filled: true,
         fillColor: Colors.white.withOpacity(0.2),
@@ -255,7 +264,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         hintText: 'Password',
         prefixIcon: Icon(
           Icons.lock,
-          color: Colors.white,
+          color: Color.fromARGB(255, 60, 111, 212),
         ),
         suffixIcon: IconButton(
           onPressed: () {
@@ -265,7 +274,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
           },
           icon: Icon(
             _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-            color: Colors.white,
+            color: Color.fromARGB(255, 229, 236, 251),
           ),
         ),
         filled: true,
@@ -286,8 +295,8 @@ class _LoginPageAllState extends State<LoginPageAll> {
         if (_emailController.text.isEmpty ||
             _passwordController.text.isEmpty) {
           setState(() {
-            _emailErrorText = 'Please enter your email.';
-            _passwordErrorText = 'Please enter your password.';
+            _emailErrorText = 'Please Enter Your Email.';
+            _passwordErrorText = 'Please Enter Your Password.';
           });
           return;
         }
@@ -297,9 +306,9 @@ class _LoginPageAllState extends State<LoginPageAll> {
         backgroundColor: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 145.0, vertical: 15.0),
         textStyle: TextStyle(
-          fontSize: 18,
+          fontSize: 17.5,
           fontWeight: FontWeight.bold,
-          color: Color(0xFF4568DC), // Purple
+          color: Color.fromARGB(255, 17, 59, 143) // Purple
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.0),
@@ -321,7 +330,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         );
       },
       style: TextButton.styleFrom(
-        foregroundColor: Colors.green, // Set the text color to green
+        foregroundColor: const Color.fromARGB(255, 255, 255, 255), // Set the text color to green
       ),
       child: RichText(
         text: TextSpan(
@@ -332,9 +341,10 @@ class _LoginPageAllState extends State<LoginPageAll> {
           children: <TextSpan>[
             TextSpan(text: 'Don\'t have an account? ', style: TextStyle(color: Colors.white)), // White color for "Don't have an account?"
             TextSpan(
-              text: 'Register Now.',
+              text: ' Register Now!',
               style: TextStyle(
-                color: Colors.green, // Green color for "Register Now"
+                fontFamily: 'Outfit',
+                color: Color.fromARGB(255, 20, 66, 158), // Green color for "Register Now"
               ),
             ),
           ],
@@ -355,7 +365,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         );
       },
       style: TextButton.styleFrom(
-        foregroundColor: Colors.green, // Set the text color to green
+        foregroundColor: Colors.white, // Set the text color to green
       ),
       child: RichText(
         text: TextSpan(
@@ -364,11 +374,12 @@ class _LoginPageAllState extends State<LoginPageAll> {
             fontWeight: FontWeight.bold,
           ),
           children: <TextSpan>[
-            TextSpan(text: 'Help? ', style: TextStyle(color: Colors.white)), // White color for "Don't have an account?"
+            TextSpan(text: 'Help?! ', style: TextStyle(color: Colors.white)), // White color for "Don't have an account?"
             TextSpan(
-              text: 'Forgot Password.',
+              text: ' Forgot Password?',
               style: TextStyle(
-                color: Colors.green, // Green color for "Register Now"
+                fontFamily: 'Outfit',
+                color: Color.fromARGB(255, 17, 59, 143), // Green color for "Register Now"
               ),
             ),
           ],

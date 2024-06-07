@@ -249,16 +249,16 @@ class _AddpatState extends State<Addpat> {
                       suffixIcon: Icons.email,
                     ),
                     const SizedBox(height: 15),
-                    PasswordTextField(
-                      labelText: 'Password',
+                    TextFormField(
+                     // pass
                       controller: passwordController,
-                      suffixIcon: Icons.lock_outline,
+                      
                     ),
                     const SizedBox(height: 15),
-                    PasswordTextField(
-                      labelText: 'Confirm Password',
+                    TextFormField(
+                      
                       controller: confirmPasswordController,
-                      suffixIcon: Icons.lock_outline,
+                     //conform pass
                     ),
                     const SizedBox(height: 15),
                     CustomTextField(
