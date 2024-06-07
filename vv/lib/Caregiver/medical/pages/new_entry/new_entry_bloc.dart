@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../models/errors.dart';
 import '../../models/medicine_type.dart';
@@ -10,8 +11,8 @@ class NewEntryBloc {
   BehaviorSubject<int>? _selectedInterval$;
   BehaviorSubject<int>? get selectIntervals => _selectedInterval$;
 
-  BehaviorSubject<String>? _selectedTimeOfDay$;
-  BehaviorSubject<String>? get selectedTimeOfDay$ => _selectedTimeOfDay$;
+  BehaviorSubject<TimeOfDay>? _selectedTimeOfDay$;
+  BehaviorSubject<TimeOfDay>? get selectedTimeOfDay$ => _selectedTimeOfDay$;
 
   BehaviorSubject<DateTime>? _selectedDate$;
   BehaviorSubject<DateTime>? get selectedDate$ => _selectedDate$;
@@ -24,7 +25,8 @@ class NewEntryBloc {
     _selectedMedicineType$ =
         BehaviorSubject<MedicineType>.seeded(MedicineType.None);
 
-    _selectedTimeOfDay$ = BehaviorSubject<String>.seeded('none');
+    _selectedTimeOfDay$ =
+        BehaviorSubject<TimeOfDay>.seeded(const TimeOfDay(hour: 0, minute: 0));
     _selectedDate$ = BehaviorSubject<DateTime>.seeded(DateTime.now());
     _selectedInterval$ = BehaviorSubject<int>.seeded(0);
     _errorState$ = BehaviorSubject<EntryError>();
@@ -45,13 +47,13 @@ class NewEntryBloc {
     _selectedInterval$!.add(interval);
   }
 
-  void updateTime(String time) {
+  void updateTime(TimeOfDay time) {
     _selectedTimeOfDay$!.add(time);
   }
- void updateDate(DateTime date) {
-  _selectedDate$!.add(date);
- }
 
+  void updateDate(DateTime date) {
+    _selectedDate$!.add(date);
+  }
 
   void updateSelectedMedicine(MedicineType type) {
     MedicineType _tempType = _selectedMedicineType$!.value;

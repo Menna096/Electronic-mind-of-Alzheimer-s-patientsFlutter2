@@ -30,6 +30,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
   late NewEntryBloc _newEntryBloc;
   late GlobalKey<ScaffoldState> _scaffoldKey;
   final SecureStorageManager storageManager = SecureStorageManager();
+
   @override
   void dispose() {
     super.dispose();
@@ -65,14 +66,25 @@ class _NewEntryPageState extends State<NewEntryPage> {
     // Full API URL with patient ID
     final String fullApiUrl = "$apiUrl/$patientId";
 
+    // Combine startDate and startTime
+    DateTime? selectedDate = _newEntryBloc.selectedDate$?.value;
+    TimeOfDay? selectedTime = _newEntryBloc.selectedTimeOfDay$?.value;
+    DateTime startDateTime;
+    if (selectedDate != null && selectedTime != null) {
+      startDateTime = DateTime(selectedDate.year, selectedDate.month,
+          selectedDate.day, selectedTime.hour, selectedTime.minute);
+    } else {
+      print("Error: Selected date or time is null");
+      return; // Early return if selected date or time is not found
+    }
+
     // Data map with null safety checks
     Map<String, dynamic> data = {
       "medication_Name": nameController.text,
       "dosage": dosageController.text,
-      "medicineType": _newEntryBloc
-          .selectedMedicineType?.value.index, // Directly as integer
-      "repeater": _newEntryBloc.selectIntervals?.value, // Directly as integer
-      "startDate": _newEntryBloc.selectedDate$?.value?.toIso8601String(),
+      "medicineType": _newEntryBloc.selectedMedicineType?.value.index,
+      "repeater": _newEntryBloc.selectIntervals?.value,
+      "startDate": startDateTime.toIso8601String(),
       "endDate": _newEntryBloc.selectedDate$?.value?.toIso8601String()
     };
 
@@ -147,13 +159,11 @@ class _NewEntryPageState extends State<NewEntryPage> {
                 Padding(
                   padding: EdgeInsets.only(top: 1.h),
                   child: StreamBuilder<MedicineType>(
-                    //new entry block
                     stream: _newEntryBloc.selectedMedicineType,
                     builder: (context, snapshot) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          //not yet clickable?
                           MedicineTypeColumn(
                               medicineType: MedicineType.Bottle,
                               name: 'Bottle',
@@ -254,7 +264,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                           _newEntryBloc.submitError(EntryError.interval);
                           return;
                         }
-                        if (_newEntryBloc.selectedTimeOfDay$!.value == 'None') {
+                        if (_newEntryBloc.selectedTimeOfDay$!.value ==
+                            const TimeOfDay(hour: 0, minute: 0)) {
                           _newEntryBloc.submitError(EntryError.startTime);
                           return;
                         }
@@ -268,7 +279,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                             .toString()
                             .substring(13);
                         int interval = _newEntryBloc.selectIntervals!.value;
-                        String startTime =
+                        TimeOfDay startTime =
                             _newEntryBloc.selectedTimeOfDay$!.value;
                         var endTime = _newEntryBloc.selectedDate$!.value;
 
@@ -283,7 +294,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                           dosage: dosage,
                           medicineType: medicineType,
                           interval: interval,
-                          startTime: startTime,
+                          startTime:
+                              "${convertTime(startTime.hour.toString())}:${convertTime(startTime.minute.toString())}",
                           endTime: endTime,
                         );
 
@@ -490,7 +502,7 @@ class _SelectTimeState extends State<SelectTime> {
   TimeOfDay _time = const TimeOfDay(hour: 0, minute: 00);
   bool _clicked = false;
 
-  Future<TimeOfDay> _selectTime() async {
+  Future<void> _selectTime() async {
     final NewEntryBloc newEntryBloc =
         Provider.of<NewEntryBloc>(context, listen: false);
 
@@ -502,12 +514,10 @@ class _SelectTimeState extends State<SelectTime> {
         _time = picked;
         _clicked = true;
 
-        //update state via provider, we will do later
-        newEntryBloc.updateTime(convertTime(_time.hour.toString()) +
-            convertTime(_time.minute.toString()));
+        // Update state via provider
+        newEntryBloc.updateTime(_time);
       });
     }
-    return picked!;
   }
 
   @override
@@ -629,8 +639,6 @@ class MedicineTypeColumn extends StatelessWidget {
     final NewEntryBloc newEntryBloc = Provider.of<NewEntryBloc>(context);
     return GestureDetector(
       onTap: () {
-        //select medicine type
-        //lets create a new block for selecting and adding new entry
         newEntryBloc.updateSelectedMedicine(medicineType);
       },
       child: Column(
