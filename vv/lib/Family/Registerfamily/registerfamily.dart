@@ -8,9 +8,8 @@ import 'package:http_parser/http_parser.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
 import 'package:vv/widgets/backbutton.dart';
-import 'package:vv/widgets/custom_Textfield.dart';
-import 'package:vv/widgets/pass_textField.dart';
 import 'package:vv/map_location_picker.dart';
+
 
 class APIService {
   static final Dio _dio = Dio();
@@ -29,8 +28,6 @@ class APIService {
               ? response.data['message']
               : 'Registration failed with status code: ${response.data}';
     } catch (error) {
-      // ignore: avoid_print
-      print('Registration failed: $error');
       return 'Registration failed: $error';
     }
   }
@@ -48,19 +45,16 @@ class _RegisterFamilyState extends State<RegisterFamily> {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
 
   late String _selectedRole = '';
   late bool _isLoading = false;
   File? _selectedImage;
-  // ignore: non_constant_identifier_names
-  late double Latifam;
-  // ignore: non_constant_identifier_names
-  late double Longfam;
-  Prediction? initialValue;
+  double? _latitude;
+  double? _longitude;
+  bool _isPasswordVisible = false;
 
   void _handleImageSelected(File? image) {
     setState(() {
@@ -68,39 +62,99 @@ class _RegisterFamilyState extends State<RegisterFamily> {
     });
   }
 
-  void _register() async {
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return '* Required';
+    } else if (value.length < 8) {
+      return 'Password should be at least 8 characters';
+    } else if (!RegExp(r'(?=.*[A-Z])').hasMatch(value)) {
+      return 'Password should contain at least one uppercase letter';
+    } else if (!RegExp(r'(?=.*[a-z])').hasMatch(value)) {
+      return 'Password should contain at least one lowercase letter';
+    } else if (!RegExp(r'(?=.*\d)').hasMatch(value)) {
+      return 'Password should contain at least one number';
+    } else if (!RegExp(r'(?=.*[@#$%^&*()_+!])').hasMatch(value)) {
+      return 'Password should contain at least one special character';
+    }
+    return null;
+  }
+
+  Future<void> _register() async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      if (_fullNameController.text.isEmpty ||
-          _emailController.text.isEmpty ||
-          _passwordController.text.isEmpty ||
-          _confirmPasswordController.text.isEmpty ||
-          _phoneNumberController.text.isEmpty ||
-          _ageController.text.isEmpty ||
-          _selectedRole.isEmpty ||
-          _selectedImage == null) {
-        throw 'Please fill in all fields and select an image.';
+      if (_fullNameController.text.isEmpty &&
+          _emailController.text.isEmpty &&
+          _passwordController.text.isEmpty &&
+          _confirmPasswordController.text.isEmpty &&
+          _phoneNumberController.text.isEmpty &&
+          _ageController.text.isEmpty &&
+          _selectedRole.isEmpty &&
+          _selectedImage == null &&
+          _latitude == null &&
+          _longitude == null) {
+        throw 'Please Fill in All The Fields';
       }
+       // ignore: unnecessary_null_comparison
+       if (_fullNameController.text.isEmpty == null) {
+        throw 'Please Choose Your Full Name';
+      }
+      if (
+          // ignore: unnecessary_null_comparison
+          _emailController.text.isEmpty == null) {
+        throw 'Please Write a Email Address';
+      }
+      if (
+          // ignore: unnecessary_null_comparison
+          _passwordController.text.isEmpty == null) {
+        throw 'Please Write Your Password';
+      }
+      if (
+          // ignore: unnecessary_null_comparison
+          _confirmPasswordController.text.isEmpty == null) {
+        throw 'Please Write Your Confirm Password';
+      }
+      // ignore: unnecessary_null_comparison
+      if (_phoneNumberController.text.isEmpty == null) {
+        throw 'Please Write Your Phone Number';
+      }
+      // ignore: unnecessary_null_comparison
+      if (_ageController.text.isEmpty == null) {
+        throw 'Please Write Your Age';
+      }
+     // ignore: unnecessary_null_comparison
+     if ( _selectedRole.isEmpty == null) {
+        throw 'Please Choose Who You Are';
+      }
+     if (_selectedImage == null) {
+        throw 'Please Select Your Image';
+      }
+      if (_latitude == null ||
+          _longitude == null) {
+        throw 'Please Pick Your Location';
+      }
+     
       if (_passwordController.text != _confirmPasswordController.text) {
         throw 'Password and Confirm Password do not match.';
+      }
+    if (_validatePassword(_passwordController.text) != null) {
+        throw _validatePassword(_passwordController.text)!;
       }
 
       // Email validation using regex
       RegExp emailRegExp = RegExp(
-          r'^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com|outlook\.com|aol\.com|protonmail\.com|example\.com)$');
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$");
       if (!emailRegExp.hasMatch(_emailController.text)) {
         throw 'Invalid email address.\nPlease Enter Correct Email';
       }
-
+ 
       var formData = FormData.fromMap({
         'Avatar': await MultipartFile.fromFile(
           _selectedImage!.path,
           filename: _selectedImage!.path.split('/').last,
-          contentType: MediaType.parse(
-              '${_selectedImage!.path.split('.').last == 'jpg' || _selectedImage!.path.split('.').last == 'png' ? 'image' : 'video'}/${_selectedImage!.path.split('.').last}'),
+          contentType: MediaType('application', 'octet-stream'),
         ),
         'fullName': _fullNameController.text,
         'email': _emailController.text,
@@ -108,57 +162,77 @@ class _RegisterFamilyState extends State<RegisterFamily> {
         'role': _selectedRole,
         'phoneNumber': _phoneNumberController.text,
         'age': int.parse(_ageController.text),
-        'mainLongitude': Longfam,
-        'mainLatitude': Latifam,
+        'mainLongitude': _longitude,
+        'mainLatitude': _latitude,
       });
-      
+
       dynamic response = await APIService.register(formData);
 
       if (response == true) {
-        showDialog(
-          // ignore: use_build_context_synchronously
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Registration Successful'),
-            content: const Text(
-                'You have Successfully Registered. Please Confirm Email To Can Login.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPageAll()),
-                  );
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
+        _showDialog('Registration Successful', 
+                    'You have Successfully Registered. Please Confirm Email To Can Login.', 
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPageAll()),
+                      );
+                    });
       } else {
-        throw 'Registration failed.\nThis Email is Already registered. ';
+        throw 'Registration failed.\nThis Email is Already registered.';
       }
     } catch (error) {
-      showDialog(
-        // ignore: use_build_context_synchronously
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Registration Failed'),
-          content: Text(error.toString()),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
+      _showDialog('Registration Failed', error.toString());
     } finally {
       setState(() {
         _isLoading = false;
       });
     }
+  }
+
+  void _showDialog(String title, String content, {VoidCallback? onPressed}) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: [
+          TextButton(
+            onPressed: onPressed ?? () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextFormField(
+      {required TextEditingController controller,
+      required String hintText,
+      required Icon prefixIcon,
+      bool obscureText = false,
+      Widget? suffixIcon,
+      TextInputType keyboardType = TextInputType.text,
+      String? Function(String?)? validator,
+      List<TextInputFormatter>? inputFormatters}) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
+      decoration: InputDecoration(
+        hintText: hintText,
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
+        filled: true,
+        fillColor: Colors.white.withOpacity(0.2),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25.0),
+          borderSide: BorderSide.none,
+        ),
+      ),
+      validator: validator,
+    );
   }
 
   @override
@@ -193,28 +267,78 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     const SizedBox(height: 18),
                     ProfilePicture(onImageSelected: _handleImageSelected),
                     const SizedBox(height: 18),
-                    CustomTextField(
-                      labelText: '  Full Name',
+                    _buildTextFormField(
                       controller: _fullNameController,
-                      suffixIcon: Icons.person_2_sharp,
+                      hintText: ' Full Name',
+                      prefixIcon: const Icon(Icons.person, color: Colors.white),
                     ),
                     const SizedBox(height: 15),
-                    CustomTextField(
-                      labelText: '  Email Address',
+                    _buildTextFormField(
                       controller: _emailController,
-                      suffixIcon: Icons.email_outlined,
+                      hintText: '  Email Address',
+                      prefixIcon: const Icon(Icons.email, color: Colors.white),
                     ),
                     const SizedBox(height: 15),
-                    PasswordTextField(
-                      labelText: '  Password',
+                    _buildTextFormField(
                       controller: _passwordController,
-                      suffixIcon: Icons.password_outlined,
+                      hintText: '  Password',
+                      prefixIcon: const Icon(Icons.lock, color: Colors.white),
+                      obscureText: !_isPasswordVisible,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
+                      validator: _validatePassword,
                     ),
                     const SizedBox(height: 15),
-                    PasswordTextField(
-                      labelText: '  Confirm Password',
-                      suffixIcon: Icons.password_outlined,
+                    _buildTextFormField(
                       controller: _confirmPasswordController,
+                      hintText: '  Confirm Password',
+                      prefixIcon: const Icon(Icons.lock, color: Colors.white),
+                      obscureText: !_isPasswordVisible,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
+                      validator: (value) {
+                        if (value != _passwordController.text) {
+                          return 'Password and Confirm Password do not match.';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 15),
+                    _buildTextFormField(
+                      controller: _phoneNumberController,
+                      hintText: '  Phone Number',
+                      prefixIcon: const Icon(Icons.phone, color: Colors.white),
+                      keyboardType: TextInputType.phone,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildTextFormField(
+                      controller: _ageController,
+                      hintText: '  Age',
+                      prefixIcon: const Icon(Icons.date_range_rounded, color: Colors.white),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     ),
                     const SizedBox(height: 15),
                     DropdownButtonFormField<String>(
@@ -248,20 +372,6 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                             vertical: 12.0, horizontal: 12),
                       ),
                     ),
-                    const SizedBox(height: 15),
-                    CustomTextField(
-                      labelText: '  Phone Number',
-                      controller: _phoneNumberController,
-                      suffixIcon: Icons.phone,
-                    ),
-                    const SizedBox(height: 16),
-                    CustomTextField(
-                      labelText: '  Age',
-                      controller: _ageController,
-                      suffixIcon: Icons.date_range_rounded,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      keyboardType: TextInputType.number,
-                    ),
                     const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: _isLoading
@@ -271,17 +381,14 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => MapLocationPicker(
-                                    apiKey:
-                                        'AIzaSyCuTilAfnGfkZtIx0T3qf-eOmWZ_N2LpoY',
+                                    apiKey: 'YOUR_GOOGLE_MAPS_API_KEY',
                                     popOnNextButtonTaped: true,
-                                    currentLatLng:
-                                        const LatLng(29.146727, 76.464895),
+                                    currentLatLng: const LatLng(29.146727, 76.464895),
                                     onNext: (GeocodingResult? result) {
                                       if (result != null) {
                                         setState(() {
-                                          Latifam = result.geometry.location.lat;
-                                          Longfam = result.geometry.location.lng;
-                                         
+                                          _latitude = result.geometry.location.lat;
+                                          _longitude = result.geometry.location.lng;
                                         });
                                       }
                                     },
@@ -290,8 +397,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                               );
                             },
                       style: ElevatedButton.styleFrom(
-                        foregroundColor:
-                            const Color.fromARGB(255, 255, 255, 255),
+                        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
                         backgroundColor: const Color.fromARGB(255, 3, 189, 56),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0),
@@ -303,8 +409,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     ElevatedButton(
                       onPressed: _isLoading ? null : _register,
                       style: ElevatedButton.styleFrom(
-                        foregroundColor:
-                            const Color.fromARGB(255, 255, 255, 255),
+                        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
                         backgroundColor: const Color(0xFF0386D0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0),
@@ -317,18 +422,17 @@ class _RegisterFamilyState extends State<RegisterFamily> {
               ),
             ),
           ),
-          _isLoading
-              ? Container(
-                  color: Colors.black.withOpacity(0.5),
-                  child: const Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Color(0xff3B5998),
-                      ),
-                    ),
+          if (_isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Color(0xff3B5998),
                   ),
-                )
-              : const SizedBox.shrink(),
+                ),
+              ),
+            ),
         ],
       ),
     );
