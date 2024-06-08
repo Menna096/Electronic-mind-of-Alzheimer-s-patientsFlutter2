@@ -270,26 +270,26 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     _buildTextFormField(
                       controller: _fullNameController,
                       hintText: ' Full Name',
-                      prefixIcon: const Icon(Icons.person, color: Colors.white),
+                      prefixIcon: const Icon(Icons.person, color: Color.fromARGB(255, 97, 149, 251),),
                     ),
                     const SizedBox(height: 15),
                     _buildTextFormField(
                       controller: _emailController,
                       hintText: '  Email Address',
-                      prefixIcon: const Icon(Icons.email, color: Colors.white),
+                      prefixIcon: const Icon(Icons.email, color: Color.fromARGB(255, 97, 149, 251),),
                     ),
                     const SizedBox(height: 15),
                     _buildTextFormField(
                       controller: _passwordController,
                       hintText: '  Password',
-                      prefixIcon: const Icon(Icons.lock, color: Colors.white),
+                      prefixIcon: const Icon(Icons.lock, color: Color.fromARGB(255, 97, 149, 251),),
                       obscureText: !_isPasswordVisible,
                       suffixIcon: IconButton(
                         icon: Icon(
                           _isPasswordVisible
                               ? Icons.visibility
                               : Icons.visibility_off,
-                          color: Colors.white,
+                          color: Color.fromARGB(255, 255, 244, 244),
                         ),
                         onPressed: () {
                           setState(() {
@@ -303,14 +303,14 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     _buildTextFormField(
                       controller: _confirmPasswordController,
                       hintText: '  Confirm Password',
-                      prefixIcon: const Icon(Icons.lock, color: Colors.white),
+                      prefixIcon: const Icon(Icons.lock, color:Color.fromARGB(255, 97, 149, 251),),
                       obscureText: !_isPasswordVisible,
                       suffixIcon: IconButton(
                         icon: Icon(
                           _isPasswordVisible
                               ? Icons.visibility
                               : Icons.visibility_off,
-                          color: Colors.white,
+                          color: Color.fromARGB(255, 255, 244, 244),
                         ),
                         onPressed: () {
                           setState(() {
@@ -329,14 +329,14 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     _buildTextFormField(
                       controller: _phoneNumberController,
                       hintText: '  Phone Number',
-                      prefixIcon: const Icon(Icons.phone, color: Colors.white),
+                      prefixIcon: const Icon(Icons.phone, color: Color.fromARGB(255, 94, 142, 236),),
                       keyboardType: TextInputType.phone,
                     ),
                     const SizedBox(height: 16),
                     _buildTextFormField(
                       controller: _ageController,
                       hintText: '  Age',
-                      prefixIcon: const Icon(Icons.date_range_rounded, color: Colors.white),
+                      prefixIcon: const Icon(Icons.date_range_rounded, color: Color.fromARGB(255, 94, 142, 236),),
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     ),

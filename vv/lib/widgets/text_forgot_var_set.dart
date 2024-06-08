@@ -13,15 +13,15 @@ class ForgetPass_var_setpass_Text extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          const SizedBox(height: 150),
+          const SizedBox(height: 20),
           Padding(
             padding:  const EdgeInsets.only(right: 18),
             child: Text(
               text,
               style: const TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Outfit',
+                fontSize: 35,
+                
+                fontFamily: 'ConcertOne',
               ),
             ),
           ),

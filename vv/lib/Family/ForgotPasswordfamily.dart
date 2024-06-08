@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:dio/dio.dart';
 import 'package:vv/Family/LoginPageAll.dart';
+import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
 import 'package:vv/widgets/text_forgot_var_set.dart';
 
@@ -10,16 +11,13 @@ class ForgotPasswordfamily extends StatefulWidget {
   _ForgotPasswordfamilyState createState() => _ForgotPasswordfamilyState();
 }
 
-class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily>
-    with SingleTickerProviderStateMixin {
+class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily> {
   final _emailController = TextEditingController(); // For email input
   final _dio = Dio(); // For network requests
   final _storage = FlutterSecureStorage(); // For sensitive data storage
   String _emailError = ''; // Error message for email input
   final _scrollController = ScrollController(); // For UI scrolling control
-  final _scaffoldKey =
-      GlobalKey<ScaffoldState>(); // For accessing Scaffold widget
-  double offset = 0; // Offset value
+  final _scaffoldKey = GlobalKey<ScaffoldState>(); // For accessing Scaffold widget
   bool _loading = false; // Track whether loading animation should be shown
 
   Future<void> _forgotPassword(String email) async {
@@ -31,7 +29,6 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily>
         'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/ForgetPassword',
         queryParameters: {'email': email},
         data: {},
-        // options: Options(headers: {'Accept': '*/*'}),
       );
 
       _showDialog(
@@ -51,8 +48,29 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily>
                 Navigator.pop(context);
               },
       );
+    } on DioError catch (e) {
+      // Handle specific Dio errors
+      String errorMessage = 'An error occurred';
+      if (e.response != null) {
+        switch (e.response!.statusCode) {
+          case 400:
+            errorMessage = 'No user associated with email';
+            break;
+          case 500:
+            errorMessage = 'Server error. Please try again later';
+            break;
+          default:
+            errorMessage = 'Unexpected error: ${e.response!.statusCode}';
+            break;
+        }
+      } else {
+        errorMessage = 'Network error. Please check your connection.';
+      }
+      _showDialog('Error', errorMessage, () {
+        Navigator.pop(context);
+      });
     } catch (e) {
-      _showDialog('Error', 'An error occurred: $e', () {
+      _showDialog('Error', 'An unexpected error occurred: $e', () {
         Navigator.pop(context);
       });
     } finally {
@@ -80,12 +98,24 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          key: _scaffoldKey,
-          resizeToAvoidBottomInset: false,
-          body: Background(
+    return Scaffold(
+      key: _scaffoldKey,
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        
+        elevation: 0, // Remove elevation
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, 
+          size: 30,
+          color: Color(0xff3B5998)),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: Stack(
+        children: [
+          Background(
             SingleChildScrollView: null,
             child: SingleChildScrollView(
               controller: _scrollController,
@@ -99,11 +129,11 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(right: 10, top: 10),
+                        margin: EdgeInsets.only(right: 10, top: 30),
                         child: Image.asset(
                           'images/forgotpass.png',
-                          width: 300,
-                          height: 160,
+                          width: 350,
+                          height: 260,
                         ),
                       ),
                     ],
@@ -124,21 +154,20 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily>
                   SizedBox(height: 10),
                   Padding(
                     padding: EdgeInsets.only(left: 30.0, right: 30),
-                    child: TextField(
+                    child: TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
-                        labelText: 'example123@gmail.com',
-                        labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        suffixIcon: Icon(
-                          Icons.email_outlined,
-                          size: 25,
-                          color: Color(0xFFD0D0D0),
+                        hintText: 'Email Address',
+                        prefixIcon: Icon(
+                          Icons.email,
+                          color: Color.fromARGB(255, 218, 216, 216),
                         ),
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor: Colors.white.withOpacity(0.2),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          borderSide: BorderSide.none,
+                        ),
                         errorText: _emailError,
                       ),
                     ),
@@ -156,7 +185,7 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily>
                             context: context,
                             builder: (context) => AlertDialog(
                               title: Text('Error'),
-                              content: Text('Please enter your email.'),
+                              content: Text('Please Enter Your Email.'),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () {
@@ -172,9 +201,10 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily>
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
                         backgroundColor: Color(0xFF0386D0),
-                        fixedSize: Size(151, 45),
+                        padding: EdgeInsets.symmetric(vertical: 18, horizontal: 30), // Increased padding for a wider button
+                        textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), // Bold text and larger font size
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(27),
+                          borderRadius: BorderRadius.circular(30), // Larger border radius
                         ),
                       ),
                       child: Text(
@@ -187,20 +217,20 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily>
               ),
             ),
           ),
-        ),
-        // Loading widget
-        if (_loading)
-          Container(
-            color: Colors.black.withOpacity(0.5), // Background color
-            child: Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  Color(0xff3B5998),
+          // Loading widget
+          if (_loading)
+            Container(
+              color: Colors.black.withOpacity(0.5), // Background color
+              child: Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Color(0xff3B5998),
+                  ),
                 ),
               ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }
