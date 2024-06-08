@@ -10,7 +10,6 @@ import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/local_auth_api.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/token_manage.dart';
-// Import the TokenManager class
 
 class LoginPageAll extends StatefulWidget {
   @override
@@ -26,7 +25,8 @@ class _LoginPageAllState extends State<LoginPageAll> {
   String _emailErrorText = '';
   String _passwordErrorText = '';
   bool _isBiometricEnabled = false;
-  bool _isLoading = false; // Add this to control loading state
+  bool _isLoading = false;
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
   @override
   void initState() {
@@ -50,29 +50,72 @@ class _LoginPageAllState extends State<LoginPageAll> {
 
   Future<void> _login() async {
     setState(() {
-      _isLoading = true; // Set loading to true
+      _isLoading = true;
+      _emailErrorText = '';
+      _passwordErrorText = '';
     });
+
     final String email = _emailController.text;
     final String password = _passwordController.text;
 
     try {
+      if (!_validateEmail(email)) {
+        setState(() {
+          _emailErrorText = 'Invalid email address. Please enter a correct email.';
+          _isLoading = false;
+        });
+        return;
+      }
+
       final response = await DioService().dio.post(
         'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/Login',
         data: {'email': email, 'password': password},
       );
 
       final token = response.data['token'];
-      await TokenManager.setToken(token); // Store token using TokenManager
+      await TokenManager.setToken(token);
       print('Login successful! Token: $token');
       _handleLoginSuccess(token);
     } catch (error) {
-      _showErrorDialog(
-          'Login failed. Please check your credentials.'); // Show error dialog
+  if (error is DioError) {
+    // Handle DioError specifically
+    if (error.response != null) {
+      switch (error.response!.statusCode) {
+        case 401:
+          _showErrorDialog('Invalid email or password. Please try again.');
+          break;
+        case 400:
+          _showErrorDialog('Please check your input.');
+          break;
+        case 404:
+          _showErrorDialog('User not found. Please register first.');
+          break;
+        case 500:
+          _showErrorDialog('Something Went Wrong Please Try again');
+          break;
+        default:
+          _showErrorDialog('An error occurred. Please try again later.');
+      }
+    } else {
+      // Handle DioError without response
+      _showErrorDialog('An error occurred while connecting to the server. Please try again later.');
+    }
+  } else {
+    // Handle other types of errors
+    _showErrorDialog('An error occurred. Please try again later.');
+  }
+
     } finally {
       setState(() {
-        _isLoading = false; // Set loading to false after the operation
+        _isLoading = false;
       });
     }
+  }
+
+  bool _validateEmail(String email) {
+    RegExp emailRegExp = RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$");
+    return emailRegExp.hasMatch(email);
   }
 
   void _handleLoginSuccess(String token) {
@@ -104,7 +147,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         content: Text(message),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(), // Close the dialog
+            onPressed: () => Navigator.of(context).pop(),
             child: Text('OK'),
           ),
         ],
@@ -138,16 +181,16 @@ class _LoginPageAllState extends State<LoginPageAll> {
   Future<void> checkTrain() async {
     try {
       Response response = await DioService().dio.get(
-            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
-          );
+        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
+      );
       if (response.statusCode == 200) {
         bool needTraining = response.data['needATraining'];
         if (needTraining) {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    UploadImagesPage()), // Replace YourScreen with your screen widget
+              builder: (context) => UploadImagesPage(),
+            ),
           );
           print('need to train');
         } else {
@@ -184,51 +227,50 @@ class _LoginPageAllState extends State<LoginPageAll> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xff3B5998),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xffFFFFFF), // White
-              Color(0xff3B5998), // Facebook Blue
-            ],
-          ),
-        ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 110),
-                Text(
-                  'Welcome',
-                  style: TextStyle(
-                    fontSize: 55,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Acme',
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 50.0),
-                _buildEmailTextField(),
-                
-                SizedBox(height: 11), // Added space between email and password fields
-                _buildPasswordTextField(),
-                
-                SizedBox(height: 50.0),
-                _isLoading 
-                    ? CircularProgressIndicator() // Show loading indicator
-                    : _buildLoginButton(), 
-                SizedBox(height: 10.0),
-                _buildRegisterNowButton(),
-                SizedBox(height: 10.0),
-               _buildforgotpasswordButton(),
+    return ScaffoldMessenger(
+      key: scaffoldMessengerKey,
+      child: Scaffold(
+        backgroundColor: Color(0xff3B5998),
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xffFFFFFF), // White
+                Color(0xff3B5998), // Facebook Blue
               ],
+            ),
+          ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 110),
+                  Text(
+                    'Welcome',
+                    style: TextStyle(
+                      fontSize: 55,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Acme',
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 50.0),
+                  _buildEmailTextField(),
+                  SizedBox(height: 11),
+                  _buildPasswordTextField(),
+                  SizedBox(height: 50.0),
+                  _isLoading ? CircularProgressIndicator() : _buildLoginButton(),
+                  SizedBox(height: 10.0),
+                  _buildRegisterNowButton(),
+                  SizedBox(height: 10.0),
+                  _buildforgotpasswordButton(),
+                ],
+              ),
             ),
           ),
         ),
@@ -288,15 +330,13 @@ class _LoginPageAllState extends State<LoginPageAll> {
     );
   }
 
-
   Widget _buildLoginButton() {
     return ElevatedButton(
       onPressed: () {
-        if (_emailController.text.isEmpty ||
-            _passwordController.text.isEmpty) {
+        if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
           setState(() {
-            _emailErrorText = 'Please Enter Your Email.';
-            _passwordErrorText = 'Please Enter Your Password.';
+            _emailErrorText = 'Please enter your email.';
+            _passwordErrorText = 'Please enter your password.';
           });
           return;
         }
@@ -308,7 +348,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         textStyle: TextStyle(
           fontSize: 17.5,
           fontWeight: FontWeight.bold,
-          color: Color.fromARGB(255, 17, 59, 143) // Purple
+          color: Color.fromARGB(255, 17, 59, 143)
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.0),
@@ -330,7 +370,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         );
       },
       style: TextButton.styleFrom(
-        foregroundColor: const Color.fromARGB(255, 255, 255, 255), // Set the text color to green
+        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       child: RichText(
         text: TextSpan(
@@ -339,12 +379,12 @@ class _LoginPageAllState extends State<LoginPageAll> {
             fontWeight: FontWeight.bold,
           ),
           children: <TextSpan>[
-            TextSpan(text: 'Don\'t have an account? ', style: TextStyle(color: Colors.white)), // White color for "Don't have an account?"
+            TextSpan(text: 'Don\'t have an account? ', style: TextStyle(color: Colors.white)),
             TextSpan(
               text: ' Register Now!',
               style: TextStyle(
                 fontFamily: 'Outfit',
-                color: Color.fromARGB(255, 20, 66, 158), // Green color for "Register Now"
+                color: Color.fromARGB(255, 20, 66, 158),
               ),
             ),
           ],
@@ -353,7 +393,8 @@ class _LoginPageAllState extends State<LoginPageAll> {
       ),
     );
   }
-    Widget _buildforgotpasswordButton() {
+
+  Widget _buildforgotpasswordButton() {
     return TextButton(
       onPressed: () {
         TokenManager.deleteToken();
@@ -365,7 +406,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         );
       },
       style: TextButton.styleFrom(
-        foregroundColor: Colors.white, // Set the text color to green
+        foregroundColor: Colors.white,
       ),
       child: RichText(
         text: TextSpan(
@@ -374,12 +415,12 @@ class _LoginPageAllState extends State<LoginPageAll> {
             fontWeight: FontWeight.bold,
           ),
           children: <TextSpan>[
-            TextSpan(text: 'Help?! ', style: TextStyle(color: Colors.white)), // White color for "Don't have an account?"
+            TextSpan(text: 'Help?! ', style: TextStyle(color: Colors.white)),
             TextSpan(
               text: ' Forgot Password?',
               style: TextStyle(
                 fontFamily: 'Outfit',
-                color: Color.fromARGB(255, 17, 59, 143), // Green color for "Register Now"
+                color: Color.fromARGB(255, 17, 59, 143),
               ),
             ),
           ],
@@ -389,3 +430,4 @@ class _LoginPageAllState extends State<LoginPageAll> {
     );
   }
 }
+
