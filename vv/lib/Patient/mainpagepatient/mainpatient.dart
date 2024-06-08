@@ -70,6 +70,9 @@ class _mainpatientState extends State<mainpatient> {
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+  List<Reminder> reminders = [];
+  late HubConnection medicineHubConnection;
+
   @override
   void initState() {
     super.initState();
@@ -77,6 +80,173 @@ class _mainpatientState extends State<mainpatient> {
     // initializeSignalR();
     initializeConnection();
     initializeNotifications();
+    initializeConnectionmedicine();
+    initializeNotificationsMedicine();
+  }
+
+  void initializeConnectionmedicine() async {
+    medicineHubConnection = HubConnectionBuilder()
+        .withUrl(
+          'https://electronicmindofalzheimerpatients.azurewebsites.net/hubs/medicineReminder',
+          HttpConnectionOptions(
+            accessTokenFactory: () async => await TokenManager.getToken(),
+            logging: (level, message) => print('SignalR log: $message'),
+          ),
+        )
+        .withAutomaticReconnect()
+        .build();
+
+    medicineHubConnection.onclose((error) {
+      print('Connection Closed. Error: $error');
+      setState(() {});
+    });
+
+    await startConnectionMedicine();
+    setupListenerMedicine();
+  }
+
+  void initializeNotificationsMedicine() {
+    var initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    var initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onDidReceiveNotificationResponse:
+            (NotificationResponse response) async {
+      String? payload = response.payload;
+      print('Notification payload: $payload');
+      if (payload != null) {
+        Reminder? reminder =
+            reminders.firstWhere((reminder) => reminder.MedicationId == payload,
+                orElse: () => Reminder(
+                      MedicationId: '',
+                      Medication_Name: '',
+                      Dosage: '',
+                      medicineType: 0,
+                      Repeater: 0,
+                      startDate: DateTime(1970, 1, 1),
+                      endDate: DateTime(1970, 1, 1),
+                    ));
+        print('Appointment found: ${reminder.MedicationId}');
+        // if (appointment != null && appointment.id.isNotEmpty) {
+        //   Navigator.of(context).push(MaterialPageRoute(
+        //       builder: (context) => AppointmentDetailScreen(
+        //             appointment: appointment,
+        //           )));
+        // }
+      }
+    });
+  }
+
+  Future<void> startConnectionMedicine() async {
+    try {
+      await medicineHubConnection.start();
+      print('Connection started!');
+      setState(() {});
+    } catch (e) {
+      print('Error starting connection: $e');
+      setState(() {});
+    }
+  }
+
+  void setupListenerMedicine() {
+    medicineHubConnection.on('ReceiveMedicineReminder', (arguments) {
+      print('Raw arguments: $arguments');
+      if (arguments != null) {
+        setState(() {
+          try {
+            Map<String, dynamic> reminderData = json.decode(arguments[1]);
+            print('Decoded JSON: $reminderData');
+            Reminder reminder = Reminder.fromJson(reminderData);
+            print('Parsed appointment: ${reminder.MedicationId}');
+            reminders.add(reminder);
+            _showNotificationMedicine(
+                'New Medicine',
+                _buildNotificationBodyMedicine(reminder),
+                reminder.MedicationId);
+            _scheduleNotificationMedicine(reminder);
+          } catch (e) {
+            print('Error decoding JSON: $e');
+          }
+        });
+      } else {
+        print('Invalid or null arguments received');
+      }
+    });
+  }
+
+  Future<void> _showNotificationMedicine(
+      String title, String body, String appointmentId) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'your_channel_id',
+      'your_channel_name',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+    var platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+    );
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      body,
+      platformChannelSpecifics,
+      payload: appointmentId,
+    );
+  }
+
+  void _scheduleNotificationMedicine(Reminder reminder) async {
+    try {
+      String timezone = await FlutterTimezone.getLocalTimezone();
+      tz.initializeTimeZones();
+      final location = tz.getLocation(timezone);
+      final scheduledDateTime = tz.TZDateTime.from(
+        reminder.startDate,
+        location,
+      );
+
+      print('Scheduled DateTime: $scheduledDateTime');
+      var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'your_channel_id',
+        'your_channel_name',
+        importance: Importance.max,
+        priority: Priority.high,
+      );
+      var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+      );
+
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        0,
+        'Scheduled Appointment',
+        _buildNotificationBodyMedicine(reminder),
+        scheduledDateTime,
+        platformChannelSpecifics,
+        payload: reminder.MedicationId,
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time,
+      );
+
+      print('Notification scheduled successfully');
+    } catch (e) {
+      print('Error scheduling notification: $e');
+    }
+  }
+
+  String _buildNotificationBodyMedicine(Reminder reminder) {
+    return '''
+      Appointment ID: ${reminder.MedicationId}
+      Date: ${reminder.Medication_Name}
+      Location: ${reminder.medicineType}
+      Notes: ${reminder.Dosage}
+      Family Name: ${reminder.startDate}
+      Can Be Deleted: ${reminder.endDate}
+    ''';
   }
 
   void initializeConnection() async {
