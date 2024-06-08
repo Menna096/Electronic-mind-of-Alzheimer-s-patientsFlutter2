@@ -77,12 +77,12 @@ class _NewEntryPageState extends State<NewEntryPage> {
       print("Error: Selected date or time is null");
       return; // Early return if selected date or time is not found
     }
-
+    int? medicineTypeIndex = _newEntryBloc.selectedMedicineType?.value;
     // Data map with null safety checks
     Map<String, dynamic> data = {
       "medication_Name": nameController.text,
       "dosage": dosageController.text,
-      "medicineType": _newEntryBloc.selectedMedicineType?.value.index,
+      "medcineType": medicineTypeIndex,
       "repeater": _newEntryBloc.selectIntervals?.value,
       "startDate": startDateTime.toIso8601String(),
       "endDate": _newEntryBloc.selectedDate$?.value?.toIso8601String()
@@ -99,6 +99,21 @@ class _NewEntryPageState extends State<NewEntryPage> {
     } catch (e) {
       print("Dio error: $e");
       // Handle Dio-specific errors (e.g., network issues)
+    }
+  }
+
+  String getMedicineTypeName(int type) {
+    switch (type) {
+      case 0:
+        return 'Pill';
+      case 1:
+        return 'Syringe';
+      case 2:
+        return 'Bottle';
+      case 3:
+        return 'Tablet';
+      default:
+        return 'Unknown';
     }
   }
 
@@ -158,44 +173,36 @@ class _NewEntryPageState extends State<NewEntryPage> {
                 const PanelTitle(title: 'Medicine Type', isRequired: true),
                 Padding(
                   padding: EdgeInsets.only(top: 1.h),
-                  child: StreamBuilder<MedicineType>(
+                  child: StreamBuilder<int>(
                     stream: _newEntryBloc.selectedMedicineType,
                     builder: (context, snapshot) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           MedicineTypeColumn(
-                              medicineType: MedicineType.Bottle,
+                              medicineType: 2,
                               name: 'Bottle',
                               iconValue:
                                   'lib/page/task_screens/assets/icons/liquid.gif',
-                              isSelected: snapshot.data == MedicineType.Bottle
-                                  ? true
-                                  : false),
+                              isSelected: snapshot.data == 2 ? true : false),
                           MedicineTypeColumn(
-                              medicineType: MedicineType.Pill,
+                              medicineType: 0,
                               name: 'Pill',
                               iconValue:
                                   'lib/page/task_screens/assets/icons/pills.gif',
-                              isSelected: snapshot.data == MedicineType.Pill
-                                  ? true
-                                  : false),
+                              isSelected: snapshot.data == 0 ? true : false),
                           MedicineTypeColumn(
-                              medicineType: MedicineType.Syringe,
+                              medicineType: 1,
                               name: 'Syringe',
                               iconValue:
                                   'lib/page/task_screens/assets/icons/syringe.gif',
-                              isSelected: snapshot.data == MedicineType.Syringe
-                                  ? true
-                                  : false),
+                              isSelected: snapshot.data == 1 ? true : false),
                           MedicineTypeColumn(
-                              medicineType: MedicineType.Tablet,
+                              medicineType: 3,
                               name: 'Tablet',
                               iconValue:
                                   'lib/page/task_screens/assets/icons/tablet.gif',
-                              isSelected: snapshot.data == MedicineType.Tablet
-                                  ? true
-                                  : false),
+                              isSelected: snapshot.data == 3 ? true : false),
                         ],
                       );
                     },
@@ -274,10 +281,9 @@ class _NewEntryPageState extends State<NewEntryPage> {
                           return;
                         }
 
-                        String medicineType = _newEntryBloc
-                            .selectedMedicineType!.value
-                            .toString()
-                            .substring(13);
+                        String medicineType = getMedicineTypeName(
+                            _newEntryBloc.selectedMedicineType!.value);
+
                         int interval = _newEntryBloc.selectIntervals!.value;
                         TimeOfDay startTime =
                             _newEntryBloc.selectedTimeOfDay$!.value;
@@ -424,7 +430,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
           int.parse(medicine.notificationIDs![i]),
           'Reminder: ${medicine.medicineName}',
           medicine.medicineType.toString() != MedicineType.None.toString()
-              ? 'It is time to take your ${medicine.medicineType!.toLowerCase()}, according to schedule'
+              ? 'It is time to take your ${medicine.medicineType!}, according to schedule'
               : 'It is time to take your medicine, according to schedule',
           TimeOfDay(hour: hour, minute: minute) as RepeatInterval,
           platformChannelSpecifics);
@@ -630,13 +636,14 @@ class MedicineTypeColumn extends StatelessWidget {
       required this.iconValue,
       required this.isSelected})
       : super(key: key);
-  final MedicineType medicineType;
+  final int medicineType;
   final String name;
   final String iconValue;
   final bool isSelected;
   @override
   Widget build(BuildContext context) {
-    final NewEntryBloc newEntryBloc = Provider.of<NewEntryBloc>(context);
+    final NewEntryBloc newEntryBloc =
+        Provider.of<NewEntryBloc>(context, listen: false);
     return GestureDetector(
       onTap: () {
         newEntryBloc.updateSelectedMedicine(medicineType);

@@ -4,8 +4,8 @@ import '../../models/errors.dart';
 import '../../models/medicine_type.dart';
 
 class NewEntryBloc {
-  BehaviorSubject<MedicineType>? _selectedMedicineType$;
-  ValueStream<MedicineType>? get selectedMedicineType =>
+  BehaviorSubject<int>? _selectedMedicineType$;
+  ValueStream<int>? get selectedMedicineType =>
       _selectedMedicineType$!.stream;
 
   BehaviorSubject<int>? _selectedInterval$;
@@ -23,7 +23,7 @@ class NewEntryBloc {
 
   NewEntryBloc() {
     _selectedMedicineType$ =
-        BehaviorSubject<MedicineType>.seeded(MedicineType.None);
+        BehaviorSubject<int>.seeded(-1);
 
     _selectedTimeOfDay$ =
         BehaviorSubject<TimeOfDay>.seeded(const TimeOfDay(hour: 0, minute: 0));
@@ -55,12 +55,7 @@ class NewEntryBloc {
     _selectedDate$!.add(date);
   }
 
-  void updateSelectedMedicine(MedicineType type) {
-    MedicineType _tempType = _selectedMedicineType$!.value;
-    if (type == _tempType) {
-      _selectedMedicineType$!.add(MedicineType.None);
-    } else {
-      _selectedMedicineType$!.add(type);
-    }
+  void updateSelectedMedicine(int type) {
+    _selectedMedicineType$!.add(type);
   }
 }
