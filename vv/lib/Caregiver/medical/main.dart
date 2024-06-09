@@ -19,7 +19,6 @@ class Pills extends StatefulWidget {
 }
 
 class _PillsState extends State<Pills> {
-  // This widget is the root of your application.
   GlobalBloc? globalBloc;
 
   @override
@@ -35,11 +34,11 @@ class _PillsState extends State<Pills> {
       child: Sizer(builder: (context, orientation, deviceType) {
         return MaterialApp(
           title: 'Pill Reminder',
-          //theme customization
+          debugShowCheckedModeBanner: false, // Add this line
           theme: ThemeData.dark().copyWith(
             primaryColor: kPrimaryColor,
             scaffoldBackgroundColor: kScaffoldColor,
-            //appbar theme
+            // appbar theme
             appBarTheme: AppBarTheme(
               toolbarHeight: 7.h,
               backgroundColor: kScaffoldColor,
@@ -77,10 +76,14 @@ class _PillsState extends State<Pills> {
                 fontWeight: FontWeight.w600,
                 letterSpacing: 1.0,
               ),
-              subtitle1:
-                  GoogleFonts.poppins(fontSize: 15.sp, color: kPrimaryColor),
-              subtitle2:
-                  GoogleFonts.poppins(fontSize: 12.sp, color: kTextLightColor),
+              subtitle1: GoogleFonts.poppins(
+                fontSize: 15.sp,
+                color: kPrimaryColor,
+              ),
+              subtitle2: GoogleFonts.poppins(
+                fontSize: 12.sp,
+                color: kTextLightColor,
+              ),
               caption: GoogleFonts.poppins(
                 fontSize: 9.sp,
                 fontWeight: FontWeight.w400,
@@ -106,14 +109,12 @@ class _PillsState extends State<Pills> {
                 borderSide: BorderSide(color: kPrimaryColor),
               ),
             ),
-            //lets customize the timePicker theme
+            // Customize the timePicker theme
             timePickerTheme: TimePickerThemeData(
               backgroundColor: Color.fromARGB(255, 17, 18, 22),
-              hourMinuteColor:
-                  Color.fromARGB(255, 218, 218, 218), //////////////
+              hourMinuteColor: Color.fromARGB(255, 218, 218, 218),
               hourMinuteTextColor: Color.fromARGB(255, 126, 170, 218),
-              dayPeriodColor:
-                  Color.fromARGB(255, 126, 170, 218), //////////////,
+              dayPeriodColor: Color.fromARGB(255, 126, 170, 218),
               dayPeriodTextColor: kScaffoldColor,
               dialBackgroundColor: Color.fromARGB(255, 126, 170, 218),
               dialHandColor: kPrimaryColor,
