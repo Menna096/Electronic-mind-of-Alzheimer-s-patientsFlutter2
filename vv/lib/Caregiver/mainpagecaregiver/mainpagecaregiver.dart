@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/caregiver_id.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/create_report.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/patient_allGame.dart';
-import 'package:vv/Caregiver/mainpagecaregiver/patient_list.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/report_list.dart';
 import 'package:vv/Caregiver/medical/main.dart';
-import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/utils/storage_manage.dart';
 
@@ -16,6 +14,7 @@ class mainpagecaregiver extends StatefulWidget {
 
 class _mainpagecaregiverState extends State<mainpagecaregiver> {
   String? _patientname;
+
   @override
   void initState() {
     super.initState();
@@ -46,41 +45,8 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.language),
-                title: Text(
-                  'Language',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF595858),
-                  ),
-                ),
-                onTap: () {
-                  // Navigate to the language page when Language is pressed
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Language()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.logout_outlined),
-                title: Text(
-                  'Log Out',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF595858),
-                  ),
-                ),
-                onTap: () {
-                  // Navigate to the login page when Log Out is pressed
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPageAll()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.code),
+                leading: Icon(Icons.qr_code_2,
+                    color: Color.fromARGB(255, 84, 134, 235)),
                 title: Text(
                   'Your Code',
                   style: TextStyle(
@@ -89,10 +55,26 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                   ),
                 ),
                 onTap: () {
-                  // Navigate to the login page when Log Out is pressed
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => caregiverCode()),
+                  );
+                },
+              ),
+              ListTile(
+                leading:
+                    Icon(Icons.logout, color: Color.fromARGB(214, 209, 8, 8)),
+                title: Text(
+                  'Log Out',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Color(0xFF595858),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPageAll()),
                   );
                 },
               ),
@@ -130,20 +112,32 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
               ),
             ),
             Positioned(
-              top: 180,
+              top: 210.5,
               left: 45,
               child: GestureDetector(
                 onTap: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            PatientAllGame()), // Ensure this is the correct class name for your Assign Patient Screen
+                    MaterialPageRoute(builder: (context) => PatientAllGame()),
                   );
                 },
                 child: Container(
                   child: Image.asset(
-                    'images/Games (1).png',
+                    'images/history.png',
+                    width: 115,
+                    height: 110,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: 210,
+              left: 230,
+              child: GestureDetector(
+                onTap: _showDialog,
+                child: Container(
+                  child: Image.asset(
+                    'images/Report.png',
                     width: 110,
                     height: 110,
                   ),
@@ -151,8 +145,8 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
               ),
             ),
             Positioned(
-              top: 180,
-              left: 230,
+              top: 355,
+              left: 140,
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -163,22 +157,8 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                 child: Container(
                   child: Image.asset(
                     'images/Medicinescare.png',
-                    width: 110,
-                    height: 110,
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 350,
-              left: 140,
-              child: GestureDetector(
-                onTap: _showDialog,
-                child: Container(
-                  child: Image.asset(
-                    'images/Medicinescare.png',
-                    width: 110,
-                    height: 110,
+                    width: 111,
+                    height: 115,
                   ),
                 ),
               ),
@@ -207,15 +187,15 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
             TextButton(
               child: Text("Create a Report"),
               onPressed: () {
-                Navigator.of(context).pop(); // Dismiss the dialog
-                _createReport(); // Call your function to create a report
+                Navigator.of(context).pop();
+                _createReport();
               },
             ),
             TextButton(
               child: Text("Get Patient's Report"),
               onPressed: () {
-                Navigator.of(context).pop(); // Dismiss the dialog
-                _getPatientsReport(); // Call your function to fetch the patient's report
+                Navigator.of(context).pop();
+                _getPatientsReport();
               },
             )
           ],
@@ -227,23 +207,21 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
   void _createReport() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-          builder: (context) =>
-              ReportScreen()), // Ensure this is the correct class name for your Assign Patient Screen
+      MaterialPageRoute(builder: (context) => ReportScreen()),
     );
   }
 
   void _getPatientsReport() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-          builder: (context) =>
-              ReportListScreen()), // Ensure this is the correct class name for your Assign Patient Screen
+      MaterialPageRoute(builder: (context) => ReportListScreen()),
     );
   }
 
   Future<void> _getname() async {
     String? patientname = await SecureStorageManager().getPatientname();
-    _patientname = patientname;
+    setState(() {
+      _patientname = patientname;
+    });
   }
 }
