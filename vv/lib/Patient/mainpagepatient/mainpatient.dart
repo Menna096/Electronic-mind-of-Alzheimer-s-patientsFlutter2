@@ -164,7 +164,7 @@ class _mainpatientState extends State<mainpatient> {
             print('Parsed appointment: ${reminder.MedicationId}');
             reminders.add(reminder);
             _showNotificationMedicine(
-                'New Medicine',
+                'New Medicine Added, See it',
                 _buildNotificationBodyMedicine(reminder),
                 reminder.MedicationId);
             _scheduleNotificationMedicine(reminder);
@@ -185,6 +185,7 @@ class _mainpatientState extends State<mainpatient> {
       'your_channel_name',
       importance: Importance.max,
       priority: Priority.high,
+      sound: RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
     );
     var platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
@@ -214,6 +215,8 @@ class _mainpatientState extends State<mainpatient> {
         'your_channel_name',
         importance: Importance.max,
         priority: Priority.high,
+        sound:
+            RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
       );
       var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
@@ -221,7 +224,7 @@ class _mainpatientState extends State<mainpatient> {
 
       await flutterLocalNotificationsPlugin.zonedSchedule(
         0,
-        'Scheduled Appointment',
+        'Medication Time Now',
         _buildNotificationBodyMedicine(reminder),
         scheduledDateTime,
         platformChannelSpecifics,
@@ -240,12 +243,7 @@ class _mainpatientState extends State<mainpatient> {
 
   String _buildNotificationBodyMedicine(Reminder reminder) {
     return '''
-      Appointment ID: ${reminder.MedicationId}
-      Date: ${reminder.Medication_Name}
-      Location: ${reminder.medicineType}
-      Notes: ${reminder.Dosage}
-      Family Name: ${reminder.startDate}
-      Can Be Deleted: ${reminder.endDate}
+
     ''';
   }
 
@@ -327,7 +325,7 @@ class _mainpatientState extends State<mainpatient> {
             Appointment appointment = Appointment.fromJson(appointmentData);
             print('Parsed appointment: ${appointment.id}');
             appointments.add(appointment);
-            _showNotification('New Appointment',
+            _showNotification('New Appointment Added',
                 _buildNotificationBody(appointment), appointment.id);
             _scheduleNotification(appointment);
           } catch (e) {
@@ -347,6 +345,7 @@ class _mainpatientState extends State<mainpatient> {
       'your_channel_name',
       importance: Importance.max,
       priority: Priority.high,
+      sound: RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
     );
     var platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
@@ -376,6 +375,8 @@ class _mainpatientState extends State<mainpatient> {
         'your_channel_name',
         importance: Importance.max,
         priority: Priority.high,
+        sound:
+            RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
       );
       var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
@@ -383,7 +384,7 @@ class _mainpatientState extends State<mainpatient> {
 
       await flutterLocalNotificationsPlugin.zonedSchedule(
         0,
-        'Scheduled Appointment',
+        'Appointment Time Now',
         _buildNotificationBody(appointment),
         scheduledDateTime,
         platformChannelSpecifics,
@@ -402,12 +403,6 @@ class _mainpatientState extends State<mainpatient> {
 
   String _buildNotificationBody(Appointment appointment) {
     return '''
-      Appointment ID: ${appointment.id}
-      Date: ${appointment.date}
-      Location: ${appointment.location}
-      Notes: ${appointment.notes}
-      Family Name: ${appointment.familyName}
-      Can Be Deleted: ${appointment.canBeDeleted}
     ''';
   }
 
