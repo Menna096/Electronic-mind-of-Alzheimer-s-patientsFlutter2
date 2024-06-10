@@ -46,9 +46,12 @@ class _PatientAllGameState extends State<PatientAllGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Patient's Game History"),
+        title: Text("Patient's Game History", style: TextStyle(
+          color: Colors.white, // Set text color to white
+          fontWeight: FontWeight.bold,
+        )),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back, color: Colors.white), // Set icon color to white
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -59,39 +62,53 @@ class _PatientAllGameState extends State<PatientAllGame> {
           },
         ),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.blueAccent, // Set background color to blue
       ),
       body: Background(
         SingleChildScrollView: null,
-        child: Center(
-          child: isLoading
-              ? SpinKitFadingCircle(
-                  color: Colors.blueAccent,
-                  size: 50.0) // Improved loading indicator
-              : gameHistories.isEmpty
-                  ? Text(
-                      "No history available.",
-                      style: TextStyle(fontSize: 18.0, color: Colors.black54),
-                    )
-                  : ListView.builder(
-                      itemCount: gameHistories.length,
-                      itemBuilder: (context, index) {
-                        final item = gameHistories[index];
-                        return Card(
-                          elevation: 2.0,
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 10),
-                          child: ListTile(
-                            leading:
-                                Icon(Icons.gamepad, color: Colors.blueAccent),
-                            title: Text('Game: ${item['gameScoreName']}',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            subtitle: Text(
-                                'Difficulty: ${item['difficultyGame']}, Score: ${item['patientScore']}, Max Score: ${item['maxScore']}'),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Expanded(
+                child: isLoading
+                    ? Center(
+                        child: SpinKitFadingCircle(
+                            color: Colors.white, // Set loading indicator color
+                            size: 50.0), // Improved loading indicator
+                      )
+                    : gameHistories.isEmpty
+                        ? Center(
+                            child: Text(
+                              "No history available.",
+                              style: TextStyle(fontSize: 18.0, color: Colors.white), // Set text color to white
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: gameHistories.length,
+                            itemBuilder: (context, index) {
+                              final item = gameHistories[index];
+                              return Card(
+                                elevation: 2.0,
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 10),
+                                shape: RoundedRectangleBorder( // Rounded corners
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: ListTile(
+                                  leading: Icon(Icons.gamepad, color: Colors.blueAccent),
+                                  title: Text('Game: ${item['gameScoreName']}',
+                                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)), // Set text color to black
+                                  subtitle: Text(
+                                      'Difficulty: ${item['difficultyGame']}, Score: ${item['patientScore']}, Max Score: ${item['maxScore']}',
+                                      style: TextStyle(color: Colors.black)), // Set text color to black
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
+              ),
+            ],
+          ),
         ),
       ),
     );
