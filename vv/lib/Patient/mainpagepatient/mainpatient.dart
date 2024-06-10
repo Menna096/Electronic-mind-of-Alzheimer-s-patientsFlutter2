@@ -131,12 +131,12 @@ class _mainpatientState extends State<mainpatient> {
                       endDate: DateTime(1970, 1, 1),
                     ));
         print('Appointment found: ${reminder.MedicationId}');
-        // if (appointment != null && appointment.id.isNotEmpty) {
-        //   Navigator.of(context).push(MaterialPageRoute(
-        //       builder: (context) => AppointmentDetailScreen(
-        //             appointment: appointment,
-        //           )));
-        // }
+        if (reminder != null && reminder.MedicationId.isNotEmpty) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => MedicineDetailsPatient(
+                    reminder: reminder,
+                  )));
+        }
       }
     });
   }

@@ -292,3 +292,46 @@ class _MedicinesPageState extends State<MedicinesPage> {
     );
   }
 }
+
+class MedicineDetailsPatient extends StatelessWidget {
+  final Reminder reminder;
+
+  MedicineDetailsPatient({required this.reminder});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Medicine Details'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text('Appointment ID: ${reminder.MedicationId}',
+                style: TextStyle(fontSize: 18)),
+            SizedBox(height: 10),
+            Text('Date: ${reminder.Medication_Name}',
+                style: TextStyle(fontSize: 18)),
+            SizedBox(height: 10),
+            Text('Location: ${reminder.Dosage}',
+                style: TextStyle(fontSize: 18)),
+            SizedBox(height: 10),
+            Text('Notes: ${reminder.medicineType}',
+                style: TextStyle(fontSize: 18)),
+            SizedBox(height: 10),
+            Text('Family Name: ${reminder.Repeater}',
+                style: TextStyle(fontSize: 18)),
+            SizedBox(height: 10),
+            Text('Can Be Deleted: ${reminder.startDate}',
+                style: TextStyle(fontSize: 18)),
+            SizedBox(height: 10),
+            Text('Can Be Deleted: ${reminder.endDate}',
+                style: TextStyle(fontSize: 18)),
+          ],
+        ),
+      ),
+    );
+  }
+}
