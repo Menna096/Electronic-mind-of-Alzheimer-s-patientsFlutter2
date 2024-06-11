@@ -250,34 +250,52 @@ class _NewEntryPageState extends State<NewEntryPage> {
                         String? medicineName;
                         int? dosage;
 
+                        // Check if medicine name is empty
                         if (nameController.text.isEmpty) {
-                          _newEntryBloc.submitError(EntryError.nameNull);
+                          _showErrorDialog("Please enter the medicine's name");
                           return;
                         }
                         medicineName = nameController.text;
 
+                        // Check if dosage is empty or invalid
                         if (dosageController.text.isEmpty) {
-                          dosage = 0;
-                        } else {
-                          dosage = int.tryParse(dosageController.text) ?? 0;
+                          _showErrorDialog("Please enter the dosage required");
+                          return;
                         }
+                        dosage = int.tryParse(dosageController.text) ?? 0;
 
+                        // Check if medicine name is duplicate
                         if (globalBloc.medicineList$!.value.any((medicine) =>
                             medicineName == medicine.medicineName)) {
-                          _newEntryBloc.submitError(EntryError.nameDuplicate);
+                          _showErrorDialog("Medicine name already exists");
                           return;
                         }
+
+                        // Check if medicine type is selected
+                        if (_newEntryBloc.selectedMedicineType!.value == -1) {
+                          _showErrorDialog("Please select a medicine type");
+                          return;
+                        }
+
+                        // Check if interval is selected
                         if (_newEntryBloc.selectIntervals!.value == 0) {
-                          _newEntryBloc.submitError(EntryError.interval);
+                          _showErrorDialog(
+                              "Please select the reminder's interval");
                           return;
                         }
+
+                        // Check if start time is selected
                         if (_newEntryBloc.selectedTimeOfDay$!.value ==
                             const TimeOfDay(hour: 0, minute: 0)) {
-                          _newEntryBloc.submitError(EntryError.startTime);
+                          _showErrorDialog(
+                              "Please select the reminder's starting time");
                           return;
                         }
+
+                        // Check if end date is selected
                         if (_newEntryBloc.selectedDate$!.value == null) {
-                          _newEntryBloc.submitError(EntryError.endTime);
+                          _showErrorDialog(
+                              "Please select the reminder's ending day");
                           return;
                         }
 
@@ -331,6 +349,26 @@ class _NewEntryPageState extends State<NewEntryPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showErrorDialog(String errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Error"),
+          content: Text(errorMessage),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
     );
   }
 
