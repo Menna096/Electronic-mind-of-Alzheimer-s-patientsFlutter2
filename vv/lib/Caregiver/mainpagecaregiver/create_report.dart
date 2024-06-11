@@ -1,5 +1,3 @@
-// ignore_for_file: sort_child_properties_last
-
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -8,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/patient_list.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/storage_manage.dart';
-import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
 
 class ReportScreen extends StatefulWidget {
@@ -29,7 +26,26 @@ class _ReportScreenState extends State<ReportScreen> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
-      lastDate: DateTime(2025),
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary:
+                  Color.fromARGB(255, 84, 134, 235), // header background color
+              onPrimary: Colors.white, // header text color
+              onSurface: Color.fromARGB(255, 84, 134, 235), // body text color
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor:
+                    Color.fromARGB(255, 84, 134, 235), // button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null) {
       setState(() {
@@ -42,14 +58,18 @@ class _ReportScreenState extends State<ReportScreen> {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4.0),
-        child: OutlinedButton(
+        child: ElevatedButton(
           onPressed: () => _selectDate(context, controller),
-          child: Text(controller.text.isEmpty ? "Select Date" : controller.text,
-              style: const TextStyle(color: Colors.black)),
-          style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: Colors.blue),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Text(
+            controller.text.isEmpty ? "Select $label" : controller.text,
+            style: const TextStyle(color: Colors.white),
+          ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color.fromARGB(255, 77, 125, 221),
+            padding: const EdgeInsets.symmetric(vertical: 18.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
           ),
         ),
       ),
@@ -57,8 +77,7 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   Future<void> _submitReport() async {
-    String? patientId =
-        await SecureStorageManager().getPatientId(); // Retrieve patient ID
+    String? patientId = await SecureStorageManager().getPatientId();
     var data = jsonEncode({
       "fromDate": _fromDateController.text,
       "toDate": _toDateController.text,
@@ -68,23 +87,24 @@ class _ReportScreenState extends State<ReportScreen> {
 
     try {
       var response = await DioService().dio.post(
-          'https://electronicmindofalzheimerpatients.azurewebsites.net/Caregiver/CreateReport',
-          data: data,
-          options: Options(headers: {
-            'Content-Type': 'application/json'
-          }) // Specify the content type as JSON
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/Caregiver/CreateReport',
+            data: data,
+            options: Options(headers: {'Content-Type': 'application/json'}),
           );
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Report submitted successfully!")));
+          const SnackBar(content: Text("Report submitted successfully!")),
+        );
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Failed to submit report.")));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Failed to submit report.")),
+        );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Error submitting report: $e")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error submitting report: $e")),
+      );
     }
   }
 
@@ -92,102 +112,143 @@ class _ReportScreenState extends State<ReportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Caregiver Report Form'),
         centerTitle: true,
+        leading: BackButton(
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => PatientListScreen()),
+            );
+          },
+        ),
       ),
       body: Background(
         SingleChildScrollView: null,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              PatientListScreen()), // Ensure this is the correct class name for your Assign Patient Screen
-                    );
-                  },
-                ),
-              ],
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        const Center(
-                          child: Text(
-                            'Select Date Range',
-                            style: TextStyle(
-                                fontSize: 18.0, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        const SizedBox(height: 30),
-                        Row(
-                          children: <Widget>[
-                            _buildDateButton('Start Time', _fromDateController),
-                            _buildDateButton('End Time', _toDateController),
-                          ],
-                        ),
-                        const SizedBox(height: 30),
-                        TextFormField(
-                          controller: _reportContentController,
-                          decoration: InputDecoration(
-                            labelText: 'Report Content',
-                            hintText: 'Enter the details of the report here',
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: Colors.blue, width: 2.0),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                          maxLines: null,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
-                        ),
-                        // ... Add other input fields if necessary
-                      ],
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    'Create Report',
+                    style: TextStyle(
+                      fontSize: 47.0,
+                      fontFamily: 'LilitaOne',
+                      color: Color.fromARGB(255, 77, 125, 221),
                     ),
                   ),
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                child: const Text('Submit Report'),
-                onPressed: _submitReport,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
+                  const SizedBox(height: 80),
+                  Card(
+                    elevation: 8.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            'Date Range',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'dubai',
+                              color: Color.fromARGB(255, 171, 194, 240),
+                            ),
+                          ),
+                          const SizedBox(height: 13.0),
+                          Row(
+                            children: <Widget>[
+                              _buildDateButton(
+                                  'Start Date', _fromDateController),
+                              const SizedBox(width: 10.0),
+                              _buildDateButton('End Date', _toDateController),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.blue,
-                ),
+                  const SizedBox(height: 60), ////////////////
+                  Card(
+                    elevation: 8.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            'Report Content',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'dubai',
+                              color: Color.fromARGB(255, 171, 194, 240),
+                            ),
+                          ),
+                          const SizedBox(height: 10.0),
+                          TextFormField(
+                            controller: _reportContentController,
+                            decoration: InputDecoration(
+                              hintText: 'Enter the details of the report here',
+                               hintStyle: TextStyle(
+      color: Color.fromARGB(255, 174, 170, 170),
+      fontFamily: 'dubai' // Change the hint text color to black
+    ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 20.0, horizontal: 15.0),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color:
+                                        const Color.fromARGB(255, 84, 134, 235),
+                                    width: 2.0),
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                            ),
+                            maxLines: null,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 50),
+                  ElevatedButton(
+                    onPressed: _submitReport,
+                    child: const Text(
+                      'Submit Report',
+                      style: TextStyle(fontSize: 20.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w800,
+                      fontFamily: 'Acme'),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 73, 173, 83),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(
-              height: 20,
-            )
-          ],
+          ),
         ),
       ),
     );
