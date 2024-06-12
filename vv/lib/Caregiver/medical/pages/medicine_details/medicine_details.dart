@@ -6,13 +6,15 @@ import 'package:sizer/sizer.dart';
 import 'package:vv/Caregiver/medical/constants.dart';
 import 'package:vv/Caregiver/medical/global_bloc.dart';
 import 'package:vv/Caregiver/medical/pages/home_page.dart';
+import 'package:vv/Caregiver/medical/pages/success_screen/success_screen.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/storage_manage.dart';
 
 class MedicineDetails extends StatefulWidget {
   final dynamic data; // Accepting dynamic data directly
-
-  const MedicineDetails({Key? key, required this.data}) : super(key: key);
+  final VoidCallback onDelete; // Callback to notify deletion
+  const MedicineDetails({Key? key, required this.data, required this.onDelete})
+      : super(key: key);
 
   @override
   _MedicineDetailsState createState() => _MedicineDetailsState();
@@ -94,7 +96,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
             TextButton(
               onPressed: () async {
                 try {
-                  String? reminderId = await storageManager.getReminderId();
+                  String? reminderId = widget.data['reminderId'].toString();
                   print("Reminder ID: $reminderId"); // Debug print
                   if (reminderId != null) {
                     var response = await DioService().dio.delete(
@@ -104,6 +106,12 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                     if (response.statusCode == 200) {
                       ScaffoldMessenger.of(dialogContext).showSnackBar(SnackBar(
                           content: Text('Reminder Deleted Successfully')));
+                      widget.onDelete();
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SuccessScreen())); // Notify the HomePage of the deletion
                     } else {
                       ScaffoldMessenger.of(dialogContext).showSnackBar(SnackBar(
                           content: Text(
@@ -120,7 +128,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                 } finally {
                   // Ensuring navigation even if an error occurs
                   Navigator.of(dialogContext).pop(); // Close the dialog
-                  Navigator.push(dialogContext,
+                  Navigator.pushReplacement(dialogContext,
                       MaterialPageRoute(builder: (context) => HomePage()));
                 }
               },
@@ -131,7 +139,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                     .caption!
                     .copyWith(color: kSecondaryColor),
               ),
-            ),
+            )
           ],
         );
       },

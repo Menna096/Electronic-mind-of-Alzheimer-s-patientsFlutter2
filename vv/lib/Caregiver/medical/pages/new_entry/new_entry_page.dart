@@ -331,7 +331,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SuccessScreen()));
+                                  builder: (context) => HomePage()));
                         } catch (error) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

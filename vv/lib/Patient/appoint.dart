@@ -49,15 +49,36 @@ class AppointmentScreenPatient extends StatefulWidget {
       _AppointmentScreenPatientState();
 }
 
-class _AppointmentScreenPatientState extends State<AppointmentScreenPatient> {
+class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
+    with SingleTickerProviderStateMixin {
   List<dynamic> appointments = [];
   bool isLoading = true;
   String errorMessage = '';
+  late AnimationController _controller;
+  double _position = -200;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     fetchAppointments();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 5),
+    )..addListener(() {
+        setState(() {
+          _position += 1;
+          if (_position > 300) _position = -200;
+        });
+      });
+    _controller.repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<void> fetchAppointments() async {
@@ -79,7 +100,6 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient> {
   }
 
   void showAppointmentDetails(Map<String, dynamic> appointment) {
-    // Parse the date and time
     DateTime dateTime = DateTime.parse(appointment['date']);
     String formattedDate = DateFormat('yyyy-MM-dd').format(dateTime);
     String formattedTime = DateFormat('hh:mm a').format(dateTime);
@@ -97,7 +117,7 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient> {
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
-              color: Colors.blueAccent,
+              color: Color(0xff3B5998),
             ),
           ),
           content: Column(
@@ -131,7 +151,7 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient> {
               child: Text(
                 'Close',
                 style: TextStyle(
-                  color: Colors.blueAccent,
+                  color: Color(0xff3B5998),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -142,48 +162,119 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient> {
     );
   }
 
+  double _calculateOpacity(int index) {
+    double itemPosition = index * 100.0; // Approximate height of each item
+    double scrollOffset = _scrollController.offset;
+    if (scrollOffset > itemPosition) {
+      return 0.0;
+    } else {
+      return 1.0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Center(child: Text('Appointments')),
-      ),
-      body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : errorMessage.isNotEmpty
-              ? Center(child: Text(errorMessage))
-              : Background(
-                  SingleChildScrollView: null,
-                  child: ListView.builder(
-                    padding: EdgeInsets.all(10),
-                    itemCount: appointments.length,
-                    itemBuilder: (context, index) {
-                      var appointment = appointments[index];
-                      return GestureDetector(
-                        onTap: () => showAppointmentDetails(appointment),
-                        child: Card(
-                          color: Color.fromARGB(72, 255, 255, 255),
-                          margin: EdgeInsets.symmetric(vertical: 8),
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+      extendBodyBehindAppBar: true,
+      body: Stack(
+        children: [
+          // Background with animated circular shapes
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xff3B5998), Colors.white],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+            ),
+          ),
+          AnimatedPositioned(
+            duration: Duration(seconds: 1),
+            top: _position,
+            left: -100,
+            child: CircleAvatar(
+              radius: 200,
+              backgroundColor: Colors.white.withOpacity(0.1),
+            ),
+          ),
+          AnimatedPositioned(
+            duration: Duration(seconds: 1),
+            bottom: -_position,
+            right: -100,
+            child: CircleAvatar(
+              radius: 200,
+              backgroundColor: Colors.white.withOpacity(0.1),
+            ),
+          ),
+          // Main content
+          isLoading
+              ? Center(child: CircularProgressIndicator())
+              : errorMessage.isNotEmpty
+                  ? Center(child: Text(errorMessage))
+                  : NotificationListener<ScrollNotification>(
+                      onNotification: (scrollNotification) {
+                        setState(() {});
+                        return false;
+                      },
+                      child: CustomScrollView(
+                        controller: _scrollController,
+                        slivers: [
+                          SliverAppBar(
+                            title: Center(child: Text('Appointments')),
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                            pinned: true,
                           ),
-                          child: ListTile(
-                            leading: Icon(Icons.calendar_today_rounded),
-                            title: Text(
-                              appointment['notes'],
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                          SliverPadding(
+                            padding: const EdgeInsets.all(16.0),
+                            sliver: SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (context, index) {
+                                  var appointment = appointments[index];
+                                  return Opacity(
+                                    opacity: _calculateOpacity(index),
+                                    child: GestureDetector(
+                                      onTap: () =>
+                                          showAppointmentDetails(appointment),
+                                      child: Card(
+                                        color: Colors.white.withOpacity(0.8),
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 8),
+                                        elevation: 3,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        child: ListTile(
+                                          leading: Icon(
+                                              Icons.calendar_today_rounded,
+                                              color: Color(0xff3B5998)),
+                                          title: Text(
+                                            appointment['notes'],
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          trailing: Icon(
+                                              Icons.arrow_forward_ios,
+                                              color: Color(0xff3B5998)),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                childCount: appointments.length,
                               ),
                             ),
-                            trailing: Icon(Icons.arrow_forward_ios),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                        ],
+                      ),
+                    ),
+        ],
+      ),
     );
   }
 }

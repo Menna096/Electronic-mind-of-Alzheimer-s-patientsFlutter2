@@ -50,7 +50,19 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _medicationData = fetchMedicationData();
+    _fetchMedicationData();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _fetchMedicationData();
+  }
+
+  void _fetchMedicationData() {
+    setState(() {
+      _medicationData = fetchMedicationData();
+    });
   }
 
   @override
@@ -101,7 +113,10 @@ class _HomePageState extends State<HomePage> {
                         itemBuilder: (context, index) {
                           print(
                               "Medicine Type in GridView: ${snapshot.data![index]['medcineType']}");
-                          return MedicineCard(data: snapshot.data![index]);
+                          return MedicineCard(
+                            data: snapshot.data![index],
+                            onDelete: _fetchMedicationData, // Refresh the list
+                          );
                         },
                       );
                     }
@@ -119,7 +134,10 @@ class _HomePageState extends State<HomePage> {
             MaterialPageRoute(
               builder: (context) => const NewEntryPage(),
             ),
-          );
+          ).then((_) {
+            // Refresh the data when coming back from the NewEntryPage
+            _fetchMedicationData();
+          });
         },
         child: SizedBox(
           width: 18.w,
@@ -198,7 +216,13 @@ class BottomContainer extends StatelessWidget {
             ),
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
-              return MedicineCard(data: snapshot.data![index]);
+              var data = snapshot.data![index];
+              return MedicineCard(
+                data: data,
+                onDelete: () {
+                  globalBloc.removeMedicine(data);
+                },
+              );
             },
           );
         }
@@ -208,8 +232,10 @@ class BottomContainer extends StatelessWidget {
 }
 
 class MedicineCard extends StatelessWidget {
-  const MedicineCard({Key? key, required this.data}) : super(key: key);
+  const MedicineCard({Key? key, required this.data, required this.onDelete})
+      : super(key: key);
   final dynamic data;
+  final VoidCallback onDelete; // Callback to notify deletion
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +251,10 @@ class MedicineCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MedicineDetails(data: data)),
+          MaterialPageRoute(
+            builder: (context) =>
+                MedicineDetails(data: data, onDelete: onDelete),
+          ),
         );
       },
       child: Card(
