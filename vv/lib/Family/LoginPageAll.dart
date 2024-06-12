@@ -8,7 +8,6 @@ import 'package:vv/Family/enterimage.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/local_auth_api.dart';
-import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/token_manage.dart';
 
 class LoginPageAll extends StatefulWidget {
@@ -67,7 +66,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         return;
       }
 
-      final response = await DioService().dio.post(
+      final response = await Dio().post(
         'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/Login',
         data: {'email': email, 'password': password},
       );
@@ -77,34 +76,30 @@ class _LoginPageAllState extends State<LoginPageAll> {
       print('Login successful! Token: $token');
       _handleLoginSuccess(token);
     } catch (error) {
-  if (error is DioError) {
-    // Handle DioError specifically
-    if (error.response != null) {
-      switch (error.response!.statusCode) {
-        case 401:
-          _showErrorDialog('Invalid email or password. Please try again.');
-          break;
-        case 400:
-          _showErrorDialog('Please check your input.');
-          break;
-        case 404:
-          _showErrorDialog('User not found. Please register first.');
-          break;
-        case 500:
-          _showErrorDialog('Something Went Wrong Please Try again');
-          break;
-        default:
-          _showErrorDialog('An error occurred. Please try again later.');
+      if (error is DioError) {
+        if (error.response != null) {
+          switch (error.response!.statusCode) {
+            case 401:
+              _showErrorDialog('Invalid email or password. Please try again.');
+              break;
+            case 400:
+              _showErrorDialog('Please check your input.');
+              break;
+            case 404:
+              _showErrorDialog('User not found. Please register first.');
+              break;
+            case 500:
+              _showErrorDialog('Something Went Wrong Please Try again');
+              break;
+            default:
+              _showErrorDialog('An error occurred. Please try again later.');
+          }
+        } else {
+          _showErrorDialog('An error occurred while connecting to the server. Please try again later.');
+        }
+      } else {
+        _showErrorDialog('An error occurred. Please try again later.');
       }
-    } else {
-      // Handle DioError without response
-      _showErrorDialog('An error occurred while connecting to the server. Please try again later.');
-    }
-  } else {
-    // Handle other types of errors
-    _showErrorDialog('An error occurred. Please try again later.');
-  }
-
     } finally {
       setState(() {
         _isLoading = false;
@@ -129,7 +124,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => mainpatient()),
+        _createRoute(mainpatient()),
       );
     }
 
@@ -137,6 +132,24 @@ class _LoginPageAllState extends State<LoginPageAll> {
       _authenticateWithBiometric();
     }
     _navigateBasedOnUserRole();
+  }
+
+  PageRouteBuilder _createRoute(Widget page) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
   }
 
   void _showErrorDialog(String message) {
@@ -167,20 +180,20 @@ class _LoginPageAllState extends State<LoginPageAll> {
   void _navigateToMainPageFamily() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => MainPageFamily()),
+      _createRoute(MainPageFamily()),
     );
   }
 
   void _navigateToMainPageCaregiver() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => PatientListScreen()),
+      _createRoute(PatientListScreen()),
     );
   }
 
   Future<void> checkTrain() async {
     try {
-      Response response = await DioService().dio.get(
+      Response response = await Dio().get(
         'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
       );
       if (response.statusCode == 200) {
@@ -188,9 +201,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         if (needTraining) {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => UploadImagesPage(),
-            ),
+            _createRoute(UploadImagesPage()),
           );
           print('need to train');
         } else {
@@ -218,7 +229,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         } else {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => mainpatient()),
+            _createRoute(mainpatient()),
           );
         }
       }
@@ -237,8 +248,8 @@ class _LoginPageAllState extends State<LoginPageAll> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Color(0xffFFFFFF), // White
-                Color(0xff3B5998), // Facebook Blue
+                Color(0xffFFFFFF),
+                Color(0xff3B5998),
               ],
             ),
           ),
@@ -253,9 +264,9 @@ class _LoginPageAllState extends State<LoginPageAll> {
                   Text(
                     'Welcome',
                     style: TextStyle(
-                      fontSize: 55,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Acme',
+                      fontSize: 57,
+                      fontFamily: 'LilitaOne',
+                      color: Color.fromARGB(255, 81, 122, 203)
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -348,7 +359,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         textStyle: TextStyle(
           fontSize: 17.5,
           fontWeight: FontWeight.bold,
-          color: Color.fromARGB(255, 17, 59, 143)
+          color: Color.fromARGB(255, 81, 122, 203)
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.0),
@@ -364,9 +375,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         TokenManager.deleteToken();
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => RegisterFamily(),
-          ),
+          _createRoute(RegisterFamily()),
         );
       },
       style: TextButton.styleFrom(
@@ -400,9 +409,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         TokenManager.deleteToken();
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => ForgotPasswordfamily(),
-          ),
+          _createRoute(ForgotPasswordfamily()),
         );
       },
       style: TextButton.styleFrom(
@@ -430,4 +437,3 @@ class _LoginPageAllState extends State<LoginPageAll> {
     );
   }
 }
-

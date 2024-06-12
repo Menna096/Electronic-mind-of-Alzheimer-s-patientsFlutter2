@@ -25,7 +25,40 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 84, 134, 235),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          'Settings',
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 23,
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0,
+              ),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0),
+          ),
+        ),
       ),
       drawer: Drawer(
         child: Container(
@@ -45,7 +78,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.qr_code_2,
+                leading: Icon(Icons.perm_contact_calendar_rounded,
                     color: Color.fromARGB(255, 84, 134, 235)),
                 title: Text(
                   'Your Code',
@@ -96,18 +129,32 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
         child: Stack(
           children: [
             Positioned(
-              bottom: 600,
+              bottom: 565,
               child: Center(
                 child: Container(
-                  padding: EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(24.0),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(50, 33, 149, 243),
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xFF6A95E9),
+                        Color.fromARGB(255, 116, 196, 216)
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                     borderRadius: BorderRadius.only(
                       topRight: Radius.circular(50.0),
                       bottomRight: Radius.circular(50.0),
                     ),
                   ),
-                  child: Text('Patient Name:$_patientname'),
+                  child: Text(
+                    'Patient Name: $_patientname',
+                    style: TextStyle(
+                      fontSize: 19, // Adjust the font size as needed
+                      color: Colors.white, // Change the text color
+                      fontFamily: 'LilitaOne', // Use the desired font family
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -177,32 +224,75 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
   }
 
   void _showDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Report Options"),
-          content: Text("Choose an option below:"),
-          actions: <Widget>[
-            TextButton(
-              child: Text("Create a Report"),
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        title: Row(
+          children: [
+            Icon(Icons.report, color: Colors.blueAccent),
+            SizedBox(width: 10),
+            Text(
+              "Report Options",
+              style: TextStyle(
+                fontSize: 25,
+                fontFamily: 'LilitaOne',
+                color: Color.fromARGB(255, 239, 237, 237),
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Divider(color: Colors.blueAccent),
+            SizedBox(height: 10),
+            Text(
+              "Choose an option below:",
+              style: TextStyle(fontSize: 18, color: Colors.black54),
+            ),
+            SizedBox(height: 20),
+            TextButton.icon(
+              icon: Icon(Icons.create, color: Colors.white),
+              label: Text("Create A New Report"),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white, backgroundColor: Colors.blueAccent,
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
                 _createReport();
               },
             ),
-            TextButton(
-              child: Text("Get Patient's Report"),
+            SizedBox(height: 10),
+            TextButton.icon(
+              icon: Icon(Icons.report_gmailerrorred, color: Colors.white),
+              label: Text(" Get Patient's Report"),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white, backgroundColor: Colors.blueAccent,
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
                 _getPatientsReport();
               },
-            )
+            ),
           ],
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
+
 
   void _createReport() {
     Navigator.pushReplacement(
