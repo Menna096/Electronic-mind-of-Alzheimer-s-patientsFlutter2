@@ -46,30 +46,76 @@ class _PatientAllGameState extends State<PatientAllGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Patient's Game History", style: TextStyle(
-          color: Colors.white, // Set text color to white
-          fontWeight: FontWeight.bold,
-        )),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white), // Set icon color to white
+          icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      mainpagecaregiver()), // Ensure this is the correct class name for your Assign Patient Screen
-            );
+              MaterialPageRoute(builder: (context) => mainpagecaregiver()),
+            ); // Go back to the previous page
           },
         ),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent, // Set background color to blue
+        title: Text(
+          "Patient's Game History",
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 23,
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0,
+              ),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0),
+          ),
+        ),
       ),
-      body: Background(
-        SingleChildScrollView: null,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xffECEFF5),
+              Color(0xff3B5998),
+            ],
+          ),
+        ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 16),
+              Text(
+                "Game History",
+                style: TextStyle(
+                  fontSize: 23,
+                  fontFamily: 'Acme',
+                  color: Color(0xFF6A95E9),
+                ),
+              ),
+              SizedBox(height: 16),
               Expanded(
                 child: isLoading
                     ? Center(
@@ -81,7 +127,10 @@ class _PatientAllGameState extends State<PatientAllGame> {
                         ? Center(
                             child: Text(
                               "No history available.",
-                              style: TextStyle(fontSize: 18.0, color: Colors.white), // Set text color to white
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.white,
+                              ),
                             ),
                           )
                         : ListView.builder(
@@ -89,19 +138,49 @@ class _PatientAllGameState extends State<PatientAllGame> {
                             itemBuilder: (context, index) {
                               final item = gameHistories[index];
                               return Card(
-                                elevation: 2.0,
+                                elevation: 5.0,
                                 margin: const EdgeInsets.symmetric(
                                     vertical: 8, horizontal: 10),
-                                shape: RoundedRectangleBorder( // Rounded corners
-                                  borderRadius: BorderRadius.circular(10.0),
+                                shape: RoundedRectangleBorder(
+                                  // Rounded corners
+                                  borderRadius: BorderRadius.circular(20.0),
                                 ),
-                                child: ListTile(
-                                  leading: Icon(Icons.gamepad, color: Colors.blueAccent),
-                                  title: Text('Game: ${item['gameScoreName']}',
-                                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)), // Set text color to black
-                                  subtitle: Text(
-                                      'Difficulty: ${item['difficultyGame']}, Score: ${item['patientScore']}, Max Score: ${item['maxScore']}',
-                                      style: TextStyle(color: Colors.black)), // Set text color to black
+                                child: Container(
+                                  padding: EdgeInsets.all(20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Icon(Icons.sports_esports,
+                                              color: Color(0xFF6A95E9),
+                                              size: 32),
+                                          Text('Game: ${item['gameScoreName']}',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color.fromARGB(
+                                                      255, 67, 115, 219))),
+                                        ],
+                                      ),
+                                      SizedBox(height: 7),
+                                      Text(
+                                        'Difficulty: ${item['difficultyGame']}',
+                                        style: TextStyle(
+                                          fontFamily: 'dubai',
+                                          fontSize: 15,
+                                            color: Color.fromARGB(255, 100, 100, 100)),
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        'Score: ${item['patientScore']} / ${item['maxScore']}',
+                                        style: TextStyle(
+                                            color: Color.fromARGB(255, 143, 172, 212)),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
