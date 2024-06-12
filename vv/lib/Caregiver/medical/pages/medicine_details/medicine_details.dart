@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/Caregiver/medical/constants.dart';
 import 'package:vv/Caregiver/medical/global_bloc.dart';
 import 'package:vv/Caregiver/medical/pages/home_page.dart';
@@ -128,8 +129,10 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                 } finally {
                   // Ensuring navigation even if an error occurs
                   Navigator.of(dialogContext).pop(); // Close the dialog
-                  Navigator.pushReplacement(dialogContext,
-                      MaterialPageRoute(builder: (context) => HomePage()));
+                  Navigator.pushReplacement(
+                      dialogContext,
+                      MaterialPageRoute(
+                          builder: (context) => mainpagecaregiver()));
                 }
               },
               child: Text(
