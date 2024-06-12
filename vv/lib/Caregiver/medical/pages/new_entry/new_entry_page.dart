@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/Caregiver/medical/constants.dart';
 import 'package:vv/Caregiver/medical/global_bloc.dart';
 import 'package:vv/Caregiver/medical/models/errors.dart';
@@ -328,10 +329,16 @@ class _NewEntryPageState extends State<NewEntryPage> {
 
                         try {
                           await postMedicationData();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Medicine added successfully"),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HomePage()));
+                                  builder: (context) => mainpagecaregiver()));
                         } catch (error) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
