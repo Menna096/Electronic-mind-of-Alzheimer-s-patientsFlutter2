@@ -112,24 +112,7 @@ class _PatientListScreenState extends State<PatientListScreen>
                   ),
                 ),
               ),
-              ListTile(
-                leading: const Icon(Icons.perm_contact_calendar_rounded,
-                    color: Color.fromARGB(255, 84, 134, 235)),
-                title: const Text(
-                  'Your Code',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF595858),
-                  ),
-                ),
-                onTap: () {
-                  // Navigate to the login page when Log Out is pressed
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => caregiverCode()),
-                  );
-                },
-              ),
+             
               ListTile(
                 leading: const Icon(Icons.logout,
                     color: Color.fromARGB(214, 209, 8, 8)),
