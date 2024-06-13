@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart'; // A collection of loading indicators
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 import 'package:signalr_core/signalr_core.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/map_location_picker.dart';
@@ -42,6 +43,24 @@ class _HistoryScreenState extends State<HistoryScreen> {
     }
   }
 
+  String formatDate(String dateString) {
+    final DateTime date = DateTime.parse(dateString);
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
+
+  String formatDifficulty(int difficulty) {
+    switch (difficulty) {
+      case 0:
+        return 'Easy';
+      case 1:
+        return 'Medium';
+      case 2:
+        return 'Hard';
+      default:
+        return 'Unknown';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +96,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             title: const Text('Game Score',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             subtitle: Text(
-                                'Difficulty: ${item['difficultyGame']}, Score: ${item['patientScore']}'),
+                                'Difficulty: ${formatDifficulty(item['difficultyGame'])}, Score: ${item['patientScore']},Date:${formatDate(item['gameDate'])}'),
                             // trailing: Icon(Icons.arrow_forward_ios),
                             // onTap: () {
                             //   // Implement tap action if necessary
