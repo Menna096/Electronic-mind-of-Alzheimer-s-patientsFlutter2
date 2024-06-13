@@ -152,110 +152,110 @@ class _PatientListScreenState extends State<PatientListScreen>
           ),
         ),
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : FadeTransition(
-              opacity: _animation,
-              child: Background(
-                SingleChildScrollView: null,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 45.0,
-                            backgroundImage: NetworkImage(_photoUrl ?? ''),
-                          ),
-                          const SizedBox(width: 16.0),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Welcome $_userName !👋🏻',
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const Text(
-                                  'To The Electronic Mind Of Alzheimer Patient',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+      body: Background(
+        SingleChildScrollView: null,
+        child: FadeTransition(
+          opacity: _animation,
+          child: Background(
+            SingleChildScrollView: null,
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 45.0,
+                        backgroundImage: NetworkImage(_photoUrl ?? ''),
                       ),
-                    ),
-                    const SizedBox(height: 30),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: patients.length,
-                        itemBuilder: (context, index) {
-                          final patient = patients[index];
-                          return GestureDetector(
-                            onTap: () async {
-                              await storageManager
-                                  .setPatientname(patient.patientName);
-                              await storageManager
-                                  .setPatientId(patient.patientId);
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => mainpagecaregiver(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 20),
-                              padding: const EdgeInsets.all(16.0),
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(85, 33, 103, 225),
-                                borderRadius: BorderRadius.circular(16),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 2,
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
+                      const SizedBox(width: 16.0),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Welcome $_userName !👋🏻',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
                               ),
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.person_rounded,
-                                    size: 32,
-                                    color: Color.fromARGB(255, 216, 229, 248),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  Text(
-                                    patient.patientName,
-                                    style: const TextStyle(
-                                      fontSize: 23,
-                                      fontWeight: FontWeight.w100,
-                                      fontFamily: 'dubai',
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
+                            ),
+                            const Text(
+                              'To The Electronic Mind Of Alzheimer Patient',
+                              style: TextStyle(
+                                fontSize: 16,
                               ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: patients.length,
+                    itemBuilder: (context, index) {
+                      final patient = patients[index];
+                      return GestureDetector(
+                        onTap: () async {
+                          await storageManager
+                              .setPatientname(patient.patientName);
+                          await storageManager.setPatientId(patient.patientId);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => mainpagecaregiver(),
                             ),
                           );
                         },
-                      ),
-                    ),
-                  ],
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          padding: const EdgeInsets.all(16.0),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(85, 33, 103, 225),
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.person_rounded,
+                                size: 32,
+                                color: Color.fromARGB(255, 216, 229, 248),
+                              ),
+                              const SizedBox(width: 16),
+                              Text(
+                                patient.patientName,
+                                style: const TextStyle(
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.w100,
+                                  fontFamily: 'dubai',
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
+              ],
             ),
+          ),
+        ),
+      ),
     );
   }
 }

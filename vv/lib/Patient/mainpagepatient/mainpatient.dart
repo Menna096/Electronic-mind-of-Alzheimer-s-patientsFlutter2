@@ -507,7 +507,40 @@ class _mainpatientState extends State<mainpatient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 84, 134, 235),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          'Settings',
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 23,
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0,
+              ),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0),
+          ),
+        ),
       ),
       drawer: Drawer(
         child: Container(
@@ -527,7 +560,8 @@ class _mainpatientState extends State<mainpatient> {
                 ),
               ),
               ListTile(
-                leading: const Icon(Icons.manage_accounts_rounded),
+                leading: const Icon(Icons.manage_accounts_rounded,
+                    color: Color.fromARGB(255, 84, 134, 235)),
                 title: const Text(
                   'Manage Profile',
                   style: TextStyle(
@@ -544,23 +578,8 @@ class _mainpatientState extends State<mainpatient> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.language),
-                title: const Text(
-                  'Language',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF595858),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Language()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.logout_outlined),
+                leading: const Icon(Icons.logout,
+                    color: Color.fromARGB(214, 209, 8, 8)),
                 title: const Text(
                   'Log Out',
                   style: TextStyle(
@@ -594,17 +613,10 @@ class _mainpatientState extends State<mainpatient> {
         child: Stack(
           children: [
             Positioned(
-              bottom: 570,
+              bottom: 580,
+              right: 80,
               child: Center(
                 child: Container(
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(50, 33, 149, 243),
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(50.0),
-                      bottomRight: Radius.circular(50.0),
-                    ),
-                  ),
                   child: Row(
                     children: [
                       CircleAvatar(
@@ -615,7 +627,7 @@ class _mainpatientState extends State<mainpatient> {
                       Column(
                         children: [
                           Text(
-                            'Welcome $_userName !',
+                            'Welcome $_userName !👋🏻',
                             style: const TextStyle(
                               fontSize: 18,
                             ),
@@ -690,7 +702,7 @@ class _mainpatientState extends State<mainpatient> {
               ),
             ),
             Positioned(
-              top: 530,
+              top: 531,
               left: 43,
               child: GestureDetector(
                 onTap: () {
@@ -702,8 +714,8 @@ class _mainpatientState extends State<mainpatient> {
                 child: Container(
                   child: Image.asset(
                     'images/dailytasks.png',
-                    width: 115,
-                    height: 115,
+                    width: 109,
+                    height: 109,
                   ),
                 ),
               ),
@@ -809,8 +821,8 @@ class _mainpatientState extends State<mainpatient> {
                 child: Container(
                   child: Image.asset(
                     'images/Games (1).png',
-                    width: 110,
-                    height: 110,
+                    width: 106,
+                    height: 106,
                   ),
                 ),
               ),
