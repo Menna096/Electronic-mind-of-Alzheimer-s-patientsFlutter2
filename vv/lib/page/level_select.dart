@@ -18,10 +18,14 @@ class LevelSelectionScreen extends StatefulWidget {
 
 class _LevelSelectionScreenState extends State<LevelSelectionScreen> {
   int? recommendedLevel;
+  int? currentScore;
+  int? maxScore;
+
   @override
   void initState() {
     super.initState();
     fetchRecommendedLevel();
+    fetchCurrentAndMaxScore();
   }
 
   Future<void> fetchRecommendedLevel() async {
@@ -35,6 +39,21 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen> {
       }
     } catch (e) {
       print('Failed to fetch recommended level: $e');
+    }
+  }
+
+  Future<void> fetchCurrentAndMaxScore() async {
+    try {
+      var response = await DioService().dio.get(
+          'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/GetCurrentAndMaxScore');
+      if (response.statusCode == 200) {
+        setState(() {
+          currentScore = response.data['score']['currentScore'];
+          maxScore = response.data['score']['maxScore'];
+        });
+      }
+    } catch (e) {
+      print('Failed to fetch current and max scores: $e');
     }
   }
 
@@ -79,6 +98,17 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen> {
                   )
                 ],
               ),
+              if (currentScore != null && maxScore != null) ...[
+                Text(
+                  'Current Score: $currentScore',
+                  style: TextStyle(fontSize: 22),
+                ),
+                Text(
+                  'Max Score: $maxScore',
+                  style: TextStyle(fontSize: 22),
+                ),
+                SizedBox(height: 10),
+              ],
               Spacer(flex: 1),
               Text(
                 'Welcome To Memory Card Game',

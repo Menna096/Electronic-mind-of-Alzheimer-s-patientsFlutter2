@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart'; // Loading indicators
+import 'package:intl/intl.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/patient_list.dart';
 import 'package:vv/api/login_api.dart'; // Assuming Dio is set up here
@@ -39,6 +40,24 @@ class _PatientAllGameState extends State<PatientAllGame> {
         isLoading = false;
         print('Failed to load data: $e');
       });
+    }
+  }
+
+  String formatDate(String dateString) {
+    final DateTime date = DateTime.parse(dateString);
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
+
+  String formatDifficulty(int difficulty) {
+    switch (difficulty) {
+      case 0:
+        return 'Easy';
+      case 1:
+        return 'Medium';
+      case 2:
+        return 'Hard';
+      default:
+        return 'Unknown';
     }
   }
 
@@ -158,7 +177,8 @@ class _PatientAllGameState extends State<PatientAllGame> {
                                           Icon(Icons.sports_esports,
                                               color: Color(0xFF6A95E9),
                                               size: 32),
-                                          Text('Game: ${item['gameScoreName']}',
+                                          Text(
+                                              'Date: ${formatDate(item['gameDate'])}',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   color: Color.fromARGB(
@@ -167,17 +187,19 @@ class _PatientAllGameState extends State<PatientAllGame> {
                                       ),
                                       SizedBox(height: 7),
                                       Text(
-                                        'Difficulty: ${item['difficultyGame']}',
+                                        'Difficulty:  ${formatDifficulty(item['difficultyGame'])}',
                                         style: TextStyle(
-                                          fontFamily: 'dubai',
-                                          fontSize: 15,
-                                            color: Color.fromARGB(255, 100, 100, 100)),
+                                            fontFamily: 'dubai',
+                                            fontSize: 15,
+                                            color: Color.fromARGB(
+                                                255, 100, 100, 100)),
                                       ),
                                       SizedBox(height: 4),
                                       Text(
-                                        'Score: ${item['patientScore']} / ${item['maxScore']}',
+                                        'Score: ${item['patientScore']} ',
                                         style: TextStyle(
-                                            color: Color.fromARGB(255, 143, 172, 212)),
+                                            color: Color.fromARGB(
+                                                255, 143, 172, 212)),
                                       ),
                                     ],
                                   ),

@@ -151,26 +151,28 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
   }
 
   Future<void> postScoreUsingDio() async {
-    FormData formData = FormData.fromMap({
-      'gameScoreName':
-          'Memory Card Game', // Fixed string value for the game name
-      'patientScore': score.toString(),
-      'difficultyGame': level.toString(),
-      'maxScore': score.toString(),
-    });
+    // Construct the JSON data
+    Map<String, dynamic> jsonData = {
+      'patientScore': score,
+      'difficultyGame': (level - 1),
+    };
+
     try {
       var response = await DioService().dio.post(
             'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/AddGameScore', // Replace with your actual server URL
-            data: formData,
+            data: jsonData,
+            options: Options(
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            ),
           );
 
       if (response.statusCode == 200) {
         // If the server returns an OK response, handle data or notify user
-        // ignore: avoid_print
         print("Score posted successfully: ${response.data}");
       } else {
         // Handle errors
-        // ignore: avoid_print
         print("Failed to post score: ${response.statusCode}");
       }
     } catch (e) {
