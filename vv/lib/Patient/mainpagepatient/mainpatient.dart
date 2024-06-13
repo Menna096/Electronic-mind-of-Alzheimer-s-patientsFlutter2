@@ -702,8 +702,8 @@ class _mainpatientState extends State<mainpatient> {
               ),
             ),
             Positioned(
-              top: 531,
-              left: 43,
+              top: 532,
+              left: 46.5,
               child: GestureDetector(
                 onTap: () {
                   Navigator.pushReplacement(
@@ -714,8 +714,8 @@ class _mainpatientState extends State<mainpatient> {
                 child: Container(
                   child: Image.asset(
                     'images/dailytasks.png',
-                    width: 109,
-                    height: 109,
+                    width: 108,
+                    height: 108,
                   ),
                 ),
               ),
@@ -821,8 +821,8 @@ class _mainpatientState extends State<mainpatient> {
                 child: Container(
                   child: Image.asset(
                     'images/Games (1).png',
-                    width: 106,
-                    height: 106,
+                    width: 105,
+                    height: 105,
                   ),
                 ),
               ),

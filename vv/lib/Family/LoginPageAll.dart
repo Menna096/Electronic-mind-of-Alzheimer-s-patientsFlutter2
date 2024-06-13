@@ -25,7 +25,8 @@ class _LoginPageAllState extends State<LoginPageAll> {
   String _passwordErrorText = '';
   bool _isBiometricEnabled = false;
   bool _isLoading = false;
-  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
 
   @override
   void initState() {
@@ -60,7 +61,8 @@ class _LoginPageAllState extends State<LoginPageAll> {
     try {
       if (!_validateEmail(email)) {
         setState(() {
-          _emailErrorText = 'Invalid email address. Please enter a correct email.';
+          _emailErrorText =
+              'Invalid email address. Please enter a correct email.';
           _isLoading = false;
         });
         return;
@@ -95,7 +97,8 @@ class _LoginPageAllState extends State<LoginPageAll> {
               _showErrorDialog('An error occurred. Please try again later.');
           }
         } else {
-          _showErrorDialog('An error occurred while connecting to the server. Please try again later.');
+          _showErrorDialog(
+              'An error occurred while connecting to the server. Please try again later.');
         }
       } else {
         _showErrorDialog('An error occurred. Please try again later.');
@@ -142,7 +145,8 @@ class _LoginPageAllState extends State<LoginPageAll> {
         const end = Offset.zero;
         const curve = Curves.ease;
 
-        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
         return SlideTransition(
           position: animation.drive(tween),
@@ -255,18 +259,27 @@ class _LoginPageAllState extends State<LoginPageAll> {
           ),
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 110),
+                  const SizedBox(height: 110),
                   Text(
                     'Welcome',
                     style: TextStyle(
-                      fontSize: 57,
+                      fontSize: 58,
                       fontFamily: 'LilitaOne',
-                      color: Color.fromARGB(255, 81, 122, 203)
+                      foreground: Paint()
+                        ..shader = LinearGradient(
+                          colors: [Colors.blue[400]!, Colors.indigo[400]!],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ).createShader(
+                          Rect.fromLTWH(
+                              0, 0, 400, 10), // Adjust the size as needed
+                        ),
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -275,7 +288,9 @@ class _LoginPageAllState extends State<LoginPageAll> {
                   SizedBox(height: 11),
                   _buildPasswordTextField(),
                   SizedBox(height: 50.0),
-                  _isLoading ? CircularProgressIndicator() : _buildLoginButton(),
+                  _isLoading
+                      ? CircularProgressIndicator()
+                      : _buildLoginButton(),
                   SizedBox(height: 10.0),
                   _buildRegisterNowButton(),
                   SizedBox(height: 10.0),
@@ -357,10 +372,9 @@ class _LoginPageAllState extends State<LoginPageAll> {
         backgroundColor: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 145.0, vertical: 15.0),
         textStyle: TextStyle(
-          fontSize: 17.5,
-          fontWeight: FontWeight.bold,
-          color: Color.fromARGB(255, 81, 122, 203)
-        ),
+            fontSize: 17.5,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 81, 122, 203)),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.0),
         ),
@@ -388,7 +402,9 @@ class _LoginPageAllState extends State<LoginPageAll> {
             fontWeight: FontWeight.bold,
           ),
           children: <TextSpan>[
-            TextSpan(text: 'Don\'t have an account? ', style: TextStyle(color: Colors.white)),
+            TextSpan(
+                text: 'Don\'t have an account? ',
+                style: TextStyle(color: Colors.white)),
             TextSpan(
               text: ' Register Now!',
               style: TextStyle(
