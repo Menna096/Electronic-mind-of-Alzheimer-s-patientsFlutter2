@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart'; // Assuming you have imported Dio for network requests
 import 'package:vv/api/login_api.dart';
 import 'package:vv/page/game_history.dart';
 import 'package:vv/page/memory_game.dart';
@@ -10,17 +11,35 @@ class LevelSelectionScreen extends StatefulWidget {
   _LevelSelectionScreenState createState() => _LevelSelectionScreenState();
 }
 
-class _LevelSelectionScreenState extends State<LevelSelectionScreen> {
+class _LevelSelectionScreenState extends State<LevelSelectionScreen>
+    with SingleTickerProviderStateMixin {
   int? recommendedLevel;
   int? currentScore;
   int? maxScore;
-  double _position = 50.0; // Added missing variable
+  late AnimationController _controller;
+  double _position = -200;
 
   @override
   void initState() {
     super.initState();
     fetchRecommendedLevel();
     fetchCurrentAndMaxScore();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 5),
+    )..addListener(() {
+        setState(() {
+          _position += 1;
+          if (_position > 300) _position = -200;
+        });
+      });
+    _controller.repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   Future<void> fetchRecommendedLevel() async {
@@ -55,161 +74,179 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:Color(0xff3B5998) ,
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.white,Color(0xff3B5998)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-            ),
-          ),
-          AnimatedPositioned(
-            duration: Duration(seconds: 1),
-            top: _position,
-            left: -100,
-            child: CircleAvatar(
-              radius: 200,
-              backgroundColor: Colors.white.withOpacity(0.1),
-            ),
-          ),
-          AnimatedPositioned(
-            duration: Duration(seconds: 1),
-            bottom: -_position,
-            right: -100,
-            child: CircleAvatar(
-              radius: 200,
-              backgroundColor: Colors.white.withOpacity(0.1),
-            ),
-          ),
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  const SizedBox(height: 45),
-                  Text(
-                    'Memory Card Game',
-                    style: TextStyle(
-                      fontSize: 35,
-                      fontFamily: 'LilitaOne',
-                      foreground: Paint()
-                        ..shader = LinearGradient(
-                          colors: [Colors.blue[400]!, Colors.indigo[400]!],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ).createShader(
-                          Rect.fromLTWH(0, 0, 400, 10),
-                        ),
+      backgroundColor: Color(0xff3B5998),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return Stack(
+            children: [
+              // Background with animated circular shapes
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.white, Color(0xff3B5998)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      BackButton(),
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HistoryScreen(),
-                            ),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.history,
-                          size: 30,
-                          color: const Color.fromARGB(255, 48, 48, 48),
-                        ),
-                      ),
-                    ],
+                ),
+              ),
+              AnimatedPositioned(
+                duration: Duration(seconds: 1),
+                top: _position,
+                left: -100,
+                child: CircleAvatar(
+                  radius: 200,
+                  backgroundColor: Colors.white.withOpacity(0.1),
+                ),
+              ),
+              AnimatedPositioned(
+                duration: Duration(seconds: 1),
+                bottom: -_position,
+                right: -100,
+                child: CircleAvatar(
+                  radius: 200,
+                  backgroundColor: Colors.white.withOpacity(0.1),
+                ),
+              ),
+              SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
                   ),
-                  const SizedBox(height: 20),
-                  if (currentScore != null && maxScore != null)
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 233, 247, 255),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromARGB(136, 69, 121, 173)
-                                .withOpacity(0.3),
-                            spreadRadius: 3,
-                            blurRadius: 4,
-                            offset: Offset(-1, 5),
-                          ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.all(17),
+                  child: IntrinsicHeight(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: [
+                          const SizedBox(height: 45),
                           Text(
-                            'Current Score: $currentScore',
+                            'Memory Card Game',
                             style: TextStyle(
-                              fontSize: 20,
-                              color: Color.fromARGB(255, 50, 58, 145),
-                              fontFamily: 'Outfit',
-                              fontWeight: FontWeight.bold,
+                              fontSize: 35,
+                              fontFamily: 'LilitaOne',
+                              foreground: Paint()
+                                ..shader = LinearGradient(
+                                  colors: [
+                                    Colors.blue[400]!,
+                                    Colors.indigo[400]!
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ).createShader(
+                                  Rect.fromLTWH(0, 0, 400, 10),
+                                ),
                             ),
                           ),
                           const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              BackButton(),
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => HistoryScreen(),
+                                    ),
+                                  );
+                                },
+                                icon: Icon(
+                                  Icons.history,
+                                  size: 30,
+                                  color: const Color.fromARGB(255, 48, 48, 48),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          if (currentScore != null && maxScore != null)
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 233, 247, 255),
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color.fromARGB(136, 69, 121, 173)
+                                        .withOpacity(0.3),
+                                    spreadRadius: 3,
+                                    blurRadius: 4,
+                                    offset: Offset(-1, 5),
+                                  ),
+                                ],
+                              ),
+                              padding: const EdgeInsets.all(17),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'Current Score: $currentScore',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Color.fromARGB(255, 50, 58, 145),
+                                      fontFamily: 'Outfit',
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    'Max Score: $maxScore',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Color.fromARGB(255, 50, 58, 145),
+                                      fontFamily: 'Outfit',
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          const SizedBox(height: 50),
                           Text(
-                            'Max Score: $maxScore',
+                            'Select a Level',
                             style: TextStyle(
-                              fontSize: 20,
-                              color: Color.fromARGB(255, 50, 58, 145),
-                              fontFamily: 'Outfit',
-                              fontWeight: FontWeight.w700,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'dubai',
+                              color: Color.fromARGB(255, 255, 255, 255),
                             ),
                           ),
+                          const SizedBox(height: 20),
+                          Column(
+                            children: [
+                              buildLevelButton(
+                                context,
+                                recommendedLevel != null
+                                    ? recommendedLevel == 0
+                                        ? 'Recommended Level: Easy'
+                                        : recommendedLevel == 1
+                                            ? 'Recommended Level: Medium'
+                                            : recommendedLevel == 2
+                                                ? 'Recommended Level: Hard'
+                                                : 'Recommended Level: $recommendedLevel'
+                                    : 'Loading...',
+                                recommendedLevel != null
+                                    ? recommendedLevel! + 1
+                                    : 0,
+                              ),
+                              SizedBox(height: 16),
+                              buildLevelButton(context, "Easy (6 pairs)", 1),
+                              SizedBox(height: 16),
+                              buildLevelButton(context, "Medium (12 pairs)", 2),
+                              SizedBox(height: 16),
+                              buildLevelButton(context, "Hard (18 pairs)", 3),
+                            ],
+                          ),
+                          Spacer(),
                         ],
                       ),
                     ),
-                  const SizedBox(height: 50),
-                  Text(
-                    'Select a Level',
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'dubai',
-                      color: Color.fromARGB(255, 255, 255, 255),
-                    ),
                   ),
-                  const SizedBox(height: 20),
-                  Column(
-                    children: [
-                      buildLevelButton(
-                        context,
-                        recommendedLevel != null
-                            ? recommendedLevel == 0
-                                ? 'Recommended Level: Easy'
-                                : recommendedLevel == 1
-                                    ? 'Recommended Level: Medium'
-                                    : recommendedLevel == 2
-                                        ? 'Recommended Level: Hard'
-                                        : 'Recommended Level: $recommendedLevel'
-                            : 'Loading...',
-                        recommendedLevel != null ? recommendedLevel! + 1 : 0,
-                      ),
-                      SizedBox(height: 16),
-                      buildLevelButton(context, "Easy (6 pairs)", 1),
-                      SizedBox(height: 16),
-                      buildLevelButton(context, "Medium (12 pairs)", 2),
-                      SizedBox(height: 16),
-                      buildLevelButton(context, "Hard (18 pairs)", 3),
-                    ],
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }
