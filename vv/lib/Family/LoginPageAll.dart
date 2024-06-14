@@ -131,10 +131,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
       );
     }
 
-    if (_isBiometricEnabled) {
-      _authenticateWithBiometric();
-    }
-    _navigateBasedOnUserRole();
+    // Do not call _authenticateWithBiometric here
   }
 
   PageRouteBuilder _createRoute(Widget page) {
@@ -240,7 +237,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
     }
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
     return ScaffoldMessenger(
       key: scaffoldMessengerKey,
