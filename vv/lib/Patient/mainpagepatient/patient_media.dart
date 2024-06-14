@@ -96,7 +96,7 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
         SingleChildScrollView: null,
         child: GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2),
+              crossAxisCount: 1),
           itemCount: mediaItems.length,
           itemBuilder: (context, index) {
             var mediaItem = mediaItems[index];

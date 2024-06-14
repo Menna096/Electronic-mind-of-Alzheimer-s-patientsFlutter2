@@ -10,6 +10,9 @@ import 'package:signalr_core/signalr_core.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:intl/intl.dart';
+import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
+import 'package:vv/api/login_api.dart';
+
 
 class Reminder {
   String MedicationId;
@@ -70,7 +73,7 @@ class _MedicinesPageState extends State<MedicinesPage> {
         'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/GetAllMedicines';
 
     try {
-      Response response = await Dio().get(url); // Assuming you have Dio set up
+      Response response = await DioService().dio.get(url); // Assuming you have Dio set up
       setState(() {
         medicines = response.data;
         isLoading = false;
@@ -107,6 +110,17 @@ class _MedicinesPageState extends State<MedicinesPage> {
         // Change the background color to transparent
         backgroundColor: Colors.transparent,
         elevation: 0, // Remove shadow for a cleaner look
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => mainpatient(), // Navigate to main patient page
+              ),
+            );
+          },
+        ),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
@@ -254,24 +268,18 @@ class MedicineDetailsPatient extends StatelessWidget {
       backgroundColor: Color(0xFFF2F2F2), // Light gray background
       body: Stack(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xffECEFF5),
-                  Color(0xff3B5998),
-                ],
-              ),
-            ),
-          ),
           Scaffold(
             backgroundColor: Colors.transparent, // Make the Scaffold transparent
             appBar: AppBar(
               title: Text('Medicine Details'),
               backgroundColor: Colors.transparent,
               elevation: 0,
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context); // Go back to the previous screen
+                },
+              ),
             ),
             body: SingleChildScrollView(
               child: Padding(
@@ -302,7 +310,7 @@ class MedicineDetailsPatient extends StatelessWidget {
                     _buildDetailRow(Icons.medication_liquid_outlined,
                         'Dosage:', reminder.Dosage),
                     _buildDetailRow(Icons.medical_services, 'Medicine Type:',
-                        reminder.medicineType.toString()),
+                        _getMedicineType(reminder.medicineType)),
                     _buildDetailRow(Icons.access_time, 'Repeater:',
                         ' Every ${reminder.Repeater} hours'),
                     _buildDetailRow(Icons.calendar_today, 'Start Date:',
@@ -353,7 +361,24 @@ class MedicineDetailsPatient extends StatelessWidget {
     );
   }
 
+  // Helper function to format the medicine type
+  String _getMedicineType(int type) {
+    switch (type) {
+      case 0:
+        return 'Bottle';
+      case 1:
+        return 'Pill';
+      case 2:
+        return 'Syringe';
+      case 3:
+        return 'Tablet';
+      default:
+        return 'Unknown';
+    }
+  }
+
   String _formatDate(DateTime date) {
     return DateFormat('yyyy-MM-dd HH:mm').format(date);
   }
 }
+
