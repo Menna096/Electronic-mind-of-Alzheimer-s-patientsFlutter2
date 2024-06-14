@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:path/path.dart' as path;
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:signalr_core/signalr_core.dart';
+import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/token_manage.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -61,7 +62,7 @@ class _FileUploadPageState extends State<FileUploadPage> {
     });
 
     try {
-      final response = await _dio.post(
+      final response = await DioService().dio.post(
         'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/AddSecretFile',
         data: formData,
         options: Options(
@@ -236,16 +237,4 @@ class _FileUploadPageState extends State<FileUploadPage> {
   }
 }
 
-class MainPatientPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Main Patient Page'),
-      ),
-      body: const Center(
-        child: Text('Welcome to the Main Patient Page!'),
-      ),
-    );
-  }
-}
+

@@ -1,14 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:vv/Patient/mainpagepatient/mainpatient.dart'; 
 import 'package:vv/Patient/mainpagepatient/vediooooo/details.dart';
 import 'package:vv/Patient/mainpagepatient/vediooooo/secret_file.dart';
 import 'package:vv/Patient/mainpagepatient/vediooooo/vedio.dart';
 import 'package:vv/api/login_api.dart';
-import 'package:signalr_core/signalr_core.dart';
-import 'package:vv/utils/token_manage.dart';
-import 'package:geolocator/geolocator.dart';
 
 class SecretFilePage extends StatefulWidget {
   @override
@@ -18,18 +15,15 @@ class SecretFilePage extends StatefulWidget {
 class _SecretFilePageState extends State<SecretFilePage> {
   List<dynamic> secretFiles = [];
   final Dio dio = Dio();
-  
 
   @override
   void initState() {
     super.initState();
-    
     fetchSecretFiles();
   }
-  
-@override
+
+  @override
   void dispose() {
-  
     super.dispose();
   }
 
@@ -42,7 +36,6 @@ class _SecretFilePageState extends State<SecretFilePage> {
           secretFiles = response.data['secretFiles'];
         });
       } else {
-        // Handle error
         print(
             'Failed to load secret files with status code: ${response.statusCode}');
       }
@@ -55,59 +48,146 @@ class _SecretFilePageState extends State<SecretFilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Secret Files'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => mainpatient()),
+            );
+          },
+        ),
+        title: Text(
+          "Secret File",
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 23,
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0,
+              ),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0),
+          ),
+        ),
       ),
-      body: Stack(
-        children: <Widget>[
-          ListView.builder(
-            itemCount: secretFiles.length,
-            itemBuilder: (context, index) {
-              var file = secretFiles[index];
-              if (!file['needToConfirm']) {
-                return ListTile(
-                    title: Text(file['fileName']),
-                    subtitle: Text(file['file_Description']),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+        ),
+        child: secretFiles.isEmpty
+            ? Center(
+                child: Text(
+                  'No Secret Files Available',
+                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                ),
+              )
+            : ListView.builder(
+                itemCount: secretFiles.length,
+                itemBuilder: (context, index) {
+                  var file = secretFiles[index];
+                  return GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DetailScreenSecret(
-                            url: file['documentUrl'],
-                            fileType: file['documentExtension'],
-                          ),
+                          builder: (context) => !file['needToConfirm']
+                              ? DetailScreenSecret(
+                                  url: file['documentUrl'],
+                                  fileType: file['documentExtension'],
+                                )
+                              : VideoCaptureScreen(),
                         ),
                       );
-                    });
-              } else {
-                return ListTile(
-                  title: Text(file['fileName']),
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => VideoCaptureScreen(),
+                    },
+                    child: Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.all(16),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.blueAccent,
+                              radius: 30,
+                              child: Icon(
+                                Icons.folder,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                            ),
+                            SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    file['fileName'],
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    file['file_Description'],
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.6),
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              color: Colors.blueAccent,
+                              size: 24,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                );
-              }
-            },
-          ),
-          Positioned(
-            bottom: 20.0,
-            right: 20.0,
-            child: FloatingActionButton(
-              onPressed: () {
-                // Navigate to FilePage screen when upload button is pressed
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FileUploadPage(),
-                  ),
-                );
-              },
-              child: Icon(Icons.file_upload),
+                  );
+                },
+              ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FileUploadPage(),
             ),
-          ),
-        ],
+          );
+        },
+        backgroundColor: Colors.blueAccent,
+        child: Icon(Icons.add),
       ),
     );
   }

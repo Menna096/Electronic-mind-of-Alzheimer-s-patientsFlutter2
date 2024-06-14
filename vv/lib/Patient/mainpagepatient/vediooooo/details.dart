@@ -4,14 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:chewie/chewie.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:signalr_core/signalr_core.dart';
 import 'package:video_player/video_player.dart';
-import 'package:vv/api/login_api.dart';
-import 'package:vv/utils/token_manage.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class DetailScreenSecret extends StatefulWidget {
   final String url;
@@ -24,24 +17,22 @@ class DetailScreenSecret extends StatefulWidget {
 }
 
 class _DetailScreenSecretState extends State<DetailScreenSecret> {
-  ChewieController? _chewieController; // Make it nullable
+  ChewieController? _chewieController;
   VideoPlayerController? _videoPlayerController;
- 
+
+  double _position = 100.0; // Example value for initial animation position
+
   @override
   void initState() {
     super.initState();
     if (widget.fileType == '.mp4') {
       initializeVideoPlayer();
-      
     }
   }
-
-  
 
   void initializeVideoPlayer() {
     _videoPlayerController = VideoPlayerController.network(widget.url)
       ..initialize().then((_) {
-        // Only set the _chewieController if the widget is still mounted
         if (mounted) {
           setState(() {
             _chewieController = ChewieController(
@@ -57,68 +48,193 @@ class _DetailScreenSecretState extends State<DetailScreenSecret> {
   @override
   void dispose() {
     _videoPlayerController?.dispose();
-    _chewieController?.dispose(); // Dispose if it's initialized
+    _chewieController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget content;
-    if (widget.fileType == '.mp4' &&
-        _videoPlayerController != null &&
-        _videoPlayerController!.value.isInitialized) {
-      content = Chewie(
-          controller: _chewieController!); // Ensure it's initialized before use
-    } else if (widget.fileType == '.pdf') {
-      content = PDFView(
-        filePath: widget.url,
+    return Scaffold(
+      backgroundColor: Color(0xFF2C3E50), // Darker background color
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context); // Go back to the previous page
+          },
+        ),
+        title: Text(
+          "Detail View",
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 23,
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(2.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0,
+              ),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0),
+          ),
+        ),
+      ),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.white, Color.fromARGB(255, 14, 89, 164)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+            ),
+          ),
+          AnimatedPositioned(
+            duration: Duration(seconds: 1),
+            top: _position,
+            left: -100,
+            child: CircleAvatar(
+              radius: 200,
+              backgroundColor: Colors.white.withOpacity(0.1),
+            ),
+          ),
+          AnimatedPositioned(
+            duration: Duration(seconds: 1),
+            bottom: -_position,
+            right: -100,
+            child: CircleAvatar(
+              radius: 200,
+              backgroundColor: Colors.white.withOpacity(0.1),
+            ),
+          ),
+          SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height,
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(32.0),
+                child: AnimatedContainer(
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 20.0,
+                        offset: Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: ContentWidget(
+                    url: widget.url,
+                    fileType: widget.fileType,
+                    chewieController: _chewieController,
+                    videoPlayerController: _videoPlayerController,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ContentWidget extends StatelessWidget {
+  final String url;
+  final String fileType;
+  final ChewieController? chewieController;
+  final VideoPlayerController? videoPlayerController;
+
+  ContentWidget({
+    required this.url,
+    required this.fileType,
+    this.chewieController,
+    this.videoPlayerController,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (fileType == '.mp4' &&
+        videoPlayerController != null &&
+        videoPlayerController!.value.isInitialized) {
+      return Chewie(controller: chewieController!);
+    } else if (fileType == '.pdf') {
+      return PDFView(
+        filePath: url,
         autoSpacing: true,
         enableSwipe: true,
         pageSnap: true,
         swipeHorizontal: true,
         nightMode: false,
       );
-    } else if (widget.fileType == '.txt') {
-      content = FutureBuilder<String>(
-        future: fetchFileContent(widget.url),
+    } else if (fileType == '.txt') {
+      return FutureBuilder<String>(
+        future: fetchFileContent(url),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData) {
             return SingleChildScrollView(
-              child: Text(snapshot.data!),
+              child: Padding(
+                padding: EdgeInsets.all(24.0),
+                child: Text(
+                  snapshot.data!,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.black87,
+                  ),
+                ),
+              ),
             );
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           }
 
-          return CircularProgressIndicator();
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         },
       );
     } else {
-      content = Image.network(widget.url);
+      // Default case: Display an image if fileType is not recognized
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(24.0),
+        child: Image.network(
+          url,
+          fit: BoxFit.cover,
+        ),
+      );
     }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Detail View'),
-      ),
-      body: content,
-    );
   }
 
   Future<String> fetchFileContent(String url) async {
-    // Use Dio or HttpClient to fetch the text content from the given URL
-    final response = await DioService().dio.get(url);
-    if (response.statusCode == 200) {
-      return response.data.toString();
-    } else {
-      throw Exception('Failed to load file content');
-    }
-  }
-
-  Future<String> downloadFile(String url, String fileName) async {
-    final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/$fileName');
-    await DioService().dio.download(url, file.path);
-    return file.path;
+    // Example implementation, replace with your own logic to fetch text content
+    await Future.delayed(Duration(seconds: 2)); // Simulating a delay
+    return 'Dummy text content from $url';
   }
 }
