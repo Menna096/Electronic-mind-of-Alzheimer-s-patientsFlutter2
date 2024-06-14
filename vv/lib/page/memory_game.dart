@@ -51,6 +51,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
   late List<int> matchedIndices;
   late TimerManager _timerManager;
   late bool symbolsVisible;
+
   @override
   void initState() {
     super.initState();
@@ -58,15 +59,19 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
     symbolsVisible = true; // Initially set to true to show symbols
     initializeGame();
     _timerManager = TimerManager(
-      initialSeconds: 10,
+      initialSeconds: 120,
       onTick: _updateTimer,
       onTimerFinish: gameOver,
     );
-    _timerManager.start();
-    _toggleSymbolsVisibility(3); // Call to start the visibility toggle
+    // Start the timer after 3 seconds
+    Future.delayed(Duration(seconds: 3), () {
+      _timerManager.start();
+      _toggleSymbolsVisibility(
+          0); // Hide symbols immediately after timer starts
+    });
   }
 
-  // Delayed hide action after 2 seconds
+  // Delayed hide action after the specified duration
   void _toggleSymbolsVisibility(int duration) {
     Future.delayed(Duration(seconds: duration), () {
       setState(() {
@@ -85,7 +90,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
     startTime = DateTime.now();
     final pairsCount = level * 6;
     cards = _generateCards(pairsCount);
-    timerSeconds = 10;
+    timerSeconds = 120;
     score = 0;
     maxLevel = 3;
     processing = false;
@@ -212,16 +217,18 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
       initializeGame();
     });
     _timerManager.reset();
-    _timerManager.start();
+    Future.delayed(Duration(seconds: 3), () {
+      _timerManager.start();
+      _toggleSymbolsVisibility(
+          0); // Hide symbols immediately after timer starts
+    });
     symbolsVisible = true; // Set symbols visible before toggling
-    _toggleSymbolsVisibility(
-        visibilityDuration); // Call to start the visibility toggle with custom duration
   }
 
   void showCelebrationAnimation() {
     Duration timeTaken = DateTime.now().difference(startTime);
     String timeTakenString =
-        '${timeTaken.inMinutes} minutes ${timeTaken.inSeconds.remainder(10)} seconds';
+        '${timeTaken.inMinutes} minutes ${timeTaken.inSeconds.remainder(120)} seconds';
 
     showDialog(
       context: context,

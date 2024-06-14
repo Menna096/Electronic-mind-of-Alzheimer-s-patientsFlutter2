@@ -11,6 +11,7 @@ import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
 import 'package:vv/Patient/appoint.dart';
+import 'package:vv/Patient/identifiy.dart';
 import 'package:vv/Patient/mainpagepatient/all_families.dart';
 import 'package:vv/Patient/mainpagepatient/patient_media.dart';
 import 'package:vv/Patient/mainpagepatient/patient_prof.dart';
@@ -693,11 +694,20 @@ class _mainpatientState extends State<mainpatient> {
             Positioned(
               top: 432,
               left: 45,
-              child: Container(
-                child: Image.asset(
-                  'images/Persons.png',
-                  width: 110,
-                  height: 110,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ImageUploadScreen()),
+                  );
+                },
+                child: Container(
+                  child: Image.asset(
+                    'images/Persons.png',
+                    width: 110,
+                    height: 110,
+                  ),
                 ),
               ),
             ),
