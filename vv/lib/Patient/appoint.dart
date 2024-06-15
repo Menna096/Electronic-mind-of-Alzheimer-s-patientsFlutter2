@@ -222,10 +222,21 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
                         controller: _scrollController,
                         slivers: [
                           SliverAppBar(
-                            title: Center(child: Text('Appointments')),
+                            title: Text('Appointments'),
                             backgroundColor: Colors.transparent,
                             elevation: 0,
                             pinned: true,
+                            leading: IconButton(
+                              icon: Icon(Icons.arrow_back),
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => mainpatient(),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                           SliverPadding(
                             padding: const EdgeInsets.all(16.0),

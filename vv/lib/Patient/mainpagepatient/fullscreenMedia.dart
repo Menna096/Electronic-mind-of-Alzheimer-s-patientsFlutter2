@@ -3,12 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
+import 'package:vv/Patient/mainpagepatient/patient_media.dart';
 import 'package:vv/models/media_item.dart';
 import 'package:vv/models/media_patient.dart';
 import 'package:vv/widgets/background.dart';
-import 'package:signalr_core/signalr_core.dart';
-import 'package:vv/utils/token_manage.dart';
-import 'package:geolocator/geolocator.dart';
 
 class FullScreenViewerpatient extends StatefulWidget {
   final MediaItempatient mediaItem;
@@ -22,11 +20,11 @@ class FullScreenViewerpatient extends StatefulWidget {
 
 class _FullScreenViewerpatientState extends State<FullScreenViewerpatient> {
   VideoPlayerController? _controller;
- 
+
   @override
   void initState() {
     super.initState();
-    
+
     if (widget.mediaItem.type == MediaType.video &&
         widget.mediaItem.isNetwork) {
       _controller = VideoPlayerController.network(widget.mediaItem.path)
@@ -37,10 +35,8 @@ class _FullScreenViewerpatientState extends State<FullScreenViewerpatient> {
     }
   }
 
-
   @override
   void dispose() {
-     
     _controller?.dispose();
     super.dispose();
   }
@@ -58,50 +54,169 @@ class _FullScreenViewerpatientState extends State<FullScreenViewerpatient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Background(
-        SingleChildScrollView: null,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (widget.mediaItem.type == MediaType.image)
-                widget.mediaItem.isNetwork
-                    ? Image.network(widget.mediaItem.path)
-                    : Image.file(File(widget.mediaItem.path)),
-              if (widget.mediaItem.type == MediaType.video)
-                _controller != null && _controller!.value.isInitialized
-                    ? AspectRatio(
-                        aspectRatio: _controller!.value.aspectRatio,
-                        child: VideoPlayer(_controller!),
-                      )
-                    : CircularProgressIndicator(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  widget.mediaItem.description,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontStyle: FontStyle.italic,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Text(
-                "Uploaded on: ${formatDateString(widget.mediaItem.uploadedDate)}", // Formatted date
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
-              ),
-              Text(
-                "Uploaded by: ${widget.mediaItem.uploaderFamilyName}",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => GalleryScreenPatient()),
+            );
+          },
+        ),
+        title: Text(
+          "Media Viewer",
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 23,
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(40.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0,
               ),
             ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0),
+          ),
+        ),
+      ),
+      extendBodyBehindAppBar: true,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.indigo, Colors.blueAccent],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Background(
+          SingleChildScrollView: null,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: kToolbarHeight + 20), // Space for AppBar
+                if (widget.mediaItem.type == MediaType.image)
+                  Container(
+                    margin: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black38,
+                          blurRadius: 20,
+                          offset: Offset(0, 10),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: widget.mediaItem.isNetwork
+                          ? Image.network(
+                              widget.mediaItem.path,
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Container(
+                                  height: 200,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  (loadingProgress
+                                                          .expectedTotalBytes ??
+                                                      1)
+                                              : null,
+                                    ),
+                                  ),
+                                );
+                              },
+                            )
+                          : Image.file(
+                              File(widget.mediaItem.path),
+                            ),
+                    ),
+                  ),
+                if (widget.mediaItem.type == MediaType.video)
+                  _controller != null && _controller!.value.isInitialized
+                      ? Container(
+                          margin: const EdgeInsets.all(16.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black38,
+                                blurRadius: 20,
+                                offset: Offset(0, 10),
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: AspectRatio(
+                              aspectRatio: _controller!.value.aspectRatio,
+                              child: VideoPlayer(_controller!),
+                            ),
+                          ),
+                        )
+                      : CircularProgressIndicator(),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    widget.mediaItem.description,
+                    style: TextStyle(
+                      fontSize: 26,
+                     
+                      color: Colors.white,
+                      fontFamily: 'ConcertOne'
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    "Uploaded on: ${formatDateString(widget.mediaItem.uploadedDate)}", // Formatted date
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white70,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Text(
+                    "Uploaded by: ${widget.mediaItem.uploaderFamilyName}",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white70,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

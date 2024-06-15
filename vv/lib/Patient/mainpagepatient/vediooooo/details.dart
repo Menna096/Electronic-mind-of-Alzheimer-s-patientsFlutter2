@@ -19,6 +19,7 @@ class DetailScreenSecret extends StatefulWidget {
 class _DetailScreenSecretState extends State<DetailScreenSecret> {
   ChewieController? _chewieController;
   VideoPlayerController? _videoPlayerController;
+  bool isLoading = true;
 
   double _position = 100.0; // Example value for initial animation position
 
@@ -28,6 +29,15 @@ class _DetailScreenSecretState extends State<DetailScreenSecret> {
     if (widget.fileType == '.mp4') {
       initializeVideoPlayer();
     }
+
+    // Simulate loading for 3 seconds
+    Future.delayed(Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    });
   }
 
   void initializeVideoPlayer() {
@@ -129,37 +139,41 @@ class _DetailScreenSecretState extends State<DetailScreenSecret> {
               backgroundColor: Colors.white.withOpacity(0.1),
             ),
           ),
-          SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height,
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(32.0),
-                child: AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(24.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 20.0,
-                        offset: Offset(0, 10),
+          isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(32.0),
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 50),
+                        curve: Curves.easeInOut,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(24.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 20.0,
+                              offset: Offset(0, 10),
+                            ),
+                          ],
+                        ),
+                        child: ContentWidget(
+                          url: widget.url,
+                          fileType: widget.fileType,
+                          chewieController: _chewieController,
+                          videoPlayerController: _videoPlayerController,
+                        ),
                       ),
-                    ],
-                  ),
-                  child: ContentWidget(
-                    url: widget.url,
-                    fileType: widget.fileType,
-                    chewieController: _chewieController,
-                    videoPlayerController: _videoPlayerController,
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
         ],
       ),
     );
