@@ -10,25 +10,23 @@ import 'package:vv/models/media_item.dart'; // Importing the modified MediaItem 
 import 'package:signalr_core/signalr_core.dart';
 import 'package:vv/utils/token_manage.dart';
 import 'package:geolocator/geolocator.dart'; 
+
 class GalleryScreenPatient extends StatefulWidget {
   @override
   _GalleryScreenPatientState createState() => _GalleryScreenPatientState();
 }
 
 class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
-  
   List<MediaItempatient> mediaItems = [];
 
   @override
   void initState() {
-    
     super.initState();
-    fetchMedia(); // Initiating media fetching on state initialization
+    fetchMedia();
   }
-  
-   @override
+
+  @override
   void dispose() {
-   
     super.dispose();
   }
 
@@ -45,13 +43,12 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
                     ? MediaType.video
                     : MediaType.image,
                 isNetwork: true,
-                uploadedDate: item['uploaded_date'], // Parsing uploaded date
-                uploaderFamilyName: item[
-                    'familyNameWhoUpload'], // Parsing uploader's family name
+                uploadedDate: item['uploaded_date'],
+                uploaderFamilyName: item['familyNameWhoUpload'],
               ))
           .toList();
       setState(() {
-        mediaItems = fetchedItems; // Updating the state with new media items
+        mediaItems = fetchedItems;
       });
     } catch (e) {
       print('Failed to fetch media: $e');
@@ -59,21 +56,19 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
   }
 
   void _viewMediaItem(MediaItempatient item) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => FullScreenViewerpatient(mediaItem: item),
-      ),
+    showDialog(
+      context: context,
+      builder: (_) => FullScreenViewerpatient(mediaItem: item),
     );
   }
 
   String formatDateString(String dateString) {
     try {
       final DateTime parsedDate = DateTime.parse(dateString);
-      // Format the date as 'dd MMM yyyy' (e.g., 13 Apr 2024). Modify this format to your liking.
       return DateFormat('dd MMM yyyy').format(parsedDate);
     } catch (e) {
       print("Error parsing date: $e");
-      return dateString; // Return the original string if it can't be parsed.
+      return dateString;
     }
   }
 
@@ -81,9 +76,10 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pictures and Videos'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -91,54 +87,139 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
             );
           },
         ),
+        title: Text(
+          "Pictures and Videos",
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 23,
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0,
+              ),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0),
+          ),
+        ),
       ),
       body: Background(
         SingleChildScrollView: null,
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 1),
-          itemCount: mediaItems.length,
-          itemBuilder: (context, index) {
-            var mediaItem = mediaItems[index];
-            return Padding(
-                padding: const EdgeInsets.all(8.0),
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 1,
+              crossAxisSpacing: 20.0,
+              mainAxisSpacing: 16.0,
+              childAspectRatio: 1.5,
+            ),
+            itemCount: mediaItems.length,
+            itemBuilder: (context, index) {
+              var mediaItem = mediaItems[index];
+              return CustomCard(
                 child: InkWell(
                   onTap: () => _viewMediaItem(mediaItem),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16.0),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: mediaItem.type == MediaType.image
-                              ? Image.network(mediaItem.path, fit: BoxFit.cover)
-                              : Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Image.network(mediaItem.path,
-                                        fit: BoxFit.cover),
-                                    const Icon(Icons.play_circle_outline,
-                                        size: 50, color: Colors.white),
-                                  ],
-                                ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(40.0),
+                              child: mediaItem.type == MediaType.image
+                                  ? Image.network(
+                                      mediaItem.path,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.network(
+                                      mediaItem.path,
+                                      fit: BoxFit.cover,
+                                    ),
+                            ),
+                            if (mediaItem.type == MediaType.video)
+                              const Icon(Icons.play_circle_outline,
+                                  size: 40, color: Colors.white),
+                          ],
                         ),
-                        Text(mediaItem.description,
-                            style:
-                                TextStyle(fontSize: 12, color: Colors.black)),
-                        Text(formatDateString(mediaItem.uploadedDate),
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey)), // Display the upload date
-                        Text(mediaItem.uploaderFamilyName,
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: Colors
-                                    .grey)) // Display the uploader's family name
-                      ],
-                    ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              mediaItem.description,
+                              style: TextStyle(fontSize: 17, color: Color.fromARGB(255, 54, 96, 196),fontFamily: 'ConcertOne'),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 3.0),
+                            Text(
+                              'Uploaded on: ${formatDateString(mediaItem.uploadedDate)}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Color.fromARGB(255, 80, 80, 80),
+                                fontFamily: 'Outfit'
+                              ),
+                            ),
+                            SizedBox(height: 4.0),
+                            Text(
+                              'By: ${mediaItem.uploaderFamilyName}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ));
-          },
+                ),
+              );
+            },
+          ),
         ),
+      ),
+    );
+  }
+}
+
+class CustomCard extends StatelessWidget {
+  final Widget child;
+
+  const CustomCard({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 10.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0), 
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: child,
       ),
     );
   }

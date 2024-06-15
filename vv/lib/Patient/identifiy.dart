@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
+import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 
 class DioService {
   final Dio dio = Dio();
@@ -76,57 +77,181 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff3B5998),
       appBar: AppBar(
-        title: Text('Image Upload Example'),
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _responseData != null &&
-                      _responseData!['imageAfterResultUrl'] != null
-                  ? Image.network(
-                      _responseData!['imageAfterResultUrl'],
-                      height: 260,
-                      width: 200,
-                    )
-                  : _image == null
-                      ? Text('No image selected.')
-                      : Container(
-                          height: 260,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                          ),
-                          child: Image.file(_image!),
-                        ),
-              SizedBox(height: 20),
-              _responseData != null && _responseData!['personsInImage'] != null
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: (_responseData!['personsInImage'] as List)
-                          .map((person) {
-                        return Card(
-                          child: ListTile(
-                            title: Text(person['familyName'] ?? 'Unknown'),
-                            subtitle: Text(
-                                person['relationalityOfThisPatient'] ??
-                                    'Unknown'),
-                            trailing: Icon(Icons.person),
-                          ),
-                        );
-                      }).toList(),
-                    )
-                  : SizedBox.shrink(),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => mainpatient()),
+            );
+          },
+        ),
+        title: Text(
+          "Identity Person",
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 23,
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0,
+              ),
             ],
           ),
         ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0),
+          ),
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xffECEFF5),
+              Color(0xff3B5998),
+            ],
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Image Display Section
+                SizedBox(height: 20),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      height: 260,
+                      width: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Colors.grey[300]!),
+                        color: Colors.grey[200],
+                      ),
+                    ),
+                    _responseData != null &&
+                            _responseData!['imageAfterResultUrl'] != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.network(
+                              _responseData!['imageAfterResultUrl'],
+                              height: 260,
+                              width: 200,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : _image == null
+                            ? Center(child: Text('Select an Image'))
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: Image.file(
+                                  _image!,
+                                  height: 260,
+                                  width: 200,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                  ],
+                ),
+                SizedBox(height: 30),
+
+                // Persons In Image Display
+                _responseData != null && _responseData!['personsInImage'] != null
+                    ? Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey[300]!,
+                              blurRadius: 4,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: (_responseData!['personsInImage'] as List)
+                              .map((person) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 25,
+                                    backgroundColor: Colors.blueGrey[100],
+                                    child: Icon(
+                                      Icons.person,
+                                      size: 20,
+                                      color: Color.fromARGB(255, 65, 97, 202),
+                                    ),
+                                  ),
+                                  SizedBox(width: 16),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        person['familyName'] ?? 'Unknown',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Text(
+                                        person['relationalityOfThisPatient'] ??
+                                            'Unknown',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      )
+                    : SizedBox.shrink(),
+              ],
+            ),
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: getImage,
-        tooltip: 'Pick Image',
-        child: Icon(Icons.image),
+        label: Text('Select Image'),
+        icon: Icon(Icons.image),
+        backgroundColor: Color.fromARGB(255, 65, 97, 202),
       ),
     );
   }
