@@ -96,6 +96,14 @@ class _ReportScreenState extends State<ReportScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Report submitted successfully!")),
         );
+
+        // Navigate to mainpagecaregiver upon successful report submission
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  mainpagecaregiver()), // Navigate to mainpagecaregiver
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Failed to submit report.")),
@@ -118,7 +126,9 @@ class _ReportScreenState extends State<ReportScreen> {
             // Navigate to the main caregiver page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => mainpagecaregiver()), // Use the correct route
+              MaterialPageRoute(
+                  builder: (context) =>
+                      mainpagecaregiver()), // Use the correct route
             );
           },
         ),
@@ -198,10 +208,11 @@ class _ReportScreenState extends State<ReportScreen> {
                             controller: _reportContentController,
                             decoration: InputDecoration(
                               hintText: 'Enter the details of the report here',
-                               hintStyle: TextStyle(
-      color: Color.fromARGB(255, 174, 170, 170),
-      fontFamily: 'dubai' // Change the hint text color to black
-    ),
+                              hintStyle: TextStyle(
+                                  color: Color.fromARGB(255, 174, 170, 170),
+                                  fontFamily:
+                                      'dubai' // Change the hint text color to black
+                                  ),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 20.0, horizontal: 15.0),
                               border: OutlineInputBorder(
@@ -232,10 +243,11 @@ class _ReportScreenState extends State<ReportScreen> {
                     onPressed: _submitReport,
                     child: const Text(
                       'Submit Report',
-                      style: TextStyle(fontSize: 20.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w800,
-                      fontFamily: 'Acme'),
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                          fontFamily: 'Acme'),
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 73, 173, 83),

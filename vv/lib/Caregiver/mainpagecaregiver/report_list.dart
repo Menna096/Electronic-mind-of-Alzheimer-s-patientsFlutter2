@@ -1,6 +1,10 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
+import 'package:intl/intl.dart';
+import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart'; // Import mainpagecaregiver.dart
 import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/storage_manage.dart';
 import 'package:vv/widgets/background.dart';
@@ -52,14 +56,43 @@ class _ReportListScreenState extends State<ReportListScreen> {
             const SnackBar(content: Text("Report deleted successfully!")));
       } else {
         print("Failed to delete report.");
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Failed to delete report.")));
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Failed to delete report.")));
       }
     } catch (e) {
       print('Error deleting report: $e');
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Error deleting report: $e")));
     }
+  }
+
+  Future<void> _confirmDelete(String reportId) async {
+    return showDialog(
+      context: context,
+      barrierDismissible:
+          false, // Dialog cannot be dismissed by tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Confirm Delete"),
+          content: Text("Are you sure you want to delete this report?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close dialog
+              },
+            ),
+            TextButton(
+              child: Text("Delete"),
+              onPressed: () {
+                _deleteReport(reportId); // Call delete method
+                Navigator.of(context).pop(); // Close dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -133,7 +166,7 @@ class _ReportListScreenState extends State<ReportListScreen> {
                               child: ReportCard(
                                 report: reports[index],
                                 onDelete: () =>
-                                    _deleteReport(reports[index]['reportId']),
+                                    _confirmDelete(reports[index]['reportId']),
                               ),
                             ),
                           ),
@@ -177,7 +210,7 @@ class ReportCard extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-           SizedBox(height: 12),
+            SizedBox(height: 12),
             Row(
               children: [
                 Text(
@@ -189,13 +222,15 @@ class ReportCard extends StatelessWidget {
                     fontFamily: 'LilitaOne',
                   ),
                 ),
-                SizedBox(width: 8), // Add a small space between the text and icon
+                SizedBox(
+                    width: 8), // Add a small space between the text and icon
                 Icon(
                   Icons.arrow_right,
                   size: 18, // Adjust size as needed
                   color: Colors.grey, // Match the color with the text
                 ),
-                SizedBox(width: 8), // Add a small space between the icon and text
+                SizedBox(
+                    width: 8), // Add a small space between the icon and text
                 Text(
                   '${report['toDate']}',
                   style: TextStyle(
@@ -213,7 +248,7 @@ class ReportCard extends StatelessWidget {
               children: [
                 SizedBox(width: 16),
                 OutlinedButton(
-                  onPressed: onDelete,
+                  onPressed: () => onDelete(),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.red,
                     elevation: 0,
