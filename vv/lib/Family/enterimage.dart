@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/login_api.dart';
 
 class ImageItem {
@@ -130,6 +131,12 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
         content: Text("Upload successful! Status: ${response.statusCode}"),
         backgroundColor: Colors.green,
       ));
+
+      // Navigate to MainPageFamily on success
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MainPageFamily()),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Error uploading images: $e"),

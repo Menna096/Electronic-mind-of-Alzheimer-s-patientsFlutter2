@@ -4,10 +4,12 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/patient_list.dart';
 import 'package:vv/Family/Registerfamily/registerfamily.dart';
 import 'package:vv/Family/ForgotPasswordfamily.dart';
+import 'package:vv/Family/assignOrAdd.dart';
 import 'package:vv/Family/enterimage.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/local_auth_api.dart';
+import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/token_manage.dart';
 
 class LoginPageAll extends StatefulWidget {
@@ -194,24 +196,38 @@ class _LoginPageAllState extends State<LoginPageAll> {
 
   Future<void> checkTrain() async {
     try {
-      Response response = await Dio().get(
-        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
-      );
+      Response response = await DioService().dio.get(
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
+          );
+
       if (response.statusCode == 200) {
         bool needTraining = response.data['needATraining'];
-        if (needTraining) {
+
+        if (needTraining == true) {
           Navigator.push(
             context,
             _createRoute(UploadImagesPage()),
           );
           print('need to train');
-        } else {
+        } else if (needTraining == false) {
           _navigateToMainPageFamily();
+        } else {
+          Navigator.push(
+            context,
+            _createRoute(assign_add()),
+          );
         }
       } else {
-        print('Error: ${response.statusCode}');
+        Navigator.push(
+          context,
+          _createRoute(assign_add()),
+        );
       }
     } catch (e) {
+      Navigator.push(
+        context,
+        _createRoute(assign_add()),
+      );
       print('Error: $e');
     }
   }
@@ -237,7 +253,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
     }
   }
 
-@override
+  @override
   Widget build(BuildContext context) {
     return ScaffoldMessenger(
       key: scaffoldMessengerKey,

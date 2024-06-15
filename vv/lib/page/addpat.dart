@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
+import 'package:vv/Family/enterimage.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/GPS/map_location_picker.dart';
 import 'package:vv/api/login_api.dart';
@@ -149,25 +150,27 @@ class _AddpatState extends State<Addpat> {
       dynamic response = await APIService.Add(formData);
 
       if (response == true) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Add Successful'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MainPageFamily()),
-                  );
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
+        await checkTrain(); // Check for training need after adding the patient
+
+        // showDialog(
+        //   context: context,
+        //   builder: (context) => AlertDialog(
+        //     title: const Text('Add Successful'),
+        //     actions: [
+        //       TextButton(
+        //         onPressed: () {
+        //           Navigator.pop(context);
+        //           Navigator.push(
+        //             context,
+        //             MaterialPageRoute(
+        //                 builder: (context) => const MainPageFamily()),
+        //           );
+        //         },
+        //         child: const Text('OK'),
+        //       ),
+        //     ],
+        //   ),
+        // );
       } else {
         throw 'Add failed. Please try again. Error: $response';
       }
@@ -190,6 +193,47 @@ class _AddpatState extends State<Addpat> {
         _isLoading = false;
       });
     }
+  }
+
+  Future<void> checkTrain() async {
+    try {
+      Response response = await DioService().dio.get(
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
+          );
+
+      if (response.statusCode == 200) {
+        bool needTraining = response.data['needATraining'];
+
+        if (needTraining == true) {
+          Navigator.push(
+            context,
+            _createRoute(UploadImagesPage()),
+          );
+          print('need to train');
+        }
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  PageRouteBuilder _createRoute(Widget page) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
   }
 
   @override
@@ -250,15 +294,13 @@ class _AddpatState extends State<Addpat> {
                     ),
                     const SizedBox(height: 15),
                     TextFormField(
-                     // pass
+                      // pass
                       controller: passwordController,
-                      
                     ),
                     const SizedBox(height: 15),
                     TextFormField(
-                      
                       controller: confirmPasswordController,
-                     //conform pass
+                      //conform pass
                     ),
                     const SizedBox(height: 15),
                     CustomTextField(
