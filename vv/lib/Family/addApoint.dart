@@ -23,9 +23,9 @@ class APIService {
       _dio.options.headers['accept'] = 'application/json';
       _dio.options.headers['content-type'] = 'application/json';
       Response response = await DioService().dio.post(
-            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddAppointment',
-            data: jsonData,
-          );
+        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddAppointment',
+        data: jsonData,
+      );
       return response.statusCode == 200
           ? true
           : response.data != null && response.data['message'] != null
@@ -90,7 +90,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
   int selectedDayIndex = 1;
-  Color pickedColor = Color(0xFF0386D0);
+  Color pickedColor = const Color(0xFF0386D0);
   late bool _isLoading = false;
 
   @override
@@ -193,6 +193,51 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => AppointListScreen()),
+            );
+          },
+        ),
+        title: Text(
+          "Add Appointment",
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 23,
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0,
+              ),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0),
+          ),
+        ),
+      ),
       resizeToAvoidBottomInset: true,
       body: buildBody(),
     );
@@ -206,81 +251,188 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
     return Background(
       SingleChildScrollView: null,
       child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 30),
-            Center(
-              child: Text(
-                'Appointments',
-                style: TextStyle(fontSize: 30),
+            const SizedBox(height: 25),
+            // Location Input
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 235, 242, 255),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: TextField(
+                controller: _locationController,
+                decoration: InputDecoration(
+                  hintText: 'Add Location',
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.location_pin),
+                ),
               ),
             ),
-            backbutton(),
-            TaskNameTextField(
-              controller: _locationController,
-              labelText: 'Location',
-            ),
-            TaskNameTextField(controller: _noteController, labelText: 'Notes'),
-            ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(39.0),
-                topRight: Radius.circular(39.0),
+            const SizedBox(height: 30),
+
+            // Notes Input
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 235, 242, 255),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  ),
+                ],
               ),
-              child: TaskDetailsContainer(
-                child: Column(
+              child: TextField(
+                controller: _noteController,
+                decoration: InputDecoration(
+                  hintText: 'Add Notes',
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.notes),
+                ),
+              ),
+            ),
+            const SizedBox(height: 40),
+
+            // Start Time Selection
+            GestureDetector(
+              onTap: () => _selectStartTime(context),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 12.0),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 235, 242, 255),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Row(
                   children: [
-                    TimeSelectionRow(
-                      children: [
-                        Spacer(flex: 4),
-                        TimeSelectionContainer(
-                          label: 'Start Time',
-                          onPressed: () => _selectStartTime(context),
-                          time: startTime,
-                        ),
-                        Spacer(flex: 4),
-                      ],
+                    Icon(
+                      Icons.access_time_outlined,
+                      color: Color(0xFF6A95E9),
                     ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () => _selectStartDate(context),
-                      child: Text('Select Start Date'),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        startTime != null
+                            ? formatTimeOfDay(startTime!)
+                            : 'Select Start Time',
+                        style: TextStyle(fontSize: 16, fontFamily: 'Acme'),
+                      ),
                     ),
-                    SizedBox(height: 10),
-                    // Conditionally render the text based on selectedDate
-                    if (formattedSelectedDate != null)
-                      Text(
-                        'Selected Date: $formattedSelectedDate',
-                        style: TextStyle(fontSize: 16),
-                      )
-                    else
-                      Container(), // Empty container if no date is selected
-                    SizedBox(height: 200.0),
-                    AddTaskButton(
-                      onPressed: () {
-                        _load();
-                        if (startTime != null && selectedDate != null) {
-                          DateTime startDateTime = DateTime(
-                            selectedDate!.year,
-                            selectedDate!.month,
-                            selectedDate!.day,
-                            startTime!.hour,
-                            startTime!.minute,
-                          );
-                          NotificationService.scheduleAppointmentNotification(
-                            startDateTime,
-                            _locationController.text,
-                          );
-                        }
-                      },
-                      backgroundColor: pickedColor,
-                      buttonText: 'Add Appointment',
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: Color(0xFF6A95E9),
                     ),
-                    SizedBox(height: 20.0),
                   ],
                 ),
               ),
             ),
+            const SizedBox(height: 40),
+
+            // Start Date Selection
+            GestureDetector(
+              onTap: () => _selectStartDate(context),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 12.0),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 235, 242, 255),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.calendar_today_outlined,
+                      color: Color(0xFF6A95E9),
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        formattedSelectedDate ?? 'Select Start Date',
+                        style: TextStyle(fontSize: 16, fontFamily: 'Acme'),
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: Color(0xFF6A95E9),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 40.0),
+
+            // Add Appointment Button (Centered)
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  _load();
+                  if (startTime != null && selectedDate != null) {
+                    DateTime startDateTime = DateTime(
+                      selectedDate!.year,
+                      selectedDate!.month,
+                      selectedDate!.day,
+                      startTime!.hour,
+                      startTime!.minute,
+                    );
+                    NotificationService.scheduleAppointmentNotification(
+                      startDateTime,
+                      _locationController.text,
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 58, 157, 50), // Changed color
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 40.0, vertical: 16.0),
+                  textStyle: const TextStyle(fontSize: 20),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50.0),
+                  ),
+                ),
+                child: const Text(
+                  'Done',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 50.0),
           ],
         ),
       ),
@@ -294,14 +446,14 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('Please fill in all fields.'),
+          title: const Text('Error'),
+          content: const Text('Please fill in all fields.'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         ),
@@ -328,7 +480,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(Duration(days: 365)),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
     );
     if (picked != null) {
       setState(() {
