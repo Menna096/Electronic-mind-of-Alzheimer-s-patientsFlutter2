@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vv/Family/appoint_list.dart';
 
 class AppointmentDetailsScreen extends StatelessWidget {
   final Map<String, dynamic> appointment;
@@ -9,36 +10,102 @@ class AppointmentDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Appointment Details'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => AppointListScreen()),
+            );
+          },
+        ),
+        title: Text(
+          "Appointment Details",
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 23,
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0,
+              ),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(10.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              'Date: ${appointment['date']}',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10.0),
-            Text(
-              'Location: ${appointment['location']}',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            SizedBox(height: 10.0),
-            Text(
-              'Notes: ${appointment['notes']}',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            SizedBox(height: 10.0),
-            Text(
-              'Created by: ${appointment['familyNameWhoCreatedAppointemnt']}',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            SizedBox(height: 10.0),
-            Text(
-              'Can be deleted: ${appointment['canDeleted']}',
-              style: TextStyle(fontSize: 18.0),
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              elevation: 4,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 285, horizontal: 101),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 10.0),
+                    Text(
+                      'Location: ${appointment['location']}',
+                      style: TextStyle(
+                          fontSize: 26.0,
+                          color: Color.fromARGB(255, 83, 137, 184),
+                          fontFamily: 'LilitaOne'),
+                    ),
+                    SizedBox(height: 10.0),
+                    Text(
+                      'Notes: ${appointment['notes']}',
+                      style: TextStyle(
+                          fontSize: 26.0,
+                          color: Color.fromARGB(255, 83, 137, 184),
+                          fontFamily: 'LilitaOne'),
+                    ),
+                    // SizedBox(height: 10.0),
+                    // Text(
+                    //   'Created by: ${appointment['familyNameWhoCreatedAppointemnt']}',
+                    //   style: TextStyle(
+                    //     fontSize: 26.0,
+                    //       color: Color.fromARGB(255, 83, 137, 184),
+                    //       fontFamily: 'LilitaOne'
+                    //   ),
+                    // ),
+                    // SizedBox(height: 10.0),
+                    // Text(
+                    //   'Can be deleted: ${appointment['canDeleted']}',
+                    //   style: TextStyle(
+                    //     fontSize: 18.0,
+                    //     color: Colors.indigo[600],
+                    //   ),
+                    // ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

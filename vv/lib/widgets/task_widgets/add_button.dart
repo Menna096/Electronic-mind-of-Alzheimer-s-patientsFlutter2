@@ -7,7 +7,7 @@ class AddTaskButton extends StatelessWidget {
   const AddTaskButton(
       {required this.onPressed,
       required this.backgroundColor,
-      required this.buttonText});
+      required this.buttonText, required RoundedRectangleBorder shape});
 
   @override
   Widget build(BuildContext context) {
