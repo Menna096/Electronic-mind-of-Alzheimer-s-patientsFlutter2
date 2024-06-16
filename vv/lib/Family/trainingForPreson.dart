@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ImageItem {
   XFile file;
@@ -35,22 +34,56 @@ class UploadImagesPagePerson extends StatefulWidget {
 class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
   final ImagePicker _picker = ImagePicker();
   List<ImageItem> _images = [];
+  int _currentImageIndex = 0;
 
-  Future<void> _pickImage({int? replaceIndex}) async {
-    if (_images.length < 5) {
-      final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-      if (image != null) {
-        setState(() {
-          if (replaceIndex != null) {
-            _images[replaceIndex] = ImageItem(file: image);
-          } else {
-            _images.add(ImageItem(file: image));
-          }
-        });
-      }
-    } else {
-      // You may want to show a message here indicating that only five images are allowed.
-    }
+  final List<String> _instructionImages = [
+    'images/1.jpg',
+    'images/2.jpg',
+    'images/3.jpg',
+    'images/4.jpg',
+    'images/5.jpg',
+  ];
+
+  Future<void> _showInstructionDialog({int? replaceIndex}) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button to dismiss dialog
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Instructions for Image ${_currentImageIndex + 1}'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Image.asset(
+                  _instructionImages[_currentImageIndex],
+                  height: 200,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Capture Image'),
+              onPressed: () async {
+                final XFile? image =
+                    await _picker.pickImage(source: ImageSource.camera);
+                if (image != null) {
+                  setState(() {
+                    if (replaceIndex != null) {
+                      _images[replaceIndex] = ImageItem(file: image);
+                    } else {
+                      _images.add(ImageItem(file: image));
+                    }
+                    _currentImageIndex++;
+                  });
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -61,12 +94,16 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
       ),
       body: Column(
         children: <Widget>[
-          if (_images.length < 5)
+          if (_currentImageIndex < 5)
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: ElevatedButton(
-                onPressed: () => _pickImage(),
-                child: Text('Add Image ${_images.length + 1}'),
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () => _showInstructionDialog(),
+                    child: Text('Capture Image ${_currentImageIndex + 1}'),
+                  ),
+                ],
               ),
             ),
           Expanded(
@@ -86,14 +123,15 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
                     title: Text('Image ${index + 1}'),
                     trailing: IconButton(
                       icon: Icon(Icons.camera_alt),
-                      onPressed: () => _pickImage(replaceIndex: index),
+                      onPressed: () =>
+                          _showInstructionDialog(replaceIndex: index),
                     ),
                   ),
                 );
               },
             ),
           ),
-          if (_images.length == 5)
+          if (_currentImageIndex == 5)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               child: ElevatedButton(
