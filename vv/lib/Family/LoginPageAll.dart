@@ -123,7 +123,8 @@ class _LoginPageAllState extends State<LoginPageAll> {
     String userRole = decodedToken['roles'];
 
     if (userRole == 'Family') {
-      checkTrain();
+      // checkTrain();
+      _navigateToMainPageFamily();
     } else if (userRole == 'Caregiver') {
       _navigateToMainPageCaregiver();
     } else {
@@ -240,7 +241,8 @@ class _LoginPageAllState extends State<LoginPageAll> {
         String userRole = decodedToken['roles'];
 
         if (userRole == 'Family') {
-          checkTrain();
+          // checkTrain();
+           _navigateToMainPageFamily();
         } else if (userRole == 'Caregiver') {
           _navigateToMainPageCaregiver();
         } else {

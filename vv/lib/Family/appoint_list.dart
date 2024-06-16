@@ -7,6 +7,7 @@ import 'package:signalr_core/signalr_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vv/Family/FinalapponitDetail.dart';
 import 'package:vv/Family/appoint_details.dart';
+import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/token_manage.dart';
 import 'package:vv/widgets/backbutton.dart';
@@ -19,7 +20,7 @@ class AppointListScreen extends StatefulWidget {
   @override
   _AppointListScreenState createState() => _AppointListScreenState();
 }
-//
+
 class _AppointListScreenState extends State<AppointListScreen> {
   List<dynamic> appointments = [];
   Appointment? selectedAppoint;
@@ -27,19 +28,14 @@ class _AppointListScreenState extends State<AppointListScreen> {
   String _currentLocation = "Waiting for location...";
   bool _locationReceived = false;
   final FlutterLocalNotificationsPlugin _notificationsPlugin =
-      FlutterLocalNotificationsPlugin(); //
-  Color pickedColor = const Color(0xFF0386D0);
-  // void updateAppoint(Appointment oldAppoint, Appointment newAppoint) {
-  //   setState(() {
-  //     final index = Appoints.indexOf(oldAppoint);
-  //     Appoints[index] = newAppoint;
-  //   });
-  // }
+      FlutterLocalNotificationsPlugin();
+
   @override
   void initState() {
     super.initState();
-
     fetchAppointments();
+    initNotifications();
+    initializeSignalR();
   }
 
   Future<void> fetchAppointments() async {
@@ -152,143 +148,148 @@ class _AppointListScreenState extends State<AppointListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => MainPageFamily()),
+            );
+          },
+        ),
+        title: Text(
+          "Appointments",
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 23,
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0,
+              ),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0),
+          ),
+        ),
+      ),
       body: Container(
-        alignment: AlignmentDirectional.bottomCenter,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(colors: [
-            Color(0xffFFFFFF),
-            Color(0xff3B5998),
-          ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.white, Color(0xFF3B5998)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Material(
-              elevation: 2, // Adjust the elevation as needed
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(39.0),
-                bottomRight: const Radius.circular(39.0),
-              ),
-              color: const Color.fromRGBO(255, 255, 255, 0.708),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(39.0),
-                  bottomRight: Radius.circular(39.0),
-                ),
-                child: Container(
-                  decoration: const BoxDecoration(),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 40,
+            Padding(
+              padding: const EdgeInsets.all(21.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const CurrentMonthYearWidget(),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddAppointmentScreen()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(199, 56, 131,
+                          192), // Use primary instead of backgroundColor
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
                       ),
-                      const Center(
-                        child: Text(
-                          'Appointments',
-                          style: TextStyle(
-                            fontSize: 30,
-                          ),
-                        ),
-                      ),
-                      const backbutton(),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          const SizedBox(
-                            width: 40,
-                          ),
-                          const CurrentMonthYearWidget(),
-                          const SizedBox(
-                            width: 40,
-                          ),
-                          ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          AddAppointmentScreen()),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      30), // Set circular border radius
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 16, horizontal: 30),
-                                // Increase vertical padding
-                                elevation: 4,
-                                backgroundColor:
-                                    pickedColor, // Add some elevation
-                              ),
-                              child: const Column(
-                                children: [
-                                  Text(
-                                    'Add ',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Text('Appointment',
-                                      style: TextStyle(color: Colors.white))
-                                ],
-                              ))
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: DaySelector(),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      )
-                    ],
+                      elevation: 10,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
+                    ),
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
-            const SizedBox(
-              height: 15,
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 20.0),
-              child: Text(
-                'Appointments',
-                style: TextStyle(
-                  fontSize: 25,
-                ),
-              ),
-            ),
+            const DaySelector(),
             Expanded(
               child: ListView.builder(
                 itemCount: appointments.length,
                 itemBuilder: (context, index) {
                   final appointment = appointments[index];
-                  final bool canDelete = appointment['canDeleted'] ??
-                      false; // Default to false if not present
+                  final bool canDelete = appointment['canDeleted'] ?? false;
 
-                  return ListTile(
-                    leading: Icon(Icons.calendar_today_rounded),
-                    title: Text(appointment['location']),
-                    subtitle: Text(
-                      DateFormat('yyyy-MM-dd HH:mm')
-                          .format(DateTime.parse(appointment['date'])),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 16.0),
+                    child: Card(
+                      elevation: 15,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(13.0),
+                        leading: Icon(
+                          Icons.drive_file_rename_outline_outlined,
+                          color: const Color(0xFF0386D0),
+                          size: 25,
+                        ),
+                        title: Text(
+                          appointment['location'],
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        subtitle: Text(
+                          DateFormat('yyyy-MM-dd HH:mm')
+                              .format(DateTime.parse(appointment['date'])),
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        trailing: canDelete
+                            ? IconButton(
+                                onPressed: () {
+                                  _deleteAppointment(
+                                      appointment['appointmentId']);
+                                },
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Colors.redAccent,
+                                ),
+                              )
+                            : null,
+                        onTap: () {
+                          _navigateToAppointmentDetails(appointment);
+                        },
+                      ),
                     ),
-                    trailing: canDelete
-                        ? IconButton(
-                            onPressed: () {
-                              _deleteAppointment(appointment['appointmentId']);
-                            },
-                            icon: Icon(Icons.delete),
-                          )
-                        : null, // Null if can't delete
-                    onTap: () {
-                      _navigateToAppointmentDetails(appointment);
-                    },
                   );
                 },
               ),
@@ -311,18 +312,14 @@ class _AppointListScreenState extends State<AppointListScreen> {
 
   void _deleteAppointment(String appointmentId) async {
     try {
-      // Make delete request to the endpoint
       await DioService().dio.delete(
             'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/DeleteAppointment/$appointmentId',
           );
-      // If successful, refresh the list of appointments
       await fetchAppointments();
-      // Optionally, show a success message or perform any other actions
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Appointment deleted successfully')),
       );
     } catch (e) {
-      // Handle errors, e.g., show error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to delete appointment: $e')),
       );
