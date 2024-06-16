@@ -4,12 +4,16 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:signalr_core/signalr_core.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/models/media_item.dart';
 import 'package:vv/page/description_screen.dart';
 import 'package:vv/page/full_screen_viewer.dart';
 import 'package:vv/utils/token_manage.dart';
 import 'package:vv/widgets/background.dart';
+import 'package:vv/widgets/mainfamily.dart';
+import 'package:video_player/video_player.dart';
+import 'dart:io'; // Import for File class
 
 class GalleryScreen extends StatefulWidget {
   @override
@@ -148,7 +152,51 @@ class _GalleryScreenState extends State<GalleryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Pictures and Videos')),
+     appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => MainPageFamily()),
+            ); // Go back to the previous page
+          },
+        ),
+        title: Text(
+          "Pictures and Videos",
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 23,
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0,
+              ),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0),
+          ),
+        ),
+      ),
       body: Background(
         SingleChildScrollView: null,
         child: GridView.builder(
@@ -163,21 +211,28 @@ class _GalleryScreenState extends State<GalleryScreen> {
                   onTap: () => _viewMediaItem(mediaItem),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16.0),
-                    child: mediaItem.type == MediaType.image
-                        ? Image.network(mediaItem.path, fit: BoxFit.cover)
-                        : const DecoratedBox(
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(
-                                    'images/vid.png'), // Use the placeholder image for videos
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            child: Center(
-                              child: Icon(Icons.play_circle_outline,
-                                  size: 50, color: Colors.white),
-                            ),
-                          ),
+                    child: mediaItem.isNetwork ? 
+                        // Network image
+                        mediaItem.type == MediaType.image 
+                            ? Image.network(mediaItem.path, fit: BoxFit.cover)
+                            : const DecoratedBox(
+                                decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        'images/vid.png'), 
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Icon(Icons.play_circle_outline,
+                                      size: 50, color: Colors.white),
+                                ),
+                              ) 
+                        : 
+                        // Local image or video
+                        mediaItem.type == MediaType.image
+                            ? Image.file(File(mediaItem.path), fit: BoxFit.cover)
+                            : VideoPlayerWidget(filePath: mediaItem.path), 
                   ),
                 ));
           },
@@ -188,5 +243,43 @@ class _GalleryScreenState extends State<GalleryScreen> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+}
+
+// Widget for playing local videos (using the video_player package)
+class VideoPlayerWidget extends StatefulWidget {
+  final String filePath;
+  VideoPlayerWidget({required this.filePath});
+
+  @override
+  _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();
+}
+
+class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.file(File(widget.filePath))
+      ..initialize().then((_) {
+        setState(() {}); 
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose(); 
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _controller.value.isInitialized
+        ? AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: VideoPlayer(_controller),
+          )
+        : const Center(child: CircularProgressIndicator());
   }
 }

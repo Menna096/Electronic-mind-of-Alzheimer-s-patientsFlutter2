@@ -28,7 +28,7 @@
 
     <application
         android:enableOnBackInvokedCallback="true"
-        android:label="vv"
+        android:label="Elder Helper"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />

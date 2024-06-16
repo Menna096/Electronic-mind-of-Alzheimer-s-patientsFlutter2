@@ -8,6 +8,7 @@ import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/storage_manage.dart';
 import 'package:vv/utils/token_manage.dart';
 import 'package:vv/widgets/background.dart';
+import 'package:vv/widgets/backgroundd.dart';
 
 class ReportListScreenFamily extends StatefulWidget {
   @override
@@ -45,39 +46,107 @@ class _ReportListScreenFamilyState extends State<ReportListScreenFamily> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Patient Reports'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        MainPageFamily()), // Ensure this is the correct class name for your Assign Patient Screen
-              );
-            },
-            icon: Icon(Icons.arrow_back)),
-        centerTitle: true,
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => MainPageFamily()),
+            ); // Go back to the previous page
+          },
+        ),
+        title: Text(
+          "Patient's Reports",
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 23,
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0,
+              ),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0),
+          ),
+        ),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
-          : Background(
+          : Backgroundd(
               SingleChildScrollView: null,
-              child: ListView.builder(
-                itemCount: reports.length,
-                itemBuilder: (context, index) {
-                  final report = reports[index];
-                  return Card(
-                    margin: EdgeInsets.all(10),
-                    child: ListTile(
-                      title: Text(report['reportContent'],
-                          style: TextStyle(fontSize: 18)),
-                      subtitle: Text(
-                          'From: ${report['fromDate']} To: ${report['toDate']}'),
-                      leading: Icon(Icons.edit,
-                          color: Theme.of(context).primaryColor),
-                    ),
-                  );
-                },
+              child: SingleChildScrollView(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: reports.length,
+                  itemBuilder: (context, index) {
+                    final report = reports[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(17.0),
+                      child: Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(200),
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            gradient: LinearGradient(
+                              colors: [Color(0xFF6A95E9), Color.fromARGB(255, 50, 149, 173)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: ListTile(
+                            contentPadding: EdgeInsets.all(15),
+                            title: Text(report['reportContent'],
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Outfit',
+                                  color: Colors.white,
+                                )),
+                            subtitle: Text(
+                                'From: ${report['fromDate']} To: ${report['toDate']}',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white70,
+                                )),
+                            leading: Icon(Icons.eco_rounded, color: Color.fromARGB(255, 236, 236, 236)),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
     );

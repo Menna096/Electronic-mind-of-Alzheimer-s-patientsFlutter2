@@ -56,7 +56,7 @@ Widget buildDrawer(BuildContext context) {
                   .push(MaterialPageRoute(builder: (context) => Language()));
             },
           ),
-          buildDrawerItem(
+         buildDrawerlogout(
             Icons.logout_outlined,
             'Log Out',
             onTap: () {
@@ -73,7 +73,20 @@ Widget buildDrawer(BuildContext context) {
 
 Widget buildDrawerItem(IconData icon, String title, {Function? onTap}) {
   return ListTile(
-    leading: Icon(icon),
+    leading: Icon(icon,color: Color(0xFF0386D0),),
+    title: Text(
+      title,
+      style: const TextStyle(
+        fontSize: 20,
+        color: Color(0xFF595858),
+      ),
+    ),
+    onTap: onTap as void Function()?,
+  );
+}
+Widget buildDrawerlogout(IconData icon, String title, {Function? onTap}) {
+  return ListTile(
+    leading: Icon(icon,color: Color.fromARGB(255, 174, 5, 5),),
     title: Text(
       title,
       style: const TextStyle(
