@@ -48,11 +48,13 @@ class _AddPersonState extends State<AddPerson> {
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController descriptionForPatientController =
       TextEditingController();
+  final TextEditingController latitudeController = TextEditingController();
+  final TextEditingController longitudeController = TextEditingController();
   late String relationility = '';
   late bool _isLoading = false;
   List<File> capturedImages = [];
-  late double Latt;
-  late double Longg;
+  // late double Latt;
+  // late double Longg;
 
   void _add() async {
     setState(() {
@@ -65,7 +67,8 @@ class _AddPersonState extends State<AddPerson> {
           relationility.isEmpty) {
         throw 'Please fill in all fields, select an image, and provide latitude and longitude.';
       }
-
+      double Latt = double.parse(latitudeController.text);
+      double Longg = double.parse(longitudeController.text);
       var formData = FormData.fromMap({
         'FullName': fullNameController.text,
         'Relationility': relationility,
@@ -298,41 +301,87 @@ class _AddPersonState extends State<AddPerson> {
                     //   maxLines: 3,
                     // ),
                     const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: _isLoading
-                          ? null
-                          : () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MapLocationPicker(
-                                    apiKey:
-                                        'AIzaSyCuTilAfnGfkZtIx0T3qf-eOmWZ_N2LpoY',
-                                    popOnNextButtonTaped: true,
-                                    currentLatLng:
-                                        const LatLng(29.146727, 76.464895),
-                                    onNext: (GeocodingResult? result) {
-                                      if (result != null) {
-                                        setState(() {
-                                          Latt = result.geometry.location.lat;
-                                          Longg = result.geometry.location.lng;
-                                        });
-                                      }
-                                    },
-                                  ),
-                                ),
-                              );
-                            },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor:
-                            const Color.fromARGB(255, 255, 255, 255),
-                        backgroundColor: const Color.fromARGB(255, 3, 189, 56),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(27.0),
+                    // ElevatedButton(
+                    //   onPressed: _isLoading
+                    //       ? null
+                    //       : () async {
+                    //           await Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //               builder: (context) => MapLocationPicker(
+                    //                 apiKey:
+                    //                     'AIzaSyCuTilAfnGfkZtIx0T3qf-eOmWZ_N2LpoY',
+                    //                 popOnNextButtonTaped: true,
+                    //                 currentLatLng:
+                    //                     const LatLng(29.146727, 76.464895),
+                    //                 onNext: (GeocodingResult? result) {
+                    //                   if (result != null) {
+                    //                     setState(() {
+                    //                       Latt = result.geometry.location.lat;
+                    //                       Longg = result.geometry.location.lng;
+                    //                     });
+                    //                   }
+                    //                 },
+                    //               ),
+                    //             ),
+                    //           );
+                    //         },
+                    //   style: ElevatedButton.styleFrom(
+                    //     foregroundColor:
+                    //         const Color.fromARGB(255, 255, 255, 255),
+                    //     backgroundColor: const Color.fromARGB(255, 3, 189, 56),
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(27.0),
+                    //     ),
+                    //   ),
+                    //   child: const Text('Pick Location Here'),
+                    // ),
+                    TextField(
+                      controller: latitudeController,
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      decoration: InputDecoration(
+                        labelText: 'Latitude',
+                        labelStyle: TextStyle(
+                          color: Colors.grey[600],
                         ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
+                        ),
+                        suffixIcon: Icon(Icons.location_on, color: Colors.blue),
                       ),
-                      child: const Text('Pick Location Here'),
+                      style: TextStyle(
+                        fontSize: 16,
+                        height: 0.5,
+                      ),
                     ),
+                    const SizedBox(height: 15),
+                    TextField(
+                      controller: longitudeController,
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      decoration: InputDecoration(
+                        labelText: 'Longitude',
+                        labelStyle: TextStyle(
+                          color: Colors.grey[600],
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
+                        ),
+                        suffixIcon: Icon(Icons.location_on, color: Colors.blue),
+                      ),
+                      style: TextStyle(
+                        fontSize: 16,
+                        height: 0.5,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () async {
                         List<File>? images = await Navigator.push(
@@ -342,8 +391,12 @@ class _AddPersonState extends State<AddPerson> {
                               fullName: fullNameController.text,
                               phoneNumber: phoneNumberController.text,
                               relation: relationility,
-                              latitude: Latt,
-                              longitude: Longg,
+                              latitude:
+                                  double.tryParse(latitudeController.text) ??
+                                      0.0,
+                              longitude:
+                                  double.tryParse(longitudeController.text) ??
+                                      0.0,
                               description: descriptionForPatientController.text,
                             ),
                           ),
