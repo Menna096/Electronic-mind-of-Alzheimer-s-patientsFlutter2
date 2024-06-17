@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vv/faceid.dart';
 
 class ImageItem {
   XFile file;
@@ -44,16 +45,76 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
     'images/5.jpg',
   ];
 
+  final List<String> _imageInstructions = [
+    "Directly facing the camera, eyes looking straight ahead",
+    "The head turned slightly so the right side is more visible than the left",
+    "Turn your head to the right until your profile aligns with the camera",
+    "The head turned slightly so the left side is more visible than the right",
+    "Turn your head to the left until your profile aligns with the camera",
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () => _showInstructionMessage());
+  }
+
+  Future<void> _showInstructionMessage() async {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Instructions',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'These images help the patient recognize you better. Please follow the instructions and upload five images.',
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> _showInstructionDialog({int? replaceIndex}) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button to dismiss dialog
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Color.fromRGBO(255, 255, 255, 1),
           title: Text('Instructions for Image ${_currentImageIndex + 1}'),
           content: SingleChildScrollView(
-            child: ListBody(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+                Text(
+                  _imageInstructions[_currentImageIndex],
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20),
                 Image.asset(
                   _instructionImages[_currentImageIndex],
                   height: 200,
@@ -89,61 +150,87 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('Upload Images'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
-      body: Column(
-        children: <Widget>[
-          if (_currentImageIndex < 5)
+      body: AnimatedBackground(
+        child: Column(
+          children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
-                  ElevatedButton(
-                    onPressed: () => _showInstructionDialog(),
-                    child: Text('Capture Image ${_currentImageIndex + 1}'),
-                  ),
+                  SizedBox(height: 60),
+                  if (_currentImageIndex < 5)
+                    ElevatedButton(
+                      onPressed: () => _showInstructionDialog(),
+                      child: Text('Capture Image ${_currentImageIndex + 1}'),
+                    ),
                 ],
               ),
             ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _images.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0), // Adjust vertical spacing here
-                  child: ListTile(
-                    leading: Container(
-                      height: 100,
-                      width: 100,
-                      child: Image.file(File(_images[index].file.path),
-                          fit: BoxFit.cover),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _images.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 8.0),
+                    child: Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(12),
+                        leading: Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Image.file(
+                            File(_images[index].file.path),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        title: Text(
+                          'Image ${index + 1}',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(Icons.camera_alt),
+                          onPressed: () =>
+                              _showInstructionDialog(replaceIndex: index),
+                        ),
+                      ),
                     ),
-                    title: Text('Image ${index + 1}'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.camera_alt),
-                      onPressed: () =>
-                          _showInstructionDialog(replaceIndex: index),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          if (_currentImageIndex == 5)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Pass captured images back to the previous screen
-                  Navigator.pop(
-                      context, _images.map((e) => File(e.file.path)).toList());
+                  );
                 },
-                child: Text('Next'),
               ),
             ),
-        ],
+            if (_currentImageIndex == 5)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Pass captured images back to the previous screen
+                    Navigator.pop(context,
+                        _images.map((e) => File(e.file.path)).toList());
+                  },
+                  child: Text('Next'),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

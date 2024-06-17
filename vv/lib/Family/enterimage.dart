@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/login_api.dart';
+import 'package:vv/faceid.dart';
 
 class ImageItem {
   XFile file;
@@ -155,52 +156,76 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('Upload Images'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
-      body: Column(
-        children: <Widget>[
-          if (_images.length < _imageSamplesWithInstructions.length)
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ElevatedButton(
-                onPressed: () => _pickImage(),
-                child: Text('Add Image ${_images.length + 1}'),
+      body: AnimatedBackground(
+        child: Column(
+          children: <Widget>[
+            if (_images.length < _imageSamplesWithInstructions.length)
+              SizedBox(
+                height: 60,
+              ),
+            if (_images.length < 5) // Show button only if less than 5 images
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: ElevatedButton(
+                  onPressed: () => _pickImage(),
+                  child: Text('Add Image ${_images.length + 1}'),
+                ),
+              ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _images.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0), // Adjust vertical spacing here
+                    child: Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(12),
+                        leading: Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Image.file(File(_images[index].file.path),
+                              fit: BoxFit.cover),
+                        ),
+                        title: Text('Image ${index + 1}'),
+                        trailing: IconButton(
+                          icon: Icon(Icons.camera_alt),
+                          onPressed: () => _pickImage(replaceIndex: index),
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _images.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0), // Adjust vertical spacing here
-                  child: ListTile(
-                    leading: Container(
-                      height: 100,
-                      width: 100,
-                      child: Image.file(File(_images[index].file.path),
-                          fit: BoxFit.cover),
-                    ),
-                    title: Text('Image ${index + 1}'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.camera_alt),
-                      onPressed: () => _pickImage(replaceIndex: index),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          if (_images.length == _imageSamplesWithInstructions.length)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: ElevatedButton(
-                onPressed: _uploadImages,
-                child: Text('Upload Images'),
+            if (_images.length == _imageSamplesWithInstructions.length)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: ElevatedButton(
+                  onPressed: _uploadImages,
+                  child: Text('Upload Images'),
+                ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }
