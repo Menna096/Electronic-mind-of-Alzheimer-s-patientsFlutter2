@@ -269,6 +269,14 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
+                                          subtitle: Text(
+                                            _formatDateTime(DateTime.parse(
+                                                appointment[
+                                                    'date'])), // Format DateTime including time and AM/PM
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                          ),
                                           trailing: Icon(
                                               Icons.arrow_forward_ios,
                                               color: Color(0xff3B5998)),
@@ -287,5 +295,10 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
         ],
       ),
     );
+  }
+
+  String _formatDateTime(DateTime dateTime) {
+    // Use the DateFormat class from intl package to format the date and time
+    return DateFormat('MMMM dd, yyyy - hh:mm a').format(dateTime);
   }
 }

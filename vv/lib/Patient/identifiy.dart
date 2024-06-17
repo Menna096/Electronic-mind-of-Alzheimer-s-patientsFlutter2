@@ -3,15 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
-
-class DioService {
-  final Dio dio = Dio();
-
-  DioService() {
-    dio.options.baseUrl =
-        'https://electronicmindofalzheimerpatients.azurewebsites.net';
-  }
-}
+import 'package:vv/api/login_api.dart';
 
 class ImageUploadScreen extends StatefulWidget {
   @override
@@ -37,15 +29,10 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
   }
 
   Future<void> _uploadImage() async {
-    if (_image == null) return;
-
-    String url = '/Patient/RecognizeFaces';
-
-    DioService dioService = DioService();
+    String url =
+        'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/RecognizeFaces';
 
     // Add your valid token here
-    String token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4YjZjOTUxMy03YzM4LTQ0MTctOGY4YS1lNzk5OTIyMTM5OWYiLCJlbWFpbCI6InBhdGllbnQyMjk5MDBAZ21haWwuY29tIiwiRnVsbE5hbWUiOiJtZW5uYSIsIlBob25lTnVtYmVyIjoiNTY1NDMyIiwidWlkIjoiYjc0YWI5NTUtZjFlMS00ZDg3LTkzODAtZGEwYjc5ZGY4NzE0IiwiVXNlckF2YXRhciI6Imh0dHBzOi8vZWxlY3Ryb25pY21pbmRvZmFsemhlaW1lcnBhdGllbnRzLmF6dXJld2Vic2l0ZXMubmV0L1VzZXIgQXZhdGFyL2I3NGFiOTU1LWYxZTEtNGQ4Ny05MzgwLWRhMGI3OWRmODcxNF84NmExYzNjOC01MzdkLTQ0NTYtYWI5MS02NmY1MjkxYTdjZDUuanBnIiwiTWFpbkxhdGl0dWRlIjoiMjkuOTc3NjMzNSIsIk1haW5Mb25naXR1ZGUiOiIzMi41MjkwMzk1Iiwicm9sZXMiOiJQYXRpZW50IiwiTWF4RGlzdGFuY2UiOiIxIiwiZXhwIjoxNzIyMDMxNDU1LCJpc3MiOiJBcnRPZkNvZGluZyIsImF1ZCI6IkFsemhlaW1hckFwcCJ9.V69djMjrgi5a4uKFsCd91_2pc6aIwwlZntnzYncVrrQ';
 
     FormData formData = FormData.fromMap({
       'image':
@@ -53,16 +40,10 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
     });
 
     try {
-      Response response = await dioService.dio.post(
-        url,
-        data: formData,
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Content-Type': 'multipart/form-data',
-          },
-        ),
-      );
+      Response response = await DioService().dio.post(
+            url,
+            data: formData,
+          );
 
       // Update the response data
       setState(() {
@@ -181,7 +162,8 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
                 SizedBox(height: 30),
 
                 // Persons In Image Display
-                _responseData != null && _responseData!['personsInImage'] != null
+                _responseData != null &&
+                        _responseData!['personsInImage'] != null
                     ? Container(
                         padding:
                             EdgeInsets.symmetric(vertical: 16, horizontal: 20),
@@ -219,15 +201,14 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        person['familyName'] ?? 'Unknown',
+                                        person['familyName'],
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
                                         ),
                                       ),
                                       Text(
-                                        person['relationalityOfThisPatient'] ??
-                                            'Unknown',
+                                        person['relationalityOfThisPatient'],
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: Colors.grey[600],

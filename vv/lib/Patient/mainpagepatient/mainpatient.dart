@@ -164,10 +164,9 @@ class _mainpatientState extends State<mainpatient> {
             Reminder reminder = Reminder.fromJson(reminderData);
             print('Parsed appointment: ${reminder.MedicationId}');
             reminders.add(reminder);
-            _showNotificationMedicine(
-                'New Medicine Added, See it',
-                _buildNotificationBodyMedicine(reminder),
-                reminder.MedicationId);
+            String notificationBody = _buildNotificationBodyMedicine(reminder);
+            _showNotificationMedicine('New Medicine Added, See it',
+                notificationBody, reminder.MedicationId);
             _scheduleNotificationMedicine(reminder);
           } catch (e) {
             print('Error decoding JSON: $e');
@@ -180,7 +179,7 @@ class _mainpatientState extends State<mainpatient> {
   }
 
   Future<void> _showNotificationMedicine(
-      String title, String body, String appointmentId) async {
+      String title, String body, String medicationId) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'your_channel_id',
       'your_channel_name',
@@ -196,7 +195,7 @@ class _mainpatientState extends State<mainpatient> {
       title,
       body,
       platformChannelSpecifics,
-      payload: appointmentId,
+      payload: medicationId,
     );
   }
 
@@ -243,9 +242,7 @@ class _mainpatientState extends State<mainpatient> {
   }
 
   String _buildNotificationBodyMedicine(Reminder reminder) {
-    return '''
-
-    ''';
+    return 'Medication: ${reminder.Medication_Name}, Dosage: ${reminder.Dosage}';
   }
 
   void initializeConnection() async {
@@ -386,7 +383,7 @@ class _mainpatientState extends State<mainpatient> {
       await flutterLocalNotificationsPlugin.zonedSchedule(
         0,
         'Appointment Time Now',
-        _buildNotificationBody(appointment),
+        _buildNotificationBody(appointment), // Only notes will be shown
         scheduledDateTime,
         platformChannelSpecifics,
         payload: appointment.id,
@@ -403,8 +400,7 @@ class _mainpatientState extends State<mainpatient> {
   }
 
   String _buildNotificationBody(Appointment appointment) {
-    return '''
-    ''';
+    return appointment.notes;
   }
 
   Future<void> _getDataFromToken() async {
