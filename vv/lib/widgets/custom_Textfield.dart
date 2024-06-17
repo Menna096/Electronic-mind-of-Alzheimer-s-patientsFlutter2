@@ -19,7 +19,7 @@ class CustomTextField extends StatelessWidget {
     this.readOnly,
     this.errorText,
     this.inputFormatters,
-    this.keyboardType,
+    this.keyboardType, required BorderRadius borderRadius, required Color fillColor, required OutlineInputBorder focusedBorder, required OutlineInputBorder enabledBorder, required OutlineInputBorder border, required TextStyle textStyle,
   }) : super(key: key);
 
   @override

@@ -11,9 +11,6 @@ import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/GPS/map_location_picker.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/map_location_picker.dart';
-import 'package:vv/widgets/backbutton.dart';
-import 'package:vv/widgets/custom_Textfield.dart';
-import 'package:vv/widgets/pass_textField.dart';
 
 class APIService {
   static final Dio _dio = Dio();
@@ -23,9 +20,9 @@ class APIService {
       DioService().dio.options.headers['accept'] = '/';
       DioService().dio.options.headers['content-type'] = 'multipart/form-data';
       Response response = await DioService().dio.post(
-            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddPatient',
-            data: formData,
-          );
+        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddPatient',
+        data: formData,
+      );
       return response.statusCode == 200
           ? true
           : response.data != null && response.data['message'] != null
@@ -82,6 +79,9 @@ class _AddpatState extends State<Addpat> {
   ];
   File? selectedImage;
   bool _isLoading = false;
+
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   void presentDatePicker() {
     showDatePicker(
@@ -151,26 +151,6 @@ class _AddpatState extends State<Addpat> {
 
       if (response == true) {
         await checkTrain(); // Check for training need after adding the patient
-
-        // showDialog(
-        //   context: context,
-        //   builder: (context) => AlertDialog(
-        //     title: const Text('Add Successful'),
-        //     actions: [
-        //       TextButton(
-        //         onPressed: () {
-        //           Navigator.pop(context);
-        //           Navigator.push(
-        //             context,
-        //             MaterialPageRoute(
-        //                 builder: (context) => const MainPageFamily()),
-        //           );
-        //         },
-        //         child: const Text('OK'),
-        //       ),
-        //     ],
-        //   ),
-        // );
       } else {
         throw 'Add failed. Please try again. Error: $response';
       }
@@ -198,8 +178,8 @@ class _AddpatState extends State<Addpat> {
   Future<void> checkTrain() async {
     try {
       Response response = await DioService().dio.get(
-            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
-          );
+        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
+      );
 
       if (response.statusCode == 200) {
         bool needTraining = response.data['needATraining'];
@@ -239,180 +219,342 @@ class _AddpatState extends State<Addpat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff3B5998),
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xffFFFFFF), Color(0xff3B5998)],
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xffFFFFFF), Color(0xff3B5998)],
+          ),
+        ),
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainPageFamily()),
+                );
+              },
+            ),
+            title: Text(
+              "Add Account",
+              style: TextStyle(
+                fontFamily: 'LilitaOne',
+                fontSize: 23,
+                color: Colors.white,
               ),
             ),
-            padding: const EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const BackButton(),
-                    const SizedBox(height: 0.5),
-                    const Text(
-                      'Add Account',
-                      style: TextStyle(fontSize: 40, fontFamily: 'Acme'),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 18),
-                    ProfilePicture(onImageSelected: _handleImageSelected),
-                    const SizedBox(height: 18),
-                    CustomTextField(
-                      labelText: 'Full Name',
-                      controller: fullNameController,
-                      suffixIcon: Icons.person,
-                    ),
-                    const SizedBox(height: 15),
-                    TextFormField(
-                      controller: descriptionController,
-                      decoration: InputDecoration(
-                        labelText: 'Description For Patient',
-                        suffixIcon: const Icon(Icons.description),
-                        border: const OutlineInputBorder(),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 3,
-                    ),
-                    const SizedBox(height: 15),
-                    CustomTextField(
-                      labelText: 'Email Address',
-                      controller: emailController,
-                      suffixIcon: Icons.email,
-                    ),
-                    const SizedBox(height: 15),
-                    TextFormField(
-                      // pass
-                      controller: passwordController,
-                    ),
-                    const SizedBox(height: 15),
-                    TextFormField(
-                      controller: confirmPasswordController,
-                      //conform pass
-                    ),
-                    const SizedBox(height: 15),
-                    CustomTextField(
-                      labelText: 'Phone Number',
-                      controller: phoneNumberController,
-                      suffixIcon: Icons.phone,
-                    ),
-                    const SizedBox(height: 15),
-                    CustomTextField(
-                      labelText: 'Age',
-                      controller: ageController,
-                      suffixIcon: Icons.cake,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      keyboardType: TextInputType.number,
-                    ),
-                    const SizedBox(height: 15),
-                    CustomTextField(
-                      labelText: 'Relationality',
-                      controller: relationalityController,
-                      suffixIcon: Icons.group,
-                    ),
-                    const SizedBox(height: 15),
-                    DropdownButtonFormField<int>(
-                      decoration: InputDecoration(
-                        labelText: 'Maximum Distance',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      value: selectedDistance,
-                      items: distances.map<DropdownMenuItem<int>>((int value) {
-                        return DropdownMenuItem<int>(
-                          value: value,
-                          child: Text(value.toString()),
-                        );
-                      }).toList(),
-                      onChanged: (int? newValue) {
-                        setState(() {
-                          selectedDistance = newValue;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: _isLoading
-                          ? null
-                          : () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MapLocationPicker(
-                                    apiKey:
-                                        'AIzaSyDc7BLNnR3cQAhlKRDUgpcZYssqgDIHWxc',
-                                    popOnNextButtonTaped: true,
-                                    currentLatLng:
-                                        const LatLng(29.146727, 76.464895),
-                                    onNext: (GeocodingResult? result) {
-                                      if (result != null) {
-                                        setState(() {
-                                          lati = result.geometry.location.lat;
-                                          long = result.geometry.location.lng;
-                                        });
-                                      }
-                                    },
-                                  ),
-                                ),
-                              );
-                            },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor:
-                            const Color.fromARGB(255, 255, 255, 255),
-                        backgroundColor: const Color.fromARGB(255, 3, 189, 56),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(27.0),
-                        ),
-                      ),
-                      child: const Text('Pick location'),
-                    ),
-                    const SizedBox(height: 40),
-                    ElevatedButton(
-                      onPressed: _isLoading ? null : _Add,
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor:
-                            const Color.fromARGB(255, 255, 255, 255),
-                        backgroundColor: const Color(0xFF0386D0),
-                        fixedSize: const Size(151, 45),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(27.0),
-                        ),
-                      ),
-                      child: const Text('Add'),
-                    ),
-                  ],
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(30.0),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromARGB(66, 55, 134, 190),
+                    offset: Offset(0, 10),
+                    blurRadius: 10.0,
+                  ),
+                ],
+              ),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(50.0),
               ),
             ),
           ),
-          _isLoading
-              ? Container(
-                  color: Colors.black.withOpacity(0.5),
-                  child: const Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Color(0xff3B5998),
-                      ),
+          backgroundColor: Colors.transparent,
+          resizeToAvoidBottomInset: false,
+          body: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SingleChildScrollView(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const SizedBox(height: 25),
+                        ProfilePicture(onImageSelected: _handleImageSelected),
+                        const SizedBox(height: 25),
+                        _buildModernTextField(
+                          labelText: 'Full Name',
+                          controller: fullNameController,
+                          suffixIcon: Icons.person,
+                        ),
+                        const SizedBox(height: 15),
+                        _buildModernTextField(
+                          labelText: 'Description For Patient',
+                          controller: descriptionController,
+                          suffixIcon: Icons.description,
+                        ),
+                        const SizedBox(height: 15),
+                        _buildModernTextField(
+                          labelText: 'Email Address',
+                          controller: emailController,
+                          suffixIcon: Icons.email,
+                        ),
+                        const SizedBox(height: 15),
+                        _buildModernTextField(
+                          labelText: 'Password',
+                          controller: passwordController,
+                          suffixIcon: Icons.lock,
+                          obscureText: _obscurePassword,
+                          togglePasswordVisibility: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 15),
+                        _buildModernTextField(
+                          labelText: 'Confirm Password',
+                          controller: confirmPasswordController,
+                          suffixIcon: Icons.lock,
+                          obscureText: _obscureConfirmPassword,
+                          togglePasswordVisibility: () {
+                            setState(() {
+                              _obscureConfirmPassword =
+                                  !_obscureConfirmPassword;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 15),
+                        _buildModernTextField(
+                          labelText: 'Phone Number',
+                          controller: phoneNumberController,
+                          suffixIcon: Icons.phone,
+                        ),
+                        const SizedBox(height: 15),
+                        _buildModernTextField(
+                          labelText: 'Age',
+                          controller: ageController,
+                          suffixIcon: Icons.calendar_today,
+                          keyboardType: TextInputType.number,
+                        ),
+                        const SizedBox(height: 15),
+                        _buildModernTextField(
+                          labelText: 'Relationality',
+                          controller: relationalityController,
+                          suffixIcon: Icons.group,
+                        ),
+                        const SizedBox(height: 15),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                          child: DropdownButtonFormField<int>(
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 20.0),
+                            ),
+                            value: selectedDistance,
+                            onChanged: (int? newValue) {
+                              setState(() {
+                                selectedDistance = newValue!;
+                              });
+                            },
+                            items: distances.map((int distance) {
+                              return DropdownMenuItem<int>(
+                                value: distance,
+                                child: Container(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                    '$distance m',
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            icon: const Icon(Icons.arrow_drop_down),
+                            hint: const Text('Select Maximum Distance'),
+                            style: const TextStyle(
+                              color: Colors.black87,
+                            ),
+                            dropdownColor: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        ElevatedButton.icon(
+                          onPressed: presentDatePicker,
+                          icon: const Icon(Icons.date_range),
+                          label: Text(selectedDate == null
+                              ? 'Select Diagnosis Date'
+                              : 'Diagnosis Date: ${DateFormat.yMMMd().format(selectedDate!)}'),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.all(15.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
+                            backgroundColor: Color(0xFF6A95E9),
+                            foregroundColor: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFF6A95E9), Color(0xFF6A95E9)],
+                              ),
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                final result = await Navigator.push(
+                                  context,
+                                  _createRoute(MapLocationPicker(
+                                    apiKey: '',
+                                  )),
+                                );
+
+                                if (result != null) {
+                                  lati = result['latitude'];
+                                  long = result['longitude'];
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.all(15.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                backgroundColor: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                              ),
+                              child: const Text(
+                                'Pick Location',
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 7.0),
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color.fromARGB(255, 64, 202, 94),
+                                  Color.fromARGB(255, 69, 181, 86)
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
+                            child: ElevatedButton(
+                              onPressed: _Add,
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.all(5.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                backgroundColor: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                              ),
+                              child: _isLoading
+                                  ? const CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white),
+                                    )
+                                  : const Text(
+                                      'Done',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                          fontFamily: 'Acme'),
+                                    ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                      ],
                     ),
                   ),
-                )
-              : const SizedBox.shrink(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildModernTextField({
+    required String labelText,
+    required TextEditingController controller,
+    required IconData suffixIcon,
+    TextInputType keyboardType = TextInputType.text,
+    bool obscureText = false,
+    VoidCallback? togglePasswordVisibility,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            offset: Offset(0, 3),
+            blurRadius: 10,
+            spreadRadius: 1,
+          ),
         ],
+        borderRadius: BorderRadius.circular(25.0),
+      ),
+      child: TextField(
+        controller: controller,
+        keyboardType: keyboardType,
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          labelText: labelText,
+          suffixIcon: togglePasswordVisibility == null
+              ? Icon(suffixIcon, color: Color(0xFF6A95E9))
+              : IconButton(
+                  icon: Icon(
+                    obscureText ? Icons.visibility_off : Icons.visibility,
+                    color: Color(0xFF6A95E9),
+                  ),
+                  onPressed: togglePasswordVisibility,
+                ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
+            borderSide: BorderSide(
+              color: Color.fromARGB(255, 69, 62, 208),
+            ),
+          ),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+        ),
       ),
     );
   }
