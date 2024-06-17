@@ -9,7 +9,7 @@ import 'package:vv/widgets/background.dart';
 import 'package:vv/models/media_item.dart'; // Importing the modified MediaItem model
 import 'package:signalr_core/signalr_core.dart';
 import 'package:vv/utils/token_manage.dart';
-import 'package:geolocator/geolocator.dart'; 
+import 'package:geolocator/geolocator.dart';
 
 class GalleryScreenPatient extends StatefulWidget {
   @override
@@ -123,7 +123,7 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
       body: Background(
         SingleChildScrollView: null,
         child: Padding(
-          padding: const EdgeInsets.all(30.0),
+          padding: const EdgeInsets.all(1.0),
           child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 1,
@@ -145,7 +145,7 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
                           alignment: Alignment.center,
                           children: [
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(40.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               child: mediaItem.type == MediaType.image
                                   ? Image.network(
                                       mediaItem.path,
@@ -163,13 +163,16 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(7.0),
+                        padding: const EdgeInsets.all(0.12),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               mediaItem.description,
-                              style: TextStyle(fontSize: 17, color: Color.fromARGB(255, 54, 96, 196),fontFamily: 'ConcertOne'),
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  color: Color.fromARGB(255, 54, 96, 196),
+                                  fontFamily: 'ConcertOne'),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -177,10 +180,9 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
                             Text(
                               'Uploaded on: ${formatDateString(mediaItem.uploadedDate)}',
                               style: TextStyle(
-                                fontSize: 12,
-                                color: Color.fromARGB(255, 80, 80, 80),
-                                fontFamily: 'Outfit'
-                              ),
+                                  fontSize: 12,
+                                  color: Color.fromARGB(255, 80, 80, 80),
+                                  fontFamily: 'Outfit'),
                             ),
                             SizedBox(height: 4.0),
                             Text(
@@ -215,7 +217,7 @@ class CustomCard extends StatelessWidget {
     return Card(
       elevation: 10.0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0), 
+        borderRadius: BorderRadius.circular(20.0),
       ),
       child: Padding(
         padding: const EdgeInsets.all(15.0),

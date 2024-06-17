@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart'; // Import for input formatters
 import 'package:vv/Family/Registerfamily/registerfamily.dart';
 import 'package:vv/GPS/map_location_picker.dart';
 import 'package:vv/api/login_api.dart';
@@ -18,7 +19,7 @@ class APIService {
 
   static Future<dynamic> register(FormData formData) async {
     try {
-      _dio.options.headers['accept'] = '*/*';
+      _dio.options.headers['accept'] = '/';
       _dio.options.headers['content-type'] = 'multipart/form-data';
       Response response = await DioService().dio.post(
             'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddPersonWithoutAccount',
@@ -48,13 +49,11 @@ class _AddPersonState extends State<AddPerson> {
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController descriptionForPatientController =
       TextEditingController();
-  final TextEditingController latitudeController = TextEditingController();
-  final TextEditingController longitudeController = TextEditingController();
   late String relationility = '';
   late bool _isLoading = false;
   List<File> capturedImages = [];
-  // late double Latt;
-  // late double Longg;
+  late double Latt;
+  late double Longg;
 
   void _add() async {
     setState(() {
@@ -67,8 +66,7 @@ class _AddPersonState extends State<AddPerson> {
           relationility.isEmpty) {
         throw 'Please fill in all fields, select an image, and provide latitude and longitude.';
       }
-      double Latt = double.parse(latitudeController.text);
-      double Longg = double.parse(longitudeController.text);
+
       var formData = FormData.fromMap({
         'FullName': fullNameController.text,
         'Relationility': relationility,
@@ -132,10 +130,61 @@ class _AddPersonState extends State<AddPerson> {
       capturedImages = images;
     });
   }
+  File? selectedImage;
+  void _handleImageSelected(File? image) {
+    setState(() {
+      selectedImage = image;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => MainPageFamily()),
+            );
+          },
+        ),
+        title: Text(
+          "Create Account",
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 23,
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0,
+              ),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0),
+          ),
+        ),
+      ),
       backgroundColor: const Color(0xff3B5998),
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -155,16 +204,9 @@ class _AddPersonState extends State<AddPerson> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const BackButton(),
-                    const SizedBox(height: 0.5),
-                    const Text(
-                      'Create Account',
-                      style: TextStyle(fontSize: 40, fontFamily: 'Acme'),
-                      textAlign: TextAlign.center,
-                    ),
+                    const SizedBox(height: 25),
+                    ProfilePicture(onImageSelected: _handleImageSelected),
                     const SizedBox(height: 18),
-                    // ProfilePicture(onImageSelected: _handleImageSelected),
-                    // const SizedBox(height: 18),
                     TextField(
                       controller: fullNameController,
                       decoration: InputDecoration(
@@ -178,8 +220,7 @@ class _AddPersonState extends State<AddPerson> {
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
                         ),
-                        suffixIcon:
-                            Icon(Icons.person_2_sharp, color: Colors.blue),
+                        suffixIcon: Icon(Icons.person_2_sharp, color: Colors.blue),
                       ),
                       style: TextStyle(
                         fontSize: 16,
@@ -248,6 +289,10 @@ class _AddPersonState extends State<AddPerson> {
                     const SizedBox(height: 18),
                     TextField(
                       controller: phoneNumberController,
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
                       decoration: InputDecoration(
                         labelText: 'Phone Number',
                         labelStyle: TextStyle(
@@ -269,6 +314,7 @@ class _AddPersonState extends State<AddPerson> {
                     const SizedBox(height: 18),
                     TextFormField(
                       controller: descriptionForPatientController,
+                      maxLines: 5, // Set max lines to 3
                       decoration: InputDecoration(
                         labelText: 'Description For Patient',
                         labelStyle: TextStyle(
@@ -288,127 +334,43 @@ class _AddPersonState extends State<AddPerson> {
                       ),
                     ),
                     const SizedBox(height: 15),
-                    // TextFormField(
-                    //   controller: DescriptionForPatientontroller,
-                    //   decoration: InputDecoration(
-                    //     labelText: '  Description For Patient',
-                    //     suffixIcon: const Icon(Icons.description),
-                    //     border: const OutlineInputBorder(),
-                    //     filled: true,
-                    //     fillColor: Colors.white,
-                    //   ),
-                    //   keyboardType: TextInputType.multiline,
-                    //   maxLines: 3,
-                    // ),
-                    const SizedBox(height: 10),
-                    // ElevatedButton(
-                    //   onPressed: _isLoading
-                    //       ? null
-                    //       : () async {
-                    //           await Navigator.push(
-                    //             context,
-                    //             MaterialPageRoute(
-                    //               builder: (context) => MapLocationPicker(
-                    //                 apiKey:
-                    //                     'AIzaSyCuTilAfnGfkZtIx0T3qf-eOmWZ_N2LpoY',
-                    //                 popOnNextButtonTaped: true,
-                    //                 currentLatLng:
-                    //                     const LatLng(29.146727, 76.464895),
-                    //                 onNext: (GeocodingResult? result) {
-                    //                   if (result != null) {
-                    //                     setState(() {
-                    //                       Latt = result.geometry.location.lat;
-                    //                       Longg = result.geometry.location.lng;
-                    //                     });
-                    //                   }
-                    //                 },
-                    //               ),
-                    //             ),
-                    //           );
-                    //         },
-                    //   style: ElevatedButton.styleFrom(
-                    //     foregroundColor:
-                    //         const Color.fromARGB(255, 255, 255, 255),
-                    //     backgroundColor: const Color.fromARGB(255, 3, 189, 56),
-                    //     shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(27.0),
-                    //     ),
-                    //   ),
-                    //   child: const Text('Pick Location Here'),
-                    // ),
-                    TextField(
-                      controller: latitudeController,
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                      decoration: InputDecoration(
-                        labelText: 'Latitude',
-                        labelStyle: TextStyle(
-                          color: Colors.grey[600],
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none,
-                        ),
-                        suffixIcon: Icon(Icons.location_on, color: Colors.blue),
-                      ),
-                      style: TextStyle(
-                        fontSize: 16,
-                        height: 0.5,
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    TextField(
-                      controller: longitudeController,
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                      decoration: InputDecoration(
-                        labelText: 'Longitude',
-                        labelStyle: TextStyle(
-                          color: Colors.grey[600],
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none,
-                        ),
-                        suffixIcon: Icon(Icons.location_on, color: Colors.blue),
-                      ),
-                      style: TextStyle(
-                        fontSize: 16,
-                        height: 0.5,
-                      ),
-                    ),
                     const SizedBox(height: 10),
                     ElevatedButton(
-                      onPressed: () async {
-                        List<File>? images = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => UploadImagesPagePerson(
-                              fullName: fullNameController.text,
-                              phoneNumber: phoneNumberController.text,
-                              relation: relationility,
-                              latitude:
-                                  double.tryParse(latitudeController.text) ??
-                                      0.0,
-                              longitude:
-                                  double.tryParse(longitudeController.text) ??
-                                      0.0,
-                              description: descriptionForPatientController.text,
-                            ),
-                          ),
-                        );
-
-                        if (images != null) {
-                          // Handle the received images, along with the other data
-                          receiveImages(images);
-                        }
-                      },
-                      child: Text('Go to Upload Images Page'),
+                      onPressed: _isLoading
+                          ? null
+                          : () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MapLocationPicker(
+                                    apiKey:
+                                        'AIzaSyCuTilAfnGfkZtIx0T3qf-eOmWZ_N2LpoY',
+                                    popOnNextButtonTaped: true,
+                                    currentLatLng:
+                                        const LatLng(29.146727, 76.464895),
+                                    onNext: (GeocodingResult? result) {
+                                      if (result != null) {
+                                        setState(() {
+                                          Latt = result.geometry.location.lat;
+                                          Longg = result.geometry.location.lng;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor:
+                            const Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor: const Color.fromARGB(255, 3, 189, 56),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(27.0),
+                        ),
+                      ),
+                      child: const Text('Pick Location Here'),
                     ),
+                    
                     const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: _isLoading ? null : _add,
