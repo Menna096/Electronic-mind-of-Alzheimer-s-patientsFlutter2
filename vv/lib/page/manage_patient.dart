@@ -1,15 +1,10 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/widgets/backbutton.dart';
-
 import 'package:vv/widgets/background.dart';
-import 'package:signalr_core/signalr_core.dart';
-import 'package:vv/utils/token_manage.dart';
-import 'package:geolocator/geolocator.dart';
 
 class ViewProfile extends StatefulWidget {
   @override
@@ -28,7 +23,6 @@ class _ViewProfileState extends State<ViewProfile> {
   @override
   void initState() {
     super.initState();
-
     _fetchUserData();
   }
 
@@ -58,9 +52,10 @@ class _ViewProfileState extends State<ViewProfile> {
           _phoneController.text = response.data['phoneNumber'];
           _ageController.text = response.data['age'].toString();
           _relationalityController.text = response.data['relationality'];
-          _distanceController.text = response.data['maxDistance'].toString();
-          _selectedDate =
-              DateFormat('dd/MM/yyyy').parse(response.data['diagnosisDate']);
+          _distanceController.text =
+              response.data['maxDistance'].toString();
+          _selectedDate = DateFormat('dd/MM/yyyy')
+              .parse(response.data['diagnosisDate']);
         });
       } else {
         print('Failed to fetch data: ${response.statusCode}');
@@ -85,12 +80,12 @@ class _ViewProfileState extends State<ViewProfile> {
 
     try {
       Response response = await DioService().dio.put(
-            apiUrl,
-            data: requestBody,
-            options: Options(
-              contentType: 'application/json; charset=UTF-8',
-            ),
-          );
+        apiUrl,
+        data: requestBody,
+        options: Options(
+          contentType: 'application/json; charset=UTF-8',
+        ),
+      );
 
       if (response.statusCode == 200) {
         print('User profile updated successfully');
@@ -102,7 +97,6 @@ class _ViewProfileState extends State<ViewProfile> {
       } else {
         print(
             'Failed to update user profile. Status code: ${response.statusCode}');
-        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -112,7 +106,6 @@ class _ViewProfileState extends State<ViewProfile> {
       }
     } catch (error) {
       print('An error occurred: $error');
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('An error occurred: $error'),
@@ -124,197 +117,181 @@ class _ViewProfileState extends State<ViewProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Background(
-        SingleChildScrollView: null,
-        child: Column(
-          children: [
-            const Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 40,
-                    ),
-                    backbutton(),
-                    // SizedBox(
-                    //   height: 40,
-                    // ),
-                    Text(
-                      'Manage Patient',
-                      style: TextStyle(fontSize: 30),
-                    ),
-                    Text(
-                      'Profile',
-                      style: TextStyle(fontSize: 30),
-                    )
-                  ],
-                ),
-              ),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          "Manage Patient Profile",
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 23,
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            Container(
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(90, 255, 255, 255),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.0),
-                  topRight: Radius.circular(20.0),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 15),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Full Name',
-                        labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        suffixIcon: const Icon(Icons.account_circle,
-                            size: 25, color: Color(0xFFD0D0D0)),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 12),
-                      ),
-                      readOnly: true,
-                      controller: _fullNameController,
-                      keyboardType: TextInputType.phone,
-                    ),
-                    const SizedBox(height: 15),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        suffixIcon: const Icon(Icons.email,
-                            size: 25, color: Color(0xFFD0D0D0)),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 12),
-                      ),
-                      readOnly: true,
-                      controller: _emailController,
-                    ),
-                    const SizedBox(height: 15),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Phone Number',
-                        labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        suffixIcon: const Icon(Icons.phone,
-                            size: 25, color: Color(0xFFD0D0D0)),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 12),
-                      ),
-                      controller: _phoneController,
-                      keyboardType: TextInputType.phone,
-                    ),
-                    const SizedBox(height: 15),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Age',
-                        labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        suffixIcon: const Icon(Icons.calendar_today,
-                            size: 25, color: Color(0xFFD0D0D0)),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 12),
-                      ),
-                      controller: _ageController,
-                      keyboardType: TextInputType.number,
-                    ),
-                    const SizedBox(height: 15),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Relationality',
-                        labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        suffixIcon: const Icon(Icons.person,
-                            size: 25, color: Color(0xFFD0D0D0)),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 12),
-                      ),
-                      readOnly: true,
-                      controller: _relationalityController,
-                      keyboardType: TextInputType.number,
-                    ),
-                    const SizedBox(height: 15),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Diagnosis Date',
-                        labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        suffixIcon: const Icon(Icons.calendar_today,
-                            size: 25, color: Color(0xFFD0D0D0)),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 12),
-                      ),
-                      controller: TextEditingController(
-                        text: _selectedDate == null
-                            ? ''
-                            : DateFormat('yyyy-MM-dd').format(_selectedDate!),
-                      ),
-                      readOnly: true,
-                      onTap: _presentDatePicker,
-                    ),
-                    const SizedBox(height: 15),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Maximum Distance',
-                        labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        suffixIcon: const Icon(Icons.location_on_sharp,
-                            size: 25, color: Color(0xFFD0D0D0)),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 12),
-                      ),
-                      controller: _distanceController,
-                      keyboardType: TextInputType.number,
-                    ),
-                    const SizedBox(height: 30),
-                    ElevatedButton(
-                      child: const Text('Update'),
-                      onPressed: () async {
-                        // Call the method to update user profile
-                        await updateUserProfile();
-                      },
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    )
-                  ],
-                ),
-              ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(8.0),
             ),
-          ],
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0,
+              ),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0),
+          ),
         ),
       ),
+      body: Background(
+        SingleChildScrollView: null,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(height: 20),
+                _buildTextField(
+                  labelText: 'Full Name',
+                  controller: _fullNameController,
+                  icon: Icons.account_circle,
+                ),
+                SizedBox(height: 15),
+                _buildTextField(
+                  labelText: 'Email',
+                  controller: _emailController,
+                  icon: Icons.email,
+                ),
+                SizedBox(height: 15),
+                _buildTextField(
+                  labelText: 'Phone Number',
+                  controller: _phoneController,
+                  icon: Icons.phone,
+                ),
+                SizedBox(height: 15),
+                _buildTextField(
+                  labelText: 'Age',
+                  controller: _ageController,
+                  icon: Icons.calendar_today,
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(height: 15),
+                _buildTextField(
+                  labelText: 'Relationality',
+                  controller: _relationalityController,
+                  icon: Icons.person,
+                ),
+                SizedBox(height: 15),
+                _buildTextField(
+                  labelText: 'Diagnosis Date',
+                  controller: TextEditingController(
+                    text: _selectedDate == null
+                        ? ''
+                        : DateFormat('yyyy-MM-dd').format(_selectedDate!),
+                  ),
+                  icon: Icons.calendar_today,
+                  readOnly: true,
+                  onTap: _presentDatePicker,
+                ),
+                SizedBox(height: 15),
+                _buildTextField(
+                  labelText: 'Maximum Distance',
+                  controller: _distanceController,
+                  icon: Icons.location_on_sharp,
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(height: 30),
+                ElevatedButton(
+                  onPressed: updateUserProfile,
+                  child: Text('Update',style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.white,
+                                          fontFamily: 'Acme'),),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 64, 158, 45), // Adjust button color here
+                    padding: EdgeInsets.symmetric(vertical: 16.0), // Adjust button padding
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 30),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required String labelText,
+    required TextEditingController controller,
+    required IconData icon,
+    bool readOnly = false,
+    GestureTapCallback? onTap,
+    TextInputType keyboardType = TextInputType.text,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          labelText,
+          style: TextStyle(
+            color: Color.fromARGB(255, 83, 83, 83), // Adjust color as needed
+            fontSize: 17.0,
+            fontFamily: 'Acme', // Adjust font size as needed
+          ),
+        ),
+        SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                offset: Offset(0, 3),
+                blurRadius: 10,
+                spreadRadius: 1,
+              ),
+            ],
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: TextField(
+            controller: controller,
+            keyboardType: keyboardType,
+            readOnly: readOnly,
+            onTap: onTap,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+                borderSide: BorderSide.none,
+              ),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+              prefixIcon: Icon(icon, color: Colors.blue), // Adjust icon color as needed
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
