@@ -414,91 +414,91 @@ class _mainpatientState extends State<mainpatient> {
     }
   }
 
-  // Future<void> initializeSignalR() async {
-  //   final token = await TokenManager.getToken();
-  //   _connection = HubConnectionBuilder()
-  //       .withUrl(
-  //     'https://electronicmindofalzheimerpatients.azurewebsites.net/hubs/GPS',
-  //     HttpConnectionOptions(
-  //       accessTokenFactory: () => Future.value(token),
-  //       logging: (level, message) => print(message),
-  //     ),
-  //   )
-  //       .withAutomaticReconnect(
-  //           [0, 2000, 10000, 30000]) // Configuring automatic reconnect
-  //       .build();
+  Future<void> initializeSignalR() async {
+    final token = await TokenManager.getToken();
+    _connection = HubConnectionBuilder()
+        .withUrl(
+      'https://electronicmindofalzheimerpatients.azurewebsites.net/hubs/GPS',
+      HttpConnectionOptions(
+        accessTokenFactory: () => Future.value(token),
+        logging: (level, message) => print(message),
+      ),
+    )
+        .withAutomaticReconnect(
+            [0, 2000, 10000, 30000]) // Configuring automatic reconnect
+        .build();
 
-  //   _connection.onclose((error) async {
-  //     print('Connection closed. Error: $error');
-  //     await reconnect();
-  //   });
+    _connection.onclose((error) async {
+      print('Connection closed. Error: $error');
+      await reconnect();
+    });
 
-  //   try {
-  //     await _connection.start();
-  //     print('SignalR connection established.');
-  //     _locationTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
-  //       sendCurrentLocation();
-  //     });
-  //   } catch (e) {
-  //     print('Failed to start SignalR connection: $e');
-  //     await reconnect();
-  //   }
-  // }
+    try {
+      await _connection.start();
+      print('SignalR connection established.');
+      _locationTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
+        sendCurrentLocation();
+      });
+    } catch (e) {
+      print('Failed to start SignalR connection: $e');
+      await reconnect();
+    }
+  }
 
-  // Future<void> reconnect() async {
-  //   int retryInterval = 1000; // Initial retry interval to 1 second
-  //   while (_connection.state != HubConnectionState.connected) {
-  //     await Future.delayed(Duration(milliseconds: retryInterval));
-  //     try {
-  //       await _connection.start();
-  //       print("Reconnected to SignalR server.");
-  //       return; // Exit the loop if connected
-  //     } catch (e) {
-  //       print("Reconnect failed: $e");
-  //       retryInterval = (retryInterval < 5000)
-  //           ? retryInterval + 1000
-  //           : 5000; // Cap retry interval at 5 seconds
-  //     }
-  //   }
-  // }
+  Future<void> reconnect() async {
+    int retryInterval = 1000; // Initial retry interval to 1 second
+    while (_connection.state != HubConnectionState.connected) {
+      await Future.delayed(Duration(milliseconds: retryInterval));
+      try {
+        await _connection.start();
+        print("Reconnected to SignalR server.");
+        return; // Exit the loop if connected
+      } catch (e) {
+        print("Reconnect failed: $e");
+        retryInterval = (retryInterval < 5000)
+            ? retryInterval + 1000
+            : 5000; // Cap retry interval at 5 seconds
+      }
+    }
+  }
 
-  // Future<void> sendCurrentLocation() async {
-  //   try {
-  //     final position = await Geolocator.getCurrentPosition(
-  //         desiredAccuracy: LocationAccuracy.high);
+  Future<void> sendCurrentLocation() async {
+    try {
+      final position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
 
-  //     // Decode token to get main latitude, longitude, and max distance
-  //     Map<String, dynamic> decodedToken = JwtDecoder.decode(_token!);
-  //     double mainLat = double.parse(decodedToken['MainLatitude']);
-  //     double mainLon = double.parse(decodedToken['MainLongitude']);
-  //     double maxDistance = double.parse(decodedToken['MaxDistance']);
+      // Decode token to get main latitude, longitude, and max distance
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(_token!);
+      double mainLat = double.parse(decodedToken['MainLatitude']);
+      double mainLon = double.parse(decodedToken['MainLongitude']);
+      double maxDistance = double.parse(decodedToken['MaxDistance']);
 
-  //     // Calculate distance using Haversine formula
-  //     double distance = HaversineCalculator.haversine(
-  //         position.latitude, mainLat, position.longitude, mainLon);
-  //     print('$maxDistance,mainlong$mainLon,mainlat$mainLat,$position');
-  //     print('$distance');
-  //     // Check if the distance is greater than the maximum allowed distance
-  //     if (distance > maxDistance) {
-  //       // If distance is greater, perform the invoke function
-  //       await _connection.invoke('SendGPSToFamilies',
-  //           args: [position.latitude, position.longitude]);
-  //       print('Location sent: ${position.latitude}, ${position.longitude}');
-  //     } else {
-  //       print('Distance less than max distance. Location not sent.');
-  //     }
-  //   } catch (e) {
-  //     print('Error sending location: $e');
-  //   }
-  // }
+      // Calculate distance using Haversine formula
+      double distance = HaversineCalculator.haversine(
+          position.latitude, mainLat, position.longitude, mainLon);
+      print('$maxDistance,mainlong$mainLon,mainlat$mainLat,$position');
+      print('$distance');
+      // Check if the distance is greater than the maximum allowed distance
+      if (distance > maxDistance) {
+        // If distance is greater, perform the invoke function
+        await _connection.invoke('SendGPSToFamilies',
+            args: [position.latitude, position.longitude]);
+        print('Location sent: ${position.latitude}, ${position.longitude}');
+      } else {
+        print('Distance less than max distance. Location not sent.');
+      }
+    } catch (e) {
+      print('Error sending location: $e');
+    }
+  }
 
-  // @override
-  // void dispose() {
-  //   // Dispose any resources
-  //   _locationTimer?.cancel();
-  //   _connection.stop();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    // Dispose any resources
+    _locationTimer?.cancel();
+    _connection.stop();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
