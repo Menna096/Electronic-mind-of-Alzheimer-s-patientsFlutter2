@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
+import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/login_api.dart';
 
@@ -58,7 +59,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff3B5998),
+      backgroundColor: Colors.white, // White background
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -68,11 +69,11 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => mainpatient()),
-            );
+            ); // Go back to the previous page
           },
         ),
         title: Text(
-          "Identity Person",
+          "Identify Person",
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -104,38 +105,25 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
           ),
         ),
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xffECEFF5),
-              Color(0xff3B5998),
-            ],
-          ),
-        ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Image Display Section
-                SizedBox(height: 20),
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      height: 260,
-                      width: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.grey[300]!),
-                        color: Colors.grey[200],
-                      ),
-                    ),
-                    _responseData != null &&
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView( // Wrap Column with SingleChildScrollView
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Image Display Section
+              SizedBox(height: 20),
+              Center( // Center the image container
+                child: Container(
+                  height: 260,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.grey[300]!),
+                    color: Colors.grey[200],
+                  ),
+                  child: Center(
+                    child: _responseData != null &&
                             _responseData!['imageAfterResultUrl'] != null
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(16),
@@ -147,7 +135,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
                             ),
                           )
                         : _image == null
-                            ? Center(child: Text('Select an Image'))
+                            ? Icon(Icons.image_outlined, size: 60)
                             : ClipRRect(
                                 borderRadius: BorderRadius.circular(16),
                                 child: Image.file(
@@ -157,74 +145,76 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                  ],
+                  ),
                 ),
-                SizedBox(height: 30),
+              ),
+              SizedBox(height: 30),
 
-                // Persons In Image Display
-                _responseData != null &&
-                        _responseData!['personsInImage'] != null
-                    ? Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey[300]!,
-                              blurRadius: 4,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: (_responseData!['personsInImage'] as List)
-                              .map((person) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
-                              child: Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 25,
-                                    backgroundColor: Colors.blueGrey[100],
-                                    child: Icon(
-                                      Icons.person,
-                                      size: 20,
-                                      color: Color.fromARGB(255, 65, 97, 202),
+              // Persons In Image Display
+              _responseData != null &&
+                      _responseData!['personsInImage'] != null
+                  ? Container(
+                      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey[300]!,
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: ListView.builder(
+                        shrinkWrap: true, // Important for controlling height
+                        physics: NeverScrollableScrollPhysics(), // Disable scrolling
+                        itemCount: (_responseData!['personsInImage'] as List)
+                            .length,
+                        itemBuilder: (context, index) {
+                          final person =
+                              (_responseData!['personsInImage'] as List)[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: Colors.blueGrey[100],
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 20,
+                                    color: Color.fromARGB(255, 65, 97, 202),
+                                  ),
+                                ),
+                                SizedBox(width: 16),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      person['familyName'],
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: 16),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        person['familyName'],
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
+                                    Text(
+                                      person['relationalityOfThisPatient'],
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey[600],
                                       ),
-                                      Text(
-                                        person['relationalityOfThisPatient'],
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey[600],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      )
-                    : SizedBox.shrink(),
-              ],
-            ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  : SizedBox.shrink(),
+            ],
           ),
         ),
       ),
@@ -232,7 +222,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
         onPressed: getImage,
         label: Text('Select Image'),
         icon: Icon(Icons.image),
-        backgroundColor: Color.fromARGB(255, 65, 97, 202),
+        backgroundColor: Color(0xFF6A95E9),
       ),
     );
   }
