@@ -11,6 +11,7 @@ import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
 import 'package:vv/Patient/appoint.dart';
+import 'package:vv/Patient/chatbot.dart';
 import 'package:vv/Patient/identifiy.dart';
 import 'package:vv/Patient/mainpagepatient/all_families.dart';
 import 'package:vv/Patient/mainpagepatient/patient_media.dart';
@@ -769,11 +770,19 @@ class _mainpatientState extends State<mainpatient> {
             Positioned(
               top: 232,
               left: 230,
-              child: Container(
-                child: Image.asset(
-                  'images/Chatbot.png',
-                  width: 110,
-                  height: 110,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChatScreen()),
+                  );
+                },
+                child: Container(
+                  child: Image.asset(
+                    'images/Chatbot.png',
+                    width: 110,
+                    height: 110,
+                  ),
                 ),
               ),
             ),
