@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/patient_list.dart';
@@ -11,6 +12,8 @@ import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/local_auth_api.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/token_manage.dart';
+import 'String_manager.dart';
+
 
 class LoginPageAll extends StatefulWidget {
   @override
@@ -282,20 +285,9 @@ class _LoginPageAllState extends State<LoginPageAll> {
                 children: [
                   const SizedBox(height: 110),
                   Text(
-                    'Welcome',
-                    style: TextStyle(
-                      fontSize: 58,
-                      fontFamily: 'LilitaOne',
-                      foreground: Paint()
-                        ..shader = LinearGradient(
-                          colors: [Colors.blue[400]!, Colors.indigo[400]!],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ).createShader(
-                          Rect.fromLTWH(
-                              0, 0, 400, 10), // Adjust the size as needed
-                        ),
-                    ),
+                    context.tr(StringManager.welcome),
+                    // 'welcome'.tr(),
+                    
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 50.0),
