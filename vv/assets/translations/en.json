@@ -1,4 +1,41 @@
 {
-    "Welcome": "Welcome"
-}
-   
+    "ChooseLanguage" :"Choose Language",
+    "Cancel" : "Cancel",
+    "Welcome": "Welcome",
+    "Email Address": "Email Address",
+    "Password": "Password",
+    "Login": "Login",
+    "LoginError": "Login Error",
+    "OK" :"OK",
+    "donthaveanaccount": "Don't have an account?",
+    "registerNow" : " Register Now!",
+    "Help": "Help ?!",
+    "Forgot Password" :" Forgot Password?!",
+    "invalid_email": "Invalid email address. Please enter a correct email.",
+    "enter_email": "Please enter your email.",
+    "enter_password": "Please enter your password.",
+    "login_error_title": "Login Error",
+    "login_error_401": "Invalid email or password. Please try again.",
+    "login_error_400": "Please check your input.",
+    "login_error_404": "User not found. Please register first.",
+    "login_error_500": "Something went wrong. Please try again.",
+    "login_error_default": "An error occurred. Please try again later.",
+    "server_error": "An error occurred while connecting to the server. Please try again later.",
+    "training_required": "You need to train the system.",
+    "training_not_required": "No training required.",
+    "training_error": "Training status check failed. Proceeding to assign or add.",
+    "title": "Notice",
+    "message": "Login with face ID is only available for patients.",
+    "use_face_id": "Use face ID",
+    "not_patient": "Not patient",
+    "assignpat":"You don't have a patient yet. Please assign or add a patient.",
+    "Assign" : "Assign",
+    "No patients assigned yet" : "No patients assigned yet"
+
+    
+
+
+
+  }
+  
+  

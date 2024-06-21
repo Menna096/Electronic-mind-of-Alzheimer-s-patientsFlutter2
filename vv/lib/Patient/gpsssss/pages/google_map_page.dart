@@ -97,7 +97,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                           ),
                           onPressed: () async {
                             await launchUrl(Uri.parse(
-                                'google.navigation:q=${widget.lat}, ${widget.lng}&key=AIzaSyCuTilAfnGfkZtIx0T3qf-eOmWZ_N2LpoY')); // Replace YOUR_API_KEY with your actual API key
+                                'google.navigation:q=${widget.lat}, ${widget.lng}&key=AIzaSyCB4OrB7PgyXUrxNgf3-IZVsaHPpyt-kBM')); // Replace YOUR_API_KEY with your actual API key
                           },
                         ),
                       ),
@@ -152,7 +152,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                   LatLng(currentLocation.latitude!, currentLocation.longitude!),
               infoWindow: InfoWindow(
                   title:
-                      '${double.parse((getDistance(LatLng(widget.lat, widget.lng)).toStringAsFixed(2)))} km'),
+                      '${double.parse((getDistance(LatLng(widget.lat, widget.lng)).toStringAsFixed(2)))} m'),
               onTap: () {
                 print('market tapped');
               },
@@ -168,7 +168,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     List<LatLng> polylineCoordinates = [];
     List<dynamic> points = [];
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        'AIzaSyDc7BLNnR3cQAhlKRDUgpcZYssqgDIHWxc', // Replace YOUR_API_KEY with your actual API key
+        'AIzaSyCB4OrB7PgyXUrxNgf3-IZVsaHPpyt-kBM', // Replace YOUR_API_KEY with your actual API key
         PointLatLng(curLocation.latitude, curLocation.longitude),
         PointLatLng(dst.latitude, dst.longitude),
         travelMode: TravelMode.driving);

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
@@ -7,6 +8,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart' as path;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vv/Family/LoginPageAll.dart';
+import 'package:vv/Family/String_manager.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart'; // Adjust path as per your project structure
 import 'package:vv/api/login_api.dart'; // Adjust path as per your project structure
 import 'package:vv/utils/token_manage.dart'; // Adjust path as per your project structure
@@ -70,7 +72,7 @@ class _CameraScreenState extends State<CameraScreen> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  "Notice",
+                  context.tr(StringManager.title),
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -78,7 +80,7 @@ class _CameraScreenState extends State<CameraScreen> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  "Login with face ID is only available for patients.",
+                  context.tr(StringManager.message),
                   style: TextStyle(
                     fontSize: 18,
                   ),
@@ -96,7 +98,9 @@ class _CameraScreenState extends State<CameraScreen> {
                           borderRadius: BorderRadius.circular(18.0),
                         ),
                       ),
-                      child: Text("Not patient"),
+                      child: Text(
+                        context.tr(StringManager.not_patient),
+                      ),
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
@@ -113,7 +117,9 @@ class _CameraScreenState extends State<CameraScreen> {
                           borderRadius: BorderRadius.circular(18.0),
                         ),
                       ),
-                      child: Text("Use face ID"),
+                      child: Text(
+                        context.tr(StringManager.use_face_id),
+                      ),
                       onPressed: () {
                         getImage();
                       },

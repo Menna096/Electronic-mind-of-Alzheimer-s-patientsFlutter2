@@ -502,351 +502,319 @@ class _mainpatientState extends State<mainpatient> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          'Settings',
-          style: TextStyle(
-            fontFamily: 'LilitaOne',
-            fontSize: 23,
-            color: Colors.white,
-          ),
-        ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(10.0),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Color.fromARGB(66, 55, 134, 190),
-                offset: Offset(0, 10),
-                blurRadius: 10.0,
-              ),
-            ],
-          ),
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(50.0),
-          ),
+ Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: Text(
+        'Settings',
+        style: TextStyle(
+          fontFamily: 'LilitaOne',
+          fontSize: 23,
+          color: Colors.white,
         ),
       ),
-      drawer: Drawer(
-        child: Container(
-          color: const Color(0xffD6DCE9),
-          child: ListView(
-            children: [
-              const DrawerHeader(
-                child: Center(
-                  child: Text(
-                    'Elder Helper',
-                    style: TextStyle(
-                      fontSize: 44,
-                      fontFamily: 'Acme',
-                      color: Color(0xFF0386D0),
-                    ),
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.manage_accounts_rounded,
-                    color: Color.fromARGB(255, 84, 134, 235)),
-                title: const Text(
-                  'Manage Profile',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF595858),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PatientProfManage()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.logout,
-                    color: Color.fromARGB(214, 209, 8, 8)),
-                title: const Text(
-                  'Log Out',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF595858),
-                  ),
-                ),
-                onTap: () {
-                  TokenManager.deleteToken();
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPageAll()),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-      body: Container(
-        decoration: const BoxDecoration(
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xffECEFF5),
-              Color(0xff3B5998),
-            ],
+            colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              bottom: 580,
-              right: 80,
-              child: Center(
-                child: Container(
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 45.0,
-                        backgroundImage: NetworkImage(_photoUrl ?? ''),
-                      ),
-                      const SizedBox(width: 16.0),
-                      Column(
-                        children: [
-                          Text(
-                            'Welcome $_userName !👋🏻',
-                            style: const TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          const Text(
-                            'To the Electronic mind',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          const Text(
-                            'of Alzheimer patient',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 332,
-              left: 45,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Notes_View()),
-                  );
-                },
-                child: Container(
-                  child: Image.asset(
-                    'images/Notes.png',
-                    width: 110,
-                    height: 110,
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 232,
-              left: 45,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => UnusualFamilyList()),
-                  );
-                },
-                child: Container(
-                  child: Image.asset(
-                    'images/Places.png',
-                    width: 110,
-                    height: 110,
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 432,
-              left: 45,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ImageUploadScreen()),
-                  );
-                },
-                child: Container(
-                  child: Image.asset(
-                    'images/Persons.png',
-                    width: 110,
-                    height: 110,
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 532,
-              left: 46.5,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Home()),
-                  );
-                },
-                child: Container(
-                  child: Image.asset(
-                    'images/dailytasks.png',
-                    width: 108,
-                    height: 108,
-                  ),
-                ),
-              ),
-            ),
-            //
-            Positioned(
-              top: 132,
-              left: 45,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AppointmentScreenPatient()),
-                  );
-                },
-                child: Container(
-                  child: Image.asset(
-                    'images/appoinmentpat.png',
-                    width: 110,
-                    height: 110,
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 132,
-              left: 230,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => MedicinesPage()),
-                  );
-                },
-                child: Container(
-                  child: Image.asset(
-                    'images/Medicines.png',
-                    width: 110,
-                    height: 110,
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 232,
-              left: 230,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => ChatScreen()),
-                  );
-                },
-                child: Container(
-                  child: Image.asset(
-                    'images/Chatbot.png',
-                    width: 110,
-                    height: 110,
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 332,
-              left: 230,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => SecretFilePage()),
-                  );
-                },
-                child: Container(
-                  child: Image.asset(
-                    'images/Files.png',
-                    width: 110,
-                    height: 110,
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 432,
-              left: 230,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => GalleryScreenPatient()),
-                  );
-                },
-                child: Container(
-                  child: Image.asset(
-                    'images/Pictures.png',
-                    width: 110,
-                    height: 110,
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 532,
-              left: 233,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => LevelSelectionScreen()));
-                },
-                child: Container(
-                  child: Image.asset(
-                    'images/Games (1).png',
-                    width: 105,
-                    height: 105,
-                  ),
-                ),
-              ),
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(10.0),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromARGB(66, 55, 134, 190),
+              offset: Offset(0, 10),
+              blurRadius: 10.0,
             ),
           ],
         ),
       ),
-    );
-  }
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(50.0),
+        ),
+      ),
+    ),
+    drawer: Drawer(
+      child: Container(
+        color: const Color(0xffD6DCE9),
+        child: ListView(
+          children: [
+            const DrawerHeader(
+              child: Center(
+                child: Text(
+                  'Elder Helper',
+                  style: TextStyle(
+                    fontSize: 44,
+                    fontFamily: 'Acme',
+                    color: Color(0xFF0386D0),
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.manage_accounts_rounded,
+                  color: Color.fromARGB(255, 84, 134, 235)),
+              title: const Text(
+                'Manage Profile',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Color(0xFF595858),
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PatientProfManage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout,
+                  color: Color.fromARGB(214, 209, 8, 8)),
+              title: const Text(
+                'Log Out',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Color(0xFF595858),
+                ),
+              ),
+              onTap: () {
+                TokenManager.deleteToken();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPageAll()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    ),
+    body: Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xffECEFF5),
+            Color(0xff3B5998),
+          ],
+        ),
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 45.0,
+                  backgroundImage: NetworkImage(_photoUrl ?? ''),
+                ),
+                const SizedBox(width: 16.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Welcome $_userName !👋🏻',
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    const Text(
+                      'To the Electronic mind',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    const Text(
+                      'of Alzheimer patient',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AppointmentScreenPatient()),
+                          );
+                        },
+                        child: Image.asset(
+                          'images/appoinmentpat.png',
+                          width: 110,
+                          height: 110,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => MedicinesPage()),
+                          );
+                        },
+                        child: Image.asset(
+                          'images/Medicines.png',
+                          width: 110,
+                          height: 110,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => UnusualFamilyList()),
+                          );
+                        },
+                        child: Image.asset(
+                          'images/Places.png',
+                          width: 110,
+                          height: 110,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => ChatScreen()),
+                          );
+                        },
+                        child: Image.asset(
+                          'images/Chatbot.png',
+                          width: 110,
+                          height: 110,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Notes_View()),
+                          );
+                        },
+                        child: Image.asset(
+                          'images/Notes.png',
+                          width: 110,
+                          height: 110,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => SecretFilePage()),
+                          );
+                        },
+                        child: Image.asset(
+                          'images/Files.png',
+                          width: 110,
+                          height: 110,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => ImageUploadScreen()),
+                          );
+                        },
+                        child: Image.asset(
+                          'images/Persons.png',
+                          width: 110,
+                          height: 110,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => GalleryScreenPatient()),
+                          );
+                        },
+                        child: Image.asset(
+                          'images/Pictures.png',
+                          width: 110,
+                          height: 110,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const Home()),
+                          );
+                        },
+                        child: Image.asset(
+                          'images/dailytasks.png',
+                          width: 108,
+                          height: 108,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => LevelSelectionScreen()));
+                        },
+                        child: Image.asset(
+                          'images/Games (1).png',
+                          width: 105,
+                          height: 105,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+
 }
 
 class HaversineCalculator {
