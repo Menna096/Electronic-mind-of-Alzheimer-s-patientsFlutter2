@@ -1,5 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:signalr_core/signalr_core.dart';
+import 'package:vv/Family/AddPersonWithoutAccount.dart';
+import 'package:vv/Family/Languagefamily/Languagefamily.dart';
+import 'package:vv/Family/LoginPageAll.dart';
+import 'package:vv/Family/appoint_list.dart';
+import 'package:vv/Family/patientLocToday.dart';
+import 'package:vv/Family/patient_reports.dart';
+import 'package:vv/Family/update.dart';
+import 'package:vv/page/assignPatCare.dart';
+import 'package:vv/page/gallery_screen.dart';
+import 'package:vv/page/paitent_Id.dart';
 import 'package:vv/utils/token_manage.dart';
 import 'package:vv/widgets/background.dart';
 import 'package:vv/widgets/mainfamily.dart';
@@ -19,12 +30,26 @@ class _MainPageFamilyState extends State<MainPageFamily> {
   bool _locationReceived = false;
   final FlutterLocalNotificationsPlugin _notificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
+  String? _token;
+  String? _photoUrl;
+  String? _userName;
   @override
   void initState() {
     super.initState();
     initializeSignalR();
     initNotifications();
+    _getDataFromToken();
+  }
+
+  Future<void> _getDataFromToken() async {
+    _token = await TokenManager.getToken();
+    if (_token != null) {
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(_token!);
+      setState(() {
+        _photoUrl = decodedToken['UserAvatar'];
+        _userName = decodedToken['FullName'];
+      });
+    }
   }
 
   Future<void> initNotifications() async {
@@ -33,7 +58,6 @@ class _MainPageFamilyState extends State<MainPageFamily> {
     final InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
-    
     );
     await _notificationsPlugin.initialize(
       initializationSettings,
@@ -88,7 +112,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
   }
 
   Future<void> _showNotification(double latitude, double longitude) async {
-     AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       'your channel id',
       'your channel name',
@@ -98,7 +122,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
       ticker: 'ticker',
       sound: RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
     );
-     NotificationDetails platformChannelSpecifics =
+    NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await _notificationsPlugin.show(
       0,
@@ -128,6 +152,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
@@ -167,8 +192,237 @@ class _MainPageFamilyState extends State<MainPageFamily> {
       resizeToAvoidBottomInset: false,
       body: Background(
         SingleChildScrollView: null,
-        child: buildFamily(),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 45.0,
+                    backgroundImage: NetworkImage(_photoUrl ?? ''),
+                  ),
+                  const SizedBox(width: 16.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Welcome $_userName !👋🏻',
+                        style: const TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      const Text(
+                        'To the Electronic mind',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      const Text(
+                        'of Alzheimer patient',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                         GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => GalleryScreen()),
+                            );
+                          },
+                          child: Image.asset(
+                            'images/picfam.png',
+                            width: 110,
+                            height: 110,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddPatientScreen()),
+                            );
+                          },
+                          child: Image.asset(
+                            'images/patcode.png',
+                            width: 110,
+                            height: 110,
+                          ),
+                        ),
+                       
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AssignPatientPage()),
+                            );
+                          },
+                          child: Image.asset(
+                            'images/asspat.png',
+                            width: 110,
+                            height: 110,
+                          ),
+                        ),
+                        
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      PatientLocationsScreen()),
+                            );
+                          },
+                          child: Image.asset(
+                            'images/placefam.png',
+                            width: 110,
+                            height: 110,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ReportListScreenFamily()),
+                            );
+                          },
+                          child: Image.asset(
+                            'images/Rports.png',
+                            width: 110,
+                            height: 110,
+                          ),
+                        ),
+                        
+                         GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AppointListScreen()),
+                            );
+                          },
+                          child: Image.asset(
+                            'images/appfam.png',
+                            width: 110,
+                            height: 110,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
+  Widget buildDrawer(BuildContext context) {
+  return Drawer(
+    child: Container(
+      color: const Color(0xffD6DCE9),
+      child: ListView(
+        children: [
+          const DrawerHeader(
+            child: Center(
+              child: Text(
+                'Elder Helper',
+                style: TextStyle(
+                  fontSize: 44,
+                  fontFamily: 'Acme',
+                  color: Color(0xFF0386D0),
+                ),
+              ),
+            ),
+          ),
+          buildDrawerItem(
+            Icons.person_add_alt_1_sharp,
+            'Add Patient',
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => update()));
+            },
+          ),
+          buildDrawerItem(
+            Icons.person_add_alt_1_sharp,
+            'Add Person Without Account',
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => AddPerson()));
+            },
+          ),
+         
+         buildDrawerlogout(
+            Icons.logout_outlined,
+            'Log Out',
+            onTap: () {
+              TokenManager.deleteToken();
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => LoginPageAll()));
+            },
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget buildDrawerItem(IconData icon, String title, {Function? onTap}) {
+  return ListTile(
+    leading: Icon(icon,color: Color(0xFF0386D0),),
+    title: Text(
+      title,
+      style: const TextStyle(
+        fontSize: 20,
+        color: Color(0xFF595858),
+      ),
+    ),
+    onTap: onTap as void Function()?,
+  );
+}
+Widget buildDrawerlogout(IconData icon, String title, {Function? onTap}) {
+  return ListTile(
+    leading: Icon(icon,color: Color.fromARGB(255, 174, 5, 5),),
+    title: Text(
+      title,
+      style: const TextStyle(
+        fontSize: 20,
+        color: Color(0xFF595858),
+      ),
+    ),
+    onTap: onTap as void Function()?,
+  );
+}
+
 }

@@ -20,9 +20,9 @@ class APIService {
       DioService().dio.options.headers['accept'] = '/';
       DioService().dio.options.headers['content-type'] = 'multipart/form-data';
       Response response = await DioService().dio.post(
-        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddPatient',
-        data: formData,
-      );
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddPatient',
+            data: formData,
+          );
       return response.statusCode == 200
           ? true
           : response.data != null && response.data['message'] != null
@@ -178,8 +178,8 @@ class _AddpatState extends State<Addpat> {
   Future<void> checkTrain() async {
     try {
       Response response = await DioService().dio.get(
-        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
-      );
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
+          );
 
       if (response.statusCode == 200) {
         bool needTraining = response.data['needATraining'];
@@ -424,7 +424,8 @@ class _AddpatState extends State<Addpat> {
                                 final result = await Navigator.push(
                                   context,
                                   _createRoute(MapLocationPicker(
-                                    apiKey: '',
+                                    apiKey:
+                                        'AIzaSyCB4OrB7PgyXUrxNgf3-IZVsaHPpyt-kBM',
                                   )),
                                 );
 

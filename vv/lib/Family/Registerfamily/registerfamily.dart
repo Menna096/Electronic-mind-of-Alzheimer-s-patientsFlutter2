@@ -381,7 +381,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => MapLocationPicker(
-                                    apiKey: 'YOUR_GOOGLE_MAPS_API_KEY',
+                                    apiKey: 'AIzaSyCB4OrB7PgyXUrxNgf3-IZVsaHPpyt-kBM',
                                     popOnNextButtonTaped: true,
                                     currentLatLng: const LatLng(29.146727, 76.464895),
                                     onNext: (GeocodingResult? result) {

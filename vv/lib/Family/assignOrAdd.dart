@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:vv/Family/String_manager.dart';
 import 'package:vv/faceid.dart';
 import 'package:vv/page/addpat.dart';
 import 'package:vv/page/assign_patient.dart';
@@ -43,7 +45,7 @@ class _assign_addState extends State<assign_add> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  "You don't have a patient yet. Please assign or add a patient.",
+                  context.tr(StringManager.assignpat),
                   style: TextStyle(
                     fontSize: 18,
                   ),
@@ -61,7 +63,8 @@ class _assign_addState extends State<assign_add> {
                           borderRadius: BorderRadius.circular(18.0),
                         ),
                       ),
-                      child: Text("Assign"),
+                      child: Text(context.tr(StringManager.Assign),
+                      ),
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
@@ -78,7 +81,8 @@ class _assign_addState extends State<assign_add> {
                           borderRadius: BorderRadius.circular(18.0),
                         ),
                       ),
-                      child: Text("Add"),
+                      child: Text(context.tr(StringManager.Add),
+                      ),
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
@@ -102,7 +106,7 @@ class _assign_addState extends State<assign_add> {
       body: AnimatedBackground(
         child: Center(
           child: Text(
-            'No patients assigned yet.',
+           context.tr(StringManager.Nopatientsassignedyet),
             style: TextStyle(
               fontSize: 24,
               color: Colors.white,
