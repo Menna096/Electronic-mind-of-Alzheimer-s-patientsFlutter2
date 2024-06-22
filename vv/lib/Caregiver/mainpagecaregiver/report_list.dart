@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
+import 'package:easy_localization/easy_localization.dart'; // Import easy_localization.dart
 import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart'; // Import mainpagecaregiver.dart
 import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/storage_manage.dart';
@@ -53,16 +54,16 @@ class _ReportListScreenState extends State<ReportListScreen> {
               (report) => report['reportId'] == reportId); // Update UI
         });
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Report deleted successfully!")));
+            SnackBar(content: Text('Report deleted successfully'.tr())));
       } else {
         print("Failed to delete report.");
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Failed to delete report.")));
+            SnackBar(content: Text(tr('Failed to delete report'))));
       }
     } catch (e) {
       print('Error deleting report: $e');
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Error deleting report: $e")));
+          .showSnackBar(SnackBar(content: Text(tr('Error deleting report:'))));
     }
   }
 
@@ -73,17 +74,17 @@ class _ReportListScreenState extends State<ReportListScreen> {
           false, // Dialog cannot be dismissed by tapping outside
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Confirm Delete"),
-          content: Text("Are you sure you want to delete this report?"),
+          title: Text(tr('Confirm Delete')),
+          content: Text(tr('Are you sure you want to delete this report?')),
           actions: <Widget>[
             TextButton(
-              child: Text("Cancel"),
+              child: Text(tr('Cancel')),
               onPressed: () {
                 Navigator.of(context).pop(); // Close dialog
               },
             ),
             TextButton(
-              child: Text("Delete"),
+              child: Text(tr('Delete')),
               onPressed: () {
                 _deleteReport(reportId); // Call delete method
                 Navigator.of(context).pop(); // Close dialog
@@ -111,7 +112,7 @@ class _ReportListScreenState extends State<ReportListScreen> {
           },
         ),
         title: Text(
-          "Patient's Reports",
+          tr("Patient's Reports"),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -144,7 +145,7 @@ class _ReportListScreenState extends State<ReportListScreen> {
         ),
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(child: CircularProgressIndicator())
           : Stack(
               children: [
                 Background(
@@ -258,7 +259,7 @@ class ReportCard extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'Delete',
+                    tr('Delete'),
                     style: TextStyle(
                       color: Colors.red,
                       fontSize: 14,

@@ -34,6 +34,17 @@ abstract class StringManager {
   static String Assign = "Assign";
   static String Add = "Add";
   static String Nopatientsassignedyet = "Nopatientsassignedyet";
+  static String scanFingerprintToAuthenticate = "scanFingerprintToAuthenticate";
+  static String Select = "Select";
+  static String Reportsubmittedsuccessfully = "Reportsubmittedsuccessfully";
+  static String elderHelper = "elderHelper";
+  static String LogOut = "elderHelper";
+  static String confirm = "elderHelper";
+
+  
+  
+  
+  
   
   
 

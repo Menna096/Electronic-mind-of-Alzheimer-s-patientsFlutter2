@@ -1,5 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:vv/Family/String_manager.dart';
 
 class LocalAuthApi {
   static final _auth = LocalAuthentication();
@@ -20,14 +23,17 @@ class LocalAuthApi {
     }
   }
 
-  static Future<bool> authenticate() async {
+  static Future<bool> authenticate(BuildContext context) async {
     final isAvailable = await hasBiometrics();
     if (!isAvailable) return false;
 
     try {
       return await _auth.authenticate(
-        localizedReason: 'Scan Fingerprint to Authenticate',
-      
+        localizedReason: tr(StringManager.scanFingerprintToAuthenticate),
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+          useErrorDialogs: true,
+        ),
       );
     } on PlatformException catch (e) {
       return false;
