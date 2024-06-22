@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/local_auth_api.dart';
 
@@ -21,9 +22,9 @@ class FingerprintPage extends StatelessWidget {
       );
 
   Widget buildAuthenticate(BuildContext context) => buildButton(
-        text: 'Authenticate',
+        text: 'Authenticate'.tr(),
         onClicked: () async {
-          final isAuthenticated = await LocalAuthApi.authenticate();
+          final isAuthenticated = await LocalAuthApi.authenticate(context);
 
           if (isAuthenticated) {
             Navigator.of(context).pushReplacement(

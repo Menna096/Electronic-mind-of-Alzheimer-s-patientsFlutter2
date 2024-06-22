@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
     final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Details'),
+        title: Text('Details'.tr()),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -51,7 +52,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                         openAlertBox(context);
                       },
                       child: Text(
-                        'Delete',
+                        'Delete'.tr(),
                         style: Theme.of(context)
                             .textTheme
                             .subtitle1!
@@ -62,7 +63,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                 ),
                 SizedBox(height: 2.h),
               ] else
-                Text('No medicine data available'),
+                Text('No medicine data available'.tr()),
             ],
           ),
         ),
@@ -85,14 +86,14 @@ class _MedicineDetailsState extends State<MedicineDetails> {
           ),
           contentPadding: EdgeInsets.only(top: 1.h),
           title: Text(
-            'Delete This Reminder?',
+            'Delete This Reminder?'.tr(),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.subtitle1,
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text('Cancel', style: Theme.of(context).textTheme.caption),
+              child: Text('Cancel'.tr(), style: Theme.of(context).textTheme.caption),
             ),
             TextButton(
               onPressed: () async {
@@ -106,7 +107,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                         "Response Status: ${response.statusCode}"); // Debug print
                     if (response.statusCode == 200) {
                       ScaffoldMessenger.of(dialogContext).showSnackBar(SnackBar(
-                          content: Text('Reminder Deleted Successfully')));
+                          content: Text('Reminder Deleted Successfully'.tr())));
                       widget.onDelete();
                       Navigator.pushReplacement(
                           context,
@@ -115,17 +116,16 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                                   SuccessScreen())); // Notify the HomePage of the deletion
                     } else {
                       ScaffoldMessenger.of(dialogContext).showSnackBar(SnackBar(
-                          content: Text(
-                              'Failed to Delete Reminder: ${response.statusCode}')));
+                          content: Text('Failed to Delete Reminder: ${response.statusCode}'.tr())));
                     }
                   } else {
                     ScaffoldMessenger.of(dialogContext).showSnackBar(
-                        SnackBar(content: Text('No Reminder ID Found')));
+                        SnackBar(content: Text('No Reminder ID Found'.tr())));
                   }
                 } catch (e) {
                   print("Error: $e"); // Debug print
-                  ScaffoldMessenger.of(dialogContext)
-                      .showSnackBar(SnackBar(content: Text('Error: $e')));
+                  // ScaffoldMessenger.of(dialogContext)
+                  //     .showSnackBar(SnackBar(content: Text('Error: $e')));
                 } finally {
                   // Ensuring navigation even if an error occurs
                   Navigator.of(dialogContext).pop(); // Close the dialog
@@ -136,7 +136,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                 }
               },
               child: Text(
-                'OK',
+                'OK'.tr(),
                 style: Theme.of(context)
                     .textTheme
                     .caption!
@@ -158,7 +158,7 @@ class MainSection extends StatelessWidget {
   Widget _makeIcon(int type, double size) {
     switch (type) {
       case 0:
-        return Image.asset('lib/page/task_screens/assets/icons/pills.gif',
+        return Image.asset('lib/page/task_screens/assets/icons/pills.gif'.tr(),
             height: size);
       case 1:
         return Image.asset('lib/page/task_screens/assets/icons/syringe.gif',
@@ -179,15 +179,15 @@ class MainSection extends StatelessWidget {
   String _getTypeName(int type) {
     switch (type) {
       case 0:
-        return 'Pill';
+        return 'Pill'.tr();
       case 1:
-        return 'Syringe';
+        return 'Syringe'.tr();
       case 2:
-        return 'Bottle';
+        return 'Bottle'.tr();
       case 3:
-        return 'Tablet';
+        return 'Tablet'.tr();
       default:
-        return 'Unknown Type';
+        return 'Unknown Type'.tr();
     }
   }
 
@@ -221,13 +221,13 @@ class MainSection extends StatelessWidget {
               child: Material(
                 color: Colors.transparent,
                 child: MainInfoTab(
-                  fieldTitle: 'Medicine Name',
+                  fieldTitle: 'Medicine Name'.tr(),
                   fieldInfo: medicineName,
                 ),
               ),
             ),
             MainInfoTab(
-              fieldTitle: 'Dosage',
+              fieldTitle: 'Dosage'.tr(),
               fieldInfo: dosage,
             ),
           ],
@@ -245,15 +245,15 @@ class ExtendedSection extends StatelessWidget {
   static String _getTypeName(int type) {
     switch (type) {
       case 0:
-        return 'Pill';
+        return 'Pill'.tr();
       case 1:
-        return 'Syringe';
+        return 'Syringe'.tr();
       case 2:
-        return 'Bottle';
+        return 'Bottle'.tr();
       case 3:
-        return 'Tablet';
+        return 'Tablet'.tr();
       default:
-        return 'Unknown Type';
+        return 'Unknown Type'.tr();
     }
   }
 
@@ -267,24 +267,24 @@ class ExtendedSection extends StatelessWidget {
       shrinkWrap: true,
       children: [
         ExtendedInfoTab(
-          fieldTitle: 'Medicine Type',
+          fieldTitle: 'Medicine Type'.tr(),
           fieldInfo: medicineTypeString, // Use the converted type name
         ),
         ExtendedInfoTab(
-          fieldTitle: 'Dose Interval',
-          fieldInfo: '${data['repeater'] ?? "Interval not available"} hours',
+          fieldTitle: 'Dose Interval'.tr(),
+          fieldInfo: '${data['repeater'] ?? "Interval not available"}'.tr(),
         ),
         ExtendedInfoTab(
-          fieldTitle: 'Start Time',
+          fieldTitle: 'Start Time'.tr(),
           fieldInfo: data['startDate'] != null
               ? DateFormat('HH:mm').format(DateTime.parse(data['startDate']))
-              : 'Start time not available',
+              : 'Start time not available'.tr(),
         ),
         ExtendedInfoTab(
-          fieldTitle: 'End Date',
+          fieldTitle: 'End Date'.tr(),
           fieldInfo: data['endDate'] != null
               ? DateFormat('yyyy-MM-dd').format(DateTime.parse(data['endDate']))
-              : 'End date not available',
+              : 'End date not available'.tr(),
         ),
       ],
     );

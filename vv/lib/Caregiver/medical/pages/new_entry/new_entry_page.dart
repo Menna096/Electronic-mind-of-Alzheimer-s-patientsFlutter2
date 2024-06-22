@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
@@ -106,15 +107,15 @@ class _NewEntryPageState extends State<NewEntryPage> {
   String getMedicineTypeName(int type) {
     switch (type) {
       case 0:
-        return 'Pill';
+        return 'Pill'.tr();
       case 1:
-        return 'Syringe';
+        return 'Syringe'.tr();
       case 2:
-        return 'Bottle';
+        return 'Bottle'.tr();
       case 3:
-        return 'Tablet';
+        return 'Tablet'.tr();
       default:
-        return 'Unknown';
+        return 'Unknown'.tr();
     }
   }
 
@@ -125,7 +126,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Add New'),
+        title:  Text('Add New'.tr()),
       ),
       body: SingleChildScrollView(
         child: Provider<NewEntryBloc>.value(
@@ -135,8 +136,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const PanelTitle(
-                  title: 'Medicine Name',
+                 PanelTitle(
+                  title: 'Medicine Name'.tr(),
                   isRequired: true,
                 ),
                 TextFormField(
@@ -151,8 +152,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       .subtitle2!
                       .copyWith(color: kOtherColor),
                 ),
-                const PanelTitle(
-                  title: 'Dosage in mg',
+                 PanelTitle(
+                  title: 'Dosage in mg'.tr(),
                   isRequired: false,
                 ),
                 TextFormField(
@@ -171,7 +172,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                 SizedBox(
                   height: 1.h,
                 ),
-                const PanelTitle(title: 'Medicine Type', isRequired: true),
+                 PanelTitle(title: 'Medicine Type'.tr(), isRequired: true),
                 Padding(
                   padding: EdgeInsets.only(top: 1.h),
                   child: StreamBuilder<int>(
@@ -182,25 +183,25 @@ class _NewEntryPageState extends State<NewEntryPage> {
                         children: [
                           MedicineTypeColumn(
                               medicineType: 2,
-                              name: 'Bottle',
+                              name: 'Bottle'.tr(),
                               iconValue:
                                   'lib/page/task_screens/assets/icons/liquid.gif',
                               isSelected: snapshot.data == 2 ? true : false),
                           MedicineTypeColumn(
                               medicineType: 0,
-                              name: 'Pill',
+                              name: 'Pill'.tr(),
                               iconValue:
                                   'lib/page/task_screens/assets/icons/pills.gif',
                               isSelected: snapshot.data == 0 ? true : false),
                           MedicineTypeColumn(
                               medicineType: 1,
-                              name: 'Syringe',
+                              name: 'Syringe'.tr(),
                               iconValue:
                                   'lib/page/task_screens/assets/icons/syringe.gif',
                               isSelected: snapshot.data == 1 ? true : false),
                           MedicineTypeColumn(
                               medicineType: 3,
-                              name: 'Tablet',
+                              name: 'Tablet'.tr(),
                               iconValue:
                                   'lib/page/task_screens/assets/icons/tablet.gif',
                               isSelected: snapshot.data == 3 ? true : false),
@@ -209,11 +210,11 @@ class _NewEntryPageState extends State<NewEntryPage> {
                     },
                   ),
                 ),
-                const PanelTitle(title: 'Interval Selection', isRequired: true),
+                 PanelTitle(title: 'Interval Selection'.tr(), isRequired: true),
                 const IntervalSelection(),
-                const PanelTitle(title: 'Starting Time', isRequired: true),
+                 PanelTitle(title: 'Starting Time'.tr(), isRequired: true),
                 const SelectTime(),
-                const PanelTitle(title: 'Ending Day', isRequired: true),
+                 PanelTitle(title: 'Ending Day'.tr(), isRequired: true),
                 const SelectDate(),
                 Text(
                   "_______________________________________________________",
@@ -237,7 +238,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       ),
                       child: Center(
                         child: Text(
-                          'Confirm',
+                          'confirm'.tr(),
                           style:
                               Theme.of(context).textTheme.subtitle2!.copyWith(
                                     color: Colors.white,
@@ -253,14 +254,14 @@ class _NewEntryPageState extends State<NewEntryPage> {
 
                         // Check if medicine name is empty
                         if (nameController.text.isEmpty) {
-                          _showErrorDialog("Please enter the medicine's name");
+                          _showErrorDialog("Please enter the medicine's name".tr());
                           return;
                         }
                         medicineName = nameController.text;
 
                         // Check if dosage is empty or invalid
                         if (dosageController.text.isEmpty) {
-                          _showErrorDialog("Please enter the dosage required");
+                          _showErrorDialog("Please enter the dosage required".tr());
                           return;
                         }
                         dosage = int.tryParse(dosageController.text) ?? 0;
@@ -268,20 +269,20 @@ class _NewEntryPageState extends State<NewEntryPage> {
                         // Check if medicine name is duplicate
                         if (globalBloc.medicineList$!.value.any((medicine) =>
                             medicineName == medicine.medicineName)) {
-                          _showErrorDialog("Medicine name already exists");
+                          _showErrorDialog("Medicine name already exists".tr());
                           return;
                         }
 
                         // Check if medicine type is selected
                         if (_newEntryBloc.selectedMedicineType!.value == -1) {
-                          _showErrorDialog("Please select a medicine type");
+                          _showErrorDialog("Please select a medicine type".tr());
                           return;
                         }
 
                         // Check if interval is selected
                         if (_newEntryBloc.selectIntervals!.value == 0) {
                           _showErrorDialog(
-                              "Please select the reminder's interval");
+                              "Please select the reminder's interval".tr());
                           return;
                         }
 
@@ -289,14 +290,14 @@ class _NewEntryPageState extends State<NewEntryPage> {
                         if (_newEntryBloc.selectedTimeOfDay$!.value ==
                             const TimeOfDay(hour: 0, minute: 0)) {
                           _showErrorDialog(
-                              "Please select the reminder's starting time");
+                              "Please select the reminder's starting time".tr());
                           return;
                         }
 
                         // Check if end date is selected
                         if (_newEntryBloc.selectedDate$!.value == null) {
                           _showErrorDialog(
-                              "Please select the reminder's ending day");
+                              "Please select the reminder's ending day".tr());
                           return;
                         }
 
@@ -331,7 +332,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                           await postMedicationData();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Medicine added successfully"),
+                              content: Text("Medicine added successfully".tr()),
                               backgroundColor: Colors.green,
                             ),
                           );
@@ -342,7 +343,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                         } catch (error) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Failed to add medication: $error"),
+                              content: Text("Failed to add medication".tr()),
                               backgroundColor: Colors.red,
                             ),
                           );
@@ -364,14 +365,14 @@ class _NewEntryPageState extends State<NewEntryPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Error"),
+          title: Text("Error".tr()),
           content: Text(errorMessage),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("OK"),
+              child: Text("OK".tr()),
             ),
           ],
         );
@@ -383,23 +384,23 @@ class _NewEntryPageState extends State<NewEntryPage> {
     _newEntryBloc.errorState$!.listen((EntryError error) {
       switch (error) {
         case EntryError.nameNull:
-          displayError("Please enter the medicine's name");
+          displayError("Please enter the medicine's name".tr());
           break;
 
         case EntryError.nameDuplicate:
-          displayError("Medicine name already exists");
+          displayError("Medicine name already exists".tr());
           break;
         case EntryError.dosage:
-          displayError("Please enter the dosage required");
+          displayError("Please enter the dosage required".tr());
           break;
         case EntryError.interval:
-          displayError("Please select the reminder's interval");
+          displayError("Please select the reminder's interval".tr());
           break;
         case EntryError.startTime:
-          displayError("Please select the reminder's starting time");
+          displayError("Please select the reminder's starting time".tr());
           break;
         case EntryError.endTime:
-          displayError("Please select the reminder's Ending Day");
+          displayError("Please select the reminder's Ending Day".tr());
           break;
         default:
       }
@@ -529,7 +530,7 @@ class _SelectDateState extends State<SelectDate> {
           onPressed: _selectDate,
           child: Center(
             child: Text(
-              _clicked ? "${_date.toString().split(' ')[0]}" : "Select Date",
+  _clicked ? "${_date.toString().split(' ')[0]}" : "select_date".tr(),
               style: Theme.of(context)
                   .textTheme
                   .subtitle2!
@@ -585,9 +586,9 @@ class _SelectTimeState extends State<SelectTime> {
           },
           child: Center(
             child: Text(
-              _clicked
-                  ? "${convertTime(_time.hour.toString())}:${convertTime(_time.minute.toString())}"
-                  : "Select Time",
+  _clicked
+      ? "${convertTime(_time.hour.toString())}:${convertTime(_time.minute.toString())}"
+      : "select_time".tr(),
               style: Theme.of(context)
                   .textTheme
                   .subtitle2!
@@ -619,7 +620,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Remind me every',
+            'Remind me every'.tr(),
             style: Theme.of(context).textTheme.subtitle2!.copyWith(
                   color: kTextColor,
                 ),
@@ -630,7 +631,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
             itemHeight: 8.h,
             hint: _selected == 0
                 ? Text(
-                    'Select an Interval',
+                    'Select an Interval'.tr(),
                     style: Theme.of(context).textTheme.caption!.copyWith(
                           color: kPrimaryColor,
                         ),
@@ -661,7 +662,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
             },
           ),
           Text(
-            _selected == 1 ? " hour" : " hours",
+            _selected == 1 ? " hour".tr() : " hours".tr(),
             style: Theme.of(context)
                 .textTheme
                 .subtitle2!

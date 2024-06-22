@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:dio/dio.dart';
@@ -69,7 +70,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Medication', style: TextStyle(fontSize: 25)),
+        title: Text('Medication'.tr(), style: TextStyle(fontSize: 25)),
         leading: IconButton(
           onPressed: () {
             Navigator.push(
@@ -200,7 +201,7 @@ class BottomContainer extends StatelessWidget {
               alignment: Alignment.topCenter,
               padding: EdgeInsets.only(top: 225),
               child: Text(
-                'No Medicine Yet👨‍⚕️',
+                'No Medicine Yet👨‍⚕️'.tr(),
                 style: Theme.of(context).textTheme.headline3?.copyWith(
                     color: Colors.white,
                     fontFamily: 'ConcertOne',
@@ -264,7 +265,7 @@ class MedicineCard extends StatelessWidget {
           children: [
             Hero(tag: "$medicineName$medicineType", child: icon),
             Text(medicineName, style: Theme.of(context).textTheme.headline6),
-            Text('Dosage: ${dosage} mg',
+            Text('dosage_text'.tr(namedArgs: {'dosage': dosage.toString()}),
                 style: Theme.of(context).textTheme.subtitle1),
           ],
         ),

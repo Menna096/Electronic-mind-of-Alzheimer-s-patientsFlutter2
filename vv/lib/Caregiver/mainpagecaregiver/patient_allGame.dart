@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart'; // Loading indicators
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
-import 'package:vv/Caregiver/mainpagecaregiver/patient_list.dart';
-import 'package:vv/api/login_api.dart'; // Assuming Dio is set up here
-import 'package:vv/utils/storage_manage.dart'; // Secure storage for patient ID
+import 'package:easy_localization/easy_localization.dart'; // Import easy_localization
+import 'package:vv/api/login_api.dart';
+import 'package:vv/utils/storage_manage.dart';
 import 'package:vv/widgets/background.dart';
 
 class PatientAllGame extends StatefulWidget {
@@ -24,9 +24,8 @@ class _PatientAllGameState extends State<PatientAllGame> {
   }
 
   Future<void> _fetchGameData() async {
-    String? patientId = await storageManager
-        .getPatientId(); // Retrieve patient ID from secure storage
-    print("Retrieved Patient ID: $patientId"); // Get the stored patient ID
+    String? patientId = await storageManager.getPatientId();
+    print("Retrieved Patient ID: $patientId");
     try {
       final response = await DioService().dio.get(
           'https://electronicmindofalzheimerpatients.azurewebsites.net/Caregiver/GetGameScoreforPatinet/$patientId');
@@ -51,13 +50,13 @@ class _PatientAllGameState extends State<PatientAllGame> {
   String formatDifficulty(int difficulty) {
     switch (difficulty) {
       case 0:
-        return 'Easy';
+        return 'Easy'.tr();
       case 1:
-        return 'Medium';
+        return 'Medium'.tr();
       case 2:
-        return 'Hard';
+        return 'Hard'.tr();
       default:
-        return 'Unknown';
+        return 'Unknown'.tr();
     }
   }
 
@@ -73,11 +72,11 @@ class _PatientAllGameState extends State<PatientAllGame> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => mainpagecaregiver()),
-            ); // Go back to the previous page
+            );
           },
         ),
         title: Text(
-          "Patient's Game History",
+          "Patient's Game History".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -127,7 +126,7 @@ class _PatientAllGameState extends State<PatientAllGame> {
             children: [
               SizedBox(height: 16),
               Text(
-                "Game History",
+                "Game History".tr(),
                 style: TextStyle(
                   fontSize: 23,
                   fontFamily: 'Acme',
@@ -139,13 +138,14 @@ class _PatientAllGameState extends State<PatientAllGame> {
                 child: isLoading
                     ? Center(
                         child: SpinKitFadingCircle(
-                            color: Colors.white, // Set loading indicator color
-                            size: 50.0), // Improved loading indicator
+                          color: Colors.white,
+                          size: 50.0,
+                        ),
                       )
                     : gameHistories.isEmpty
                         ? Center(
                             child: Text(
-                              "No history available.",
+                              "No history available.".tr(),
                               style: TextStyle(
                                 fontSize: 18.0,
                                 color: Colors.white,
@@ -161,7 +161,6 @@ class _PatientAllGameState extends State<PatientAllGame> {
                                 margin: const EdgeInsets.symmetric(
                                     vertical: 8, horizontal: 10),
                                 shape: RoundedRectangleBorder(
-                                  // Rounded corners
                                   borderRadius: BorderRadius.circular(20.0),
                                 ),
                                 child: Container(
@@ -178,28 +177,32 @@ class _PatientAllGameState extends State<PatientAllGame> {
                                               color: Color(0xFF6A95E9),
                                               size: 32),
                                           Text(
-                                              'Date: ${formatDate(item['gameDate'])}',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color.fromARGB(
-                                                      255, 67, 115, 219))),
+                                            '${"Date".tr()}: ${formatDate(item['gameDate'])}',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromARGB(
+                                                  255, 67, 115, 219),
+                                            ),
+                                          ),
                                         ],
                                       ),
                                       SizedBox(height: 7),
                                       Text(
-                                        'Difficulty:  ${formatDifficulty(item['difficultyGame'])}',
+                                        '${"Difficulty".tr()}: ${formatDifficulty(item['difficultyGame'])}',
                                         style: TextStyle(
-                                            fontFamily: 'dubai',
-                                            fontSize: 15,
-                                            color: Color.fromARGB(
-                                                255, 100, 100, 100)),
+                                          fontFamily: 'dubai',
+                                          fontSize: 15,
+                                          color: Color.fromARGB(
+                                              255, 100, 100, 100),
+                                        ),
                                       ),
                                       SizedBox(height: 4),
                                       Text(
-                                        'Score: ${item['patientScore']} ',
+                                        '${"Score".tr()}: ${item['patientScore']}',
                                         style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 143, 172, 212)),
+                                          color: Color.fromARGB(
+                                              255, 143, 172, 212),
+                                        ),
                                       ),
                                     ],
                                   ),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,7 +37,7 @@ class GlobalBloc {
       }
     }
 
-    sharedUser.setStringList('medicines', medicineJsonList);
+    sharedUser.setStringList('medicines'.tr(), medicineJsonList);
     _medicineList$!.add(blockList);
   }
 
@@ -49,18 +50,18 @@ class GlobalBloc {
     SharedPreferences? sharedUser = await SharedPreferences.getInstance();
     String newMedicineJson = jsonEncode(tempMap);
     List<String> medicineJsonList = [];
-    if (sharedUser.getStringList('medicines') == null) {
+    if (sharedUser.getStringList('medicines'.tr()) == null) {
       medicineJsonList.add(newMedicineJson);
     } else {
-      medicineJsonList = sharedUser.getStringList('medicines')!;
+      medicineJsonList = sharedUser.getStringList('medicines'.tr())!;
       medicineJsonList.add(newMedicineJson);
     }
-    sharedUser.setStringList('medicines', medicineJsonList);
+    sharedUser.setStringList('medicines'.tr(), medicineJsonList);
   }
 
   Future makeMedicineList() async {
     SharedPreferences? sharedUser = await SharedPreferences.getInstance();
-    List<String>? jsonList = sharedUser.getStringList('medicines');
+    List<String>? jsonList = sharedUser.getStringList('medicines'.tr());
     List<Medicine> prefList = [];
 
     if (jsonList == null) {

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vv/Caregiver/medical/constants.dart';
@@ -33,7 +34,7 @@ class _PillsState extends State<Pills> {
       value: globalBloc!,
       child: Sizer(builder: (context, orientation, deviceType) {
         return MaterialApp(
-          title: 'Pill Reminder',
+          title: 'Pill Reminder'.tr(),
           debugShowCheckedModeBanner: false, // Add this line
           theme: ThemeData.dark().copyWith(
             primaryColor: kPrimaryColor,

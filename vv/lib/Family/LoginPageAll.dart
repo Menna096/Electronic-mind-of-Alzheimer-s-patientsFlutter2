@@ -99,8 +99,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
               _showErrorDialog(context.tr(StringManager.login_error_default));
           }
         } else {
-          _showErrorDialog(
-              context.tr(StringManager.server_error));
+          _showErrorDialog(context.tr(StringManager.server_error));
         }
       } else {
         _showErrorDialog(context.tr(StringManager.login_error_default));
@@ -157,13 +156,14 @@ class _LoginPageAllState extends State<LoginPageAll> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(context.tr(StringManager.LoginError),),
+        title: Text(
+          context.tr(StringManager.LoginError),
+        ),
         content: Text(message),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text((context.tr(StringManager.OK))
-            ),
+            child: Text((context.tr(StringManager.OK))),
           ),
         ],
       ),
@@ -171,7 +171,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
   }
 
   Future<void> _authenticateWithBiometric() async {
-    final isAuthenticated = await LocalAuthApi.authenticate();
+    final isAuthenticated = await LocalAuthApi.authenticate(context);
     if (isAuthenticated) {
       _navigateBasedOnUserRole();
     } else {
@@ -492,57 +492,62 @@ class _LoginPageAllState extends State<LoginPageAll> {
     );
   }
 
- void _showLanguageMenu() {
-  showDialog(
-    context: context,
-    builder: (context) => Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(35.0), // Rounded corners
-      ),
-      child: Container(
-        padding: EdgeInsets.all(25.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              context.tr(StringManager.ChooseLanguage),
-
-              style: TextStyle(
-                fontSize: 20,
-               
-                fontFamily: 'Acme',
-              ),
-            ),
-            SizedBox(height: 16),
-            ListTile(
-              leading: Icon(Icons.language,color:Color.fromARGB(255, 17, 59, 143),),
-              title: Text('English'),
-              onTap: () {
-                context.setLocale(Locale('en'));
-                Navigator.of(context).pop();
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.language,color: Color.fromARGB(255, 17, 59, 143),),
-              title: Text('العربية'),
-              onTap: () {
-                context.setLocale(Locale('ar'));
-                Navigator.of(context).pop();
-              },
-            ),
-            SizedBox(height: 16),
-            Center(
-              child: ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(context.tr(StringManager.Cancel),
+  void _showLanguageMenu() {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(35.0), // Rounded corners
+        ),
+        child: Container(
+          padding: EdgeInsets.all(25.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                context.tr(StringManager.ChooseLanguage),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: 'Acme',
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: 16),
+              ListTile(
+                leading: Icon(
+                  Icons.language,
+                  color: Color.fromARGB(255, 17, 59, 143),
+                ),
+                title: Text('English'),
+                onTap: () {
+                  context.setLocale(Locale('en'));
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.language,
+                  color: Color.fromARGB(255, 17, 59, 143),
+                ),
+                title: Text('العربية'),
+                onTap: () {
+                  context.setLocale(Locale('ar'));
+                  Navigator.of(context).pop();
+                },
+              ),
+              SizedBox(height: 16),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(
+                    context.tr(StringManager.Cancel),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
+    );
   }
 }

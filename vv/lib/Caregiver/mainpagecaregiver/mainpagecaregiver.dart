@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/caregiver_id.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/create_report.dart';
@@ -5,6 +6,7 @@ import 'package:vv/Caregiver/mainpagecaregiver/patient_allGame.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/report_list.dart';
 import 'package:vv/Caregiver/medical/main.dart';
 import 'package:vv/Family/LoginPageAll.dart';
+import 'package:vv/Family/String_manager.dart';
 import 'package:vv/utils/storage_manage.dart';
 
 class mainpagecaregiver extends StatefulWidget {
@@ -28,7 +30,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Settings',
+          'Settings'.tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -68,7 +70,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
               DrawerHeader(
                 child: Center(
                   child: Text(
-                    'Elder Helper',
+                    'Elder Helper'.tr(),
                     style: TextStyle(
                       fontSize: 44,
                       fontFamily: 'Acme',
@@ -81,7 +83,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                 leading: Icon(Icons.perm_contact_calendar_rounded,
                     color: Color.fromARGB(255, 84, 134, 235)),
                 title: Text(
-                  'Your Code',
+                  'Your Code'.tr(),
                   style: TextStyle(
                     fontSize: 20,
                     color: Color(0xFF595858),
@@ -98,7 +100,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                 leading:
                     Icon(Icons.logout, color: Color.fromARGB(214, 209, 8, 8)),
                 title: Text(
-                  'Log Out',
+                  context.tr(StringManager.LogOut),
                   style: TextStyle(
                     fontSize: 20,
                     color: Color(0xFF595858),
@@ -148,7 +150,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                     ),
                   ),
                   child: Text(
-                    'Patient Name: $_patientname',
+                    '${'Patient Name:'.tr()} $_patientname',
                     style: TextStyle(
                       fontSize: 19, // Adjust the font size as needed
                       color: Colors.white, // Change the text color
@@ -236,7 +238,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
             Icon(Icons.report, color: Colors.blueAccent),
             SizedBox(width: 10),
             Text(
-              "Report Options",
+              "Report Options".tr(),
               style: TextStyle(
                 fontSize: 25,
                 fontFamily: 'LilitaOne',
@@ -251,13 +253,13 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
             Divider(color: Colors.blueAccent),
             SizedBox(height: 10),
             Text(
-              "Choose an option below:",
+              "Choose an option below:".tr(),
               style: TextStyle(fontSize: 18, color: Colors.black54),
             ),
             SizedBox(height: 20),
             TextButton.icon(
               icon: Icon(Icons.create, color: Colors.white),
-              label: Text("Create A New Report"),
+              label: Text("Create A New Report".tr()),
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white, backgroundColor: Colors.blueAccent,
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
@@ -273,7 +275,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
             SizedBox(height: 10),
             TextButton.icon(
               icon: Icon(Icons.report_gmailerrorred, color: Colors.white),
-              label: Text(" Get Patient's Report"),
+              label: Text(" Get Patient's Report".tr()),
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white, backgroundColor: Colors.blueAccent,
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
