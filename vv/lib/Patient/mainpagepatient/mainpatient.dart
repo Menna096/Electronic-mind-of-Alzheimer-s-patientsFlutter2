@@ -2,16 +2,19 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:chat_bot/chat/ui/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:signalr_core/signalr_core.dart';
 import 'package:sizer/sizer.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
 import 'package:vv/Patient/appoint.dart';
-import 'package:vv/Patient/chatbot.dart';
 import 'package:vv/Patient/identifiy.dart';
 import 'package:vv/Patient/mainpagepatient/all_families.dart';
 import 'package:vv/Patient/mainpagepatient/patient_media.dart';
@@ -21,9 +24,6 @@ import 'package:vv/Patient/med.dart';
 import 'package:vv/daily_task/pages/home/home_page.dart';
 import 'package:vv/page/level_select.dart';
 import 'package:vv/utils/token_manage.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 class Appointment {
   String id;
@@ -70,8 +70,7 @@ class _mainpatientState extends State<mainpatient> {
   late HubConnection appointmentHubConnection;
   List<Appointment> appointments = [];
 
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   List<Reminder> reminders = [];
   late HubConnection medicineHubConnection;
 
@@ -108,30 +107,26 @@ class _mainpatientState extends State<mainpatient> {
   }
 
   void initializeNotificationsMedicine() {
-    var initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
 
     var initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
     );
 
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse:
-            (NotificationResponse response) async {
+    flutterLocalNotificationsPlugin.initialize(initializationSettings, onDidReceiveNotificationResponse: (NotificationResponse response) async {
       String? payload = response.payload;
       print('Notification payload: $payload');
       if (payload != null) {
-        Reminder? reminder =
-            reminders.firstWhere((reminder) => reminder.MedicationId == payload,
-                orElse: () => Reminder(
-                      MedicationId: '',
-                      Medication_Name: '',
-                      Dosage: '',
-                      medicineType: 0,
-                      Repeater: 0,
-                      startDate: DateTime(1970, 1, 1),
-                      endDate: DateTime(1970, 1, 1),
-                    ));
+        Reminder? reminder = reminders.firstWhere((reminder) => reminder.MedicationId == payload,
+            orElse: () => Reminder(
+                  MedicationId: '',
+                  Medication_Name: '',
+                  Dosage: '',
+                  medicineType: 0,
+                  Repeater: 0,
+                  startDate: DateTime(1970, 1, 1),
+                  endDate: DateTime(1970, 1, 1),
+                ));
         print('Appointment found: ${reminder.MedicationId}');
         if (reminder != null && reminder.MedicationId.isNotEmpty) {
           Navigator.of(context).push(MaterialPageRoute(
@@ -166,8 +161,7 @@ class _mainpatientState extends State<mainpatient> {
             print('Parsed appointment: ${reminder.MedicationId}');
             reminders.add(reminder);
             String notificationBody = _buildNotificationBodyMedicine(reminder);
-            _showNotificationMedicine('New Medicine Added, See it',
-                notificationBody, reminder.MedicationId);
+            _showNotificationMedicine('New Medicine Added, See it', notificationBody, reminder.MedicationId);
             _scheduleNotificationMedicine(reminder);
           } catch (e) {
             print('Error decoding JSON: $e');
@@ -179,8 +173,7 @@ class _mainpatientState extends State<mainpatient> {
     });
   }
 
-  Future<void> _showNotificationMedicine(
-      String title, String body, String medicationId) async {
+  Future<void> _showNotificationMedicine(String title, String body, String medicationId) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'your_channel_id',
       'your_channel_name',
@@ -216,8 +209,7 @@ class _mainpatientState extends State<mainpatient> {
         'your_channel_name',
         importance: Importance.max,
         priority: Priority.high,
-        sound:
-            RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
+        sound: RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
       );
       var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
@@ -231,8 +223,7 @@ class _mainpatientState extends State<mainpatient> {
         platformChannelSpecifics,
         payload: reminder.MedicationId,
         androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
+        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.time,
       );
 
@@ -268,29 +259,25 @@ class _mainpatientState extends State<mainpatient> {
   }
 
   void initializeNotifications() {
-    var initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
 
     var initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
     );
 
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse:
-            (NotificationResponse response) async {
+    flutterLocalNotificationsPlugin.initialize(initializationSettings, onDidReceiveNotificationResponse: (NotificationResponse response) async {
       String? payload = response.payload;
       print('Notification payload: $payload');
       if (payload != null) {
-        Appointment? appointment =
-            appointments.firstWhere((appointment) => appointment.id == payload,
-                orElse: () => Appointment(
-                      id: '',
-                      date: '',
-                      location: '',
-                      notes: '',
-                      familyName: '',
-                      canBeDeleted: false,
-                    ));
+        Appointment? appointment = appointments.firstWhere((appointment) => appointment.id == payload,
+            orElse: () => Appointment(
+                  id: '',
+                  date: '',
+                  location: '',
+                  notes: '',
+                  familyName: '',
+                  canBeDeleted: false,
+                ));
         print('Appointment found: ${appointment.id}');
         if (appointment != null && appointment.id.isNotEmpty) {
           Navigator.of(context).push(MaterialPageRoute(
@@ -324,8 +311,7 @@ class _mainpatientState extends State<mainpatient> {
             Appointment appointment = Appointment.fromJson(appointmentData);
             print('Parsed appointment: ${appointment.id}');
             appointments.add(appointment);
-            _showNotification('New Appointment Added',
-                _buildNotificationBody(appointment), appointment.id);
+            _showNotification('New Appointment Added', _buildNotificationBody(appointment), appointment.id);
             _scheduleNotification(appointment);
           } catch (e) {
             print('Error decoding JSON: $e');
@@ -337,8 +323,7 @@ class _mainpatientState extends State<mainpatient> {
     });
   }
 
-  Future<void> _showNotification(
-      String title, String body, String appointmentId) async {
+  Future<void> _showNotification(String title, String body, String appointmentId) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'your_channel_id',
       'your_channel_name',
@@ -374,8 +359,7 @@ class _mainpatientState extends State<mainpatient> {
         'your_channel_name',
         importance: Importance.max,
         priority: Priority.high,
-        sound:
-            RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
+        sound: RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
       );
       var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
@@ -389,8 +373,7 @@ class _mainpatientState extends State<mainpatient> {
         platformChannelSpecifics,
         payload: appointment.id,
         androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
+        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.time,
       );
 
@@ -425,8 +408,7 @@ class _mainpatientState extends State<mainpatient> {
         logging: (level, message) => print(message),
       ),
     )
-        .withAutomaticReconnect(
-            [0, 2000, 10000, 30000]) // Configuring automatic reconnect
+        .withAutomaticReconnect([0, 2000, 10000, 30000]) // Configuring automatic reconnect
         .build();
 
     _connection.onclose((error) async {
@@ -456,17 +438,14 @@ class _mainpatientState extends State<mainpatient> {
         return; // Exit the loop if connected
       } catch (e) {
         print("Reconnect failed: $e");
-        retryInterval = (retryInterval < 5000)
-            ? retryInterval + 1000
-            : 5000; // Cap retry interval at 5 seconds
+        retryInterval = (retryInterval < 5000) ? retryInterval + 1000 : 5000; // Cap retry interval at 5 seconds
       }
     }
   }
 
   Future<void> sendCurrentLocation() async {
     try {
-      final position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+      final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
       // Decode token to get main latitude, longitude, and max distance
       Map<String, dynamic> decodedToken = JwtDecoder.decode(_token!);
@@ -475,15 +454,13 @@ class _mainpatientState extends State<mainpatient> {
       double maxDistance = double.parse(decodedToken['MaxDistance']);
 
       // Calculate distance using Haversine formula
-      double distance = HaversineCalculator.haversine(
-          position.latitude, mainLat, position.longitude, mainLon);
+      double distance = HaversineCalculator.haversine(position.latitude, mainLat, position.longitude, mainLon);
       print('$maxDistance,mainlong$mainLon,mainlat$mainLat,$position');
       print('$distance');
       // Check if the distance is greater than the maximum allowed distance
       if (distance > maxDistance) {
         // If distance is greater, perform the invoke function
-        await _connection.invoke('SendGPSToFamilies',
-            args: [position.latitude, position.longitude]);
+        await _connection.invoke('SendGPSToFamilies', args: [position.latitude, position.longitude]);
         print('Location sent: ${position.latitude}, ${position.longitude}');
       } else {
         print('Distance less than max distance. Location not sent.');
@@ -502,355 +479,341 @@ class _mainpatientState extends State<mainpatient> {
   }
 
   @override
- Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-  backgroundColor: Colors.transparent,
-  elevation: 0,
-  title: Text(
-    'Settings',
-    style: TextStyle(
-      fontFamily: 'LilitaOne',
-      fontSize: SizerUtil.deviceType == DeviceType.mobile ? 5.5.w : 23,
-      color: Colors.white,
-    ),
-  ),
-  flexibleSpace: Container(
-    decoration: BoxDecoration(
-      gradient: LinearGradient(
-        colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
-      borderRadius: BorderRadius.vertical(
-        bottom: Radius.circular(10.0.sp),
-      ),
-      boxShadow: [
-        BoxShadow(
-          color: Color.fromARGB(66, 55, 134, 190),
-          offset: Offset(0, 10),
-          blurRadius: 10.0.sp,
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          'Settings',
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: SizerUtil.deviceType == DeviceType.mobile ? 5.5.w : 23,
+            color: Colors.white,
+          ),
         ),
-      ],
-    ),
-  ),
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.vertical(
-      bottom: Radius.circular(50.0.sp),
-    ),
-  ),
-),
-
-    drawer:Drawer(
-  child: Container(
-    color: const Color(0xffD6DCE9),
-    child: ListView(
-      children: [
-        DrawerHeader(
-          child: Center(
-            child: Text(
-              'Elder Helper',
-              style: TextStyle(
-                fontSize: SizerUtil.deviceType == DeviceType.mobile ? 8.0.w : 44.0,
-                fontFamily: 'Acme',
-                color: Color(0xFF0386D0),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10.0.sp),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0.sp,
               ),
-            ),
+            ],
           ),
         ),
-        ListTile(
-          leading: Icon(
-            Icons.manage_accounts_rounded,
-            color: Color.fromARGB(255, 84, 134, 235),
-            size: SizerUtil.deviceType == DeviceType.mobile ? 5.0.w : 24.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0.sp),
           ),
-          title: Text(
-            'Manage Profile',
-            style: TextStyle(
-              fontSize: SizerUtil.deviceType == DeviceType.mobile ? 4.5.w : 20.0,
-              color: Color(0xFF595858),
-            ),
-          ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PatientProfManage()),
-            );
-          },
-        ),
-        ListTile(
-          leading: Icon(
-            Icons.logout,
-            color: Color.fromARGB(214, 209, 8, 8),
-            size: SizerUtil.deviceType == DeviceType.mobile ? 5.0.w : 24.0,
-          ),
-          title: Text(
-            'Log Out',
-            style: TextStyle(
-              fontSize: SizerUtil.deviceType == DeviceType.mobile ? 4.5.w : 20.0,
-              color: Color(0xFF595858),
-            ),
-          ),
-          onTap: () {
-            TokenManager.deleteToken();
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => LoginPageAll()),
-            );
-          },
-        ),
-      ],
-    ),
-  ),
-),
-
-
-    body: Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(0xffECEFF5),
-            Color(0xff3B5998),
-          ],
         ),
       ),
-      child: Column(
-        children: [
-         Padding(
-  padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 2.0.h), // Responsive padding
-  child: Row(
-    crossAxisAlignment: CrossAxisAlignment.start, // Ensure text starts from the top
-    children: [
-      CircleAvatar(
-        radius: 12.w, // Responsive avatar radius
-        backgroundImage: NetworkImage(_photoUrl ?? ''),
-      ),
-      SizedBox(width: 4.0.w), // Responsive spacing between avatar and text
-      Flexible(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Welcome $_userName !👋🏻',
-              style: TextStyle(
-                fontSize: 3.w, // Responsive font size
-              ),
-              maxLines: 1, // Ensure the text doesn't exceed one line
-              overflow: TextOverflow.ellipsis, // Handle overflow with ellipsis
-            ),
-            Text(
-              'To the Electronic mind',
-              style: TextStyle(
-                fontSize:3.w, // Responsive font size
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            Text(
-              'of Alzheimer patient',
-              style: TextStyle(
-                fontSize: 3.w, // Responsive font size
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-      ),
-    ],
-  ),
-),
-
-
-
-  Expanded(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 4.0.w),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+      drawer: Drawer(
+        child: Container(
+          color: const Color(0xffD6DCE9),
+          child: ListView(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AppointmentScreenPatient()),
-                      );
-                    },
-                    child: Image.asset(
-                      'images/appoinmentpat.png',
-                      width: 30.0.w,
-                      height: 30.0.w,
+              DrawerHeader(
+                child: Center(
+                  child: Text(
+                    'Elder Helper',
+                    style: TextStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile ? 8.0.w : 44.0,
+                      fontFamily: 'Acme',
+                      color: Color(0xFF0386D0),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => MedicinesPage()),
-                      );
-                    },
-                    child: Image.asset(
-                      'images/Medicines.png',
-                      width: 30.0.w,
-                      height: 30.0.w,
-                    ),
-                  ),
-                ],
+                ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => UnusualFamilyList()),
-                      );
-                    },
-                    child: Image.asset(
-                      'images/Places.png',
-                      width: 30.0.w,
-                      height: 30.0.w,
-                    ),
+              ListTile(
+                leading: Icon(
+                  Icons.manage_accounts_rounded,
+                  color: Color.fromARGB(255, 84, 134, 235),
+                  size: SizerUtil.deviceType == DeviceType.mobile ? 5.0.w : 24.0,
+                ),
+                title: Text(
+                  'Manage Profile',
+                  style: TextStyle(
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile ? 4.5.w : 20.0,
+                    color: Color(0xFF595858),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => ChatScreen()),
-                      );
-                    },
-                    child: Image.asset(
-                      'images/Chatbot.png',
-                      width: 30.0.w,
-                      height: 30.0.w,
-                    ),
-                  ),
-                ],
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PatientProfManage()),
+                  );
+                },
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Notes_View()),
-                      );
-                    },
-                    child: Image.asset(
-                      'images/Notes.png',
-                      width: 30.0.w,
-                      height: 30.0.w,
-                    ),
+              ListTile(
+                leading: Icon(
+                  Icons.logout,
+                  color: Color.fromARGB(214, 209, 8, 8),
+                  size: SizerUtil.deviceType == DeviceType.mobile ? 5.0.w : 24.0,
+                ),
+                title: Text(
+                  'Log Out',
+                  style: TextStyle(
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile ? 4.5.w : 20.0,
+                    color: Color(0xFF595858),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => SecretFilePage()),
-                      );
-                    },
-                    child: Image.asset(
-                      'images/Files.png',
-                      width: 30.0.w,
-                      height: 30.0.w,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => ImageUploadScreen()),
-                      );
-                    },
-                    child: Image.asset(
-                      'images/Persons.png',
-                      width: 30.0.w,
-                      height: 30.0.w,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => GalleryScreenPatient()),
-                      );
-                    },
-                    child: Image.asset(
-                      'images/Pictures.png',
-                      width: 30.0.w,
-                      height: 30.0.w,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Home()),
-                      );
-                    },
-                    child: Image.asset(
-                      'images/dailytasks.png',
-                      width: 28.0.w,
-                      height: 28.0.w,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => LevelSelectionScreen()));
-                    },
-                    child: Image.asset(
-                      'images/Games (1).png',
-                      width: 27.0.w,
-                      height: 27.0.w,
-                    ),
-                  ),
-                ],
+                ),
+                onTap: () {
+                  TokenManager.deleteToken();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPageAll()),
+                  );
+                },
               ),
             ],
           ),
         ),
       ),
-    ),
-  
-        ],
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xffECEFF5),
+              Color(0xff3B5998),
+            ],
+          ),
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 2.0.h), // Responsive padding
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start, // Ensure text starts from the top
+                children: [
+                  CircleAvatar(
+                    radius: 12.w, // Responsive avatar radius
+                    backgroundImage: NetworkImage(_photoUrl ?? ''),
+                  ),
+                  SizedBox(width: 4.0.w), // Responsive spacing between avatar and text
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Welcome $_userName !👋🏻',
+                          style: TextStyle(
+                            fontSize: 3.w, // Responsive font size
+                          ),
+                          maxLines: 1, // Ensure the text doesn't exceed one line
+                          overflow: TextOverflow.ellipsis, // Handle overflow with ellipsis
+                        ),
+                        Text(
+                          'To the Electronic mind',
+                          style: TextStyle(
+                            fontSize: 3.w, // Responsive font size
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          'of Alzheimer patient',
+                          style: TextStyle(
+                            fontSize: 3.w, // Responsive font size
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 4.0.w),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => AppointmentScreenPatient()),
+                              );
+                            },
+                            child: Image.asset(
+                              'images/appoinmentpat.png',
+                              width: 30.0.w,
+                              height: 30.0.w,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => MedicinesPage()),
+                              );
+                            },
+                            child: Image.asset(
+                              'images/Medicines.png',
+                              width: 30.0.w,
+                              height: 30.0.w,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => UnusualFamilyList()),
+                              );
+                            },
+                            child: Image.asset(
+                              'images/Places.png',
+                              width: 30.0.w,
+                              height: 30.0.w,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ChatScreen()),
+                              );
+                            },
+                            child: Image.asset(
+                              'images/Chatbot.png',
+                              width: 30.0.w,
+                              height: 30.0.w,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => Notes_View()),
+                              );
+                            },
+                            child: Image.asset(
+                              'images/Notes.png',
+                              width: 30.0.w,
+                              height: 30.0.w,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => SecretFilePage()),
+                              );
+                            },
+                            child: Image.asset(
+                              'images/Files.png',
+                              width: 30.0.w,
+                              height: 30.0.w,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => ImageUploadScreen()),
+                              );
+                            },
+                            child: Image.asset(
+                              'images/Persons.png',
+                              width: 30.0.w,
+                              height: 30.0.w,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => GalleryScreenPatient()),
+                              );
+                            },
+                            child: Image.asset(
+                              'images/Pictures.png',
+                              width: 30.0.w,
+                              height: 30.0.w,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => const Home()),
+                              );
+                            },
+                            child: Image.asset(
+                              'images/dailytasks.png',
+                              width: 28.0.w,
+                              height: 28.0.w,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => LevelSelectionScreen()));
+                            },
+                            child: Image.asset(
+                              'images/Games (1).png',
+                              width: 27.0.w,
+                              height: 27.0.w,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-    ),
-  );
-}
-
-
+    );
+  }
 }
 
 class HaversineCalculator {
-  static double haversine(
-      double newLat1, double mainLat2, double newLon1, double mainLon2) {
+  static double haversine(double newLat1, double mainLat2, double newLon1, double mainLon2) {
     const double r = 6371e3; // meters
     var dLat = _toRadians(mainLat2 - newLat1);
     var dLon = _toRadians(mainLon2 - newLon1);
 
-    var a = pow(sin(dLat / 2), 2) +
-        cos(_toRadians(newLat1)) *
-            cos(_toRadians(mainLat2)) *
-            pow(sin(dLon / 2), 2);
+    var a = pow(sin(dLat / 2), 2) + cos(_toRadians(newLat1)) * cos(_toRadians(mainLat2)) * pow(sin(dLon / 2), 2);
     var c = 2 * atan2(sqrt(a), sqrt(1 - a));
 
     var d = r * c;

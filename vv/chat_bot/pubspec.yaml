@@ -1,0 +1,31 @@
+name: chat_bot
+description: "NLU based ChatBot plugin for flutter apps that can be used to do various actions based on user speech input"
+version: 0.1.0
+homepage:
+
+environment:
+  sdk: '>=3.2.3 <4.0.0'
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.0
+  fluttertoast: ^8.0.9
+  chat_bubbles: ^1.6.0
+  #  flutter_local_notifications: ^12.0.0
+  android_alarm_manager_plus: ^4.0.3
+  image_picker: ^1.0.8
+  plugin_platform_interface: ^2.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.typ.chat_bot
+        pluginClass: ChatBotPlugin

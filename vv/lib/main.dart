@@ -1,21 +1,21 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flare_flutter/cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:sizer/sizer.dart'; // Import the sizer package
 import 'package:vv/Notes/cubits/notes_cubit/notes_cubit.dart';
 import 'package:vv/Notes/models/note_model.dart';
 import 'package:vv/Notes/simple_bloc_observer.dart';
 import 'package:vv/daily_task/pages/home/bloc/home_bloc.dart';
 import 'package:vv/daily_task/pages/input/bloc/input_bloc.dart';
 import 'package:vv/faceid.dart';
-import 'package:sizer/sizer.dart'; // Import the sizer package
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  
+  await AndroidAlarmManager.initialize();
+
   await Hive.initFlutter();
   Bloc.observer = SimpleBlocObserver();
   Hive.registerAdapter(NoteModelAdapter());
@@ -49,7 +49,8 @@ class MyApp extends StatelessWidget {
           create: (context) => HomeBloc(),
         ),
       ],
-      child: Sizer( // Use Sizer for responsiveness
+      child: Sizer(
+        // Use Sizer for responsiveness
         builder: (context, orientation, deviceType) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,

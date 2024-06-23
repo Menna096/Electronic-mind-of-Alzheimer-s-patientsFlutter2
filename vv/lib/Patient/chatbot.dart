@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/faceid.dart';
 
-
-class ChatScreen extends StatefulWidget {
+class OldChatScreen extends StatefulWidget {
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  _OldChatScreenState createState() => _OldChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen>
-    with SingleTickerProviderStateMixin {
+class _OldChatScreenState extends State<OldChatScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -41,12 +39,12 @@ class _ChatScreenState extends State<ChatScreen>
         backgroundColor: Colors.transparent, // Make the app bar transparent
         elevation: 0, // Remove the shadow/elevation
         leading: IconButton(
-          icon: Icon(Icons.arrow_back), // Add the back arrow icon
+          icon: const Icon(Icons.arrow_back), // Add the back arrow icon
           onPressed: () {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => mainpatient(), // Navigate to mainpatient page
+                builder: (context) => const mainpatient(), // Navigate to mainpatient page
               ),
             );
           },
@@ -64,16 +62,16 @@ class _ChatScreenState extends State<ChatScreen>
                     child: ListView(
                       children: <Widget>[
                         ListTile(
-                          leading: CircleAvatar(
+                          leading: const CircleAvatar(
                             backgroundImage: AssetImage('images/robot.png'),
                           ),
                           title: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(201, 255, 255, 255),
+                              color: const Color.fromARGB(201, 255, 255, 255),
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: Text(
+                            child: const Text(
                               'Welcome to chatbot how can I help you',
                             ),
                           ),
@@ -102,11 +100,11 @@ class _ChatScreenState extends State<ChatScreen>
                               ),
                             ),
                             IconButton(
-                              icon: Icon(Icons.mic),
+                              icon: const Icon(Icons.mic),
                               onPressed: () {},
                             ),
                             IconButton(
-                              icon: Icon(Icons.send),
+                              icon: const Icon(Icons.send),
                               onPressed: () {},
                             ),
                           ],
