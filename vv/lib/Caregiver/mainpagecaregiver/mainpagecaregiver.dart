@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/caregiver_id.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/create_report.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/patient_allGame.dart';
@@ -72,7 +73,8 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                   child: Text(
                     'Elder Helper'.tr(),
                     style: TextStyle(
-                      fontSize: 44,
+                      fontSize:
+                          25.sp, // Use Sizer to make the font size responsive
                       fontFamily: 'Acme',
                       color: Color(0xFF0386D0),
                     ),
@@ -80,12 +82,16 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.perm_contact_calendar_rounded,
-                    color: Color.fromARGB(255, 84, 134, 235)),
+                leading: Icon(
+                  Icons.perm_contact_calendar_rounded,
+                  color: Color.fromARGB(255, 84, 134, 235),
+                  size: 24.sp, // Use Sizer for icon size
+                ),
                 title: Text(
                   'Your Code'.tr(),
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize:
+                        20.sp, // Use Sizer to make the font size responsive
                     color: Color(0xFF595858),
                   ),
                 ),
@@ -97,12 +103,16 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                 },
               ),
               ListTile(
-                leading:
-                    Icon(Icons.logout, color: Color.fromARGB(214, 209, 8, 8)),
+                leading: Icon(
+                  Icons.logout,
+                  color: Color.fromARGB(214, 209, 8, 8),
+                  size: 24.sp, // Use Sizer for icon size
+                ),
                 title: Text(
                   context.tr(StringManager.LogOut),
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize:
+                        20.sp, // Use Sizer to make the font size responsive
                     color: Color(0xFF595858),
                   ),
                 ),
@@ -131,31 +141,36 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
         child: Stack(
           children: [
             Positioned(
-              bottom: 565,
+              top:
+                  40, // Adjust this value to position the container further down
+              left: 0,
+              right: 0,
               child: Center(
                 child: Container(
-                  padding: EdgeInsets.all(24.0),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),
+                  margin: EdgeInsets.symmetric(
+                      horizontal:
+                          16.0), // Adjust this value to control the width
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
                         Color(0xFF6A95E9),
-                        Color.fromARGB(255, 116, 196, 216)
+                        Color.fromARGB(255, 116, 196, 216),
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(50.0),
-                      bottomRight: Radius.circular(50.0),
-                    ),
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
                   child: Text(
                     '${'Patient Name:'.tr()} $_patientname',
                     style: TextStyle(
-                      fontSize: 19, // Adjust the font size as needed
-                      color: Colors.white, // Change the text color
-                      fontFamily: 'LilitaOne', // Use the desired font family
+                      fontSize: 19,
+                      color: Colors.white,
+                      fontFamily: 'LilitaOne',
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
@@ -226,75 +241,76 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
   }
 
   void _showDialog() {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        title: Row(
-          children: [
-            Icon(Icons.report, color: Colors.blueAccent),
-            SizedBox(width: 10),
-            Text(
-              "Report Options".tr(),
-              style: TextStyle(
-                fontSize: 25,
-                fontFamily: 'LilitaOne',
-                color: Color.fromARGB(255, 239, 237, 237),
-              ),
-            ),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Divider(color: Colors.blueAccent),
-            SizedBox(height: 10),
-            Text(
-              "Choose an option below:".tr(),
-              style: TextStyle(fontSize: 18, color: Colors.black54),
-            ),
-            SizedBox(height: 20),
-            TextButton.icon(
-              icon: Icon(Icons.create, color: Colors.white),
-              label: Text("Create A New Report".tr()),
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white, backgroundColor: Colors.blueAccent,
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          title: Row(
+            children: [
+              Icon(Icons.report, color: Colors.blueAccent),
+              SizedBox(width: 10),
+              Text(
+                "Report Options".tr(),
+                style: TextStyle(
+                  fontSize: 25,
+                  fontFamily: 'LilitaOne',
+                  color: Color.fromARGB(255, 239, 237, 237),
                 ),
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                _createReport();
-              },
-            ),
-            SizedBox(height: 10),
-            TextButton.icon(
-              icon: Icon(Icons.report_gmailerrorred, color: Colors.white),
-              label: Text(" Get Patient's Report".tr()),
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white, backgroundColor: Colors.blueAccent,
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Divider(color: Colors.blueAccent),
+              SizedBox(height: 10),
+              Text(
+                "Choose an option below:".tr(),
+                style: TextStyle(fontSize: 18, color: Colors.black54),
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                _getPatientsReport();
-              },
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
-
+              SizedBox(height: 20),
+              TextButton.icon(
+                icon: Icon(Icons.create, color: Colors.white),
+                label: Text("Create A New Report".tr()),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.blueAccent,
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _createReport();
+                },
+              ),
+              SizedBox(height: 10),
+              TextButton.icon(
+                icon: Icon(Icons.report_gmailerrorred, color: Colors.white),
+                label: Text(" Get Patient's Report".tr()),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.blueAccent,
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _getPatientsReport();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   void _createReport() {
     Navigator.pushReplacement(

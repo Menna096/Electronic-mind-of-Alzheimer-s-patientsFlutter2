@@ -160,13 +160,6 @@ class _PatientProfManageState extends State<PatientProfManage> {
               children: [
                 SizedBox(height: 20),
                 _buildTextField(
-                  labelText: 'Welcome Message To Patient',
-                  controller: messageController,
-                  maxLines: 1,
-                  readOnly: true,
-                ),
-                SizedBox(height: 20),
-                _buildTextField(
                   labelText: 'Your ID',
                   controller: _idController,
                   readOnly: true,

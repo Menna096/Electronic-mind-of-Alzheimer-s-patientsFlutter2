@@ -48,7 +48,11 @@ class _ReportScreenState extends State<ReportScreen> {
     );
     if (picked != null) {
       setState(() {
-        controller.text = DateFormat('yyyy-MM-dd').format(picked);
+        // Use DateFormat with 'en' locale explicitly
+        controller.text = DateFormat('yyyy-MM-dd', 'en').format(picked);
+        if (controller == _fromDateController) {
+          print('Start date: ${controller.text}');
+        }
       });
     }
   }

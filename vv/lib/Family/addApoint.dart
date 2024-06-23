@@ -149,7 +149,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Add Appointment Successful'),
+            title:  Text('Add Appointment Successful'.tr()),
             actions: [
               TextButton(
                 onPressed: () {
@@ -160,24 +160,24 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                         builder: (context) => AppointListScreen()),
                   );
                 },
-                child: const Text('OK'),
+                child:  Text('OK'.tr()),
               ),
             ],
           ),
         );
       } else {
-        throw 'Add failed.\nsomething went wrong try again later ';
+        throw 'Add failed. something went wrong try again later '.tr();
       }
     } catch (error) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Add Failed'),
+          title: Text('Add Failed'.tr()),
           content: Text(error.toString()),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
+              child: Text('OK'.tr()),
             ),
           ],
         ),
@@ -207,7 +207,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
           },
         ),
         title: Text(
-          "Add Appointment",
+          "Add Appointment".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -276,7 +276,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
               child: TextField(
                 controller: _locationController,
                 decoration: InputDecoration(
-                  hintText: 'Add Location',
+                  hintText: 'Add Location'.tr(),
                   border: InputBorder.none,
                   prefixIcon: Icon(Icons.location_pin),
                 ),
@@ -303,7 +303,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
               child: TextField(
                 controller: _noteController,
                 decoration: InputDecoration(
-                  hintText: 'Add Notes',
+                  hintText: 'Add Notes'.tr(),
                   border: InputBorder.none,
                   prefixIcon: Icon(Icons.notes),
                 ),
@@ -340,7 +340,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                       child: Text(
                         startTime != null
                             ? formatTimeOfDay(startTime!)
-                            : 'Select Start Time',
+                            : 'Select Start Time'.tr(),
                         style: TextStyle(fontSize: 16, fontFamily: 'Acme'),
                       ),
                     ),
@@ -381,7 +381,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                     SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        formattedSelectedDate ?? 'Select Start Date',
+                        formattedSelectedDate ?? 'Select Start Date'.tr(),
                         style: TextStyle(fontSize: 16, fontFamily: 'Acme'),
                       ),
                     ),
@@ -423,8 +423,8 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                     borderRadius: BorderRadius.circular(50.0),
                   ),
                 ),
-                child: const Text(
-                  'Done',
+                child: Text(
+                  'Done'.tr(),
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -447,14 +447,14 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Error'),
-          content: const Text('Please fill in all fields.'),
+          title: Text('Error'.tr()),
+          content:  Text('Please fill in all fields'.tr()),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('OK'),
+              child:  Text('OK'.tr()),
             ),
           ],
         ),
