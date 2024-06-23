@@ -3,7 +3,9 @@ import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:signalr_core/signalr_core.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
+import 'package:vv/Caregiver/mainpagecaregiver/patient_list.dart';
 import 'package:vv/Caregiver/medical/constants.dart';
 import 'package:vv/Caregiver/medical/global_bloc.dart';
 import 'package:vv/Caregiver/medical/models/errors.dart';
@@ -13,6 +15,7 @@ import 'package:vv/Caregiver/medical/pages/new_entry/new_entry_bloc.dart';
 import 'package:vv/Caregiver/medical/pages/success_screen/success_screen.dart';
 import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
+import 'package:vv/GPS/logger.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/storage_manage.dart';
 import '../../common/convert_time.dart';
@@ -234,7 +237,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                     child: TextButton(
                       style: TextButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 20, 191, 80),
-                        shape: const StadiumBorder(),
+                        shape:  StadiumBorder(),
                       ),
                       child: Center(
                         child: Text(
@@ -249,6 +252,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                         ),
                       ),
                       onPressed: () async {
+                         print('Button pressed, locale: ${context.locale}');
                         String? medicineName;
                         int? dosage;
 
@@ -330,6 +334,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
 
                         try {
                           await postMedicationData();
+                          // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text("Medicine added successfully".tr()),
@@ -339,8 +344,9 @@ class _NewEntryPageState extends State<NewEntryPage> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => mainpagecaregiver()));
+                                  builder: (context) => PatientListScreen()));
                         } catch (error) {
+                          // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text("Failed to add medication".tr()),

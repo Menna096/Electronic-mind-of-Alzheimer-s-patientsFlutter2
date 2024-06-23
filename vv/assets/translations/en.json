@@ -104,7 +104,6 @@
     "Interval Selection" : "Interval Selection",
     "Starting Time" : "Starting Time",
     "Ending Day" : "Ending Day",
-    "Confirm" : "Confirm",
     "Please enter the medicine's name" : "Please enter the medicine's name",
     "Please enter the dosage required" : "Please enter the dosage required",
     "Medicine name already exists" : "Medicine name already exists",
@@ -157,8 +156,134 @@
   "networkError": "Network error. Please check your connection.",
   "unexpectedGeneralError": "An unexpected error occurred: {error}",
   "ok": "OK",
-  "pleaseEnterEmail": "Please Enter Your Email."
-    
+  "pleaseEnterEmail": "Please Enter Your Email.",
+  "create_account": "Create Account",
+  "full_name": "Full Name",
+  "email_address": "Email Address",
+  "password": "Password",
+  "confirm_password": "Confirm Password",
+  "phone_number": "Phone Number",
+  "age": "Age",
+  "you_are": "You are...",
+  "family": "Family",
+  "caregiver": "Caregiver",
+  "pick_your_location": "Pick Your location",
+  "register": "Register",
+  "registration_successful": "Registration Successful",
+  "registration_successful_message": "You have Successfully Registered. Please Confirm Email To Can Login.",
+  "registration_failed": "Registration Failed",
+  "* Required" : "* Required",
+  "Password should be at least 8 characters" : "Password should be at least 8 characters",
+  "Password should contain at least one uppercase letter" : "Password should contain at least one uppercase letter",
+  "Password should contain at least one lowercase letter": "Password should contain at least one lowercase letter",
+  "Password should contain at least one number": "Password should contain at least one number",
+  "Password should contain at least one special character": "Password should contain at least one special character",
+  "Please Fill in All The Fields" : "Please Fill in All The Fields",
+  "Please Choose Your Full Name": "Please Choose Your Full Name",
+  "Please Write a Email Address": "Please Write a Email Address",
+  "Please Write Your Password": "Please Write Your Password",
+  "Please Write Your Confirm Password": "Please Write Your Confirm Password",
+  "Please Write Your Phone Number": "Please Write Your Phone Number",
+  "Please Write Your Age": "Please Write Your Age",
+  "Please Choose Who You Are": "Please Choose Who You Are",
+  "Please Select Your Image": "Please Select Your Image",
+  "Please Pick Your Location": "Please Pick Your Location",
+  "Password and Confirm Password do not match": "Password and Confirm Password do not match",
+  "Invalid email address. Please enter a correct email": "Invalid email address. Please enter a correct email",
+  "Registration Successful": "Registration Successful",
+  "You have Successfully Registered. Please Confirm Email To Can Login" : "You have Successfully Registered. Please Confirm Email To Can Login",
+  "Registration failed. This Email is Already registered" :"Registration failed. This Email is Already registered",
+  "Registration Failed" : "Registration Failed",
+  "Create Account" : "Create Account",
+  " Full Name" : " Full Name",
+  "  Email Address" : "  Email Address",
+  "  Password" : "  Password",
+  "  Confirm Password" : "  Confirm Password",
+  "  Phone Number" : "  Phone Number",
+  "  Age" : "  Age",
+  "Family" : "Family",
+  "Caregiver" : "Caregiver",
+  "   You are..." :"   You are...",
+  "  Select Role" : "  Select Role",
+  "Pick Your location" :"Pick Your location",
+  "Register" :"Register",
+  "Tasks" :"Tasks",
+  "No Tasks" :"No Tasks",
+  "My Tasks" :"My Tasks",
+  "REPEATED" :"REPEATED",
+  "Task completed" :"Task completed",
+  "Weekly" : "Weekly",
+   "Daily" :"Daily",
+   "Every day at": "Every day at {hours}:{minute}",
+  "every_day_time": "Every {dayOfWeek} at {hours}:{minute}",
+  "Every Hour" :"Every Hour",
+  "Overdue :  " : "Overdue :  ",
+  "Due Date :  " :"Due Date :  ",
+  "No recurrence" :"No recurrence",
+  "every_day_of_week": "Every {} of the week",
+  "Default" : "Default",
+  "New Task" :"New Task",
+  "What is to be done?" :"What is to be done?",
+  "Add to list" :"Add to list",
+  "Recurrence" :"Recurrence",
+  "What is your deadline?" :"What is your deadline?",
+  "Due date : " :"Due date : ",
+  "Due time : " :"Due time : ",
+  "Done" :"Done",
+  "Enter Task Here" :"Enter Task Here",
+  "Every hour from now on" :"Every hour from now on",
+  "Every day from today" : "Every day from today",
+  "every_day_of_the_week": "Every {} of the week",
+  "Repeat :" :"Repeat :",
+  "Waiting for location..." :"Waiting for location...",
+  "current_location": "Latitude: {}, Longitude: {}",
+  "Error starting connection" :"Error starting connection",
+  "New Location Received" :"New Location Received",
+  "Patient is out of the zone" :"Patient is out of the zone",
+  "Add Patient" :"Add Patient",
+  "Add Person Without Account" : "Add Person Without Account",
+  "Profile Photo" :"Profile Photo",
+  "Add failed" :"Add failed",
+  "addFailed": "Add failed with status code: ${response.statusCode}",
+  "Appointment Reminder" :"Appointment Reminder",
+  "You have an appointment: $appointmentName": "You have an appointment: $appointmentName",
+  "Please fill in all fields" :"Please fill in all fields"
+  
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  
+
   }
   
   

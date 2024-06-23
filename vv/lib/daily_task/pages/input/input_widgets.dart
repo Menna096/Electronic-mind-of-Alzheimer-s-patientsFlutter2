@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +23,7 @@ Widget buildTaskField({required Function(String)? onChanged}) {
     maxLines: 4,
     keyboardType: TextInputType.multiline,
     decoration: InputDecoration(
-      hintText: 'Enter Task Here',
+      hintText: 'Enter Task Here'.tr(),
       hintStyle: const TextStyle(color: Colors.grey),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(color: Color(0xff3B5998), width: 2.0.w),
@@ -103,19 +104,19 @@ Widget buildDropDown(
 Widget buildDurationText(String? duration) {
   String? intervalText;
   if (duration == AppConstant.RECURRENCE[1]) {
-    intervalText = 'Every hour from now on';
+    intervalText = 'Every hour from now on'.tr();
   }
   if (duration == AppConstant.RECURRENCE[2]) {
-    intervalText = 'Every day from today';
+    intervalText = 'Every day from today'.tr();
   }
   if (duration == AppConstant.RECURRENCE[3]) {
     intervalText =
-        'Every ${DateFormat('EEEE').format(DateTime.now())} of the week';
+        'every_day_of_week'.tr(args: [DateFormat('EEEE').format(DateTime.now())]);
   }
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      buildHeadingText(title: 'Repeat :'),
+      buildHeadingText(title: 'Repeat :'.tr()),
       Row(
         children: [
           Icon(

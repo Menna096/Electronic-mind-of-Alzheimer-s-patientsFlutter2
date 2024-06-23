@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -33,7 +34,7 @@ class APIService {
               : 'Add failed with status code: ${response.statusCode}';
     } catch (error) {
       print('Add failed: $error');
-      return 'Add failed: $error';
+      return 'Add failed'.tr();
     }
   }
 }
@@ -64,8 +65,8 @@ class NotificationService {
     var platformDetails = NotificationDetails(android: androidDetails);
     await _notificationsPlugin.zonedSchedule(
         0,
-        'Appointment Reminder',
-        'You have an appointment: $appointmentName',
+        'Appointment Reminder'.tr(),
+        'You have an appointment: $appointmentName'.tr(),
         tz.TZDateTime.from(scheduledTime, tz.local),
         platformDetails,
         androidAllowWhileIdle: true,
@@ -121,10 +122,10 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
     });
     try {
       if (_locationController.text.isEmpty || _noteController.text.isEmpty) {
-        throw 'Please fill in all fields';
+        throw 'Please fill in all fields'.tr();
       }
       if (startTime == null || selectedDate == null) {
-        throw 'Please select both start time and start day';
+        throw 'Please select both start time and start day'.tr();
       }
 
       final DateTime combinedDateTime = DateTime(

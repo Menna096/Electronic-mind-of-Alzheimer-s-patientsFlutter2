@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:animations/animations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -90,8 +91,8 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // Aligning "Tasks" to the left
-            const Text(
-              'Tasks',
+             Text(
+              'Tasks'.tr(),
               style: TextStyle(color: Colors.white),
             ),
             // Aligning the other widget to the right (if any)
@@ -112,9 +113,9 @@ class _HomeState extends State<Home> {
             return isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : tasks.isEmpty
-                    ? const Center(
+                    ?  Center(
                         child: Text(
-                          'No Tasks',
+                          'No Tasks'.tr(),
                           style: TextStyle(
                               color: Color.fromARGB(255, 47, 47, 47),
                               fontSize: 24),
@@ -138,7 +139,7 @@ class _HomeState extends State<Home> {
                                               width: 0,
                                               height: 0,
                                             )
-                                          : Text('My Tasks'),
+                                          : Text('My Tasks'.tr()),
                                     )
                                   : Container(
                                       alignment: Alignment.centerLeft,
@@ -151,7 +152,7 @@ class _HomeState extends State<Home> {
                                               width: 0,
                                               height: 0,
                                             )
-                                          : buildBigText(title: 'REPEATED'),
+                                          : buildBigText(title: 'REPEATED'.tr()),
                                     ),
                               ListView.builder(
                                 shrinkWrap: true,
@@ -180,7 +181,7 @@ class _HomeState extends State<Home> {
                                           .showSnackBar(
                                         SnackBar(
                                           content: Text(
-                                            "Task completed",
+                                            "Task completed".tr(),
                                             style: TextStyle(
                                               fontSize: 16.sp,
                                               color: Colors.green,

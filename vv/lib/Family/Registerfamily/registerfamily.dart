@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:dio/dio.dart';
@@ -64,17 +65,17 @@ class _RegisterFamilyState extends State<RegisterFamily> {
 
   String? _validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return '* Required';
+      return '* Required'.tr();
     } else if (value.length < 8) {
-      return 'Password should be at least 8 characters';
+      return 'Password should be at least 8 characters'.tr();
     } else if (!RegExp(r'(?=.*[A-Z])').hasMatch(value)) {
-      return 'Password should contain at least one uppercase letter';
+      return 'Password should contain at least one uppercase letter'.tr();
     } else if (!RegExp(r'(?=.*[a-z])').hasMatch(value)) {
-      return 'Password should contain at least one lowercase letter';
+      return 'Password should contain at least one lowercase letter'.tr();
     } else if (!RegExp(r'(?=.*\d)').hasMatch(value)) {
-      return 'Password should contain at least one number';
+      return 'Password should contain at least one number'.tr();
     } else if (!RegExp(r'(?=.*[@#$%^&*()_+!])').hasMatch(value)) {
-      return 'Password should contain at least one special character';
+      return 'Password should contain at least one special character'.tr();
     }
     return null;
   }
@@ -95,49 +96,49 @@ class _RegisterFamilyState extends State<RegisterFamily> {
           _selectedImage == null &&
           _latitude == null &&
           _longitude == null) {
-        throw 'Please Fill in All The Fields';
+        throw 'Please Fill in All The Fields'.tr();
       }
        // ignore: unnecessary_null_comparison
        if (_fullNameController.text.isEmpty == null) {
-        throw 'Please Choose Your Full Name';
+        throw 'Please Choose Your Full Name'.tr();
       }
       if (
           // ignore: unnecessary_null_comparison
           _emailController.text.isEmpty == null) {
-        throw 'Please Write a Email Address';
+        throw 'Please Write a Email Address'.tr();
       }
       if (
           // ignore: unnecessary_null_comparison
           _passwordController.text.isEmpty == null) {
-        throw 'Please Write Your Password';
+        throw 'Please Write Your Password'.tr();
       }
       if (
           // ignore: unnecessary_null_comparison
           _confirmPasswordController.text.isEmpty == null) {
-        throw 'Please Write Your Confirm Password';
+        throw 'Please Write Your Confirm Password'.tr();
       }
       // ignore: unnecessary_null_comparison
       if (_phoneNumberController.text.isEmpty == null) {
-        throw 'Please Write Your Phone Number';
+        throw 'Please Write Your Phone Number'.tr();
       }
       // ignore: unnecessary_null_comparison
       if (_ageController.text.isEmpty == null) {
-        throw 'Please Write Your Age';
+        throw 'Please Write Your Age'.tr();
       }
      // ignore: unnecessary_null_comparison
      if ( _selectedRole.isEmpty == null) {
-        throw 'Please Choose Who You Are';
+        throw 'Please Choose Who You Are'.tr();
       }
      if (_selectedImage == null) {
-        throw 'Please Select Your Image';
+        throw 'Please Select Your Image'.tr();
       }
       if (_latitude == null ||
           _longitude == null) {
-        throw 'Please Pick Your Location';
+        throw 'Please Pick Your Location'.tr();
       }
      
       if (_passwordController.text != _confirmPasswordController.text) {
-        throw 'Password and Confirm Password do not match.';
+        throw 'Password and Confirm Password do not match'.tr();
       }
     if (_validatePassword(_passwordController.text) != null) {
         throw _validatePassword(_passwordController.text)!;
@@ -147,7 +148,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
       RegExp emailRegExp = RegExp(
           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$");
       if (!emailRegExp.hasMatch(_emailController.text)) {
-        throw 'Invalid email address.\nPlease Enter Correct Email';
+        throw 'Invalid email address. Please enter a correct email'.tr();
       }
  
       var formData = FormData.fromMap({
@@ -169,8 +170,8 @@ class _RegisterFamilyState extends State<RegisterFamily> {
       dynamic response = await APIService.register(formData);
 
       if (response == true) {
-        _showDialog('Registration Successful', 
-                    'You have Successfully Registered. Please Confirm Email To Can Login.', 
+        _showDialog('Registration Successful'.tr(), 
+                    'You have Successfully Registered. Please Confirm Email To Can Login'.tr(), 
                     onPressed: () {
                       Navigator.pop(context);
                       Navigator.push(
@@ -179,10 +180,10 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                       );
                     });
       } else {
-        throw 'Registration failed.\nThis Email is Already registered.';
+        throw 'Registration failed. This Email is Already registered'.tr();
       }
     } catch (error) {
-      _showDialog('Registration Failed', error.toString());
+      _showDialog('Registration Failed'.tr(), error.toString());
     } finally {
       setState(() {
         _isLoading = false;
@@ -199,7 +200,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
         actions: [
           TextButton(
             onPressed: onPressed ?? () => Navigator.pop(context),
-            child: const Text('OK'),
+            child: Text('OK'.tr()),
           ),
         ],
       ),
@@ -259,8 +260,8 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                   children: [
                     const backbutton(),
                     const SizedBox(height: 0.5),
-                    const Text(
-                      'Create Account',
+                     Text(
+                      'Create Account'.tr(),
                       style: TextStyle(fontSize: 40, fontFamily: 'Acme'),
                       textAlign: TextAlign.center,
                     ),
@@ -269,19 +270,19 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     const SizedBox(height: 18),
                     _buildTextFormField(
                       controller: _fullNameController,
-                      hintText: ' Full Name',
+                      hintText: ' Full Name'.tr(),
                       prefixIcon: const Icon(Icons.person, color: Color.fromARGB(255, 97, 149, 251),),
                     ),
                     const SizedBox(height: 15),
                     _buildTextFormField(
                       controller: _emailController,
-                      hintText: '  Email Address',
+                      hintText: '  Email Address'.tr(),
                       prefixIcon: const Icon(Icons.email, color: Color.fromARGB(255, 97, 149, 251),),
                     ),
                     const SizedBox(height: 15),
                     _buildTextFormField(
                       controller: _passwordController,
-                      hintText: '  Password',
+                      hintText: '  Password'.tr(),
                       prefixIcon: const Icon(Icons.lock, color: Color.fromARGB(255, 97, 149, 251),),
                       obscureText: !_isPasswordVisible,
                       suffixIcon: IconButton(
@@ -302,7 +303,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     const SizedBox(height: 15),
                     _buildTextFormField(
                       controller: _confirmPasswordController,
-                      hintText: '  Confirm Password',
+                      hintText: '  Confirm Password'.tr(),
                       prefixIcon: const Icon(Icons.lock, color:Color.fromARGB(255, 97, 149, 251),),
                       obscureText: !_isPasswordVisible,
                       suffixIcon: IconButton(
@@ -320,7 +321,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                       ),
                       validator: (value) {
                         if (value != _passwordController.text) {
-                          return 'Password and Confirm Password do not match.';
+                          return 'Password and Confirm Password do not match'.tr();
                         }
                         return null;
                       },
@@ -328,14 +329,14 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     const SizedBox(height: 15),
                     _buildTextFormField(
                       controller: _phoneNumberController,
-                      hintText: '  Phone Number',
+                      hintText: '  Phone Number'.tr(),
                       prefixIcon: const Icon(Icons.phone, color: Color.fromARGB(255, 94, 142, 236),),
                       keyboardType: TextInputType.phone,
                     ),
                     const SizedBox(height: 16),
                     _buildTextFormField(
                       controller: _ageController,
-                      hintText: '  Age',
+                      hintText: '  Age'.tr(),
                       prefixIcon: const Icon(Icons.date_range_rounded, color: Color.fromARGB(255, 94, 142, 236),),
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -350,7 +351,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                           });
                         }
                       },
-                      items: <String>['Family', 'Caregiver']
+                      items: <String>['Family'.tr(), 'Caregiver'.tr()]
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -358,7 +359,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                         );
                       }).toList(),
                       decoration: InputDecoration(
-                        labelText: '   You are...',
+                        labelText: '   You are...'.tr(),
                         labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
                         border: OutlineInputBorder(
                           borderSide: const BorderSide(color: Colors.grey),
@@ -366,7 +367,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        hintText: '  Select Role',
+                        hintText: '  Select Role'.tr(),
                         hintStyle: const TextStyle(color: Colors.grey),
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 12),
@@ -403,7 +404,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                           borderRadius: BorderRadius.circular(27.0),
                         ),
                       ),
-                      child: const Text('Pick Your location'),
+                      child:  Text('Pick Your location'.tr()),
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
@@ -415,7 +416,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                           borderRadius: BorderRadius.circular(27.0),
                         ),
                       ),
-                      child: const Text('Register'),
+                      child: Text('Register'.tr()),
                     ),
                   ],
                 ),

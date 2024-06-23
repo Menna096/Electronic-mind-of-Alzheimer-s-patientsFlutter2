@@ -71,17 +71,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Medication'.tr(), style: TextStyle(fontSize: 25)),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => mainpagecaregiver(),
-              ),
-            );
-          },
-          icon: Icon(Icons.arrow_back),
-        ),
       ),
       body: Container(
         decoration: BoxDecoration(

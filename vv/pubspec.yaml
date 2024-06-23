@@ -101,6 +101,7 @@ dependencies:
   mime: ^1.0.5
   http_parser: ^4.0.2
   easy_localization: ^3.0.7
+  responsive_sizer: ^3.3.1
   
   
   

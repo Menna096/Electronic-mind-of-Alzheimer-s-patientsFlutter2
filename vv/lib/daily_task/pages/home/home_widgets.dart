@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -99,22 +100,22 @@ Widget buildTask({
                       )
                     ],
                   ),
-                  repeat == 'Weekly'
+                  repeat == 'Weekly'.tr()
                       ? Padding(
                           padding: EdgeInsets.only(right: 14.w),
                           child: Text(
-                            'Every $dayOfWeek At $hours$minute',
+                            'every_day_of_week'.tr(args: [dayOfWeek]),
                             style: TextStyle(
                               fontSize: 16.sp,
                               color: Colors.green,
                             ),
                           ),
                         )
-                      : repeat == 'Daily'
+                      : repeat == 'Daily'.tr()
                           ? Padding(
                               padding: EdgeInsets.only(right: 14.w),
                               child: Text(
-                                'Every Day At $hours$minute',
+                                'Every Day At $hours$minute'.tr(),
                                 style: TextStyle(
                                   fontSize: 16.sp,
                                   color: Colors.green,
@@ -124,7 +125,7 @@ Widget buildTask({
                           : Padding(
                               padding: EdgeInsets.only(right: 14.w),
                               child: Text(
-                                'Every Hour',
+                                'Every Hour'.tr(),
                                 style: TextStyle(
                                   fontSize: 16.sp,
                                   color: Colors.green,
@@ -140,7 +141,7 @@ Widget buildTask({
                   Padding(
                     padding: EdgeInsets.only(left: 10.w),
                     child: Text(
-                      'Overdue :  ',
+                      'Overdue :  '.tr(),
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
@@ -167,7 +168,7 @@ Widget buildTask({
                   Padding(
                     padding: EdgeInsets.only(left: 10.w),
                     child: Text(
-                      'Due Date :  ',
+                      'Due Date :  '.tr(),
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
