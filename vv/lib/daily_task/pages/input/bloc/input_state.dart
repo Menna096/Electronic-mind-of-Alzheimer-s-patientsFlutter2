@@ -1,16 +1,21 @@
+import 'package:easy_localization/easy_localization.dart';
+
 class InputState {
   final String? task;
   final DateTime? dateTime;
   final String? duration;
   final String? list;
+
   InputState({
     this.task = '',
     DateTime? dateTime,
-    this.duration = 'No recurrence',
-    this.list = 'Default',
-  }) : dateTime = dateTime ?? DateTime.now();
+    String? duration,
+    String? list,
+  })  : dateTime = dateTime ?? DateTime.now(),
+        duration = duration ?? 'No recurrence'.tr(),
+        list = list ?? 'Default'.tr();
 
-  InputState copywith({
+  InputState copyWith({
     String? task,
     DateTime? dateTime,
     String? duration,

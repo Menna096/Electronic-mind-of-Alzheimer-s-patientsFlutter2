@@ -12,18 +12,18 @@ class InputBloc extends Bloc<InputEvent, InputState> {
   }
 
   void _taskEvent(TaskEvent event, Emitter<InputState> emit) {
-    emit(state.copywith(task: event.task));
+    emit(state.copyWith(task: event.task));
   }
 
   void _dateTimeEvent(DateAndTimeEvent event, Emitter<InputState> emit) {
-    emit(state.copywith(dateTime: event.dateTime));
+    emit(state.copyWith(dateTime: event.dateTime));
   }
 
   void _recurrenceEvent(RecurrenceEvent event, Emitter<InputState> emit) {
-    emit(state.copywith(duration: event.duration));
+    emit(state.copyWith(duration: event.duration));
   }
 
   void _listEvent(ListEvent event, Emitter<InputState> emit) {
-    emit(state.copywith(list: event.list));
+    emit(state.copyWith(list: event.list));
   }
 }

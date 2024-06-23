@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -54,7 +55,7 @@ class _ChoiceModalState extends State<ChoiceModal> {
           Row(
             children: [
               Text(
-                'Profile Photo',
+                'Profile Photo'.tr(),
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   color: Theme.of(context).colorScheme.onBackground,
                   fontSize: 18

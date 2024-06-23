@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -120,9 +121,9 @@ class _InputPageState extends State<InputPage> {
         backgroundColor: Color.fromARGB(255, 150, 190, 251),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
+          children:  [
             Text(
-              'New Task',
+              'New Task'.tr(),
               style: TextStyle(color: Colors.white),
             ),
             SizedBox(width: 16.0), // Adjust spacing as needed
@@ -149,7 +150,7 @@ class _InputPageState extends State<InputPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        buildHeadingText(title: 'What is to be done?'),
+                        buildHeadingText(title: 'What is to be done?'.tr()),
                         SizedBox(height: 10.h),
                         buildTaskField(
                           onChanged: (task) {
@@ -164,7 +165,7 @@ class _InputPageState extends State<InputPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        buildHeadingText(title: 'Add to list'),
+                        buildHeadingText(title: 'Add to list'.tr()),
                         SizedBox(
                           height: 10.h,
                         ),
@@ -185,7 +186,7 @@ class _InputPageState extends State<InputPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        buildHeadingText(title: 'Recurrence'),
+                        buildHeadingText(title: 'Recurrence'.tr()),
                         SizedBox(
                           height: 10.h,
                         ),
@@ -209,7 +210,7 @@ class _InputPageState extends State<InputPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'What is your deadline?',
+                                'What is your deadline?'.tr(),
                                 style: TextStyle(
                                   fontSize: 18.sp,
                                   fontWeight: FontWeight.bold,
@@ -234,7 +235,7 @@ class _InputPageState extends State<InputPage> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        'Due date : ',
+                                        'Due date : '.tr(),
                                         style: TextStyle(
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.bold,
@@ -265,7 +266,7 @@ class _InputPageState extends State<InputPage> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        'Due time : ',
+                                        'Due time : '.tr(),
                                         style: TextStyle(
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.bold,
@@ -314,7 +315,7 @@ class _InputPageState extends State<InputPage> {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => const Home()));
         },
-        tooltip: 'Done',
+        tooltip: 'Done'.tr(),
         child: const Icon(
           Icons.done,
           color: Colors.white,

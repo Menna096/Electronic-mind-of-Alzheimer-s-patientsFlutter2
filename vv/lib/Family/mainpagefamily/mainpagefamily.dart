@@ -1,8 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:signalr_core/signalr_core.dart';
 import 'package:vv/Family/AddPersonWithoutAccount.dart';
-import 'package:vv/Family/Languagefamily/Languagefamily.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/appoint_list.dart';
 import 'package:vv/Family/patientLocToday.dart';
@@ -26,7 +26,7 @@ class MainPageFamily extends StatefulWidget {
 
 class _MainPageFamilyState extends State<MainPageFamily> {
   late HubConnection _connection;
-  String _currentLocation = "Waiting for location...";
+  String _currentLocation = "Waiting for location...".tr();
   bool _locationReceived = false;
   final FlutterLocalNotificationsPlugin _notificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -92,7 +92,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
         double latitude = arguments[0];
         double longitude = arguments[1];
         setState(() {
-          _currentLocation = 'Latitude: $latitude, Longitude: $longitude';
+           _currentLocation = 'current_location'.tr(args: [latitude.toString(), longitude.toString()]);
           _locationReceived = true;
         });
         _showNotification(latitude, longitude);
@@ -106,7 +106,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
     } catch (e) {
       print('Failed to start SignalR connection: $e');
       setState(() {
-        _currentLocation = 'Error starting connection: $e';
+        _currentLocation = 'Error starting connection'.tr();
       });
     }
   }
@@ -126,8 +126,8 @@ class _MainPageFamilyState extends State<MainPageFamily> {
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await _notificationsPlugin.show(
       0,
-      'New Location Received',
-      'Patient is out of the zone',
+      'New Location Received'.tr(),
+      'Patient is out of the zone'.tr(),
       platformChannelSpecifics,
       payload: '$latitude,$longitude',
     );
@@ -156,7 +156,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Settings',
+          'Settings'.tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -207,19 +207,19 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Welcome $_userName !👋🏻',
+                        'Welcome $_userName !👋🏻'.tr(),
                         style: const TextStyle(
                           fontSize: 18,
                         ),
                       ),
-                      const Text(
-                        'To the Electronic mind',
+                       Text(
+                        'To the Electronic mind'.tr(),
                         style: TextStyle(
                           fontSize: 18,
                         ),
                       ),
-                      const Text(
-                        'of Alzheimer patient',
+                       Text(
+                        'of Alzheimer patient'.tr(),
                         style: TextStyle(
                           fontSize: 18,
                         ),
@@ -368,7 +368,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
           ),
           buildDrawerItem(
             Icons.person_add_alt_1_sharp,
-            'Add Patient',
+            'Add Patient'.tr(),
             onTap: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => update()));
@@ -376,7 +376,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
           ),
           buildDrawerItem(
             Icons.person_add_alt_1_sharp,
-            'Add Person Without Account',
+            'Add Person Without Account'.tr(),
             onTap: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => AddPerson()));
@@ -385,7 +385,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
          
          buildDrawerlogout(
             Icons.logout_outlined,
-            'Log Out',
+            'Log Out'.tr(),
             onTap: () {
               TokenManager.deleteToken();
               Navigator.of(context).push(
