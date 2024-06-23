@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
@@ -25,7 +26,7 @@ class _AppointListScreenState extends State<AppointListScreen> {
   List<dynamic> appointments = [];
   Appointment? selectedAppoint;
   late HubConnection _connection;
-  String _currentLocation = "Waiting for location...";
+  String _currentLocation = "Waiting for location...".tr();
   bool _locationReceived = false;
   final FlutterLocalNotificationsPlugin _notificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -123,8 +124,8 @@ class _AppointListScreenState extends State<AppointListScreen> {
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await _notificationsPlugin.show(
       0,
-      'New Location Received',
-      'Latitude: $latitude, Longitude: $longitude',
+      'New Location Received'.tr(),
+      'Click To View'.tr(),
       platformChannelSpecifics,
       payload: '$latitude,$longitude',
     );
@@ -161,7 +162,7 @@ class _AppointListScreenState extends State<AppointListScreen> {
           },
         ),
         title: Text(
-          "Appointments",
+          "Appointments".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -317,11 +318,11 @@ class _AppointListScreenState extends State<AppointListScreen> {
           );
       await fetchAppointments();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Appointment deleted successfully')),
+        SnackBar(content: Text('Appointment deleted successfully'.tr())),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to delete appointment: $e')),
+        SnackBar(content: Text('Failed to delete appointment'.tr())),
       );
       print('Failed to delete appointment: $e');
     }

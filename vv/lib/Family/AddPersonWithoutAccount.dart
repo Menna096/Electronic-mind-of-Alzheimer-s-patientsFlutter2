@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart'; // Import for input formatters
@@ -32,7 +33,7 @@ class APIService {
               : 'Add failed with status code: ${response.data}';
     } catch (error) {
       print('Add failed: $error');
-      return 'Add failed: $error';
+      return 'Add failed'.tr();
     }
   }
 }
@@ -64,7 +65,7 @@ class _AddPersonState extends State<AddPerson> {
       if (fullNameController.text.isEmpty ||
           phoneNumberController.text.isEmpty ||
           relationility.isEmpty) {
-        throw 'Please fill in all fields, select an image, and provide latitude and longitude.';
+        throw 'Please fill in all fields, select an image, and provide latitude and longitude'.tr();
       }
 
       var formData = FormData.fromMap({
@@ -85,7 +86,7 @@ class _AddPersonState extends State<AddPerson> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Add Successful'),
+            title:  Text('Add Successful'.tr()),
             actions: [
               TextButton(
                 onPressed: () {
@@ -107,12 +108,12 @@ class _AddPersonState extends State<AddPerson> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Add Failed'),
+          title:  Text('Add Failed'.tr()),
           content: Text(error.toString()),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
+              child:  Text('OK'.tr()),
             ),
           ],
         ),
@@ -153,7 +154,7 @@ class _AddPersonState extends State<AddPerson> {
           },
         ),
         title: Text(
-          "Create Account",
+          "Create Account".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -210,7 +211,7 @@ class _AddPersonState extends State<AddPerson> {
                     TextField(
                       controller: fullNameController,
                       decoration: InputDecoration(
-                        labelText: 'Full Name',
+                        labelText: 'Full Name'.tr(),
                         labelStyle: TextStyle(
                           color: Colors.grey[600],
                         ),
@@ -238,33 +239,33 @@ class _AddPersonState extends State<AddPerson> {
                         }
                       },
                       items: <String>[
-                        'Mother',
-                        'Father',
-                        'Brother',
-                        'Sister',
-                        'Grandmother',
-                        'Grandfather',
-                        ' Grandson',
-                        'Granddaughter',
-                        'Husband',
-                        'Wife',
-                        'Son',
-                        'Daughter',
-                        'Aunt',
-                        'Uncle',
-                        'Niece',
-                        'Nephew',
-                        'Cousin',
-                        'Mother-in-law',
-                        'Father-in-law',
-                        'Brother-in-law,',
-                        'Sister-in-law',
-                        'Stepfather',
-                        'Stepmother',
-                        'Stepbrother',
-                        'Stepsister',
-                        'Half-brother',
-                        'Half-sister'
+                        'Mother'.tr(),
+                        'Father'.tr(),
+                        'Brother'.tr(),
+                        'Sister'.tr(),
+                        'Grandmother'.tr(),
+                        'Grandfather'.tr(),
+                        ' Grandson'.tr(),
+                        'Granddaughter'.tr(),
+                        'Husband'.tr(),
+                        'Wife'.tr(),
+                        'Son'.tr(),
+                        'Daughter'.tr(),
+                        'Aunt'.tr(),
+                        'Uncle'.tr(),
+                        'Niece'.tr(),
+                        'Nephew'.tr(),
+                        'Cousin'.tr(),
+                        'Mother-in-law'.tr(),
+                        'Father-in-law'.tr(),
+                        'Brother-in-law,'.tr(),
+                        'Sister-in-law'.tr(),
+                        'Stepfather'.tr(),
+                        'Stepmother'.tr(),
+                        'Stepbrother'.tr(),
+                        'Stepsister'.tr(),
+                        'Half-brother'.tr(),
+                        'Half-sister'.tr()
                       ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -272,7 +273,7 @@ class _AddPersonState extends State<AddPerson> {
                         );
                       }).toList(),
                       decoration: InputDecoration(
-                        labelText: '   You are...',
+                        labelText: '   You are...'.tr(),
                         labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
                         border: OutlineInputBorder(
                           borderSide: const BorderSide(color: Colors.grey),
@@ -280,7 +281,7 @@ class _AddPersonState extends State<AddPerson> {
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        hintText: '  Select Relationility',
+                        hintText: '  Select Relationility'.tr(),
                         hintStyle: const TextStyle(color: Colors.grey),
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 12),
@@ -294,7 +295,7 @@ class _AddPersonState extends State<AddPerson> {
                         FilteringTextInputFormatter.digitsOnly
                       ],
                       decoration: InputDecoration(
-                        labelText: 'Phone Number',
+                        labelText: 'Phone Number'.tr(),
                         labelStyle: TextStyle(
                           color: Colors.grey[600],
                         ),
@@ -316,7 +317,7 @@ class _AddPersonState extends State<AddPerson> {
                       controller: descriptionForPatientController,
                       maxLines: 5, // Set max lines to 3
                       decoration: InputDecoration(
-                        labelText: 'Description For Patient',
+                        labelText: 'Description For Patient'.tr(),
                         labelStyle: TextStyle(
                           color: Colors.grey[600],
                         ),
@@ -368,7 +369,7 @@ class _AddPersonState extends State<AddPerson> {
                           borderRadius: BorderRadius.circular(27.0),
                         ),
                       ),
-                      child: const Text('Pick Location Here'),
+                      child:  Text('Pick Location Here'.tr()),
                     ),
                     
                     const SizedBox(height: 10),
@@ -381,7 +382,7 @@ class _AddPersonState extends State<AddPerson> {
                           borderRadius: BorderRadius.circular(27.0),
                         ),
                       ),
-                      child: Text('Add'),
+                      child: Text('Add'.tr()),
                     ),
                   ],
                 ),

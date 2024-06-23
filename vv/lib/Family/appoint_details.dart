@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:vv/models/appoint.dart';
@@ -99,7 +100,7 @@ class _AppointDetailsScreenState extends State<AppointDetailsScreen> {
             ),
             Center(
               child: Text(
-                'Appointments',
+                'Appointments'.tr(),
                 style: TextStyle(
                   fontSize: 30,
                 ),
@@ -115,14 +116,14 @@ class _AppointDetailsScreenState extends State<AppointDetailsScreen> {
               padding: const EdgeInsets.only(left: 16.0),
               child: TextField(
                 controller: _locationController,
-                decoration: InputDecoration(labelText: 'Location'),
+                decoration: InputDecoration(labelText: 'Location'.tr()),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 16.0),
               child: TextField(
                 controller: _noteController,
-                decoration: InputDecoration(labelText: 'Notes'),
+                decoration: InputDecoration(labelText: 'Notes'.tr()),
               ),
             ),
             SizedBox(height: 16.0),
@@ -135,7 +136,7 @@ class _AppointDetailsScreenState extends State<AppointDetailsScreen> {
                     child: TextField(
                       controller: startTimeController,
                       decoration: InputDecoration(
-                        labelText: 'Start Time',
+                        labelText: 'Start Time'.tr(),
                         suffixIcon: Icon(
                             Icons.timer), // Optional: adds timer icon as suffix
                       ),
@@ -151,7 +152,7 @@ class _AppointDetailsScreenState extends State<AppointDetailsScreen> {
                     child: TextField(
                       controller: endTimeController,
                       decoration: InputDecoration(
-                        labelText: 'End Time',
+                        labelText: 'End Time'.tr(),
                         suffixIcon: Icon(
                             Icons.timer), // Optional: adds timer icon as suffix
                       ),

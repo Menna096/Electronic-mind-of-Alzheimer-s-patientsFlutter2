@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:sizer/sizer.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/patient_list.dart';
 import 'package:vv/Family/ForgotPasswordfamily.dart';
 import 'package:vv/Family/Registerfamily/registerfamily.dart';
@@ -258,118 +259,139 @@ class _LoginPageAllState extends State<LoginPageAll> {
       key: scaffoldMessengerKey,
       child: Scaffold(
         backgroundColor: Color(0xff3B5998),
-        body: Stack(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xffFFFFFF),
-                    Color(0xff3B5998),
-                  ],
-                ),
-              ),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 50.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 110),
-                      Text(
-                        context.tr(StringManager.Welcome),
-                        style: TextStyle(
-                          fontSize: 58,
-                          fontFamily: 'LilitaOne',
-                          foreground: Paint()
-                            ..shader = LinearGradient(
-                              colors: [Colors.blue[400]!, Colors.indigo[400]!],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ).createShader(
-                              Rect.fromLTWH(
-                                  0, 0, 400, 10), // Adjust the size as needed
-                            ),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 50.0),
-                      _buildEmailTextField(),
-                      SizedBox(height: 11),
-                      _buildPasswordTextField(),
-                      SizedBox(height: 50.0),
-                      _isLoading
-                          ? CircularProgressIndicator()
-                          : _buildLoginButton(),
-                      SizedBox(height: 10.0),
-                      _buildRegisterNowButton(),
-                      SizedBox(height: 10.0),
-                      _buildForgotPasswordButton(),
-                      SizedBox(height: 10.0),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            _buildLanguageIconButton(),
+        body:Stack(
+  children: [
+    Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xffFFFFFF),
+            Color(0xff3B5998),
           ],
         ),
+      ),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 5.w, // Responsive horizontal padding
+            vertical: 5.h,   // Responsive vertical padding
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 13.h), // Responsive height
+              Text(
+                context.tr(StringManager.Welcome),
+                style: TextStyle(
+                  fontSize: 25.sp, // Responsive font size
+                  fontFamily: 'LilitaOne',
+                  foreground: Paint()
+                    ..shader = LinearGradient(
+                      colors: [Colors.blue[400]!, Colors.indigo[400]!],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ).createShader(
+                      Rect.fromLTWH(0, 0, 20.w, 0.5.h), // Adjust the size responsively
+                    ),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 5.h), // Responsive height
+              _buildEmailTextField(),
+              SizedBox(height: 1.h), // Responsive height
+              _buildPasswordTextField(),
+              SizedBox(height: 5.h), // Responsive height
+              _isLoading
+                  ? CircularProgressIndicator()
+                  : _buildLoginButton(),
+              SizedBox(height: 6.h), // Responsive height
+              _buildRegisterNowButton(),
+              SizedBox(height: 1.h), // Responsive height
+              _buildForgotPasswordButton(),
+              SizedBox(height: 1.h), // Responsive height
+            ],
+          ),
+        ),
+      ),
+    ),
+    _buildLanguageIconButton(),
+  ],
+),
+
       ),
     );
   }
 
   Widget _buildEmailTextField() {
-    return TextFormField(
-      controller: _emailController,
-      decoration: InputDecoration(
-        hintText: context.tr(StringManager.EmailAddress),
-        prefixIcon: Icon(
-          Icons.email,
-          color: Color.fromARGB(255, 60, 111, 212),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 1.h),
+      child: TextFormField(
+        controller: _emailController,
+        decoration: InputDecoration(
+          hintText: context.tr(StringManager.EmailAddress),
+          hintStyle: TextStyle(fontSize: 10.sp),
+          prefixIcon: Icon(
+            Icons.email,
+            size: 6.w, // Adjust the icon size responsively
+            color: Color.fromARGB(255, 60, 111, 212),
+          ),
+          filled: true,
+          fillColor: Colors.white.withOpacity(0.2),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
+            borderSide: BorderSide.none,
+          ),
+          errorText: _emailErrorText,
+          errorStyle: TextStyle(
+              fontSize: 10.sp), // Adjust error text font size responsively
         ),
-        filled: true,
-        fillColor: Colors.white.withOpacity(0.2),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25.0),
-          borderSide: BorderSide.none,
-        ),
-        errorText: _emailErrorText,
+        style: TextStyle(
+            fontSize: 12.sp), // Adjust the input text font size responsively
       ),
     );
   }
 
   Widget _buildPasswordTextField() {
-    return TextFormField(
-      obscureText: !_isPasswordVisible,
-      controller: _passwordController,
-      decoration: InputDecoration(
-        hintText: context.tr(StringManager.password),
-        prefixIcon: Icon(
-          Icons.lock,
-          color: Color.fromARGB(255, 60, 111, 212),
-        ),
-        suffixIcon: IconButton(
-          onPressed: () {
-            setState(() {
-              _isPasswordVisible = !_isPasswordVisible;
-            });
-          },
-          icon: Icon(
-            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-            color: Color.fromARGB(255, 229, 236, 251),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 1.h),
+      child: TextFormField(
+        obscureText: !_isPasswordVisible,
+        controller: _passwordController,
+        decoration: InputDecoration(
+          hintText: context.tr(StringManager.password),
+          hintStyle: TextStyle(fontSize: 10.sp),
+          prefixIcon: Icon(
+            Icons.lock,
+            size: 6.w, // Adjust the icon size responsively
+            color: Color.fromARGB(255, 60, 111, 212),
           ),
+          suffixIcon: IconButton(
+            onPressed: () {
+              setState(() {
+                _isPasswordVisible = !_isPasswordVisible;
+              });
+            },
+            icon: Icon(
+              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+              size: 6.w, // Adjust the icon size responsively
+              color: Color.fromARGB(255, 229, 236, 251),
+            ),
+          ),
+          filled: true,
+          fillColor: Colors.white.withOpacity(0.2),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
+            borderSide: BorderSide.none,
+          ),
+          errorText: _passwordErrorText,
+          errorStyle: TextStyle(
+              fontSize: 10.sp), // Adjust error text font size responsively
         ),
-        filled: true,
-        fillColor: Colors.white.withOpacity(0.2),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25.0),
-          borderSide: BorderSide.none,
-        ),
-        errorText: _passwordErrorText,
+        style: TextStyle(
+            fontSize: 12.sp), // Adjust the input text font size responsively
       ),
     );
   }
@@ -388,11 +410,13 @@ class _LoginPageAllState extends State<LoginPageAll> {
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 145.0, vertical: 15.0),
+        padding: EdgeInsets.symmetric(
+            horizontal: 20.w, vertical: 2.h), // Adjust padding responsively
         textStyle: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 81, 122, 203)),
+          fontSize: 14.sp, // Adjust font size responsively
+          fontWeight: FontWeight.bold,
+          color: Color.fromARGB(255, 81, 122, 203),
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.0),
         ),
@@ -404,86 +428,96 @@ class _LoginPageAllState extends State<LoginPageAll> {
   }
 
   Widget _buildRegisterNowButton() {
-    return TextButton(
-      onPressed: () {
-        TokenManager.deleteToken();
-        Navigator.push(
-          context,
-          _createRoute(RegisterFamily()),
-        );
-      },
-      style: TextButton.styleFrom(
-        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
-      ),
-      child: RichText(
-        text: TextSpan(
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-          ),
-          children: <TextSpan>[
-            TextSpan(
-                text: context.tr(StringManager.donthaveanaccount),
-                style: TextStyle(color: Colors.white)),
-            TextSpan(
-              text: context.tr(StringManager.registerNow),
-              style: TextStyle(
-                fontFamily: 'Outfit',
-                color: Color.fromARGB(255, 20, 66, 158),
-              ),
-            ),
-          ],
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 1.h),
+      child: TextButton(
+        onPressed: () {
+          TokenManager.deleteToken();
+          Navigator.push(
+            context,
+            _createRoute(RegisterFamily()),
+          );
+        },
+        style: TextButton.styleFrom(
+          foregroundColor: const Color.fromARGB(255, 255, 255, 255),
         ),
-        textAlign: TextAlign.center,
+        child: RichText(
+          text: TextSpan(
+            style: TextStyle(
+              fontSize: 12.sp, // Adjust font size responsively
+              fontWeight: FontWeight.bold,
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                text: context.tr(StringManager.donthaveanaccount),
+                style: TextStyle(color: Colors.white),
+              ),
+              TextSpan(
+                text: context.tr(StringManager.registerNow),
+                style: TextStyle(
+                  fontFamily: 'Outfit',
+                  fontSize: 12.sp, // Adjust font size responsively
+                  color: Color.fromARGB(255, 20, 66, 158),
+                ),
+              ),
+            ],
+          ),
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }
 
   Widget _buildForgotPasswordButton() {
-    return TextButton(
-      onPressed: () {
-        TokenManager.deleteToken();
-        Navigator.push(
-          context,
-          _createRoute(ForgotPasswordfamily()),
-        );
-      },
-      style: TextButton.styleFrom(
-        foregroundColor: Colors.white,
-      ),
-      child: RichText(
-        text: TextSpan(
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-          ),
-          children: <TextSpan>[
-            TextSpan(
-                text: context.tr(StringManager.Help),
-                style: TextStyle(color: Colors.white)),
-            TextSpan(
-              text: context.tr(StringManager.ForgotPassword),
-              style: TextStyle(
-                fontFamily: 'Outfit',
-                color: Color.fromARGB(255, 17, 59, 143),
-              ),
-            ),
-          ],
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 1.h),
+      child: TextButton(
+        onPressed: () {
+          TokenManager.deleteToken();
+          Navigator.push(
+            context,
+            _createRoute(ForgotPasswordfamily()),
+          );
+        },
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.white,
         ),
-        textAlign: TextAlign.center,
+        child: RichText(
+          text: TextSpan(
+            style: TextStyle(
+              fontSize: 12.sp, // Adjust font size responsively
+              fontWeight: FontWeight.bold,
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                text: context.tr(StringManager.Help),
+                style: TextStyle(color: Colors.white),
+              ),
+              TextSpan(
+                text: context.tr(StringManager.ForgotPassword),
+                style: TextStyle(
+                  fontFamily: 'Outfit',
+                  fontSize: 12.sp, // Adjust font size responsively
+                  color: Color.fromARGB(255, 17, 59, 143),
+                ),
+              ),
+            ],
+          ),
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }
 
   Widget _buildLanguageIconButton() {
     return Positioned(
-      top: 50.0,
-      left: 20.0,
+      top: 5.h, // Adjust position relative to screen height
+      left: 5.w, // Adjust position relative to screen width
       child: IconButton(
         icon: Icon(
           Icons.language,
           color: Color.fromARGB(177, 28, 80, 183),
-          size: 30,
+          size: 8.w, // Adjust icon size responsively based on screen width
         ),
         onPressed: () {
           _showLanguageMenu();
@@ -497,10 +531,11 @@ class _LoginPageAllState extends State<LoginPageAll> {
       context: context,
       builder: (context) => Dialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(35.0), // Rounded corners
+          borderRadius: BorderRadius.circular(
+              8.w), // Rounded corners with responsive border radius
         ),
         child: Container(
-          padding: EdgeInsets.all(25.0),
+          padding: EdgeInsets.all(4.w), // Responsive padding
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -508,17 +543,19 @@ class _LoginPageAllState extends State<LoginPageAll> {
               Text(
                 context.tr(StringManager.ChooseLanguage),
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 5.w, // Responsive font size
                   fontFamily: 'Acme',
                 ),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: 2.h), // Responsive height
               ListTile(
                 leading: Icon(
                   Icons.language,
                   color: Color.fromARGB(255, 17, 59, 143),
+                  size: 8.w, // Responsive icon size
                 ),
-                title: Text('English'),
+                title: Text('English',
+                    style: TextStyle(fontSize: 4.w)), // Responsive font size
                 onTap: () {
                   context.setLocale(Locale('en'));
                   Navigator.of(context).pop();
@@ -528,19 +565,26 @@ class _LoginPageAllState extends State<LoginPageAll> {
                 leading: Icon(
                   Icons.language,
                   color: Color.fromARGB(255, 17, 59, 143),
+                  size: 8.w, // Responsive icon size
                 ),
-                title: Text('العربية'),
+                title: Text('العربية',
+                    style: TextStyle(fontSize: 4.w)), // Responsive font size
                 onTap: () {
                   context.setLocale(Locale('ar'));
                   Navigator.of(context).pop();
                 },
               ),
-              SizedBox(height: 16),
+              SizedBox(height: 2.h), // Responsive height
               Center(
                 child: ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 8.w, vertical: 2.h), // Responsive padding
+                  ),
                   child: Text(
                     context.tr(StringManager.Cancel),
+                    style: TextStyle(fontSize: 4.w), // Responsive font size
                   ),
                 ),
               ),
