@@ -1,7 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.vv">
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
+  <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -27,19 +29,9 @@
 
 
     <application
-        android:enableOnBackInvokedCallback="true"
-        android:label="Elder Helper"
+        android:label="vv"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
-        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
-        <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED"/>
-        <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
-        <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-        <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
-        </intent-filter>
-        </receiver>
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -66,7 +58,5 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <meta-data android:name="com.google.android.geo.API_KEY"
-                  android:value="AIzaSyCB4OrB7PgyXUrxNgf3-IZVsaHPpyt-kBM"/>
     </application>
 </manifest>

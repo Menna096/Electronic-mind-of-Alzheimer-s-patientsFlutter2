@@ -1,19 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:chat_bot/api/chat_bot_api_helper.dart';
-import 'package:chat_bot/api/models/response_models.dart';
-import 'package:chat_bot/chat_bot_errors.dart';
-import 'package:chat_bot/chatbot_secrets.dart';
-import 'package:chat_bot/helpers/logger.dart';
-import 'package:chat_bot/helpers/texts.dart';
 import 'package:http/http.dart' as http;
+import 'package:vv/Chatbot/api/chat_bot_api_helper.dart';
+import 'package:vv/Chatbot/api/models/response_models.dart';
+import 'package:vv/Chatbot/chat_bot_errors.dart';
+import 'package:vv/Chatbot/helpers/logger.dart';
+import 'package:vv/Chatbot/helpers/texts.dart';
 
 class PatientAPI {
   final helper = ApiHelper("Patient");
   final logger = Logger("PatientAPI");
-
-  Future<Map<String, dynamic>> simpleGetRequest({required String endpoint}) async {
+  final authToken = "هنا هنحط توكين ";
+  Future<Map<String, dynamic>> simpleGetRequest(
+      {required String endpoint}) async {
     try {
       final response = await http.get(
           // API endpoint
@@ -21,10 +21,13 @@ class PatientAPI {
           // Headers
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
-            "Authorization": authToken,
+            "Authorization": "هنا هنحط توكين ",
           });
       // * Handle the response
-      if (response.statusCode != 200) throw CBError(code: response.statusCode, message: Texts.errorOccurredWhileDoingAction);
+      if (response.statusCode != 200)
+        throw CBError(
+            code: response.statusCode,
+            message: Texts.errorOccurredWhileDoingAction);
       // * Return the response body
       return decodeJsonResponse(response.body);
     } catch (e) {
@@ -37,17 +40,20 @@ class PatientAPI {
     // * Resolve the endpoint
     final endpoint = helper.resolveEndpoint("RecognizeFaces");
     // * Create the request
-    final request = http.MultipartRequest('POST', endpoint)..files.add(await http.MultipartFile.fromPath('Image', imagePath));
+    final request = http.MultipartRequest('POST', endpoint)
+      ..files.add(await http.MultipartFile.fromPath('Image', imagePath));
     request.headers[HttpHeaders.authorizationHeader] = authToken;
     try {
       // * Send the request
       final response = await request.send();
       // * Handle the response
       final responseData = await response.stream.bytesToString();
-      logger.log("code: ${response.statusCode}, rawResponse: '${responseData.trim()}'");
+      logger.log(
+          "code: ${response.statusCode}, rawResponse: '${responseData.trim()}'");
       final jsonResponse = decodeJsonResponse(responseData);
       if (response.statusCode == 200) {
-        final List<RecognizedPerson> recognizedPersons = List.empty(growable: true);
+        final List<RecognizedPerson> recognizedPersons =
+            List.empty(growable: true);
         for (Map<String, dynamic> rawPerson in jsonResponse["personsInImage"]) {
           try {
             recognizedPersons.add(RecognizedPerson.fromJson(rawPerson));
@@ -56,7 +62,8 @@ class PatientAPI {
             continue;
           }
         }
-        logger.log("Recognized ${recognizedPersons.length} person in the photo.");
+        logger
+            .log("Recognized ${recognizedPersons.length} person in the photo.");
         return recognizedPersons;
       } else {
         // * Request failed
@@ -89,7 +96,9 @@ class PatientAPI {
             HttpHeaders.authorizationHeader: authToken,
           });
       // * Handle the response
-      if (response.statusCode != 200) throw CBError(code: response.statusCode, message: Texts.cantGetPatientProfile);
+      if (response.statusCode != 200)
+        throw CBError(
+            code: response.statusCode, message: Texts.cantGetPatientProfile);
       // * Return the response body
       return response.body;
     } catch (e) {
@@ -110,7 +119,10 @@ class PatientAPI {
         },
       );
       // * Handle the response
-      if (response.statusCode != 200) throw CBError(code: response.statusCode, message: Texts.errorOccurredWhileDoingAction);
+      if (response.statusCode != 200)
+        throw CBError(
+            code: response.statusCode,
+            message: Texts.errorOccurredWhileDoingAction);
       // * Return the response body
       return response.body;
     } catch (e) {
@@ -119,7 +131,8 @@ class PatientAPI {
     }
   }
 
-  Future<bool> updatePatientProfile(String phoneNumber, int age, String diagnosisDate, int maximumDistance) async {
+  Future<bool> updatePatientProfile(String phoneNumber, int age,
+      String diagnosisDate, int maximumDistance) async {
     // * Validate if phone number length is > 1
     if (phoneNumber.isEmpty) throw CBError(message: Texts.invalidPhoneNumber);
     // Make post request
@@ -154,7 +167,10 @@ class PatientAPI {
             HttpHeaders.authorizationHeader: authToken,
           });
       // * Handle the response
-      if (response.statusCode != 200) throw CBError(code: response.statusCode, message: Texts.errorOccurredWhileDoingAction);
+      if (response.statusCode != 200)
+        throw CBError(
+            code: response.statusCode,
+            message: Texts.errorOccurredWhileDoingAction);
       // * Return the response body
       return response.body;
     } catch (e) {
@@ -189,7 +205,8 @@ class PatientAPI {
     // * Resolve the endpoint
     final endpoint = helper.resolveEndpoint("AskToSeeSecretFile");
     // * Create the request
-    final request = http.MultipartRequest('POST', endpoint)..files.add(await http.MultipartFile.fromPath('Video', videoPath));
+    final request = http.MultipartRequest('POST', endpoint)
+      ..files.add(await http.MultipartFile.fromPath('Video', videoPath));
     request.headers[HttpHeaders.authorizationHeader] = authToken;
     try {
       // * Send the request

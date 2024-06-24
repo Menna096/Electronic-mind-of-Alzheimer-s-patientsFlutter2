@@ -30,7 +30,7 @@ class ChatBot {
     }
   }
 
-  Future<Action?> identifyAction(String text) {
+  Future<ActionChatbot?> identifyAction(String text) {
     logger.log("identifyAction: Identifying action '$text'...");
     return ChatBotPluginPlatform.instance.identifyAction(text);
   }

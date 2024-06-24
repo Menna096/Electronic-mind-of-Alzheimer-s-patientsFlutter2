@@ -1,5 +1,6 @@
-import 'package:chat_bot/actions/actions.dart';
+
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:vv/Chatbot/actions/actions.dart';
 
 import 'chat_bot_method_channel.dart';
 
@@ -26,7 +27,7 @@ abstract class ChatBotPluginPlatform extends PlatformInterface {
 
   /// Gives text to the chat bot to be classified
   /// and returns the identified action to be done
-  Future<Action?> identifyAction(String text) {
+  Future<ActionChatbot?> identifyAction(String text) {
     throw UnimplementedError("identifyAction has not been implemented yet.");
   }
 

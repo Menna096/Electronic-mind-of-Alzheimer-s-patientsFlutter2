@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:chat_bot/chat/ui/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
@@ -12,6 +11,7 @@ import 'package:signalr_core/signalr_core.dart';
 import 'package:sizer/sizer.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:vv/Chatbot/chat/ui/chat_screen.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
 import 'package:vv/Patient/appoint.dart';
@@ -70,7 +70,8 @@ class _mainpatientState extends State<mainpatient> {
   late HubConnection appointmentHubConnection;
   List<Appointment> appointments = [];
 
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
   List<Reminder> reminders = [];
   late HubConnection medicineHubConnection;
 
@@ -84,7 +85,6 @@ class _mainpatientState extends State<mainpatient> {
     //initializeConnectionmedicine();
     //initializeNotificationsMedicine();
   }
-
 
   // void initializeConnectionmedicine() async {
   //   medicineHubConnection = HubConnectionBuilder()
@@ -404,7 +404,6 @@ class _mainpatientState extends State<mainpatient> {
   //   return appointment.notes;
   // }
 
-
   Future<void> _getDataFromToken() async {
     _token = await TokenManager.getToken();
     if (_token != null) {
@@ -415,7 +414,6 @@ class _mainpatientState extends State<mainpatient> {
       });
     }
   }
-
 
   // Future<void> initializeSignalR() async {
   //   final token = await TokenManager.getToken();
@@ -544,7 +542,9 @@ class _mainpatientState extends State<mainpatient> {
                   child: Text(
                     'Elder Helper',
                     style: TextStyle(
-                      fontSize: SizerUtil.deviceType == DeviceType.mobile ? 8.0.w : 44.0,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 8.0.w
+                          : 44.0,
                       fontFamily: 'Acme',
                       color: Color(0xFF0386D0),
                     ),
@@ -555,19 +555,23 @@ class _mainpatientState extends State<mainpatient> {
                 leading: Icon(
                   Icons.manage_accounts_rounded,
                   color: Color.fromARGB(255, 84, 134, 235),
-                  size: SizerUtil.deviceType == DeviceType.mobile ? 5.0.w : 24.0,
+                  size:
+                      SizerUtil.deviceType == DeviceType.mobile ? 5.0.w : 24.0,
                 ),
                 title: Text(
                   'Manage Profile',
                   style: TextStyle(
-                    fontSize: SizerUtil.deviceType == DeviceType.mobile ? 4.5.w : 20.0,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 4.5.w
+                        : 20.0,
                     color: Color(0xFF595858),
                   ),
                 ),
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PatientProfManage()),
+                    MaterialPageRoute(
+                        builder: (context) => PatientProfManage()),
                   );
                 },
               ),
@@ -575,12 +579,15 @@ class _mainpatientState extends State<mainpatient> {
                 leading: Icon(
                   Icons.logout,
                   color: Color.fromARGB(214, 209, 8, 8),
-                  size: SizerUtil.deviceType == DeviceType.mobile ? 5.0.w : 24.0,
+                  size:
+                      SizerUtil.deviceType == DeviceType.mobile ? 5.0.w : 24.0,
                 ),
                 title: Text(
                   'Log Out',
                   style: TextStyle(
-                    fontSize: SizerUtil.deviceType == DeviceType.mobile ? 4.5.w : 20.0,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 4.5.w
+                        : 20.0,
                     color: Color(0xFF595858),
                   ),
                 ),
@@ -610,15 +617,19 @@ class _mainpatientState extends State<mainpatient> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 2.0.h), // Responsive padding
+              padding: EdgeInsets.symmetric(
+                  horizontal: 4.0.w, vertical: 2.0.h), // Responsive padding
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start, // Ensure text starts from the top
+                crossAxisAlignment:
+                    CrossAxisAlignment.start, // Ensure text starts from the top
                 children: [
                   CircleAvatar(
                     radius: 12.w, // Responsive avatar radius
                     backgroundImage: NetworkImage(_photoUrl ?? ''),
                   ),
-                  SizedBox(width: 4.0.w), // Responsive spacing between avatar and text
+                  SizedBox(
+                      width:
+                          4.0.w), // Responsive spacing between avatar and text
                   Flexible(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -628,8 +639,10 @@ class _mainpatientState extends State<mainpatient> {
                           style: TextStyle(
                             fontSize: 3.w, // Responsive font size
                           ),
-                          maxLines: 1, // Ensure the text doesn't exceed one line
-                          overflow: TextOverflow.ellipsis, // Handle overflow with ellipsis
+                          maxLines:
+                              1, // Ensure the text doesn't exceed one line
+                          overflow: TextOverflow
+                              .ellipsis, // Handle overflow with ellipsis
                         ),
                         Text(
                           'To the Electronic mind',
@@ -652,7 +665,6 @@ class _mainpatientState extends State<mainpatient> {
                   ),
                 ],
               ),
-
             ),
             Expanded(
               child: Padding(
@@ -668,7 +680,9 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => AppointmentScreenPatient()),
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        AppointmentScreenPatient()),
                               );
                             },
                             child: Image.asset(
@@ -681,7 +695,8 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => MedicinesPage()),
+                                MaterialPageRoute(
+                                    builder: (context) => MedicinesPage()),
                               );
                             },
                             child: Image.asset(
@@ -699,7 +714,8 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => UnusualFamilyList()),
+                                MaterialPageRoute(
+                                    builder: (context) => UnusualFamilyList()),
                               );
                             },
                             child: Image.asset(
@@ -712,7 +728,8 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const ChatScreen()),
+                                MaterialPageRoute(
+                                    builder: (context) => const ChatScreen()),
                               );
                             },
                             child: Image.asset(
@@ -730,7 +747,8 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => Notes_View()),
+                                MaterialPageRoute(
+                                    builder: (context) => Notes_View()),
                               );
                             },
                             child: Image.asset(
@@ -743,7 +761,8 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => SecretFilePage()),
+                                MaterialPageRoute(
+                                    builder: (context) => SecretFilePage()),
                               );
                             },
                             child: Image.asset(
@@ -761,7 +780,8 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => ImageUploadScreen()),
+                                MaterialPageRoute(
+                                    builder: (context) => ImageUploadScreen()),
                               );
                             },
                             child: Image.asset(
@@ -774,7 +794,9 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => GalleryScreenPatient()),
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        GalleryScreenPatient()),
                               );
                             },
                             child: Image.asset(
@@ -792,7 +814,8 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const Home()),
+                                MaterialPageRoute(
+                                    builder: (context) => const Home()),
                               );
                             },
                             child: Image.asset(
@@ -803,7 +826,9 @@ class _mainpatientState extends State<mainpatient> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => LevelSelectionScreen()));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      LevelSelectionScreen()));
                             },
                             child: Image.asset(
                               'images/Games (1).png',
@@ -826,12 +851,16 @@ class _mainpatientState extends State<mainpatient> {
 }
 
 class HaversineCalculator {
-  static double haversine(double newLat1, double mainLat2, double newLon1, double mainLon2) {
+  static double haversine(
+      double newLat1, double mainLat2, double newLon1, double mainLon2) {
     const double r = 6371e3; // meters
     var dLat = _toRadians(mainLat2 - newLat1);
     var dLon = _toRadians(mainLon2 - newLon1);
 
-    var a = pow(sin(dLat / 2), 2) + cos(_toRadians(newLat1)) * cos(_toRadians(mainLat2)) * pow(sin(dLon / 2), 2);
+    var a = pow(sin(dLat / 2), 2) +
+        cos(_toRadians(newLat1)) *
+            cos(_toRadians(mainLat2)) *
+            pow(sin(dLon / 2), 2);
     var c = 2 * atan2(sqrt(a), sqrt(1 - a));
 
     var d = r * c;

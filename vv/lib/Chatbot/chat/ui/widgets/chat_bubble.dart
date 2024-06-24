@@ -1,9 +1,11 @@
 import 'dart:io';
 
-import 'package:chat_bot/api/models/response_models.dart';
-import 'package:chat_bot/chat/ui/widgets/chat_action_announcement_bubble.dart';
-import 'package:chat_bubbles/chat_bubbles.dart';
+
+import 'package:chat_bubbles/bubbles/bubble_normal_image.dart';
+import 'package:chat_bubbles/bubbles/bubble_special_three.dart';
 import 'package:flutter/material.dart';
+import 'package:vv/Chatbot/api/models/response_models.dart';
+import 'package:vv/Chatbot/chat/ui/widgets/chat_action_announcement_bubble.dart';
 
 import '../../models/message.dart';
 
