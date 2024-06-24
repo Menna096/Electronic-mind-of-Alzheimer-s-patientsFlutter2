@@ -60,7 +60,7 @@ dependencies:
   loading_btn: ^1.0.3
   jwt_decoder: ^2.0.1
   form_field_validator: ^1.1.0
-  intl: 0.18.1
+  intl: ^0.19.0
   flutter_secure_storage: ^9.0.0
   on_audio_query: ^2.9.0
   sqflite: ^2.3.2
@@ -102,10 +102,13 @@ dependencies:
   http_parser: ^4.0.2
   easy_localization: ^3.0.7
   responsive_sizer: ^3.3.1
-  
-  
-  
-  
+  android_alarm_manager_plus: ^4.0.3
+  chat_bot:
+    path: chat_bot
+
+
+
+
 
 dev_dependencies:
   flutter_test:
@@ -161,7 +164,7 @@ flutter:
     - lib/page/task_screens/assets/
     - lib/page/task_screens/assets/icon_small.png
     - lib/page/task_screens/assets/icons/
-    - lib/page/task_screens/assets/images/ 
+    - lib/page/task_screens/assets/images/
     - lib/page/task_screens/assets/icons/tablet.gif
     - images/appoinmentcare.png
     - images/appoinmentpat.png
@@ -183,16 +186,16 @@ flutter:
     - images/2.jpg
     - images/3.jpg
     - images/4.jpg
-    - images/5.jpg 
+    - images/5.jpg
     - images/robot.png
     - assets/
     - assets/translations/
-   
 
 
 
 
-   
+
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -233,8 +236,8 @@ flutter:
     - family: ProtestRiot
       fonts:
         - asset: fonts/ProtestRiot-Regular.ttf
-    
-        
+
+
   
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
