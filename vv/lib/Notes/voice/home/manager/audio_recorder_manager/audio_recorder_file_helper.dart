@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:vv/Notes/voice/home/model/voice_note_model.dart';
-import 'package:vv/Notes/voice/home/model/voice_note_model.dart';
 
 class AudioRecorderFileHelper{
   final String _recordsDirectoryName = "audio_records";

@@ -1,18 +1,14 @@
-import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:signalr_core/signalr_core.dart';
 import 'package:vv/Notes/cubits/Add_notes_cubit.dart';
 import 'package:vv/Notes/cubits/notes_cubit/notes_cubit.dart';
 import 'package:vv/Notes/views/widgets/Add_Note_Form.dart';
-import 'package:vv/map_location_picker.dart';
-import 'package:vv/utils/token_manage.dart';
 
 class AddNoteBottomSheet extends StatefulWidget {
-  const AddNoteBottomSheet({Key? key}) : super(key: key);
+  const AddNoteBottomSheet({super.key});
 
   @override
   State<AddNoteBottomSheet> createState() => _AddNoteBottomSheetState();

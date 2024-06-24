@@ -14,8 +14,6 @@ import 'package:vv/page/gallery_screen.dart';
 import 'package:vv/page/paitent_Id.dart';
 import 'package:vv/utils/token_manage.dart';
 import 'package:vv/widgets/background.dart';
-import 'package:vv/widgets/mainfamily.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class MainPageFamily extends StatefulWidget {
@@ -27,8 +25,8 @@ class MainPageFamily extends StatefulWidget {
 
 class _MainPageFamilyState extends State<MainPageFamily> {
   late HubConnection _connection;
-  String _currentLocation = "Waiting for location...".tr();
-  bool _locationReceived = false;
+  final String _currentLocation = "Waiting for location...".tr();
+  final bool _locationReceived = false;
   final FlutterLocalNotificationsPlugin _notificationsPlugin =
       FlutterLocalNotificationsPlugin();
   String? _token;
@@ -161,7 +159,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
   ),
   flexibleSpace: Container(
     decoration: BoxDecoration(
-      gradient: LinearGradient(
+      gradient: const LinearGradient(
         colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
@@ -171,7 +169,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
       ),
       boxShadow: [
         BoxShadow(
-          color: Color.fromARGB(66, 55, 134, 190),
+          color: const Color.fromARGB(66, 55, 134, 190),
           offset: Offset(0, 1.h), // Responsive offset
           blurRadius: 1.5.h, // Responsive blur radius
         ),
@@ -251,7 +249,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => GalleryScreen()),
+                      MaterialPageRoute(builder: (context) => const GalleryScreen()),
                     );
                   },
                   child: Image.asset(
@@ -264,7 +262,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AddPatientScreen()),
+                      MaterialPageRoute(builder: (context) => const AddPatientScreen()),
                     );
                   },
                   child: Image.asset(
@@ -282,7 +280,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => AssignPatientPage()),
+                      MaterialPageRoute(builder: (context) => const AssignPatientPage()),
                     );
                   },
                   child: Image.asset(
@@ -295,7 +293,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => PatientLocationsScreen()),
+                      MaterialPageRoute(builder: (context) => const PatientLocationsScreen()),
                     );
                   },
                   child: Image.asset(
@@ -313,7 +311,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ReportListScreenFamily()),
+                      MaterialPageRoute(builder: (context) => const ReportListScreenFamily()),
                     );
                   },
                   child: Image.asset(
@@ -326,7 +324,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => AppointListScreen()),
+                      MaterialPageRoute(builder: (context) => const AppointListScreen()),
                     );
                   },
                   child: Image.asset(
@@ -360,7 +358,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                 style: TextStyle(
                   fontSize: 8.w, // Responsive font size
                   fontFamily: 'Acme',
-                  color: Color(0xFF0386D0),
+                  color: const Color(0xFF0386D0),
                 ),
               ),
             ),
@@ -370,7 +368,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
             'Add Patient'.tr(),
             onTap: () {
               Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => update()));
+                  .push(MaterialPageRoute(builder: (context) => const update()));
             },
           ),
           buildDrawerItem(
@@ -378,7 +376,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
             'Add Person Without Account'.tr(),
             onTap: () {
               Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => AddPerson()));
+                  .push(MaterialPageRoute(builder: (context) => const AddPerson()));
             },
           ),
           buildDrawerlogout(
@@ -387,7 +385,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
             onTap: () {
               TokenManager.deleteToken();
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => LoginPageAll()));
+                  MaterialPageRoute(builder: (context) => const LoginPageAll()));
             },
           ),
         ],
@@ -400,14 +398,14 @@ Widget buildDrawerItem(IconData icon, String title, {Function? onTap}) {
   return ListTile(
     leading: Icon(
       icon,
-      color: Color(0xFF0386D0),
+      color: const Color(0xFF0386D0),
       size: 8.w, // Responsive icon size
     ),
     title: Text(
       title,
       style: TextStyle(
         fontSize: 3.5.w, // Responsive font size
-        color: Color(0xFF595858),
+        color: const Color(0xFF595858),
       ),
     ),
     onTap: onTap as void Function()?,
@@ -418,14 +416,14 @@ Widget buildDrawerlogout(IconData icon, String title, {Function? onTap}) {
   return ListTile(
     leading: Icon(
       icon,
-      color: Color.fromARGB(255, 174, 5, 5),
+      color: const Color.fromARGB(255, 174, 5, 5),
       size: 8.w, // Responsive icon size
     ),
     title: Text(
       title,
       style: TextStyle(
         fontSize: 3.5.w, // Responsive font size
-        color: Color(0xFF595858),
+        color: const Color(0xFF595858),
       ),
     ),
     onTap: onTap as void Function()?,

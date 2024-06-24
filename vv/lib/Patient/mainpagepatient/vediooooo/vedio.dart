@@ -5,11 +5,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'dart:math';
 
-import 'package:signalr_core/signalr_core.dart';
-import 'package:vv/utils/token_manage.dart';
-import 'package:geolocator/geolocator.dart';
 
 class VideoCaptureScreen extends StatefulWidget {
+  const VideoCaptureScreen({super.key});
+
   @override
   _VideoCaptureScreenState createState() => _VideoCaptureScreenState();
 }
@@ -52,17 +51,17 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('Confirm Upload'),
-          content: Text('Are you sure you want to send this video?'),
+          title: const Text('Confirm Upload'),
+          content: const Text('Are you sure you want to send this video?'),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(dialogContext).pop();
               },
             ),
             TextButton(
-              child: Text('Send'),
+              child: const Text('Send'),
               onPressed: () {
                 Navigator.of(dialogContext).pop();
                 _uploadFile(filePath);
@@ -93,14 +92,14 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
         print('Video uploaded successfully');
         // Display a SnackBar with the success message
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Video uploaded successfully'),
           ),
         );
       } else {
         print('Failed to upload video');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Failed to upload video,Try Again'),
           ),
         );
@@ -128,7 +127,7 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Video Capture Example'),
+        title: const Text('Video Capture Example'),
       ),
       body: Center(
         child: Column(
@@ -138,19 +137,19 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
               onPressed: () {
                 _addMedia();
               },
-              child: Text('Capture Video'),
+              child: const Text('Capture Video'),
             ),
-            SizedBox(height: 20), // Add some space between the buttons
+            const SizedBox(height: 20), // Add some space between the buttons
             ElevatedButton(
               onPressed: () {
                 generateRandomText(); // Call the function to generate random text
               },
-              child: Text('Generate Random Text'),
+              child: const Text('Generate Random Text'),
             ),
-            SizedBox(height: 20), // Add some space between the buttons
+            const SizedBox(height: 20), // Add some space between the buttons
             Text(
               randomText, // Display the random text
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
           ],
         ),

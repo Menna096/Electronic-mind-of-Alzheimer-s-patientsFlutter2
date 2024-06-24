@@ -6,11 +6,11 @@ class TimeSelectionContainer extends StatelessWidget {
   final TimeOfDay? time;
 
   const TimeSelectionContainer({
-    Key? key,
+    super.key,
     required this.label,
     required this.onPressed,
     required this.time,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

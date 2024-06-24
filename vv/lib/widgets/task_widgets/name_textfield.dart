@@ -4,7 +4,7 @@ class TaskNameTextField extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
 
-  const TaskNameTextField({
+  const TaskNameTextField({super.key, 
     required this.controller,
     required this.labelText,
   });

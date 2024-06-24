@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:signalr_core/signalr_core.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/models/media_item.dart';
 import 'package:vv/page/description_screen.dart';
 import 'package:vv/page/full_screen_viewer.dart';
-import 'package:vv/utils/token_manage.dart';
 import 'package:vv/widgets/background.dart';
-import 'package:vv/widgets/mainfamily.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:io'; // Import for File class
 
 class GalleryScreen extends StatefulWidget {
+  const GalleryScreen({super.key});
+
   @override
   _GalleryScreenState createState() => _GalleryScreenState();
 }
@@ -156,15 +152,15 @@ class _GalleryScreenState extends State<GalleryScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => MainPageFamily()),
+              MaterialPageRoute(builder: (context) => const MainPageFamily()),
             ); // Go back to the previous page
           },
         ),
-        title: Text(
+        title: const Text(
           "Pictures and Videos",
           style: TextStyle(
             fontFamily: 'LilitaOne',
@@ -173,7 +169,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -191,7 +187,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
@@ -216,7 +212,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                         mediaItem.type == MediaType.image 
                             ? Image.network(mediaItem.path, fit: BoxFit.cover)
                             : const DecoratedBox(
-                                decoration: const BoxDecoration(
+                                decoration: BoxDecoration(
                                   image: DecorationImage(
                                     image: AssetImage(
                                         'images/vid.png'), 
@@ -249,7 +245,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
 // Widget for playing local videos (using the video_player package)
 class VideoPlayerWidget extends StatefulWidget {
   final String filePath;
-  VideoPlayerWidget({required this.filePath});
+  const VideoPlayerWidget({super.key, required this.filePath});
 
   @override
   _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();

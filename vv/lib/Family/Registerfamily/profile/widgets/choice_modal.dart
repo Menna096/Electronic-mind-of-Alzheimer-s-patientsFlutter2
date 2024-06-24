@@ -57,7 +57,7 @@ class _ChoiceModalState extends State<ChoiceModal> {
               Text(
                 'Profile Photo'.tr(),
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 18
                 ),
               ),
@@ -70,7 +70,7 @@ class _ChoiceModalState extends State<ChoiceModal> {
                   } 
                   : Navigator.of(context).pop, 
                 icon: const Icon(Icons.delete),
-                color: Theme.of(context).colorScheme.onBackground.withOpacity(0.6),
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
               )
             ],
           ),

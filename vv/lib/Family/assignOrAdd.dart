@@ -16,7 +16,7 @@ class _assign_addState extends State<assign_add> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _showOptionsDialog();
     });
   }
@@ -31,27 +31,27 @@ class _assign_addState extends State<assign_add> {
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: Container(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Icon(
+                const Icon(
                   Icons.info_outline,
                   size: 50,
                   color: Colors.blue,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   context.tr(StringManager.assignpat),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -69,7 +69,7 @@ class _assign_addState extends State<assign_add> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => assignPatient()),
+                              builder: (context) => const assignPatient()),
                         );
                       },
                     ),
@@ -86,7 +86,7 @@ class _assign_addState extends State<assign_add> {
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => Addpat()),
+                          MaterialPageRoute(builder: (context) => const Addpat()),
                         );
                       },
                     ),
@@ -107,7 +107,7 @@ class _assign_addState extends State<assign_add> {
         child: Center(
           child: Text(
            context.tr(StringManager.Nopatientsassignedyet),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 24,
               color: Colors.white,
             ),

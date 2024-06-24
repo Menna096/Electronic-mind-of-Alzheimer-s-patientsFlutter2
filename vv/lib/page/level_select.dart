@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart'; // Assuming you have imported Dio for network requests
+// Assuming you have imported Dio for network requests
 import 'package:vv/api/login_api.dart';
 import 'package:vv/page/game_history.dart';
 import 'package:vv/page/memory_game.dart';
-import 'package:vv/widgets/background.dart';
 
 class LevelSelectionScreen extends StatefulWidget {
+  const LevelSelectionScreen({super.key});
+
   @override
   _LevelSelectionScreenState createState() => _LevelSelectionScreenState();
 }
@@ -26,7 +27,7 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
     fetchCurrentAndMaxScore();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 5),
+      duration: const Duration(seconds: 5),
     )..addListener(() {
         setState(() {
           _position += 1;
@@ -74,7 +75,7 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff3B5998),
+      backgroundColor: const Color(0xff3B5998),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Stack(
@@ -82,7 +83,7 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
               // Background with animated circular shapes
               Positioned.fill(
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [Colors.white, Color(0xff3B5998)],
                       begin: Alignment.topLeft,
@@ -92,7 +93,7 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                 ),
               ),
               AnimatedPositioned(
-                duration: Duration(seconds: 1),
+                duration: const Duration(seconds: 1),
                 top: _position,
                 left: -100,
                 child: CircleAvatar(
@@ -101,7 +102,7 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                 ),
               ),
               AnimatedPositioned(
-                duration: Duration(seconds: 1),
+                duration: const Duration(seconds: 1),
                 bottom: -_position,
                 right: -100,
                 child: CircleAvatar(
@@ -134,7 +135,7 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 ).createShader(
-                                  Rect.fromLTWH(0, 0, 400, 10),
+                                  const Rect.fromLTWH(0, 0, 400, 10),
                                 ),
                             ),
                           ),
@@ -142,20 +143,20 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              BackButton(),
+                              const BackButton(),
                               IconButton(
                                 onPressed: () {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => HistoryScreen(),
+                                      builder: (context) => const HistoryScreen(),
                                     ),
                                   );
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.history,
                                   size: 30,
-                                  color: const Color.fromARGB(255, 48, 48, 48),
+                                  color: Color.fromARGB(255, 48, 48, 48),
                                 ),
                               ),
                             ],
@@ -164,15 +165,15 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                           if (currentScore != null && maxScore != null)
                             Container(
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 233, 247, 255),
+                                color: const Color.fromARGB(255, 233, 247, 255),
                                 borderRadius: BorderRadius.circular(20),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Color.fromARGB(136, 69, 121, 173)
+                                    color: const Color.fromARGB(136, 69, 121, 173)
                                         .withOpacity(0.3),
                                     spreadRadius: 3,
                                     blurRadius: 4,
-                                    offset: Offset(-1, 5),
+                                    offset: const Offset(-1, 5),
                                   ),
                                 ],
                               ),
@@ -181,7 +182,7 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                                 children: [
                                   Text(
                                     'Current Score: $currentScore',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 20,
                                       color: Color.fromARGB(255, 50, 58, 145),
                                       fontFamily: 'Outfit',
@@ -191,7 +192,7 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                                   const SizedBox(height: 10),
                                   Text(
                                     'Max Score: $maxScore',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 20,
                                       color: Color.fromARGB(255, 50, 58, 145),
                                       fontFamily: 'Outfit',
@@ -202,7 +203,7 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                               ),
                             ),
                           const SizedBox(height: 50),
-                          Text(
+                          const Text(
                             'Select a Level',
                             style: TextStyle(
                               fontSize: 30,
@@ -229,15 +230,15 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                                     ? recommendedLevel! + 1
                                     : 0,
                               ),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               buildLevelButton(context, "Easy (6 pairs)", 1),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               buildLevelButton(context, "Medium (12 pairs)", 2),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               buildLevelButton(context, "Hard (18 pairs)", 3),
                             ],
                           ),
-                          Spacer(),
+                          const Spacer(),
                         ],
                       ),
                     ),
@@ -265,7 +266,7 @@ Widget buildLevelButton(BuildContext context, String text, int level) {
           color: Colors.indigo.withOpacity(0.2),
           blurRadius: 10,
           spreadRadius: 3,
-          offset: Offset(0, 5),
+          offset: const Offset(0, 5),
         ),
       ],
     ),
@@ -275,14 +276,14 @@ Widget buildLevelButton(BuildContext context, String text, int level) {
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
-        padding: EdgeInsets.symmetric(vertical: 16),
+        padding: const EdgeInsets.symmetric(vertical: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
       ),
       child: Text(
         text,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
           color: Colors.white,

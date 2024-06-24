@@ -8,11 +8,11 @@ class TimePickerButton extends StatelessWidget {
   final bool isEditing;
 
   const TimePickerButton({
-    Key? key,
+    super.key,
     required this.controller,
     required this.label,
     required this.isEditing,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

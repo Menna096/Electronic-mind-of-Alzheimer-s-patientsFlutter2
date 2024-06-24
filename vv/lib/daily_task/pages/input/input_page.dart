@@ -17,7 +17,7 @@ import 'package:geolocator/geolocator.dart';
 import 'bloc/input_state.dart';
 
 class InputPage extends StatefulWidget {
-  const InputPage({Key? key}) : super(key: key);
+  const InputPage({super.key});
 
   @override
   State<InputPage> createState() => _InputPageState();
@@ -108,25 +108,25 @@ class _InputPageState extends State<InputPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff3B5998),
+      backgroundColor: const Color(0xff3B5998),
       appBar: AppBar(
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0),
           child: Container(
-            color: Color.fromARGB(255, 244, 244, 244),
+            color: const Color.fromARGB(255, 244, 244, 244),
             height: 1.0.h,
           ),
         ),
         scrolledUnderElevation: 0,
-        backgroundColor: Color.fromARGB(255, 150, 190, 251),
+        backgroundColor: const Color.fromARGB(255, 150, 190, 251),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children:  [
             Text(
               'New Task'.tr(),
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
-            SizedBox(width: 16.0), // Adjust spacing as needed
+            const SizedBox(width: 16.0), // Adjust spacing as needed
           ],
         ),
       ),
@@ -214,7 +214,7 @@ class _InputPageState extends State<InputPage> {
                                 style: TextStyle(
                                   fontSize: 18.sp,
                                   fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 221, 221, 221),
+                                  color: const Color.fromARGB(255, 221, 221, 221),
                                 ),
                               ),
                               SizedBox(height: 10.h),
@@ -239,7 +239,7 @@ class _InputPageState extends State<InputPage> {
                                         style: TextStyle(
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.bold,
-                                          color: Color.fromARGB(
+                                          color: const Color.fromARGB(
                                               255, 221, 221, 221),
                                         ),
                                       ),
@@ -247,7 +247,7 @@ class _InputPageState extends State<InputPage> {
                                         children: [
                                           Icon(
                                             Icons.calendar_today,
-                                            color: Color.fromARGB(
+                                            color: const Color.fromARGB(
                                                 255, 219, 219, 219),
                                             size: 18.w,
                                           ),
@@ -270,7 +270,7 @@ class _InputPageState extends State<InputPage> {
                                         style: TextStyle(
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.bold,
-                                          color: Color.fromARGB(
+                                          color: const Color.fromARGB(
                                               255, 221, 221, 221),
                                         ),
                                       ),
@@ -278,7 +278,7 @@ class _InputPageState extends State<InputPage> {
                                         children: [
                                           Icon(
                                             Icons.timer,
-                                            color: Color.fromARGB(
+                                            color: const Color.fromARGB(
                                                 255, 219, 219, 219),
                                             size: 18.w,
                                           ),
@@ -309,7 +309,7 @@ class _InputPageState extends State<InputPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color.fromARGB(255, 128, 171, 236),
+        backgroundColor: const Color.fromARGB(255, 128, 171, 236),
         onPressed: () {
           inputController.generateTask();
           Navigator.of(context)

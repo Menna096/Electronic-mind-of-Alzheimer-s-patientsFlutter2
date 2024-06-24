@@ -248,8 +248,8 @@ class _caregiverCodeState extends State<caregiverCode> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12.0),
-                boxShadow: [
-                  const BoxShadow(
+                boxShadow: const [
+                  BoxShadow(
                     color: Colors.black26,
                     blurRadius: 8.0,
                     offset: Offset(0, 2),
@@ -314,19 +314,19 @@ class _caregiverCodeState extends State<caregiverCode> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                mainpagecaregiver()), // Ensure this is the correct class name for your Main Page Family
+                                const mainpagecaregiver()), // Ensure this is the correct class name for your Main Page Family
                       );
                     },
-                    child: const Text(
-                      'Done',
-                      style: TextStyle(color: Colors.white),
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       fixedSize: const Size(150, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
+                    ),
+                    child: const Text(
+                      'Done',
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ],

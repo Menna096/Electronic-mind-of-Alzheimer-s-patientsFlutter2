@@ -5,8 +5,114 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3eebe781-5866-4eb5-913d-22a50a00c793" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/vv/assets/translations/ar.json" beforeDir="false" afterPath="$PROJECT_DIR$/vv/assets/translations/ar.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vv/assets/translations/en.json" beforeDir="false" afterPath="$PROJECT_DIR$/vv/assets/translations/en.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Caregiver/mainpagecaregiver/caregiver_id.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Caregiver/mainpagecaregiver/caregiver_id.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Caregiver/mainpagecaregiver/create_report.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Caregiver/mainpagecaregiver/create_report.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Caregiver/mainpagecaregiver/mainpagecaregiver.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Caregiver/mainpagecaregiver/mainpagecaregiver.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Caregiver/mainpagecaregiver/patient_allGame.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Caregiver/mainpagecaregiver/patient_allGame.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Caregiver/mainpagecaregiver/patient_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Caregiver/mainpagecaregiver/patient_list.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Caregiver/mainpagecaregiver/report_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Caregiver/mainpagecaregiver/report_list.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Caregiver/medical/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Caregiver/medical/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Caregiver/medical/pages/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Caregiver/medical/pages/home_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Caregiver/medical/pages/medicine_details/medicine_details.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Caregiver/medical/pages/medicine_details/medicine_details.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Caregiver/medical/pages/new_entry/new_entry_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Caregiver/medical/pages/new_entry/new_entry_bloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Caregiver/medical/pages/new_entry/new_entry_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Caregiver/medical/pages/new_entry/new_entry_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Caregiver/medical/pages/success_screen/success_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Caregiver/medical/pages/success_screen/success_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Chatbot/api/chat_bot_api.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Chatbot/api/chat_bot_api.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Chatbot/chat/ui/chat_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Chatbot/chat/ui/chat_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/AddPersonWithoutAccount.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/AddPersonWithoutAccount.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/FinalapponitDetail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/FinalapponitDetail.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/ForgotPasswordfamily.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/ForgotPasswordfamily.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/LoginPageAll.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/LoginPageAll.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/Registerfamily/profile/widgets/choice_modal.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/Registerfamily/profile/widgets/choice_modal.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/Registerfamily/profile/widgets/prof_pic.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/Registerfamily/profile/widgets/prof_pic.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/Registerfamily/registerfamily.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/Registerfamily/registerfamily.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/String_manager.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/String_manager.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/addApoint.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/addApoint.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/appoint_details.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/appoint_details.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/appoint_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/appoint_list.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/assignOrAdd.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/assignOrAdd.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/enterimage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/enterimage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/mainpagefamily/mainpagefamily.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/mainpagefamily/mainpagefamily.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/patientLocToday.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/patientLocToday.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/patient_reports.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/patient_reports.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/trainingForPreson.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/trainingForPreson.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Family/update.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Family/update.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/GPS/autocomplete_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/GPS/autocomplete_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/GPS/map_location_picker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/GPS/map_location_picker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/cubits/Add_notes_cubit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/cubits/Add_notes_cubit.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/views/Notes_view/Notes_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/views/Notes_view/Notes_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/AddNoteBottomSheet.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/AddNoteBottomSheet.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/Add_Note_Form.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/Add_Note_Form.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/ColorListView.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/ColorListView.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/CustomAppBar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/CustomAppBar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/CustomSearchIcon.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/CustomSearchIcon.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/Custom_Text_field.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/Custom_Text_field.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/Edit_Notes_View_Body.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/Edit_Notes_View_Body.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/NotesViewBody.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/NotesViewBody.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/Notes_List_View.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/Notes_List_View.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/custom_notes_item.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/custom_notes_item.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/custombutton.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/views/widgets/custombutton.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/voice/home/manager/audio_recorder_manager/audio_recorder_file_helper.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/voice/home/manager/audio_recorder_manager/audio_recorder_file_helper.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/voice/home/pages/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/voice/home/pages/home_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/voice/home/widgets/audio_player_view/audio_player_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/voice/home/widgets/audio_player_view/audio_player_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/voice/home/widgets/audio_recorder_view/audio_recorder_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/voice/home/widgets/audio_recorder_view/audio_recorder_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Notes/voice/home/widgets/voice_note_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Notes/voice/home/widgets/voice_note_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Patient/appoint.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Patient/appoint.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Patient/chatbot.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Patient/chatbot.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Patient/gpsssss/pages/google_map_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Patient/gpsssss/pages/google_map_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Patient/identifiy.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Patient/identifiy.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/all_families.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/all_families.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/fullscreenMedia.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/fullscreenMedia.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/mainpatient.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/mainpatient.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/patient_media.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/patient_media.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/patient_prof.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/patient_prof.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/vediooooo/details.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/vediooooo/details.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/vediooooo/secret_file.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/vediooooo/secret_file.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/vediooooo/show_sec.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/vediooooo/show_sec.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/vediooooo/vedio.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Patient/mainpagepatient/vediooooo/vedio.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/Patient/med.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/Patient/med.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/api/dio_ser.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/api/dio_ser.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/api/local_auth_api.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/api/local_auth_api.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/daily_task/pages/home/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/daily_task/pages/home/home_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/daily_task/pages/home/home_widgets.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/daily_task/pages/home/home_widgets.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/daily_task/pages/input/input_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/daily_task/pages/input/input_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/daily_task/pages/input/input_widgets.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/daily_task/pages/input/input_widgets.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/faceid.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/faceid.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/home/one.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/home/one.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/mainfingerprint.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/mainfingerprint.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/models/patient.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/models/patient.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/page/addpat.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/page/addpat.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/page/assignPatCare.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/page/assignPatCare.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/page/assign_patient.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/page/assign_patient.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/page/description_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/page/description_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/page/fingerprint_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/page/fingerprint_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/page/full_screen_viewer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/page/full_screen_viewer.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/page/gallery_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/page/gallery_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/page/game_history.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/page/game_history.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/page/level_select.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/page/level_select.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/page/manage_patient.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/page/manage_patient.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/page/memory_game.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/page/memory_game.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/page/paitent_Id.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/page/paitent_Id.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/page/video_player_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/page/video_player_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/utils/game_time_manage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/utils/game_time_manage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/utils/signup_logic.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/utils/signup_logic.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/utils/storage_manage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/utils/storage_manage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/utils/token_manage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/utils/token_manage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/widgets/add/get_code.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/widgets/add/get_code.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/widgets/background.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/widgets/background.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/widgets/backgroundd.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/widgets/backgroundd.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/widgets/bottomSheet.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/widgets/bottomSheet.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/widgets/custom_Textfield.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/widgets/custom_Textfield.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/widgets/imagefingerandface.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/widgets/imagefingerandface.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/widgets/language_button.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/widgets/language_button.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/widgets/task_widgets/Edit_timepicker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/widgets/task_widgets/Edit_timepicker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/widgets/task_widgets/add_button.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/widgets/task_widgets/add_button.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/widgets/task_widgets/dayselect.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/widgets/task_widgets/dayselect.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/widgets/task_widgets/name_textfield.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/widgets/task_widgets/name_textfield.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/lib/widgets/task_widgets/timeselectcontainer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/vv/lib/widgets/task_widgets/timeselectcontainer.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vv/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vv/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,8 +137,8 @@
     "RunOnceActivity.cidr.known.project.marker": "true",
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
-    "last_opened_file_path": "D:/Electronic-mind-of-Alzheimer-s-patients/Electronic-mind-of-Alzheimer-s-patientsFlutter2",
-    "settings.editor.selected.configurable": "configurable.group.language",
+    "last_opened_file_path": "D:/Electronic-mind-of-Alzheimer-s-patients/Electronic-mind-of-Alzheimer-s-patientsFlutter2/vv",
+    "settings.editor.selected.configurable": "AndroidSdkUpdater",
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>

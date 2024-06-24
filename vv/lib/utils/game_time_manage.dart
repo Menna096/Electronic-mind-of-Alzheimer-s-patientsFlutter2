@@ -16,7 +16,7 @@ class TimerManager {
   }
 
   void start() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _secondsLeft--;
       if (_secondsLeft <= 0) {
         stop();

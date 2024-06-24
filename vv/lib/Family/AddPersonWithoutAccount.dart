@@ -4,15 +4,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart'; // Import for input formatters
-import 'package:vv/Family/Registerfamily/registerfamily.dart';
-import 'package:vv/GPS/map_location_picker.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
-import 'package:vv/Family/trainingForPreson.dart';
 import 'package:vv/map_location_picker.dart';
-import 'package:vv/widgets/backbutton.dart';
-import 'package:vv/widgets/custom_Textfield.dart';
 
 // Import the second screen
 class APIService {
@@ -39,7 +34,7 @@ class APIService {
 }
 
 class AddPerson extends StatefulWidget {
-  const AddPerson({Key? key}) : super(key: key);
+  const AddPerson({super.key});
 
   @override
   _AddPersonState createState() => _AddPersonState();
@@ -93,7 +88,7 @@ class _AddPersonState extends State<AddPerson> {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MainPageFamily()),
+                    MaterialPageRoute(builder: (context) => const MainPageFamily()),
                   );
                 },
                 child: const Text('OK'),
@@ -145,24 +140,24 @@ class _AddPersonState extends State<AddPerson> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => MainPageFamily()),
+              MaterialPageRoute(builder: (context) => const MainPageFamily()),
             );
           },
         ),
         title: Text(
           "Create Account".tr(),
-          style: TextStyle(
+          style: const TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
             color: Colors.white,
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -180,7 +175,7 @@ class _AddPersonState extends State<AddPerson> {
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
@@ -221,9 +216,9 @@ class _AddPersonState extends State<AddPerson> {
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
                         ),
-                        suffixIcon: Icon(Icons.person_2_sharp, color: Colors.blue),
+                        suffixIcon: const Icon(Icons.person_2_sharp, color: Colors.blue),
                       ),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         height: 0.5,
                       ),
@@ -305,9 +300,9 @@ class _AddPersonState extends State<AddPerson> {
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
                         ),
-                        suffixIcon: Icon(Icons.phone, color: Colors.blue),
+                        suffixIcon: const Icon(Icons.phone, color: Colors.blue),
                       ),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         height: 0.5,
                       ),
@@ -327,9 +322,9 @@ class _AddPersonState extends State<AddPerson> {
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
                         ),
-                        suffixIcon: Icon(Icons.description, color: Colors.blue),
+                        suffixIcon: const Icon(Icons.description, color: Colors.blue),
                       ),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         height: 0.5,
                       ),
@@ -376,8 +371,8 @@ class _AddPersonState extends State<AddPerson> {
                     ElevatedButton(
                       onPressed: _isLoading ? null : _add,
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Color.fromARGB(255, 255, 255, 255),
-                        backgroundColor: Color(0xFF0386D0),
+                        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor: const Color(0xFF0386D0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0),
                         ),
@@ -392,7 +387,7 @@ class _AddPersonState extends State<AddPerson> {
           _isLoading
               ? Container(
                   color: Colors.black.withOpacity(0.5),
-                  child: Center(
+                  child: const Center(
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
                         Color(0xff3B5998),
@@ -400,7 +395,7 @@ class _AddPersonState extends State<AddPerson> {
                     ),
                   ),
                 )
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
         ],
       ),
     );

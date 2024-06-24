@@ -19,7 +19,7 @@ class UploadImagesPagePerson extends StatefulWidget {
   final double longitude;
   final String description;
 
-  UploadImagesPagePerson({
+  const UploadImagesPagePerson({super.key, 
     required this.fullName,
     required this.phoneNumber,
     required this.relation,
@@ -34,7 +34,7 @@ class UploadImagesPagePerson extends StatefulWidget {
 
 class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
   final ImagePicker _picker = ImagePicker();
-  List<ImageItem> _images = [];
+  final List<ImageItem> _images = [];
   int _currentImageIndex = 0;
 
   final List<String> _instructionImages = [
@@ -68,28 +68,28 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
             borderRadius: BorderRadius.circular(10.0),
           ),
           child: Container(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
+                const Text(
                   'Instructions',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 20),
-                Text(
+                const SizedBox(height: 20),
+                const Text(
                   'These images help the patient recognize you better. Please follow the instructions and upload five images.',
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             ),
@@ -104,7 +104,7 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+          backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
           title: Text('Instructions for Image ${_currentImageIndex + 1}'),
           content: SingleChildScrollView(
             child: Column(
@@ -114,7 +114,7 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
                   _imageInstructions[_currentImageIndex],
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Image.asset(
                   _instructionImages[_currentImageIndex],
                   height: 200,
@@ -124,7 +124,7 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Capture Image'),
+              child: const Text('Capture Image'),
               onPressed: () async {
                 final XFile? image =
                     await _picker.pickImage(source: ImageSource.camera);
@@ -155,7 +155,7 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -168,7 +168,7 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
-                  SizedBox(height: 60),
+                  const SizedBox(height: 60),
                   if (_currentImageIndex < 5)
                     ElevatedButton(
                       onPressed: () => _showInstructionDialog(),
@@ -190,7 +190,7 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: ListTile(
-                        contentPadding: EdgeInsets.all(12),
+                        contentPadding: const EdgeInsets.all(12),
                         leading: Container(
                           height: 80,
                           width: 80,
@@ -204,10 +204,10 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
                         ),
                         title: Text(
                           'Image ${index + 1}',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         trailing: IconButton(
-                          icon: Icon(Icons.camera_alt),
+                          icon: const Icon(Icons.camera_alt),
                           onPressed: () =>
                               _showInstructionDialog(replaceIndex: index),
                         ),
@@ -226,7 +226,7 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
                     Navigator.pop(context,
                         _images.map((e) => File(e.file.path)).toList());
                   },
-                  child: Text('Next'),
+                  child: const Text('Next'),
                 ),
               ),
           ],

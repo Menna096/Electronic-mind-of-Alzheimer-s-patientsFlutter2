@@ -14,12 +14,9 @@ import 'package:vv/daily_task/pages/home/bloc/home_state.dart';
 import 'package:vv/daily_task/pages/input/input_controller.dart';
 import 'package:vv/daily_task/pages/input/input_page.dart';
 import 'home_widgets.dart';
-import 'package:signalr_core/signalr_core.dart';
-import 'package:vv/utils/token_manage.dart';
-import 'package:geolocator/geolocator.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -66,14 +63,14 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff3B5998),
+      backgroundColor: const Color(0xff3B5998),
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => mainpatient()),
+              MaterialPageRoute(builder: (context) => const mainpatient()),
             );
           },
         ),
@@ -86,17 +83,17 @@ class _HomeState extends State<Home> {
           ),
         ),
         elevation: 0,
-        backgroundColor: Color.fromARGB(255, 128, 171, 236),
+        backgroundColor: const Color.fromARGB(255, 128, 171, 236),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // Aligning "Tasks" to the left
              Text(
               'Tasks'.tr(),
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
             // Aligning the other widget to the right (if any)
-            SizedBox(width: 56.0), // Adjust the width as per your need
+            const SizedBox(width: 56.0), // Adjust the width as per your need
           ],
         ),
       ),
@@ -116,7 +113,7 @@ class _HomeState extends State<Home> {
                     ?  Center(
                         child: Text(
                           'No Tasks'.tr(),
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Color.fromARGB(255, 47, 47, 47),
                               fontSize: 24),
                         ),
@@ -173,9 +170,9 @@ class _HomeState extends State<Home> {
                                       }
                                       InputController(context: context)
                                           .cancelNotification(
-                                              tasksList[index][i].id!);
+                                              tasksList[index][i].id);
                                       TasksDatabase.instance
-                                          .delete(tasksList[index][i].id!);
+                                          .delete(tasksList[index][i].id);
                                       refreshTasks(); // Refresh tasks after deletion
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
@@ -212,7 +209,7 @@ class _HomeState extends State<Home> {
             Radius.circular(56.0 / 2),
           ),
         ),
-        closedColor: Color.fromARGB(255, 128, 171, 236),
+        closedColor: const Color.fromARGB(255, 128, 171, 236),
         closedBuilder: (BuildContext context, VoidCallback openContainer) {
           return SizedBox(
             height: 56.0.h,

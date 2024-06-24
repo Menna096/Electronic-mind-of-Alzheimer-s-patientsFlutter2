@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
@@ -187,7 +186,7 @@ class _AddpatState extends State<Addpat> {
         if (needTraining == true) {
           Navigator.push(
             context,
-            _createRoute(UploadImagesPage()),
+            _createRoute(const UploadImagesPage()),
           );
           print('need to train');
         }
@@ -232,15 +231,15 @@ class _AddpatState extends State<Addpat> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.white),
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => MainPageFamily()),
+                  MaterialPageRoute(builder: (context) => const MainPageFamily()),
                 );
               },
             ),
-            title: Text(
+            title: const Text(
               "Add Account",
               style: TextStyle(
                 fontFamily: 'LilitaOne',
@@ -249,7 +248,7 @@ class _AddpatState extends State<Addpat> {
               ),
             ),
             flexibleSpace: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
                   begin: Alignment.topLeft,
@@ -267,7 +266,7 @@ class _AddpatState extends State<Addpat> {
                 ],
               ),
             ),
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
                 bottom: Radius.circular(50.0),
               ),
@@ -375,7 +374,7 @@ class _AddpatState extends State<Addpat> {
                                   padding: const EdgeInsets.all(10.0),
                                   child: Text(
                                     '$distance m',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.black87,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
@@ -404,7 +403,7 @@ class _AddpatState extends State<Addpat> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25.0),
                             ),
-                            backgroundColor: Color(0xFF6A95E9),
+                            backgroundColor: const Color(0xFF6A95E9),
                             foregroundColor: Colors.white,
                           ),
                         ),
@@ -423,7 +422,7 @@ class _AddpatState extends State<Addpat> {
                               onPressed: () async {
                                 final result = await Navigator.push(
                                   context,
-                                  _createRoute(MapLocationPicker(
+                                  _createRoute(const MapLocationPicker(
                                     apiKey:
                                         'AIzaSyCB4OrB7PgyXUrxNgf3-IZVsaHPpyt-kBM',
                                   )),
@@ -515,7 +514,7 @@ class _AddpatState extends State<Addpat> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
             blurRadius: 10,
             spreadRadius: 1,
           ),
@@ -531,11 +530,11 @@ class _AddpatState extends State<Addpat> {
           fillColor: Colors.white,
           labelText: labelText,
           suffixIcon: togglePasswordVisibility == null
-              ? Icon(suffixIcon, color: Color(0xFF6A95E9))
+              ? Icon(suffixIcon, color: const Color(0xFF6A95E9))
               : IconButton(
                   icon: Icon(
                     obscureText ? Icons.visibility_off : Icons.visibility,
-                    color: Color(0xFF6A95E9),
+                    color: const Color(0xFF6A95E9),
                   ),
                   onPressed: togglePasswordVisibility,
                 ),
@@ -549,7 +548,7 @@ class _AddpatState extends State<Addpat> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25.0),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Color.fromARGB(255, 69, 62, 208),
             ),
           ),

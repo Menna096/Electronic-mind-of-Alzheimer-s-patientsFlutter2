@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -11,7 +10,7 @@ import 'package:vv/widgets/background.dart';
 class FullScreenViewerpatient extends StatefulWidget {
   final MediaItempatient mediaItem;
 
-  FullScreenViewerpatient({required this.mediaItem});
+  const FullScreenViewerpatient({super.key, required this.mediaItem});
 
   @override
   _FullScreenViewerpatientState createState() =>
@@ -58,15 +57,15 @@ class _FullScreenViewerpatientState extends State<FullScreenViewerpatient> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => GalleryScreenPatient()),
+              MaterialPageRoute(builder: (context) => const GalleryScreenPatient()),
             );
           },
         ),
-        title: Text(
+        title: const Text(
           "Media Viewer",
           style: TextStyle(
             fontFamily: 'LilitaOne',
@@ -75,7 +74,7 @@ class _FullScreenViewerpatientState extends State<FullScreenViewerpatient> {
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -93,7 +92,7 @@ class _FullScreenViewerpatientState extends State<FullScreenViewerpatient> {
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
@@ -101,7 +100,7 @@ class _FullScreenViewerpatientState extends State<FullScreenViewerpatient> {
       ),
       extendBodyBehindAppBar: true,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.indigo, Colors.blueAccent],
             begin: Alignment.topCenter,
@@ -114,13 +113,13 @@ class _FullScreenViewerpatientState extends State<FullScreenViewerpatient> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: kToolbarHeight + 20), // Space for AppBar
+                const SizedBox(height: kToolbarHeight + 20), // Space for AppBar
                 if (widget.mediaItem.type == MediaType.image)
                   Container(
                     margin: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.black38,
                           blurRadius: 20,
@@ -136,7 +135,7 @@ class _FullScreenViewerpatientState extends State<FullScreenViewerpatient> {
                               loadingBuilder:
                                   (context, child, loadingProgress) {
                                 if (loadingProgress == null) return child;
-                                return Container(
+                                return SizedBox(
                                   height: 200,
                                   child: Center(
                                     child: CircularProgressIndicator(
@@ -165,7 +164,7 @@ class _FullScreenViewerpatientState extends State<FullScreenViewerpatient> {
                           margin: const EdgeInsets.all(16.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
+                            boxShadow: const [
                               BoxShadow(
                                 color: Colors.black38,
                                 blurRadius: 20,
@@ -181,12 +180,12 @@ class _FullScreenViewerpatientState extends State<FullScreenViewerpatient> {
                             ),
                           ),
                         )
-                      : CircularProgressIndicator(),
+                      : const CircularProgressIndicator(),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
                     widget.mediaItem.description,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 26,
                      
                       color: Colors.white,
@@ -199,7 +198,7 @@ class _FullScreenViewerpatientState extends State<FullScreenViewerpatient> {
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
                     "Uploaded on: ${formatDateString(widget.mediaItem.uploadedDate)}", // Formatted date
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                       color: Colors.white70,
                     ),
@@ -209,7 +208,7 @@ class _FullScreenViewerpatientState extends State<FullScreenViewerpatient> {
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: Text(
                     "Uploaded by: ${widget.mediaItem.uploaderFamilyName}",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                       color: Colors.white70,
                     ),

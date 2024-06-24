@@ -2,13 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:vv/models/appoint.dart';
-import 'package:vv/widgets/task_widgets/Edit_timepicker.dart';
-import 'package:vv/widgets/task_widgets/appbarscreens.dart';
 
 class AppointDetailsScreen extends StatefulWidget {
   final Appointment appoint;
 
-  AppointDetailsScreen({
+  const AppointDetailsScreen({super.key, 
     required this.appoint,
     required Null Function(dynamic editedAppoint) onAppointUpdated,
   });
@@ -82,7 +80,7 @@ class _AppointDetailsScreenState extends State<AppointDetailsScreen> {
       // appBar: buildAppBar('Appointments'),
       body: Container(
         alignment: AlignmentDirectional.bottomCenter,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
               Color(0xffFFFFFF),
@@ -95,18 +93,18 @@ class _AppointDetailsScreenState extends State<AppointDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Center(
               child: Text(
                 'Appointments'.tr(),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 30,
                 ),
               ),
             ),
-            Row(
+            const Row(
               children: [
                 BackButton(),
                 Spacer(),
@@ -126,7 +124,7 @@ class _AppointDetailsScreenState extends State<AppointDetailsScreen> {
                 decoration: InputDecoration(labelText: 'Notes'.tr()),
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             Expanded(
               child: Column(
                 children: [
@@ -137,7 +135,7 @@ class _AppointDetailsScreenState extends State<AppointDetailsScreen> {
                       controller: startTimeController,
                       decoration: InputDecoration(
                         labelText: 'Start Time'.tr(),
-                        suffixIcon: Icon(
+                        suffixIcon: const Icon(
                             Icons.timer), // Optional: adds timer icon as suffix
                       ),
                       onTap: () {
@@ -153,7 +151,7 @@ class _AppointDetailsScreenState extends State<AppointDetailsScreen> {
                       controller: endTimeController,
                       decoration: InputDecoration(
                         labelText: 'End Time'.tr(),
-                        suffixIcon: Icon(
+                        suffixIcon: const Icon(
                             Icons.timer), // Optional: adds timer icon as suffix
                       ),
                       onTap: () {

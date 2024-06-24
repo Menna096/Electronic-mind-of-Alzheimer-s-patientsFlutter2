@@ -6,7 +6,7 @@ class Patient {
 
   factory Patient.fromJson(Map<String, dynamic> json) {
     if (json['patientId'] == null || json['patientName'] == null) {
-      throw FormatException('Missing required field(s) in Patient JSON data');
+      throw const FormatException('Missing required field(s) in Patient JSON data');
     }
     return Patient(
       patientId: json['patientId'].toString(),

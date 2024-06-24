@@ -3,21 +3,19 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:intl/intl.dart';
 import 'package:signalr_core/signalr_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vv/Family/FinalapponitDetail.dart';
-import 'package:vv/Family/appoint_details.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/token_manage.dart';
-import 'package:vv/widgets/backbutton.dart';
-import 'package:vv/widgets/task_widgets/dayselect.dart';
 import 'package:vv/widgets/task_widgets/yearmonth.dart';
 import '../../models/appoint.dart';
 import 'addApoint.dart';
 
 class AppointListScreen extends StatefulWidget {
+  const AppointListScreen({super.key});
+
   @override
   _AppointListScreenState createState() => _AppointListScreenState();
 }
@@ -54,7 +52,7 @@ class _AppointListScreenState extends State<AppointListScreen> {
   Future<void> initNotifications() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
-    final InitializationSettings initializationSettings =
+    const InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
     );
@@ -153,24 +151,24 @@ class _AppointListScreenState extends State<AppointListScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => MainPageFamily()),
+              MaterialPageRoute(builder: (context) => const MainPageFamily()),
             );
           },
         ),
         title: Text(
           "Appointments".tr(),
-          style: TextStyle(
+          style: const TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
             color: Colors.white,
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -188,14 +186,14 @@ class _AppointListScreenState extends State<AppointListScreen> {
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.white, Color(0xFF3B5998)],
             begin: Alignment.topCenter,
@@ -215,11 +213,11 @@ class _AppointListScreenState extends State<AppointListScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AddAppointmentScreen()),
+                            builder: (context) => const AddAppointmentScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(199, 56, 131,
+                      backgroundColor: const Color.fromARGB(199, 56, 131,
                           192), // Use primary instead of backgroundColor
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
@@ -254,15 +252,15 @@ class _AppointListScreenState extends State<AppointListScreen> {
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: ListTile(
-                        contentPadding: EdgeInsets.all(13.0),
-                        leading: Icon(
+                        contentPadding: const EdgeInsets.all(13.0),
+                        leading: const Icon(
                           Icons.drive_file_rename_outline_outlined,
-                          color: const Color(0xFF0386D0),
+                          color: Color(0xFF0386D0),
                           size: 25,
                         ),
                         title: Text(
                           appointment['location'],
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
                           ),
@@ -280,7 +278,7 @@ class _AppointListScreenState extends State<AppointListScreen> {
                                   _deleteAppointment(
                                       appointment['appointmentId']);
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.delete,
                                   color: Colors.redAccent,
                                 ),

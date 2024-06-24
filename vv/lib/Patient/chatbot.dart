@@ -3,6 +3,8 @@ import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/faceid.dart';
 
 class OldChatScreen extends StatefulWidget {
+  const OldChatScreen({super.key});
+
   @override
   _OldChatScreenState createState() => _OldChatScreenState();
 }

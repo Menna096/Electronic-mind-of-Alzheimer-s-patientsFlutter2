@@ -24,10 +24,11 @@ class PatientAPI {
             "Authorization": "هنا هنحط توكين ",
           });
       // * Handle the response
-      if (response.statusCode != 200)
+      if (response.statusCode != 200) {
         throw CBError(
             code: response.statusCode,
             message: Texts.errorOccurredWhileDoingAction);
+      }
       // * Return the response body
       return decodeJsonResponse(response.body);
     } catch (e) {
@@ -96,9 +97,10 @@ class PatientAPI {
             HttpHeaders.authorizationHeader: authToken,
           });
       // * Handle the response
-      if (response.statusCode != 200)
+      if (response.statusCode != 200) {
         throw CBError(
             code: response.statusCode, message: Texts.cantGetPatientProfile);
+      }
       // * Return the response body
       return response.body;
     } catch (e) {
@@ -119,10 +121,11 @@ class PatientAPI {
         },
       );
       // * Handle the response
-      if (response.statusCode != 200)
+      if (response.statusCode != 200) {
         throw CBError(
             code: response.statusCode,
             message: Texts.errorOccurredWhileDoingAction);
+      }
       // * Return the response body
       return response.body;
     } catch (e) {
@@ -167,10 +170,11 @@ class PatientAPI {
             HttpHeaders.authorizationHeader: authToken,
           });
       // * Handle the response
-      if (response.statusCode != 200)
+      if (response.statusCode != 200) {
         throw CBError(
             code: response.statusCode,
             message: Texts.errorOccurredWhileDoingAction);
+      }
       // * Return the response body
       return response.body;
     } catch (e) {

@@ -1,11 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:dio/dio.dart';
-import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/Caregiver/medical/constants.dart';
 import 'package:vv/Caregiver/medical/global_bloc.dart';
-import 'package:vv/Caregiver/medical/models/medicine.dart';
 import 'package:vv/Caregiver/medical/pages/medicine_details/medicine_details.dart';
 import 'package:vv/Caregiver/medical/pages/new_entry/new_entry_page.dart';
 import 'package:vv/api/login_api.dart';
@@ -39,7 +36,7 @@ Future<List<dynamic>> fetchMedicationData() async {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -70,10 +67,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Medication'.tr(), style: TextStyle(fontSize: 25)),
+        title: Text('Medication'.tr(), style: const TextStyle(fontSize: 25)),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -91,13 +88,13 @@ class _HomePageState extends State<HomePage> {
                   future: _medicationData,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError || snapshot.data!.isEmpty) {
-                      return BottomContainer();
+                      return const BottomContainer();
                     } else {
                       return GridView.builder(
                         padding: EdgeInsets.only(top: 1.h),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2),
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
@@ -150,7 +147,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 class TopContainer extends StatelessWidget {
-  const TopContainer({Key? key}) : super(key: key);
+  const TopContainer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +169,7 @@ class TopContainer extends StatelessWidget {
 }
 
 class BottomContainer extends StatelessWidget {
-  const BottomContainer({Key? key}) : super(key: key);
+  const BottomContainer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -188,10 +185,10 @@ class BottomContainer extends StatelessWidget {
             // Empty list case
             child: Container(
               alignment: Alignment.topCenter,
-              padding: EdgeInsets.only(top: 225),
+              padding: const EdgeInsets.only(top: 225),
               child: Text(
                 'No Medicine Yet👨‍⚕️'.tr(),
-                style: Theme.of(context).textTheme.headline3?.copyWith(
+                style: Theme.of(context).textTheme.displaySmall?.copyWith(
                     color: Colors.white,
                     fontFamily: 'ConcertOne',
                     fontSize: 38),
@@ -201,7 +198,7 @@ class BottomContainer extends StatelessWidget {
         } else {
           return GridView.builder(
             padding: EdgeInsets.only(top: 1.h),
-            gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
             ),
             itemCount: snapshot.data!.length,
@@ -222,8 +219,7 @@ class BottomContainer extends StatelessWidget {
 }
 
 class MedicineCard extends StatelessWidget {
-  const MedicineCard({Key? key, required this.data, required this.onDelete})
-      : super(key: key);
+  const MedicineCard({super.key, required this.data, required this.onDelete});
   final dynamic data;
   final VoidCallback onDelete; // Callback to notify deletion
 
@@ -253,7 +249,7 @@ class MedicineCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Hero(tag: "$medicineName$medicineType", child: icon),
-            Text(medicineName, style: Theme.of(context).textTheme.headline6),
+            Text(medicineName, style: Theme.of(context).textTheme.titleLarge),
            
           ],
         ),

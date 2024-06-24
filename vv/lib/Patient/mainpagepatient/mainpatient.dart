@@ -1,16 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:signalr_core/signalr_core.dart';
 import 'package:sizer/sizer.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 import 'package:vv/Chatbot/chat/ui/chat_screen.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
@@ -509,7 +504,7 @@ class _mainpatientState extends State<mainpatient> {
         ),
         flexibleSpace: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -519,8 +514,8 @@ class _mainpatientState extends State<mainpatient> {
             ),
             boxShadow: [
               BoxShadow(
-                color: Color.fromARGB(66, 55, 134, 190),
-                offset: Offset(0, 10),
+                color: const Color.fromARGB(66, 55, 134, 190),
+                offset: const Offset(0, 10),
                 blurRadius: 10.0.sp,
               ),
             ],
@@ -546,7 +541,7 @@ class _mainpatientState extends State<mainpatient> {
                           ? 8.0.w
                           : 44.0,
                       fontFamily: 'Acme',
-                      color: Color(0xFF0386D0),
+                      color: const Color(0xFF0386D0),
                     ),
                   ),
                 ),
@@ -554,7 +549,7 @@ class _mainpatientState extends State<mainpatient> {
               ListTile(
                 leading: Icon(
                   Icons.manage_accounts_rounded,
-                  color: Color.fromARGB(255, 84, 134, 235),
+                  color: const Color.fromARGB(255, 84, 134, 235),
                   size:
                       SizerUtil.deviceType == DeviceType.mobile ? 5.0.w : 24.0,
                 ),
@@ -564,21 +559,21 @@ class _mainpatientState extends State<mainpatient> {
                     fontSize: SizerUtil.deviceType == DeviceType.mobile
                         ? 4.5.w
                         : 20.0,
-                    color: Color(0xFF595858),
+                    color: const Color(0xFF595858),
                   ),
                 ),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => PatientProfManage()),
+                        builder: (context) => const PatientProfManage()),
                   );
                 },
               ),
               ListTile(
                 leading: Icon(
                   Icons.logout,
-                  color: Color.fromARGB(214, 209, 8, 8),
+                  color: const Color.fromARGB(214, 209, 8, 8),
                   size:
                       SizerUtil.deviceType == DeviceType.mobile ? 5.0.w : 24.0,
                 ),
@@ -588,14 +583,14 @@ class _mainpatientState extends State<mainpatient> {
                     fontSize: SizerUtil.deviceType == DeviceType.mobile
                         ? 4.5.w
                         : 20.0,
-                    color: Color(0xFF595858),
+                    color: const Color(0xFF595858),
                   ),
                 ),
                 onTap: () {
                   TokenManager.deleteToken();
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPageAll()),
+                    MaterialPageRoute(builder: (context) => const LoginPageAll()),
                   );
                 },
               ),
@@ -682,7 +677,7 @@ class _mainpatientState extends State<mainpatient> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        AppointmentScreenPatient()),
+                                        const AppointmentScreenPatient()),
                               );
                             },
                             child: Image.asset(
@@ -696,7 +691,7 @@ class _mainpatientState extends State<mainpatient> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MedicinesPage()),
+                                    builder: (context) => const MedicinesPage()),
                               );
                             },
                             child: Image.asset(
@@ -715,7 +710,7 @@ class _mainpatientState extends State<mainpatient> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => UnusualFamilyList()),
+                                    builder: (context) => const UnusualFamilyList()),
                               );
                             },
                             child: Image.asset(
@@ -748,7 +743,7 @@ class _mainpatientState extends State<mainpatient> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Notes_View()),
+                                    builder: (context) => const Notes_View()),
                               );
                             },
                             child: Image.asset(
@@ -762,7 +757,7 @@ class _mainpatientState extends State<mainpatient> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SecretFilePage()),
+                                    builder: (context) => const SecretFilePage()),
                               );
                             },
                             child: Image.asset(
@@ -781,7 +776,7 @@ class _mainpatientState extends State<mainpatient> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ImageUploadScreen()),
+                                    builder: (context) => const ImageUploadScreen()),
                               );
                             },
                             child: Image.asset(
@@ -796,7 +791,7 @@ class _mainpatientState extends State<mainpatient> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        GalleryScreenPatient()),
+                                        const GalleryScreenPatient()),
                               );
                             },
                             child: Image.asset(
@@ -828,7 +823,7 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) =>
-                                      LevelSelectionScreen()));
+                                      const LevelSelectionScreen()));
                             },
                             child: Image.asset(
                               'images/Games (1).png',

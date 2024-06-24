@@ -1,15 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:location/location.dart' as loc;
 import 'package:location/location.dart';
-import 'package:signalr_core/signalr_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:math' show cos, sqrt, asin;
 
-import 'package:vv/utils/token_manage.dart';
 
 class NavigationScreen extends StatefulWidget {
   final double lat;
@@ -27,7 +24,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   loc.Location location = loc.Location();
   Marker? sourcePosition, destinationPosition;
   loc.LocationData? _currentPosition;
-  LatLng curLocation = LatLng(23.0525, 72.5667);
+  LatLng curLocation = const LatLng(23.0525, 72.5667);
   StreamSubscription<loc.LocationData>? locationSubscription;
   
 
@@ -53,7 +50,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: sourcePosition == null
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Stack(
               children: [
                 GoogleMap(
@@ -78,7 +75,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                     onTap: () {
                       Navigator.of(context).pop();
                     },
-                    child: Icon(Icons.arrow_back),
+                    child: const Icon(Icons.arrow_back),
                   ),
                 ),
                 Positioned(
@@ -87,11 +84,11 @@ class _NavigationScreenState extends State<NavigationScreen> {
                     child: Container(
                       width: 50,
                       height: 50,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           shape: BoxShape.circle, color: Colors.blue),
                       child: Center(
                         child: IconButton(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.navigation_outlined,
                             color: Colors.white,
                           ),
@@ -108,27 +105,27 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   getNavigation() async {
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
     final GoogleMapController? controller = await _controller.future;
     location.changeSettings(accuracy: loc.LocationAccuracy.high);
-    _serviceEnabled = await location.serviceEnabled();
+    serviceEnabled = await location.serviceEnabled();
 
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
         return;
       }
     }
 
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
         return;
       }
     }
-    if (_permissionGranted == loc.PermissionStatus.granted) {
+    if (permissionGranted == loc.PermissionStatus.granted) {
       _currentPosition = await location.getLocation();
       curLocation =
           LatLng(_currentPosition!.latitude!, _currentPosition!.longitude!);
@@ -173,10 +170,10 @@ class _NavigationScreenState extends State<NavigationScreen> {
         PointLatLng(dst.latitude, dst.longitude),
         travelMode: TravelMode.driving);
     if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
+      for (var point in result.points) {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
         points.add({'lat': point.latitude, 'lng': point.longitude});
-      });
+      }
     } else {
       print(result.errorMessage);
     }
@@ -184,7 +181,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   addPolyLine(List<LatLng> polylineCoordinates) {
-    PolylineId id = PolylineId('poly');
+    PolylineId id = const PolylineId('poly');
     Polyline polyline = Polyline(
       polylineId: id,
       color: Colors.blue,
@@ -212,12 +209,12 @@ class _NavigationScreenState extends State<NavigationScreen> {
   addMarker() {
     setState(() {
       sourcePosition = Marker(
-        markerId: MarkerId('source'),
+        markerId: const MarkerId('source'),
         position: curLocation,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
       );
       destinationPosition = Marker(
-        markerId: MarkerId('destination'),
+        markerId: const MarkerId('destination'),
         position: LatLng(widget.lat, widget.lng),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
       );

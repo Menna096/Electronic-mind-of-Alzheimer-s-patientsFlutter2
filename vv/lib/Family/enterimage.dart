@@ -16,14 +16,16 @@ class ImageItem {
 }
 
 class UploadImagesPage extends StatefulWidget {
+  const UploadImagesPage({super.key});
+
   @override
   _UploadImagesPageState createState() => _UploadImagesPageState();
 }
 
 class _UploadImagesPageState extends State<UploadImagesPage> {
   final ImagePicker _picker = ImagePicker();
-  List<ImageItem> _images = [];
-  Dio _dio = Dio(); // Instance of Dio
+  final List<ImageItem> _images = [];
+  final Dio _dio = Dio(); // Instance of Dio
   List<dynamic> _imageSamplesWithInstructions = [];
 
   Future<void> _fetchImagesWithInstructions() async {
@@ -59,7 +61,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
               future: _fetchInstructionData(replaceIndex),
               builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: SpinKitCircle(
                       color: Colors.blue, // Adjust color as needed
                       size: 50.0, // Adjust size as needed
@@ -69,7 +71,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
                   return Text('Error fetching instructions: ${snapshot.error}');
                 } else {
                   final instructionData = _imageSamplesWithInstructions[
-                      replaceIndex != null ? replaceIndex : _images.length];
+                      replaceIndex ?? _images.length];
                   final imageUrl = instructionData['imageSampleUrl'];
                   final instruction = instructionData['instraction'];
 
@@ -77,7 +79,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
                     child: ListBody(
                       children: <Widget>[
                         Image.network(imageUrl),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Text(instruction),
                       ],
                     ),
@@ -91,7 +93,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
                   Navigator.of(context).pop();
                   _captureImage(replaceIndex);
                 },
-                child: Text('Capture Image'),
+                child: const Text('Capture Image'),
               ),
             ],
           );
@@ -136,7 +138,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
       // Navigate to MainPageFamily on success
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MainPageFamily()),
+        MaterialPageRoute(builder: (context) => const MainPageFamily()),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -161,7 +163,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -171,7 +173,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
         child: Column(
           children: <Widget>[
             if (_images.length < _imageSamplesWithInstructions.length)
-              SizedBox(
+              const SizedBox(
                 height: 60,
               ),
             if (_images.length < 5) // Show button only if less than 5 images
@@ -195,7 +197,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: ListTile(
-                        contentPadding: EdgeInsets.all(12),
+                        contentPadding: const EdgeInsets.all(12),
                         leading: Container(
                           height: 80,
                           width: 80,
@@ -207,7 +209,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
                         ),
                         title: Text('Image ${index + 1}'),
                         trailing: IconButton(
-                          icon: Icon(Icons.camera_alt),
+                          icon: const Icon(Icons.camera_alt),
                           onPressed: () => _pickImage(replaceIndex: index),
                         ),
                       ),
@@ -221,7 +223,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: ElevatedButton(
                   onPressed: _uploadImages,
-                  child: Text('Upload Images'),
+                  child: const Text('Upload Images'),
                 ),
               ),
           ],
@@ -247,7 +249,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
       });
     } catch (e) {
       print('Error fetching images and instructions: $e');
-      throw e;
+      rethrow;
     }
   }
 }

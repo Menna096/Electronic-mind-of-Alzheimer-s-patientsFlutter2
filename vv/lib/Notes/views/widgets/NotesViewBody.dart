@@ -6,13 +6,14 @@ import 'package:vv/Notes/views/widgets/Notes_List_View.dart';
 import 'package:vv/Notes/voice/home/pages/home_page.dart';
 
 class NotesViewBody extends StatefulWidget {
-  const NotesViewBody({Key? key}) : super(key: key);
+  const NotesViewBody({super.key});
 
   @override
   State<NotesViewBody> createState() => _NotesViewBodyState();
 }
 
 class _NotesViewBodyState extends State<NotesViewBody> {
+  @override
   void initState() {
     BlocProvider.of<NotesCubit>(context).FetchAllNotes();
     super.initState();
@@ -21,7 +22,7 @@ class _NotesViewBodyState extends State<NotesViewBody> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -47,10 +48,10 @@ class _NotesViewBodyState extends State<NotesViewBody> {
                     width: 100,
                     height: 100,
                   ),
-                  Text(
+                  const Text(
                     "No Notes Yet!",
                     style: TextStyle(
-                      color: const Color.fromARGB(255, 227, 226, 226),
+                      color: Color.fromARGB(255, 227, 226, 226),
                       fontSize: 21,
                     ),
                   ),
@@ -59,10 +60,10 @@ class _NotesViewBodyState extends State<NotesViewBody> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 48,
                 ),
                 GestureDetector(
@@ -70,16 +71,16 @@ class _NotesViewBodyState extends State<NotesViewBody> {
                     // Navigate to HomePage when the icon is pressed
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
+                      MaterialPageRoute(builder: (context) => const HomePage()),
                     );
                   },
-                  child: CustomAppBar(
+                  child: const CustomAppBar(
                     title: 'Notes',
                     icon: Icons.voice_chat,
                     // Provide an icon here
                   ),
                 ),
-                Expanded(child: NotesListView()),
+                const Expanded(child: NotesListView()),
               ],
             ),
           ),

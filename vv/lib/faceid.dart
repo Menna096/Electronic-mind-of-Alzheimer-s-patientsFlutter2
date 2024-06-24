@@ -11,27 +11,31 @@ import 'package:sizer/sizer.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/String_manager.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart'; // Adjust path as per your project structure
-import 'package:vv/api/login_api.dart'; // Adjust path as per your project structure
+// Adjust path as per your project structure
 import 'package:vv/utils/token_manage.dart'; // Adjust path as per your project structure
 // Import the animated background widget
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: CameraScreen(),
+      home: const CameraScreen(),
     );
   }
 }
 
 class CameraScreen extends StatefulWidget {
+  const CameraScreen({super.key});
+
   @override
   _CameraScreenState createState() => _CameraScreenState();
 }
@@ -44,7 +48,7 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _showLoginDialog();
     });
   }
@@ -112,7 +116,7 @@ class _CameraScreenState extends State<CameraScreen> {
                             onPressed: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => LoginPageAll()),
+                                MaterialPageRoute(builder: (context) => const LoginPageAll()),
                               );
                             },
                           ),
@@ -172,7 +176,7 @@ class _CameraScreenState extends State<CameraScreen> {
       print('Error picking image: $e');
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginPageAll()),
+        MaterialPageRoute(builder: (context) => const LoginPageAll()),
       );
     }
   }
@@ -184,9 +188,7 @@ class _CameraScreenState extends State<CameraScreen> {
     // Get the MIME type
     String? mimeType = lookupMimeType(imageFile.path);
 
-    if (mimeType == null) {
-      mimeType = 'application/octet-stream'; // Default MIME type
-    }
+    mimeType ??= 'application/octet-stream';
 
     // Parse the MIME type into a MediaType object
     final mimeTypeData = mimeType.split('/');
@@ -206,7 +208,7 @@ class _CameraScreenState extends State<CameraScreen> {
     } catch (e) {
       print("Error during upload: $e");
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginPageAll()));
+          context, MaterialPageRoute(builder: (context) => const LoginPageAll()));
     } finally {
       setState(() {
         _isLoading = false; // Stop loading
@@ -221,7 +223,7 @@ class _CameraScreenState extends State<CameraScreen> {
     if (userRole == 'Patient') {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => mainpatient()), // Adjust class name if necessary
+        MaterialPageRoute(builder: (context) => const mainpatient()), // Adjust class name if necessary
       );
     }
   }
@@ -233,11 +235,11 @@ class _CameraScreenState extends State<CameraScreen> {
         children: [
           AnimatedBackground(
             child: Center(
-              child: _image == null ? Text('No image selected.') : Image.file(_image!),
+              child: _image == null ? const Text('No image selected.') : Image.file(_image!),
             ),
           ),
           if (_isLoading) // Show loading indicator
-            Center(
+            const Center(
               child: CircularProgressIndicator(),
             ),
         ],
@@ -249,7 +251,7 @@ class _CameraScreenState extends State<CameraScreen> {
 class AnimatedBackground extends StatefulWidget {
   final Widget child;
 
-  const AnimatedBackground({Key? key, required this.child}) : super(key: key);
+  const AnimatedBackground({super.key, required this.child});
 
   @override
   _AnimatedBackgroundState createState() => _AnimatedBackgroundState();
@@ -265,7 +267,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 5),
+      duration: const Duration(seconds: 5),
     )..addListener(() {
         setState(() {
           _position += 1;
@@ -287,7 +289,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
       children: [
         Positioned.fill(
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xff3B5998), Colors.white],
                 begin: Alignment.topLeft,
@@ -297,7 +299,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
           ),
         ),
         AnimatedPositioned(
-          duration: Duration(seconds: 1),
+          duration: const Duration(seconds: 1),
           top: _position,
           left: -100,
           child: CircleAvatar(
@@ -306,7 +308,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
           ),
         ),
         AnimatedPositioned(
-          duration: Duration(seconds: 1),
+          duration: const Duration(seconds: 1),
           bottom: -_position,
           right: -100,
           child: CircleAvatar(

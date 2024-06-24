@@ -1,16 +1,11 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:signalr_core/signalr_core.dart';
 import 'package:vv/Notes/cubits/notes_cubit/notes_cubit.dart';
 import 'package:vv/Notes/models/note_model.dart';
 import 'package:vv/Notes/views/widgets/ColorListView.dart';
 import 'package:vv/Notes/views/widgets/CustomAppBar.dart';
 import 'package:vv/Notes/views/widgets/Custom_Text_field.dart';
-import 'package:vv/map_location_picker.dart';
-import 'package:vv/utils/token_manage.dart';
 
 class Edit_Notes_View_Body extends StatefulWidget {
   const Edit_Notes_View_Body({super.key, required this.note});
@@ -31,7 +26,7 @@ class _Edit_Notes_View_BodyState extends State<Edit_Notes_View_Body> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -42,10 +37,10 @@ class _Edit_Notes_View_BodyState extends State<Edit_Notes_View_Body> {
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: [
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             CustomAppBar(
               onPressed: () {
                 widget.note.title = title ?? widget.note.title;
@@ -57,20 +52,20 @@ class _Edit_Notes_View_BodyState extends State<Edit_Notes_View_Body> {
               title: 'Edit Note',
               icon: Icons.check,
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             Custom_Text_field(
                 onChanged: (value) {
                   title = value;
                 },
                 hint: widget.note.title),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Custom_Text_field(
                 onChanged: (value) {
                   content = value;
                 },
                 hint: widget.note.subtitle,
                 maxlines: 5),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             EditNodeColorList(
               note: widget.note,
             ),
@@ -84,7 +79,7 @@ class _Edit_Notes_View_BodyState extends State<Edit_Notes_View_Body> {
 class EditNodeColorList extends StatefulWidget {
   final NoteModel note;
 
-  EditNodeColorList({Key? key, required this.note}) : super(key: key);
+  const EditNodeColorList({super.key, required this.note});
 
   @override
   State<EditNodeColorList> createState() => _EditNodeColorListState();
@@ -92,14 +87,14 @@ class EditNodeColorList extends StatefulWidget {
 
 class _EditNodeColorListState extends State<EditNodeColorList> {
   List<Color> colors = [
-    Color(0xFF7986CB),
-    Color(0xFF3F51B5),
-    Color(0xFF5C6BC0),
-    Color(0xFF303F9F),
-    Color(0xFF3F51B5),
-    Color(0xFF3949AB),
-    Color(0xFF9FA8DA),
-    Color(0xFF283593),
+    const Color(0xFF7986CB),
+    const Color(0xFF3F51B5),
+    const Color(0xFF5C6BC0),
+    const Color(0xFF303F9F),
+    const Color(0xFF3F51B5),
+    const Color(0xFF3949AB),
+    const Color(0xFF9FA8DA),
+    const Color(0xFF283593),
   ];
   late int currentindex;
 
@@ -109,6 +104,7 @@ class _EditNodeColorListState extends State<EditNodeColorList> {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 38 * 2,
@@ -117,7 +113,7 @@ class _EditNodeColorListState extends State<EditNodeColorList> {
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
             child: GestureDetector(
               onTap: () {
                 currentindex = index;

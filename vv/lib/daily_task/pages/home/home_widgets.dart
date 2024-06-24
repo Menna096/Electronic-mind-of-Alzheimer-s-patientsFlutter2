@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import '../../common/entities/task.dart';
 import '../../common/values/constant.dart';
 
@@ -44,11 +43,11 @@ Widget buildTask({
       Container(
         margin: EdgeInsets.all(10.w),
         padding: EdgeInsets.only(bottom: 10.w, left: 7.w, right: 5.w),
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           maxHeight: double.infinity,
         ),
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 232, 232, 232),
+          color: const Color.fromARGB(255, 232, 232, 232),
           borderRadius: BorderRadius.circular(15.w),
         ),
         child: Column(

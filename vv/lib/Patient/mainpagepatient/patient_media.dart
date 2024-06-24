@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/Patient/mainpagepatient/fullscreenMedia.dart';
@@ -7,11 +6,10 @@ import 'package:vv/api/login_api.dart'; // Ensure this import has the necessary 
 import 'package:vv/models/media_patient.dart';
 import 'package:vv/widgets/background.dart';
 import 'package:vv/models/media_item.dart'; // Importing the modified MediaItem model
-import 'package:signalr_core/signalr_core.dart';
-import 'package:vv/utils/token_manage.dart';
-import 'package:geolocator/geolocator.dart';
 
 class GalleryScreenPatient extends StatefulWidget {
+  const GalleryScreenPatient({super.key});
+
   @override
   _GalleryScreenPatientState createState() => _GalleryScreenPatientState();
 }
@@ -79,15 +77,15 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => mainpatient()),
+              MaterialPageRoute(builder: (context) => const mainpatient()),
             );
           },
         ),
-        title: Text(
+        title: const Text(
           "Pictures and Videos",
           style: TextStyle(
             fontFamily: 'LilitaOne',
@@ -96,7 +94,7 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -114,7 +112,7 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
@@ -125,7 +123,7 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
         child: Padding(
           padding: const EdgeInsets.all(1.0),
           child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 1,
               crossAxisSpacing: 20.0,
               mainAxisSpacing: 16.0,
@@ -169,25 +167,25 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
                           children: [
                             Text(
                               mediaItem.description,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 17,
                                   color: Color.fromARGB(255, 54, 96, 196),
                                   fontFamily: 'ConcertOne'),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            SizedBox(height: 3.0),
+                            const SizedBox(height: 3.0),
                             Text(
                               'Uploaded on: ${formatDateString(mediaItem.uploadedDate)}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 12,
                                   color: Color.fromARGB(255, 80, 80, 80),
                                   fontFamily: 'Outfit'),
                             ),
-                            SizedBox(height: 4.0),
+                            const SizedBox(height: 4.0),
                             Text(
                               'By: ${mediaItem.uploaderFamilyName}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey,
                               ),
@@ -210,7 +208,7 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
 class CustomCard extends StatelessWidget {
   final Widget child;
 
-  const CustomCard({required this.child});
+  const CustomCard({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

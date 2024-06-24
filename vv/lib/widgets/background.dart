@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Background extends StatelessWidget {
   final Widget child;
 
-  const Background({Key? key, required this.child, required SingleChildScrollView }) : super(key: key);
+  const Background({super.key, required this.child, required SingleChildScrollView });
 
   @override
   Widget build(BuildContext context) {

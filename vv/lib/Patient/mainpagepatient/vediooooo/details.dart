@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
@@ -10,7 +9,7 @@ class DetailScreenSecret extends StatefulWidget {
   final String url;
   final String fileType;
 
-  DetailScreenSecret({required this.url, required this.fileType});
+  const DetailScreenSecret({super.key, required this.url, required this.fileType});
 
   @override
   _DetailScreenSecretState createState() => _DetailScreenSecretState();
@@ -21,7 +20,7 @@ class _DetailScreenSecretState extends State<DetailScreenSecret> {
   VideoPlayerController? _videoPlayerController;
   bool isLoading = true;
 
-  double _position = 100.0; // Example value for initial animation position
+  final double _position = 100.0; // Example value for initial animation position
 
   @override
   void initState() {
@@ -31,7 +30,7 @@ class _DetailScreenSecretState extends State<DetailScreenSecret> {
     }
 
     // Simulate loading for 3 seconds
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
         setState(() {
           isLoading = false;
@@ -65,17 +64,17 @@ class _DetailScreenSecretState extends State<DetailScreenSecret> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF2C3E50), // Darker background color
+      backgroundColor: const Color(0xFF2C3E50), // Darker background color
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context); // Go back to the previous page
           },
         ),
-        title: Text(
+        title: const Text(
           "Detail View",
           style: TextStyle(
             fontFamily: 'LilitaOne',
@@ -84,7 +83,7 @@ class _DetailScreenSecretState extends State<DetailScreenSecret> {
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -102,7 +101,7 @@ class _DetailScreenSecretState extends State<DetailScreenSecret> {
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
@@ -112,7 +111,7 @@ class _DetailScreenSecretState extends State<DetailScreenSecret> {
         children: [
           Positioned.fill(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Colors.white, Color.fromARGB(255, 14, 89, 164)],
                   begin: Alignment.topLeft,
@@ -122,7 +121,7 @@ class _DetailScreenSecretState extends State<DetailScreenSecret> {
             ),
           ),
           AnimatedPositioned(
-            duration: Duration(seconds: 1),
+            duration: const Duration(seconds: 1),
             top: _position,
             left: -100,
             child: CircleAvatar(
@@ -131,7 +130,7 @@ class _DetailScreenSecretState extends State<DetailScreenSecret> {
             ),
           ),
           AnimatedPositioned(
-            duration: Duration(seconds: 1),
+            duration: const Duration(seconds: 1),
             bottom: -_position,
             right: -100,
             child: CircleAvatar(
@@ -140,7 +139,7 @@ class _DetailScreenSecretState extends State<DetailScreenSecret> {
             ),
           ),
           isLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : SingleChildScrollView(
@@ -149,9 +148,9 @@ class _DetailScreenSecretState extends State<DetailScreenSecret> {
                       minHeight: MediaQuery.of(context).size.height,
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(32.0),
+                      padding: const EdgeInsets.all(32.0),
                       child: AnimatedContainer(
-                        duration: Duration(milliseconds: 50),
+                        duration: const Duration(milliseconds: 50),
                         curve: Curves.easeInOut,
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -160,7 +159,7 @@ class _DetailScreenSecretState extends State<DetailScreenSecret> {
                             BoxShadow(
                               color: Colors.black.withOpacity(0.1),
                               blurRadius: 20.0,
-                              offset: Offset(0, 10),
+                              offset: const Offset(0, 10),
                             ),
                           ],
                         ),
@@ -186,7 +185,7 @@ class ContentWidget extends StatelessWidget {
   final ChewieController? chewieController;
   final VideoPlayerController? videoPlayerController;
 
-  ContentWidget({
+  const ContentWidget({super.key, 
     required this.url,
     required this.fileType,
     this.chewieController,
@@ -215,10 +214,10 @@ class ContentWidget extends StatelessWidget {
           if (snapshot.hasData) {
             return SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.all(24.0),
+                padding: const EdgeInsets.all(24.0),
                 child: Text(
                   snapshot.data!,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16.0,
                     color: Colors.black87,
                   ),
@@ -229,7 +228,7 @@ class ContentWidget extends StatelessWidget {
             return Text('Error: ${snapshot.error}');
           }
 
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         },
@@ -248,7 +247,7 @@ class ContentWidget extends StatelessWidget {
 
   Future<String> fetchFileContent(String url) async {
     // Example implementation, replace with your own logic to fetch text content
-    await Future.delayed(Duration(seconds: 2)); // Simulating a delay
+    await Future.delayed(const Duration(seconds: 2)); // Simulating a delay
     return 'Dummy text content from $url';
   }
 }

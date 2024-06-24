@@ -3,8 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:signalr_core/signalr_core.dart';
-import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/patient_list.dart';
 import 'package:vv/Caregiver/medical/constants.dart';
 import 'package:vv/Caregiver/medical/global_bloc.dart';
@@ -12,17 +10,15 @@ import 'package:vv/Caregiver/medical/models/errors.dart';
 import 'package:vv/Caregiver/medical/models/medicine.dart';
 import 'package:vv/Caregiver/medical/pages/home_page.dart';
 import 'package:vv/Caregiver/medical/pages/new_entry/new_entry_bloc.dart';
-import 'package:vv/Caregiver/medical/pages/success_screen/success_screen.dart';
 import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
-import 'package:vv/GPS/logger.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/storage_manage.dart';
 import '../../common/convert_time.dart';
 import '../../models/medicine_type.dart';
 
 class NewEntryPage extends StatefulWidget {
-  const NewEntryPage({Key? key}) : super(key: key);
+  const NewEntryPage({super.key});
 
   @override
   State<NewEntryPage> createState() => _NewEntryPageState();
@@ -58,7 +54,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
 
   Future<void> postMedicationData() async {
     Dio dio = Dio();
-    final String apiUrl =
+    const String apiUrl =
         "https://electronicmindofalzheimerpatients.azurewebsites.net/Caregiver/AddMedicationReminder";
 
     // Retrieve patient ID securely
@@ -90,7 +86,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
       "medcineType": medicineTypeIndex,
       "repeater": _newEntryBloc.selectIntervals?.value,
       "startDate": startDateTime.toIso8601String(),
-      "endDate": _newEntryBloc.selectedDate$?.value?.toIso8601String()
+      "endDate": _newEntryBloc.selectedDate$?.value.toIso8601String()
     };
 
     try {
@@ -152,7 +148,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                   ),
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle2!
+                      .titleSmall!
                       .copyWith(color: kOtherColor),
                 ),
                  PanelTitle(
@@ -169,7 +165,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                   ),
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle2!
+                      .titleSmall!
                       .copyWith(color: kOtherColor),
                 ),
                 SizedBox(
@@ -219,7 +215,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                 const SelectTime(),
                  PanelTitle(title: 'Ending Day'.tr(), isRequired: true),
                 const SelectDate(),
-                Text(
+                const Text(
                   "_______________________________________________________",
                   style: TextStyle(color: Color(0xff3B5998)),
                 ),
@@ -236,14 +232,14 @@ class _NewEntryPageState extends State<NewEntryPage> {
                     height: 8.h,
                     child: TextButton(
                       style: TextButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 20, 191, 80),
-                        shape:  StadiumBorder(),
+                        backgroundColor: const Color.fromARGB(255, 20, 191, 80),
+                        shape:  const StadiumBorder(),
                       ),
                       child: Center(
                         child: Text(
                           'confirm'.tr(),
                           style:
-                              Theme.of(context).textTheme.subtitle2!.copyWith(
+                              Theme.of(context).textTheme.titleSmall!.copyWith(
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontFamily: 'ConcertOne',
@@ -298,13 +294,6 @@ class _NewEntryPageState extends State<NewEntryPage> {
                           return;
                         }
 
-                        // Check if end date is selected
-                        if (_newEntryBloc.selectedDate$!.value == null) {
-                          _showErrorDialog(
-                              "Please select the reminder's ending day".tr());
-                          return;
-                        }
-
                         String medicineType = getMedicineTypeName(
                             _newEntryBloc.selectedMedicineType!.value);
 
@@ -344,7 +333,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => PatientListScreen()));
+                                  builder: (context) => const PatientListScreen()));
                         } catch (error) {
                           // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -492,7 +481,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
 }
 
 class SelectDate extends StatefulWidget {
-  const SelectDate({Key? key}) : super(key: key);
+  const SelectDate({super.key});
 
   @override
   State<SelectDate> createState() => _SelectDateState();
@@ -536,10 +525,10 @@ class _SelectDateState extends State<SelectDate> {
           onPressed: _selectDate,
           child: Center(
             child: Text(
-  _clicked ? "${_date.toString().split(' ')[0]}" : "select_date".tr(),
+  _clicked ? _date.toString().split(' ')[0] : "select_date".tr(),
               style: Theme.of(context)
                   .textTheme
-                  .subtitle2!
+                  .titleSmall!
                   .copyWith(color: kScaffoldColor),
             ),
           ),
@@ -550,7 +539,7 @@ class _SelectDateState extends State<SelectDate> {
 }
 
 class SelectTime extends StatefulWidget {
-  const SelectTime({Key? key}) : super(key: key);
+  const SelectTime({super.key});
 
   @override
   State<SelectTime> createState() => _SelectTimeState();
@@ -597,7 +586,7 @@ class _SelectTimeState extends State<SelectTime> {
       : "select_time".tr(),
               style: Theme.of(context)
                   .textTheme
-                  .subtitle2!
+                  .titleSmall!
                   .copyWith(color: kScaffoldColor),
             ),
           ),
@@ -608,7 +597,7 @@ class _SelectTimeState extends State<SelectTime> {
 }
 
 class IntervalSelection extends StatefulWidget {
-  const IntervalSelection({Key? key}) : super(key: key);
+  const IntervalSelection({super.key});
 
   @override
   State<IntervalSelection> createState() => _IntervalSelectionState();
@@ -627,7 +616,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
         children: [
           Text(
             'Remind me every'.tr(),
-            style: Theme.of(context).textTheme.subtitle2!.copyWith(
+            style: Theme.of(context).textTheme.titleSmall!.copyWith(
                   color: kTextColor,
                 ),
           ),
@@ -638,7 +627,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
             hint: _selected == 0
                 ? Text(
                     'Select an Interval'.tr(),
-                    style: Theme.of(context).textTheme.caption!.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           color: kPrimaryColor,
                         ),
                   )
@@ -651,7 +640,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
                   value: value,
                   child: Text(
                     value.toString(),
-                    style: Theme.of(context).textTheme.caption!.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           color: kSecondaryColor,
                         ),
                   ),
@@ -671,7 +660,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
             _selected == 1 ? " hour".tr() : " hours".tr(),
             style: Theme.of(context)
                 .textTheme
-                .subtitle2!
+                .titleSmall!
                 .copyWith(color: kTextColor),
           ),
         ],
@@ -682,12 +671,11 @@ class _IntervalSelectionState extends State<IntervalSelection> {
 
 class MedicineTypeColumn extends StatelessWidget {
   const MedicineTypeColumn(
-      {Key? key,
+      {super.key,
       required this.medicineType,
       required this.name,
       required this.iconValue,
-      required this.isSelected})
-      : super(key: key);
+      required this.isSelected});
   final int medicineType;
   final String name;
   final String iconValue;
@@ -708,7 +696,7 @@ class MedicineTypeColumn extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3.h),
                 color: isSelected
-                    ? Color.fromARGB(255, 166, 169, 174)
+                    ? const Color.fromARGB(255, 166, 169, 174)
                     : Colors.white),
             child: Center(
               child: Padding(
@@ -737,7 +725,7 @@ class MedicineTypeColumn extends StatelessWidget {
                 name,
                 style: Theme.of(context)
                     .textTheme
-                    .subtitle2!
+                    .titleSmall!
                     .copyWith(color: isSelected ? Colors.white : kTextColor),
               ),
             ),
@@ -752,8 +740,7 @@ class PanelTitle extends StatelessWidget {
   final String title;
   final bool isRequired;
 
-  const PanelTitle({Key? key, required this.title, required this.isRequired})
-      : super(key: key);
+  const PanelTitle({super.key, required this.title, required this.isRequired});
 
   @override
   Widget build(BuildContext context) {
@@ -764,7 +751,7 @@ class PanelTitle extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.subtitle2!.copyWith(
+            style: Theme.of(context).textTheme.titleSmall!.copyWith(
                   color: kTextColor,
                 ),
           ),

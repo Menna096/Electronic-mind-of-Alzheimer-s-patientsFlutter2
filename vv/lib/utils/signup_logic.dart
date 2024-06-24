@@ -41,9 +41,9 @@ void displayErrorSnackBar(BuildContext context, String message) {
 }
 
 void displaySuccessMessage(BuildContext context, String message) {
-  Timer? _timer;
+  Timer? timer;
   // _timer?.cancel();
-  _timer = Timer(Duration(milliseconds: 20), () {
+  timer = Timer(const Duration(milliseconds: 20), () {
     displaySuccessSnackBar(context, message);
   });
 }

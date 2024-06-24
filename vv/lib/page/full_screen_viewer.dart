@@ -1,17 +1,13 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:signalr_core/signalr_core.dart';
 import 'package:video_player/video_player.dart';
-import 'package:vv/map_location_picker.dart';
 import 'package:vv/models/media_item.dart';
-import 'package:vv/utils/token_manage.dart';
 import 'package:vv/widgets/background.dart';
 
 class FullScreenViewer extends StatefulWidget {
   final MediaItem mediaItem;
 
-  FullScreenViewer({required this.mediaItem});
+  const FullScreenViewer({super.key, required this.mediaItem});
 
   @override
   _FullScreenViewerState createState() => _FullScreenViewerState();
@@ -59,12 +55,12 @@ class _FullScreenViewerState extends State<FullScreenViewer> {
                         aspectRatio: _controller!.value.aspectRatio,
                         child: VideoPlayer(_controller!),
                       )
-                    : CircularProgressIndicator(),
+                    : const CircularProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   widget.mediaItem.description,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontStyle: FontStyle.italic,
                   ),
