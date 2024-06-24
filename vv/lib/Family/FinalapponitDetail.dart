@@ -4,7 +4,7 @@ import 'package:vv/Family/appoint_list.dart';
 class AppointmentDetailsScreen extends StatelessWidget {
   final Map<String, dynamic> appointment;
 
-  const AppointmentDetailsScreen({required this.appointment});
+  const AppointmentDetailsScreen({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {
@@ -13,15 +13,15 @@ class AppointmentDetailsScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => AppointListScreen()),
+              MaterialPageRoute(builder: (context) => const AppointListScreen()),
             );
           },
         ),
-        title: Text(
+        title: const Text(
           "Appointment Details",
           style: TextStyle(
             fontFamily: 'LilitaOne',
@@ -30,7 +30,7 @@ class AppointmentDetailsScreen extends StatelessWidget {
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -48,14 +48,14 @@ class AppointmentDetailsScreen extends StatelessWidget {
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -70,18 +70,18 @@ class AppointmentDetailsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Text(
                       'Location: ${appointment['location']}',
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 26.0,
                           color: Color.fromARGB(255, 83, 137, 184),
                           fontFamily: 'LilitaOne'),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Text(
                       'Notes: ${appointment['notes']}',
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 26.0,
                           color: Color.fromARGB(255, 83, 137, 184),
                           fontFamily: 'LilitaOne'),

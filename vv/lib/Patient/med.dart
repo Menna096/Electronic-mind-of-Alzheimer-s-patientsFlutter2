@@ -1,14 +1,10 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:signalr_core/signalr_core.dart';
 // import 'package:vv/api/login_api.dart';
 // import 'package:vv/utils/token_manage.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 import 'package:intl/intl.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/login_api.dart';
@@ -48,6 +44,8 @@ class Reminder {
 }
 
 class MedicinesPage extends StatefulWidget {
+  const MedicinesPage({super.key});
+
   @override
   _MedicinesPageState createState() => _MedicinesPageState();
 }
@@ -103,27 +101,27 @@ class _MedicinesPageState extends State<MedicinesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // Use a custom background color
-      backgroundColor: Color(0xFFF2F2F2), // Light gray background
+      backgroundColor: const Color(0xFFF2F2F2), // Light gray background
 
       appBar: AppBar(
-        title: Text('Medicines List'),
+        title: const Text('Medicines List'),
         // Change the background color to transparent
         backgroundColor: Colors.transparent,
         elevation: 0, // Remove shadow for a cleaner look
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => mainpatient(), // Navigate to main patient page
+                builder: (context) => const mainpatient(), // Navigate to main patient page
               ),
             );
           },
         ),
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : errorMessage.isNotEmpty
               ? Center(child: Text(errorMessage))
               : ListView.builder(
@@ -153,13 +151,13 @@ class _MedicinesPageState extends State<MedicinesPage> {
                       },
                       child: Card(
                         margin:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                            const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                         elevation: 4,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Padding(
-                          padding: EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(16),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -168,7 +166,7 @@ class _MedicinesPageState extends State<MedicinesPage> {
                                   Expanded(
                                     child: Text(
                                       '${medicine['medication_Name']}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 30,
                                         fontFamily: 'ConcertOne',
                                         color: Color.fromARGB(255, 27, 94, 138),
@@ -180,19 +178,19 @@ class _MedicinesPageState extends State<MedicinesPage> {
                                       medicine['medcineType']),
                                 ],
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               _buildMedicineDetailRow(
                                   'Dosage:', '${medicine['dosage']} mg'),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               _buildMedicineDetailRow('Type:',
                                   _formatMedicineType(medicine['medcineType'])),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               _buildMedicineDetailRow('Repeats:',
                                   ' Every ${medicine['repeater']} hours'),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               _buildMedicineDetailRow(
                                   'Start:', _formatDate(medicine['startDate'])),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               _buildMedicineDetailRow(
                                   'End:', _formatDate(medicine['endDate'])),
                             ],
@@ -233,7 +231,7 @@ class _MedicinesPageState extends State<MedicinesPage> {
           width: 60,
         );
       default:
-        return Icon(Icons.error, size: 60);
+        return const Icon(Icons.error, size: 60);
     }
   }
 
@@ -244,7 +242,7 @@ class _MedicinesPageState extends State<MedicinesPage> {
       children: [
         Text(
           '$label ',
-          style: TextStyle(fontWeight: FontWeight.w500),
+          style: const TextStyle(fontWeight: FontWeight.w500),
         ),
         Text(value),
       ],
@@ -260,22 +258,22 @@ class _MedicinesPageState extends State<MedicinesPage> {
 class MedicineDetailsPatient extends StatelessWidget {
   final Reminder reminder;
 
-  MedicineDetailsPatient({required this.reminder});
+  const MedicineDetailsPatient({super.key, required this.reminder});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF2F2F2), // Light gray background
+      backgroundColor: const Color(0xFFF2F2F2), // Light gray background
       body: Stack(
         children: [
           Scaffold(
             backgroundColor: Colors.transparent, // Make the Scaffold transparent
             appBar: AppBar(
-              title: Text('Medicine Details'),
+              title: const Text('Medicine Details'),
               backgroundColor: Colors.transparent,
               elevation: 0,
               leading: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: const Icon(Icons.arrow_back),
                 onPressed: () {
                   Navigator.pop(context); // Go back to the previous screen
                 },
@@ -290,20 +288,20 @@ class MedicineDetailsPatient extends StatelessWidget {
                     // Medication Name with Icon
                     Row(
                       children: [
-                        Icon(Icons.medication,
+                        const Icon(Icons.medication,
                             size: 30,
                             color: Color.fromARGB(255, 169, 48, 48)),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Text(
                           reminder.Medication_Name,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 50,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'dubai'),
                         ),
                       ],
                     ),
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
 
                     // Detail Rows with Icons
 
@@ -318,7 +316,7 @@ class MedicineDetailsPatient extends StatelessWidget {
                     _buildDetailRow(Icons.calendar_today, 'End Date:',
                         _formatDate(reminder.endDate)),
 
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                   ],
                 ),
               ),
@@ -336,23 +334,23 @@ class MedicineDetailsPatient extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 24, color: Color.fromARGB(255, 64, 116, 166)),
-          SizedBox(width: 10),
+          Icon(icon, size: 24, color: const Color.fromARGB(255, 64, 116, 166)),
+          const SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 25,
                     color: Color.fromARGB(210, 47, 47, 47),
                     fontWeight: FontWeight.w100,
                     fontFamily: 'ProtestRiot'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(
                 value,
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
             ],
           ),

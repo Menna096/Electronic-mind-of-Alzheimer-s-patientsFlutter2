@@ -1,14 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:vv/Family/enterimage.dart';
-import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 
 import 'package:vv/api/login_api.dart';
 import 'package:vv/faceid.dart';
 import 'package:vv/page/addpat.dart';
-import 'package:vv/widgets/backbutton.dart';
 
 class assignPatient extends StatefulWidget {
+  const assignPatient({super.key});
+
   @override
   _assignPatientState createState() => _assignPatientState();
 }
@@ -66,7 +66,7 @@ class _assignPatientState extends State<assignPatient> {
         if (needTraining == true) {
           Navigator.push(
             context,
-            _createRoute(UploadImagesPage()),
+            _createRoute(const UploadImagesPage()),
           );
           print('need to train');
         }
@@ -108,13 +108,13 @@ class _assignPatientState extends State<assignPatient> {
           child: Container(
             width: double.infinity,
             height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  const Color.fromARGB(255, 156, 195, 255)
+                  Color.fromARGB(255, 156, 195, 255)
                 ],
               ),
             ),
@@ -126,8 +126,8 @@ class _assignPatientState extends State<assignPatient> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12.0),
-                  boxShadow: [
-                    const BoxShadow(
+                  boxShadow: const [
+                    BoxShadow(
                       color: Colors.black26,
                       blurRadius: 8.0,
                       offset: Offset(0, 2),
@@ -137,9 +137,9 @@ class _assignPatientState extends State<assignPatient> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Row(
+                    const Row(
                       children: [
-                        const Text(
+                        Text(
                           'Assign Patient',
                           style: TextStyle(
                             fontSize: 24,
@@ -200,18 +200,18 @@ class _assignPatientState extends State<assignPatient> {
                           child: Text(value),
                         );
                       }).toList(),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Relationility',
-                        labelStyle: const TextStyle(
+                        labelStyle: TextStyle(
                             color: Color.fromARGB(255, 0, 0, 0)),
                         border: InputBorder.none,
                         filled: true,
                         fillColor: Colors.white,
                         hintText: 'Select Relationility',
-                        hintStyle: const TextStyle(
+                        hintStyle: TextStyle(
                             color: Color.fromARGB(255, 0, 0, 0),
                             fontWeight: FontWeight.w300),
-                        contentPadding: const EdgeInsets.symmetric(
+                        contentPadding: EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 12),
                       ),
                     ),
@@ -226,16 +226,16 @@ class _assignPatientState extends State<assignPatient> {
                     const SizedBox(height: 12),
                     ElevatedButton(
                       onPressed: _handleSubmitAndCheckTrain,
-                      child: const Text(
-                        'Submit',
-                        style: TextStyle(color: Colors.white),
-                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                         fixedSize: const Size(150, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
+                      ),
+                      child: const Text(
+                        'Submit',
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                     TextButton(
@@ -244,7 +244,7 @@ class _assignPatientState extends State<assignPatient> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                Addpat(), // Ensure this is the correct class name for your Assign Patient Screen
+                                const Addpat(), // Ensure this is the correct class name for your Assign Patient Screen
                           ),
                         );
                       },

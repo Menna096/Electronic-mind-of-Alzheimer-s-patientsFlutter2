@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:path/path.dart' as path;
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
-import 'package:signalr_core/signalr_core.dart';
 import 'package:vv/api/login_api.dart';
-import 'package:vv/utils/token_manage.dart';
-import 'package:geolocator/geolocator.dart';
 
 class FileUploadPage extends StatefulWidget {
+  const FileUploadPage({super.key});
+
   @override
   _FileUploadPageState createState() => _FileUploadPageState();
 }
@@ -82,7 +81,7 @@ class _FileUploadPageState extends State<FileUploadPage> {
         // Navigate to the "mainpatient" page here
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => mainpatient()),
+          MaterialPageRoute(builder: (context) => const mainpatient()),
         );
       } else {
         print('Failed to upload file. Error: ${response.statusMessage}');
@@ -111,7 +110,7 @@ class _FileUploadPageState extends State<FileUploadPage> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [const Color(0xffFFFFFF), Color(0xff3B5998)],
+            colors: [Color(0xffFFFFFF), Color(0xff3B5998)],
           ),
         ),
         child: SingleChildScrollView(
@@ -210,22 +209,22 @@ class _FileUploadPageState extends State<FileUploadPage> {
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: _uploadFile,
-                  child: Center(
-                    child: Text(
-                      'Done',
-                      style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     padding: const EdgeInsets.all(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Done',
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
                   ),
                 ),
               ],

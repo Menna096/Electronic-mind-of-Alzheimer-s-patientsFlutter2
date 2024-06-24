@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../models/errors.dart';
-import '../../models/medicine_type.dart';
 
 class NewEntryBloc {
   BehaviorSubject<int>? _selectedMedicineType$;

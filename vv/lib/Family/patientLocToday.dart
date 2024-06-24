@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -7,6 +6,8 @@ import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/login_api.dart';
 
 class PatientLocationsScreen extends StatefulWidget {
+  const PatientLocationsScreen({super.key});
+
   @override
   _PatientLocationsScreenState createState() => _PatientLocationsScreenState();
 }
@@ -52,19 +53,19 @@ class _PatientLocationsScreenState extends State<PatientLocationsScreen> {
         Placemark placemark = placemarks[0];
         String address = placemark.street ?? '';
         if (placemark.subLocality != null) {
-          address += ', ' + placemark.subLocality!;
+          address += ', ${placemark.subLocality!}';
         }
         if (placemark.locality != null) {
-          address += ', ' + placemark.locality!;
+          address += ', ${placemark.locality!}';
         }
         if (placemark.subAdministrativeArea != null) {
-          address += ', ' + placemark.subAdministrativeArea!;
+          address += ', ${placemark.subAdministrativeArea!}';
         }
         if (placemark.administrativeArea != null) {
-          address += ', ' + placemark.administrativeArea!;
+          address += ', ${placemark.administrativeArea!}';
         }
         if (placemark.country != null) {
-          address += ', ' + placemark.country!;
+          address += ', ${placemark.country!}';
         }
         return address;
       } else {
@@ -92,15 +93,15 @@ class _PatientLocationsScreenState extends State<PatientLocationsScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => MainPageFamily()),
+              MaterialPageRoute(builder: (context) => const MainPageFamily()),
             );
           },
         ),
-        title: Text(
+        title: const Text(
           "Patient Location Today",
           style: TextStyle(
             fontFamily: 'LilitaOne',
@@ -109,7 +110,7 @@ class _PatientLocationsScreenState extends State<PatientLocationsScreen> {
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -127,19 +128,19 @@ class _PatientLocationsScreenState extends State<PatientLocationsScreen> {
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
         ),
       ),
       body: isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
               ),
             )
-          : data != null && data.isNotEmpty
+          : data.isNotEmpty
               ? ListView.builder(
                   itemCount: data.length,
                   itemBuilder: (context, index) {
@@ -156,18 +157,18 @@ class _PatientLocationsScreenState extends State<PatientLocationsScreen> {
                               borderRadius: BorderRadius.circular(15.0),
                             ),
                             elevation: 5,
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 10),
                             child: ListTile(
                               
                               title: Text(
                                 address,
-                                style: TextStyle(fontWeight: FontWeight.w600),
+                                style: const TextStyle(fontWeight: FontWeight.w600),
                               ),
                               subtitle: Text(
                                   'Time: ${formatTime(location['timeStamp'])}'),
                               trailing: IconButton(
-                                icon: Icon(Icons.location_on_sharp, color: Colors.blueAccent),
+                                icon: const Icon(Icons.location_on_sharp, color: Colors.blueAccent),
                                 onPressed: () {
                                   openMap(location['latitude'],
                                       location['longitude']);
@@ -181,26 +182,26 @@ class _PatientLocationsScreenState extends State<PatientLocationsScreen> {
                               borderRadius: BorderRadius.circular(15.0),
                             ),
                             elevation: 5,
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 10),
                             child: ListTile(
                               leading: Container(
-                                padding: EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Colors.redAccent.withOpacity(0.2),
                                 ),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.error,
                                   color: Colors.redAccent,
                                   size: 24,
                                 ),
                               ),
-                              title: Text('Error retrieving address'),
+                              title: const Text('Error retrieving address'),
                               subtitle: Text(
                                   'Time: ${formatTime(location['timeStamp'])}'),
                               trailing: IconButton(
-                                icon: Icon(Icons.refresh, color: Colors.blueAccent),
+                                icon: const Icon(Icons.refresh, color: Colors.blueAccent),
                                 onPressed: () {
                                   openMap(location['latitude'],
                                       location['longitude']);
@@ -214,21 +215,21 @@ class _PatientLocationsScreenState extends State<PatientLocationsScreen> {
                               borderRadius: BorderRadius.circular(15.0),
                             ),
                             elevation: 5,
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 10),
                             child: ListTile(
                               leading: Container(
-                                padding: EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Colors.blueAccent.withOpacity(0.2),
                                 ),
-                                child: CircularProgressIndicator(
+                                child: const CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
                                   strokeWidth: 3,
                                 ),
                               ),
-                              title: Text('Loading address...'),
+                              title: const Text('Loading address...'),
                               subtitle: Text(
                                   'Time: ${formatTime(location['timeStamp'])}'),
                             ),
@@ -238,7 +239,7 @@ class _PatientLocationsScreenState extends State<PatientLocationsScreen> {
                     );
                   },
                 )
-              : Center(
+              : const Center(
                   child: Text(
                     'No data available',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),

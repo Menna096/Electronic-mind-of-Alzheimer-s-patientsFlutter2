@@ -5,10 +5,10 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/api/login_api.dart';
-import 'package:vv/utils/token_manage.dart';
-import 'package:vv/widgets/background.dart';
 
 class HistoryScreen extends StatefulWidget {
+  const HistoryScreen({super.key});
+
   @override
   _HistoryScreenState createState() => _HistoryScreenState();
 }
@@ -66,12 +66,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text(
+        title: const Text(
           "Game History",
           style: TextStyle(
             fontFamily: 'LilitaOne',
@@ -80,7 +80,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -98,14 +98,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -120,8 +120,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 "Game History",
                 style: TextStyle(
                   fontSize: 23,
@@ -129,17 +129,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   color: Color(0xFF6A95E9),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Expanded(
                 child: isLoading
-                    ? Center(
+                    ? const Center(
                         child: SpinKitFadingCircle(
                           color: Colors.white,
                           size: 50.0,
                         ),
                       )
                     : gameHistories.isEmpty
-                        ? Center(
+                        ? const Center(
                             child: Text(
                               "No history available.",
                               style: TextStyle(
@@ -160,7 +160,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   borderRadius: BorderRadius.circular(20.0),
                                 ),
                                 child: Container(
-                                  padding: EdgeInsets.all(20),
+                                  padding: const EdgeInsets.all(20),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -169,30 +169,30 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Icon(Icons.sports_esports,
+                                          const Icon(Icons.sports_esports,
                                               color: Color(0xFF6A95E9),
                                               size: 32),
                                           Text(
                                               'Date: ${formatDate(item['gameDate'])}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   color: Color.fromARGB(
                                                       255, 67, 115, 219))),
                                         ],
                                       ),
-                                      SizedBox(height: 7),
+                                      const SizedBox(height: 7),
                                       Text(
                                         'Difficulty: ${formatDifficulty(item['difficultyGame'])}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontFamily: 'dubai',
                                             fontSize: 15,
                                             color: Color.fromARGB(
                                                 255, 100, 100, 100)),
                                       ),
-                                      SizedBox(height: 4),
+                                      const SizedBox(height: 4),
                                       Text(
                                         'Score: ${item['patientScore']}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Color.fromARGB(
                                                 255, 143, 172, 212)),
                                       ),

@@ -2,14 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:vv/daily_task/common/values/constant.dart';
 
 Widget buildHeadingText({required String title}) {
   return Text(
     title,
     style: TextStyle(
-      color: Color.fromARGB(255, 76, 131, 198),
+      color: const Color.fromARGB(255, 76, 131, 198),
       fontSize: 20.sp,
       fontWeight: FontWeight.bold,
     ),
@@ -26,7 +25,7 @@ Widget buildTaskField({required Function(String)? onChanged}) {
       hintText: 'Enter Task Here'.tr(),
       hintStyle: const TextStyle(color: Colors.grey),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Color(0xff3B5998), width: 2.0.w),
+        borderSide: BorderSide(color: const Color(0xff3B5998), width: 2.0.w),
         borderRadius: BorderRadius.circular(16.0.w),
       ),
       border: OutlineInputBorder(
@@ -44,19 +43,19 @@ Widget buildDateTimePicker(
     decoration: BoxDecoration(
       border: Border(
         top: BorderSide(
-          color: Color.fromARGB(255, 219, 219, 219),
+          color: const Color.fromARGB(255, 219, 219, 219),
           width: 2.w,
         ),
         bottom: BorderSide(
-          color: Color.fromARGB(255, 219, 219, 219),
+          color: const Color.fromARGB(255, 219, 219, 219),
           width: 2.w,
         ),
         left: BorderSide(
-          color: Color.fromARGB(255, 219, 219, 219),
+          color: const Color.fromARGB(255, 219, 219, 219),
           width: 2.w,
         ),
         right: BorderSide(
-          color: Color.fromARGB(255, 219, 219, 219),
+          color: const Color.fromARGB(255, 219, 219, 219),
           width: 2.w,
         ),
       ),
@@ -85,8 +84,8 @@ Widget buildDropDown(
     ),
     isExpanded: true,
     iconSize: 30.0.w,
-    dropdownColor: Color.fromARGB(255, 92, 129, 208),
-    iconEnabledColor: Color.fromARGB(255, 64, 64, 65),
+    dropdownColor: const Color.fromARGB(255, 92, 129, 208),
+    iconEnabledColor: const Color.fromARGB(255, 64, 64, 65),
     borderRadius: BorderRadius.circular(16.0),
     style: TextStyle(color: Colors.white, fontSize: 18.sp),
     items: dropDownList.map(

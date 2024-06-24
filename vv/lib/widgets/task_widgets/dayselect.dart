@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DaySelector extends StatefulWidget {
-  const DaySelector({Key? key}) : super(key: key);
+  const DaySelector({super.key});
 
   @override
   // ignore: library_private_types_in_public_api

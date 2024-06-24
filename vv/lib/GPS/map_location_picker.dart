@@ -199,7 +199,7 @@ class MapLocationPicker extends StatefulWidget {
   final int minCharsForSuggestions;
 
   const MapLocationPicker({
-    Key? key,
+    super.key,
     this.desiredAccuracy = LocationAccuracy.high,
     required this.apiKey,
     this.geoCodingBaseUrl,
@@ -267,7 +267,7 @@ class MapLocationPicker extends StatefulWidget {
     this.fabTooltip = 'My Location',
     this.fabIcon =  Icons.my_location,
     this.minCharsForSuggestions = 0
-  }) : super(key: key);
+  });
 
   @override
   State<MapLocationPicker> createState() => _MapLocationPickerState();
@@ -440,7 +440,7 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                     setState(() {});
                   },
                 ),
-                Spacer(),
+                const Spacer(),
                 if (!widget.hideMapTypeButton)
                   Padding(
                     padding: const EdgeInsets.all(5.0),

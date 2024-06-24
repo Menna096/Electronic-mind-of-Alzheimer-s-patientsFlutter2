@@ -5,11 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/page/assign_patient.dart';
-import 'package:signalr_core/signalr_core.dart';
-import 'package:vv/utils/token_manage.dart';
-import 'package:geolocator/geolocator.dart';
 
 class AddPatientScreen extends StatefulWidget {
+  const AddPatientScreen({super.key});
+
   @override
   _AddPatientScreenState createState() => _AddPatientScreenState();
 }
@@ -50,7 +49,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  assignPatient()), // Ensure this is the correct class name for your Assign Patient Screen
+                  const assignPatient()), // Ensure this is the correct class name for your Assign Patient Screen
         );
       }
     });
@@ -62,7 +61,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
     if (patientCode == 'Loading...') {
       return Scaffold(
         backgroundColor: Colors.grey.shade300,
-        body: Center(child: CircularProgressIndicator()),
+        body: const Center(child: CircularProgressIndicator()),
       );
     }
 
@@ -84,11 +83,11 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
             alignment: Alignment.center,
             child: Container(
               width: 300,
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12.0),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black26,
                     blurRadius: 8.0,
@@ -99,34 +98,34 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Add Patient',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   TextField(
                     decoration: InputDecoration(
                       labelText: 'Patient ID',
                       border: OutlineInputBorder(
                         borderRadius:
                             BorderRadius.circular(8.0), // Rounded corners
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Colors.black, // Default border color
                           width: 1.0, // Default border width
                         ),
                       ),
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                           vertical: 20.0, horizontal: 10.0),
                       suffixIcon: IconButton(
-                        icon: Icon(Icons.copy),
+                        icon: const Icon(Icons.copy),
                         onPressed: () {
                           Clipboard.setData(ClipboardData(text: patientCode))
                               .then((_) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content:
                                     Text('Patient ID copied to clipboard!'),
                                 duration: Duration(seconds: 2),
@@ -138,36 +137,36 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                     ),
                     readOnly: true,
                     controller: TextEditingController(text: patientCode),
-                    style: TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   Text(
                     'Please send it to anyone responsible for the patient',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.grey.shade600),
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                MainPageFamily()), // Ensure this is the correct class name for your Main Page Family
+                                const MainPageFamily()), // Ensure this is the correct class name for your Main Page Family
                       );
                     },
-                    child: Text(
-                      'Done',
-                      style: TextStyle(color: Colors.white),
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
-                      fixedSize: Size(150, 50),
+                      fixedSize: const Size(150, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
+                    ),
+                    child: const Text(
+                      'Done',
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ],

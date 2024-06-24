@@ -6,14 +6,11 @@ import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/game_time_manage.dart';
 import 'package:vv/widgets/animation.dart';
 import 'package:vv/widgets/background.dart';
-import 'package:signalr_core/signalr_core.dart';
-import 'package:vv/utils/token_manage.dart';
-import 'package:geolocator/geolocator.dart';
 
 class MemoryCardGame extends StatefulWidget {
   final int level;
 
-  const MemoryCardGame({Key? key, required this.level}) : super(key: key);
+  const MemoryCardGame({super.key, required this.level});
 
   @override
   _MemoryCardGameState createState() => _MemoryCardGameState();
@@ -64,7 +61,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
       onTimerFinish: gameOver,
     );
     // Start the timer after 3 seconds
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       _timerManager.start();
       _toggleSymbolsVisibility(
           0); // Hide symbols immediately after timer starts
@@ -217,7 +214,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
       initializeGame();
     });
     _timerManager.reset();
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       _timerManager.start();
       _toggleSymbolsVisibility(
           0); // Hide symbols immediately after timer starts
@@ -244,7 +241,6 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
                 Navigator.of(context).pop(); // Close the dialog
                 restartGame(visibilityDuration: 1);
               },
-              child: const Text('Restart'),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: const Color(0xFF0386D0),
@@ -254,6 +250,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
                   borderRadius: BorderRadius.circular(27.0),
                 ),
               ),
+              child: const Text('Restart'),
             ),
           ],
         ),

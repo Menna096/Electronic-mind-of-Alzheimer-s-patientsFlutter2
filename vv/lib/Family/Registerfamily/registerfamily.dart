@@ -35,7 +35,7 @@ class APIService {
 }
 
 class RegisterFamily extends StatefulWidget {
-  const RegisterFamily({Key? key}) : super(key: key);
+  const RegisterFamily({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -176,7 +176,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                       Navigator.pop(context);
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginPageAll()),
+                        MaterialPageRoute(builder: (context) => const LoginPageAll()),
                       );
                     });
       } else {
@@ -262,7 +262,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                     const SizedBox(height: 0.5),
                      Text(
                       'Create Account'.tr(),
-                      style: TextStyle(fontSize: 40, fontFamily: 'Acme'),
+                      style: const TextStyle(fontSize: 40, fontFamily: 'Acme'),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 18),
@@ -290,7 +290,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                           _isPasswordVisible
                               ? Icons.visibility
                               : Icons.visibility_off,
-                          color: Color.fromARGB(255, 255, 244, 244),
+                          color: const Color.fromARGB(255, 255, 244, 244),
                         ),
                         onPressed: () {
                           setState(() {
@@ -311,7 +311,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
                           _isPasswordVisible
                               ? Icons.visibility
                               : Icons.visibility_off,
-                          color: Color.fromARGB(255, 255, 244, 244),
+                          color: const Color.fromARGB(255, 255, 244, 244),
                         ),
                         onPressed: () {
                           setState(() {

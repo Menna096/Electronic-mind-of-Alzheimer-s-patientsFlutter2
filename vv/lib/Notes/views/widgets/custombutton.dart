@@ -13,15 +13,15 @@ class custombutton extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: 55,
         decoration: BoxDecoration(
-          color: Color(0xff3B5998),
+          color: const Color(0xff3B5998),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Center(
           child: isloading
-              ? SizedBox(
+              ? const SizedBox(
                   height: 24,
                   width: 24,
-                  child: const CircularProgressIndicator(
+                  child: CircularProgressIndicator(
                     color: Color(0xFF2D2D2D),
                   ),
                 )

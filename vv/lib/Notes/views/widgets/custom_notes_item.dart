@@ -48,7 +48,7 @@ class Note_Item extends StatelessWidget {
                   note.subtitle,
                   style: TextStyle(
                     fontFamily: 'Poppins',
-                    color: Color(0xFF2D2D2D).withOpacity(0.4),
+                    color: const Color(0xFF2D2D2D).withOpacity(0.4),
                     fontSize: 18,
                   ),
                 ),
@@ -70,7 +70,7 @@ class Note_Item extends StatelessWidget {
               child: Text(
                 note.date,
                 style: TextStyle(
-                  color: Color.fromARGB(255, 45, 45, 45).withOpacity(0.5),
+                  color: const Color.fromARGB(255, 45, 45, 45).withOpacity(0.5),
                   fontSize: 16,
                 ),
               ),

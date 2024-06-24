@@ -1,50 +1,26 @@
 import 'dart:math';
-
-import 'package:chat_bot/actions/action_answer.dart';
-import 'package:chat_bot/actions/actions.dart' as bot_actions;
-import 'package:chat_bot/api/models/response_models.dart';
-import 'package:chat_bot/chat/utils/chatbot_state.dart';
-import 'package:chat_bot/chat_bot.dart';
-import 'package:chat_bot/chat_bot_errors.dart';
-import 'package:chat_bot/helpers/datetime_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:vv/Chatbot/actions/action_answer.dart';
+import 'package:vv/Chatbot/actions/actions.dart';
+import 'package:vv/Chatbot/api/models/response_models.dart';
+import 'package:vv/Chatbot/chat/utils/chatbot_state.dart';
+import 'package:vv/Chatbot/chat_bot.dart';
+import 'package:vv/Chatbot/chat_bot_errors.dart';
+import 'package:vv/Chatbot/helpers/datetime_helper.dart';
 import '../../helpers/texts.dart';
 import '../../helpers/utils.dart';
 import '../models/message.dart';
 import 'widgets/chat_bubble.dart';
 import 'widgets/chatbot_message_bar.dart';
-
-void main() async {
-  runApp(const ChatApp());
-}
-
-class ChatApp extends StatelessWidget {
-  const ChatApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Chat Bot',
-      home: const ChatScreen(),
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-    );
-  }
-}
-
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
-
   @override
   State<StatefulWidget> createState() => _ChatScreenState();
 }
-
 class _ChatScreenState extends State<ChatScreen> {
   // Runtime
-  bot_actions.Action? currentAction;
+  ActionChatbot? currentAction;
   ActionAnswerRequest? _currentActionAnswerRequest;
   final chatBot = ChatBot();
   final List<Message> messages = [
@@ -118,13 +94,13 @@ class _ChatScreenState extends State<ChatScreen> {
                 return;
               }
               // * ===== Perform the action ===== * //
-              if (action is bot_actions.CreateAlarmAction) {
+              if (action is CreateAlarmAction) {
                 await performScheduleAlarmAction(content);
-              } else if (action is bot_actions.SearchAction) {
+              } else if (action is SearchAction) {
                 await performSearchAction();
-              } else if (action is bot_actions.CreateTaskAction) {
+              } else if (action is CreateTaskAction) {
                 await performCreateTaskAction();
-              } else if (action is bot_actions.ShowAllTasksAction) {
+              } else if (action is ShowAllTasksAction) {
                 await performShowAllTasksAction();
               }
             },
@@ -137,11 +113,11 @@ class _ChatScreenState extends State<ChatScreen> {
               });
               // * Make a test on just the create alarm action
               if (currentAction != null) {
-                if (currentAction is! bot_actions.CreateAlarmAction) {
+                if (currentAction is! CreateAlarmAction) {
                   cancelCurrentAction();
                   return true;
                 }
-                final action = currentAction as bot_actions.CreateAlarmAction;
+                final action = currentAction as CreateAlarmAction;
                 if (action.answerRequest?.isAnswerCorrect ?? false) {
                   cancelCurrentAction();
                   return true;
@@ -233,7 +209,7 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  Future<bot_actions.Action?> identifyAction(String content) async {
+  Future<ActionChatbot?> identifyAction(String content) async {
     // * Show chat bot is thinking
     _state = ChatBotState.thinking;
     await Future.delayed(const Duration(milliseconds: 250));
@@ -287,7 +263,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   // * ========== Actions handlers ========== * //
   Future<void> performScheduleAlarmAction(String rawTimestamp) async {
-    final action = currentAction as bot_actions.CreateAlarmAction;
+    final action = currentAction as CreateAlarmAction;
     final alarmTimestamp = parseTimestamp(rawTimestamp);
     final formattedAlarmTime = formatTimestamp(alarmTimestamp);
     // * Check the alarm time parsed or not

@@ -4,8 +4,7 @@ import 'package:vv/Notes/cubits/Add_notes_cubit.dart';
 
 
 class ColorItem extends StatelessWidget {
-  const ColorItem({Key? key, required this.isactive, required this.color})
-      : super(key: key);
+  const ColorItem({super.key, required this.isactive, required this.color});
   final bool isactive;
   final Color color;
   @override
@@ -27,7 +26,7 @@ class ColorItem extends StatelessWidget {
 }
 
 class ColorListView extends StatefulWidget {
-  const ColorListView({Key? key}) : super(key: key);
+  const ColorListView({super.key});
 
   @override
   State<ColorListView> createState() => _ColorListViewState();
@@ -37,14 +36,14 @@ class _ColorListViewState extends State<ColorListView> {
   int currentindex = 0;
   List<Color> colors = [
     
-    Color(0xFF90CAF9),
-    Color(0xFF42A5F5),
-    Color(0xFF64B5F6),
-    Color(0xFF1976D2),
-    Color(0xFF2196F3),
-    Color(0xFF1565C0),
-    Color(0xFF1E88E5),
-    Color(0xFF0D47A1),
+    const Color(0xFF90CAF9),
+    const Color(0xFF42A5F5),
+    const Color(0xFF64B5F6),
+    const Color(0xFF1976D2),
+    const Color(0xFF2196F3),
+    const Color(0xFF1565C0),
+    const Color(0xFF1E88E5),
+    const Color(0xFF0D47A1),
    
   ];
   @override
@@ -56,7 +55,7 @@ class _ColorListViewState extends State<ColorListView> {
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
             child: GestureDetector(
               onTap: () {
                 currentindex = index;

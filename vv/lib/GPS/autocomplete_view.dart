@@ -360,7 +360,7 @@ class PlacesAutocomplete extends StatelessWidget {
   final int minCharsForSuggestions;
 
   const PlacesAutocomplete({
-    Key? key,
+    super.key,
     required this.apiKey,
     this.language,
     this.topCardMargin = const EdgeInsets.all(8),
@@ -432,7 +432,7 @@ class PlacesAutocomplete extends StatelessWidget {
     this.right = true,
     this.top = true,
     this.minCharsForSuggestions = 0,
-  }) : super(key: key);
+  });
 
   /// Get [AutoCompleteState] for [AutoCompleteTextField]
   AutoCompleteState autoCompleteState() {

@@ -16,6 +16,8 @@ import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/token_manage.dart';
 
 class LoginPageAll extends StatefulWidget {
+  const LoginPageAll({super.key});
+
   @override
   _LoginPageAllState createState() => _LoginPageAllState();
 }
@@ -24,7 +26,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  String _errorMessage = '';
+  final String _errorMessage = '';
   bool _isPasswordVisible = false;
   String _emailErrorText = '';
   String _passwordErrorText = '';
@@ -81,7 +83,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
       await TokenManager.setToken(token);
       _handleLoginSuccess(token);
     } catch (error) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response != null) {
           switch (error.response!.statusCode) {
             case 401:
@@ -129,7 +131,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
     } else {
       Navigator.pushReplacement(
         context,
-        _createRoute(mainpatient()),
+        _createRoute(const mainpatient()),
       );
     }
   }
@@ -183,14 +185,14 @@ class _LoginPageAllState extends State<LoginPageAll> {
   void _navigateToMainPageFamily() {
     Navigator.pushReplacement(
       context,
-      _createRoute(MainPageFamily()),
+      _createRoute(const MainPageFamily()),
     );
   }
 
   void _navigateToMainPageCaregiver() {
     Navigator.pushReplacement(
       context,
-      _createRoute(PatientListScreen()),
+      _createRoute(const PatientListScreen()),
     );
   }
 
@@ -206,7 +208,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         if (needTraining == true) {
           Navigator.push(
             context,
-            _createRoute(UploadImagesPage()),
+            _createRoute(const UploadImagesPage()),
           );
           print('need to train');
         } else if (needTraining == false) {
@@ -214,19 +216,19 @@ class _LoginPageAllState extends State<LoginPageAll> {
         } else {
           Navigator.push(
             context,
-            _createRoute(assign_add()),
+            _createRoute(const assign_add()),
           );
         }
       } else {
         Navigator.push(
           context,
-          _createRoute(assign_add()),
+          _createRoute(const assign_add()),
         );
       }
     } catch (e) {
       Navigator.push(
         context,
-        _createRoute(assign_add()),
+        _createRoute(const assign_add()),
       );
       print('Error: $e');
     }
@@ -246,7 +248,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         } else {
           Navigator.pushReplacement(
             context,
-            _createRoute(mainpatient()),
+            _createRoute(const mainpatient()),
           );
         }
       }
@@ -258,7 +260,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
     return ScaffoldMessenger(
       key: scaffoldMessengerKey,
       child: Scaffold(
-        backgroundColor: Color(0xff3B5998),
+        backgroundColor: const Color(0xff3B5998),
         body:Stack(
   children: [
     Container(
@@ -305,7 +307,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
               _buildPasswordTextField(),
               SizedBox(height: 5.h), // Responsive height
               _isLoading
-                  ? CircularProgressIndicator()
+                  ? const CircularProgressIndicator()
                   : _buildLoginButton(),
               SizedBox(height: 6.h), // Responsive height
               _buildRegisterNowButton(),
@@ -336,7 +338,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
           prefixIcon: Icon(
             Icons.email,
             size: 6.w, // Adjust the icon size responsively
-            color: Color.fromARGB(255, 60, 111, 212),
+            color: const Color.fromARGB(255, 60, 111, 212),
           ),
           filled: true,
           fillColor: Colors.white.withOpacity(0.2),
@@ -366,7 +368,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
           prefixIcon: Icon(
             Icons.lock,
             size: 6.w, // Adjust the icon size responsively
-            color: Color.fromARGB(255, 60, 111, 212),
+            color: const Color.fromARGB(255, 60, 111, 212),
           ),
           suffixIcon: IconButton(
             onPressed: () {
@@ -377,7 +379,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
             icon: Icon(
               _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
               size: 6.w, // Adjust the icon size responsively
-              color: Color.fromARGB(255, 229, 236, 251),
+              color: const Color.fromARGB(255, 229, 236, 251),
             ),
           ),
           filled: true,
@@ -415,7 +417,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
         textStyle: TextStyle(
           fontSize: 14.sp, // Adjust font size responsively
           fontWeight: FontWeight.bold,
-          color: Color.fromARGB(255, 81, 122, 203),
+          color: const Color.fromARGB(255, 81, 122, 203),
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.0),
@@ -435,7 +437,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
           TokenManager.deleteToken();
           Navigator.push(
             context,
-            _createRoute(RegisterFamily()),
+            _createRoute(const RegisterFamily()),
           );
         },
         style: TextButton.styleFrom(
@@ -450,14 +452,14 @@ class _LoginPageAllState extends State<LoginPageAll> {
             children: <TextSpan>[
               TextSpan(
                 text: context.tr(StringManager.donthaveanaccount),
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
               TextSpan(
                 text: context.tr(StringManager.registerNow),
                 style: TextStyle(
                   fontFamily: 'Outfit',
                   fontSize: 12.sp, // Adjust font size responsively
-                  color: Color.fromARGB(255, 20, 66, 158),
+                  color: const Color.fromARGB(255, 20, 66, 158),
                 ),
               ),
             ],
@@ -476,7 +478,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
           TokenManager.deleteToken();
           Navigator.push(
             context,
-            _createRoute(ForgotPasswordfamily()),
+            _createRoute(const ForgotPasswordfamily()),
           );
         },
         style: TextButton.styleFrom(
@@ -491,14 +493,14 @@ class _LoginPageAllState extends State<LoginPageAll> {
             children: <TextSpan>[
               TextSpan(
                 text: context.tr(StringManager.Help),
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
               TextSpan(
                 text: context.tr(StringManager.ForgotPassword),
                 style: TextStyle(
                   fontFamily: 'Outfit',
                   fontSize: 12.sp, // Adjust font size responsively
-                  color: Color.fromARGB(255, 17, 59, 143),
+                  color: const Color.fromARGB(255, 17, 59, 143),
                 ),
               ),
             ],
@@ -516,7 +518,7 @@ class _LoginPageAllState extends State<LoginPageAll> {
       child: IconButton(
         icon: Icon(
           Icons.language,
-          color: Color.fromARGB(177, 28, 80, 183),
+          color: const Color.fromARGB(177, 28, 80, 183),
           size: 8.w, // Adjust icon size responsively based on screen width
         ),
         onPressed: () {
@@ -551,26 +553,26 @@ class _LoginPageAllState extends State<LoginPageAll> {
               ListTile(
                 leading: Icon(
                   Icons.language,
-                  color: Color.fromARGB(255, 17, 59, 143),
+                  color: const Color.fromARGB(255, 17, 59, 143),
                   size: 8.w, // Responsive icon size
                 ),
                 title: Text('English',
                     style: TextStyle(fontSize: 4.w)), // Responsive font size
                 onTap: () {
-                  context.setLocale(Locale('en'));
+                  context.setLocale(const Locale('en'));
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
                 leading: Icon(
                   Icons.language,
-                  color: Color.fromARGB(255, 17, 59, 143),
+                  color: const Color.fromARGB(255, 17, 59, 143),
                   size: 8.w, // Responsive icon size
                 ),
                 title: Text('العربية',
                     style: TextStyle(fontSize: 4.w)), // Responsive font size
                 onTap: () {
-                  context.setLocale(Locale('ar'));
+                  context.setLocale(const Locale('ar'));
                   Navigator.of(context).pop();
                 },
               ),

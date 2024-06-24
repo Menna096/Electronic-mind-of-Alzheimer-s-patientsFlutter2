@@ -12,6 +12,8 @@ import 'package:vv/utils/token_manage.dart';
 import 'package:vv/widgets/background.dart';
 
 class PatientListScreen extends StatefulWidget {
+  const PatientListScreen({super.key});
+
   @override
   _PatientListScreenState createState() => _PatientListScreenState();
 }
@@ -124,7 +126,7 @@ class _PatientListScreenState extends State<PatientListScreen> with SingleTicker
               onTap: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginPageAll()),
+                  MaterialPageRoute(builder: (context) => const LoginPageAll()),
                 );
               },
             ),
@@ -187,7 +189,7 @@ class _PatientListScreenState extends State<PatientListScreen> with SingleTicker
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => mainpagecaregiver(),
+                                  builder: (context) => const mainpagecaregiver(),
                                 ),
                               );
                             },

@@ -1,49 +1,51 @@
-import 'package:chat_bot/helpers/texts.dart';
+
+
+import 'package:vv/Chatbot/helpers/texts.dart';
 
 import 'action_answer.dart';
 
-abstract class Action {
+abstract class ActionChatbot {
   String title;
   String name;
   String methodName;
   ActionAnswerRequest? answerRequest;
 
-  Action({required this.title, required this.name, required this.methodName});
+  ActionChatbot({required this.title, required this.name, required this.methodName});
 
   List<dynamic> args = [];
 
-  Action withArgs(List<dynamic> args) {
+  ActionChatbot withArgs(List<dynamic> args) {
     this.args = args;
     return this;
   }
 
-  factory Action.getActionByName(String name) {
+  factory ActionChatbot.getActionByName(String name) {
     final actionName = name.trim().toLowerCase();
-    for (Action action in [CreateAlarmAction(), SearchAction(), ShowAllTasksAction(), CreateTaskAction()]) {
+    for (ActionChatbot action in [CreateAlarmAction(), SearchAction(), ShowAllTasksAction(), CreateTaskAction()]) {
       if (action.name == actionName) return action;
     }
     return UnknownAction();
   }
 }
 
-class CreateAlarmAction extends Action {
+class CreateAlarmAction extends ActionChatbot {
   DateTime? alarmTime;
 
   CreateAlarmAction() : super(title: Texts.createAlarmAtGivenTime, name: "alarm", methodName: Texts.createAlarmAction);
 }
 
-class SearchAction extends Action {
+class SearchAction extends ActionChatbot {
   SearchAction() : super(title: Texts.searchForSomeone, name: "search", methodName: Texts.searchForSomeoneAction);
 }
 
-class ShowAllTasksAction extends Action {
+class ShowAllTasksAction extends ActionChatbot {
   ShowAllTasksAction() : super(title: Texts.showAllTasks, name: "show_all_tasks", methodName: Texts.showAllTasksAction);
 }
 
-class CreateTaskAction extends Action {
+class CreateTaskAction extends ActionChatbot {
   CreateTaskAction() : super(title: Texts.createNewTask, name: "task", methodName: Texts.createNewTaskAction);
 }
 
-class UnknownAction extends Action {
+class UnknownAction extends ActionChatbot {
   UnknownAction() : super(title: Texts.unknownAction, name: "unknown", methodName: "unknown");
 }

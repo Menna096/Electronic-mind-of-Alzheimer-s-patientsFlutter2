@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 
 abstract class StringManager {
   static String ChooseLanguage = "ChooseLanguage";

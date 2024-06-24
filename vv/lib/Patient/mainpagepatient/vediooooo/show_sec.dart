@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart'; 
@@ -8,6 +7,8 @@ import 'package:vv/Patient/mainpagepatient/vediooooo/vedio.dart';
 import 'package:vv/api/login_api.dart';
 
 class SecretFilePage extends StatefulWidget {
+  const SecretFilePage({super.key});
+
   @override
   _SecretFilePageState createState() => _SecretFilePageState();
 }
@@ -51,15 +52,15 @@ class _SecretFilePageState extends State<SecretFilePage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => mainpatient()),
+              MaterialPageRoute(builder: (context) => const mainpatient()),
             );
           },
         ),
-        title: Text(
+        title: const Text(
           "Secret File",
           style: TextStyle(
             fontFamily: 'LilitaOne',
@@ -68,7 +69,7 @@ class _SecretFilePageState extends State<SecretFilePage> {
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -86,19 +87,19 @@ class _SecretFilePageState extends State<SecretFilePage> {
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
         ),
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         decoration: BoxDecoration(
           color: Colors.grey[100],
         ),
         child: secretFiles.isEmpty
-            ? Center(
+            ? const Center(
                 child: Text(
                   'No Secret Files Available',
                   style: TextStyle(fontSize: 18, color: Colors.grey),
@@ -118,7 +119,7 @@ class _SecretFilePageState extends State<SecretFilePage> {
                                   url: file['documentUrl'],
                                   fileType: file['documentExtension'],
                                 )
-                              : VideoCaptureScreen(),
+                              : const VideoCaptureScreen(),
                         ),
                       );
                     },
@@ -128,11 +129,11 @@ class _SecretFilePageState extends State<SecretFilePage> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Container(
-                        padding: EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(16),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            CircleAvatar(
+                            const CircleAvatar(
                               backgroundColor: Colors.blueAccent,
                               radius: 30,
                               child: Icon(
@@ -141,19 +142,19 @@ class _SecretFilePageState extends State<SecretFilePage> {
                                 size: 30,
                               ),
                             ),
-                            SizedBox(width: 16),
+                            const SizedBox(width: 16),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     file['fileName'],
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
                                     ),
                                   ),
-                                  SizedBox(height: 5),
+                                  const SizedBox(height: 5),
                                   Text(
                                     file['file_Description'],
                                     style: TextStyle(
@@ -164,7 +165,7 @@ class _SecretFilePageState extends State<SecretFilePage> {
                                 ],
                               ),
                             ),
-                            Icon(
+                            const Icon(
                               Icons.arrow_forward_ios,
                               color: Colors.blueAccent,
                               size: 24,
@@ -182,12 +183,12 @@ class _SecretFilePageState extends State<SecretFilePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => FileUploadPage(),
+              builder: (context) => const FileUploadPage(),
             ),
           );
         },
         backgroundColor: Colors.blueAccent,
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

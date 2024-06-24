@@ -3,18 +3,19 @@ import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/widgets/background.dart';
-import 'package:geolocator/geolocator.dart';
 
 class PatientProfManage extends StatefulWidget {
+  const PatientProfManage({super.key});
+
   @override
   _PatientProfManageState createState() => _PatientProfManageState();
 }
 
 class _PatientProfManageState extends State<PatientProfManage> {
-  TextEditingController _fullNameController = TextEditingController();
-  TextEditingController _idController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _ageController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
   TextEditingController messageController = TextEditingController();
   DateTime? _selectedDate;
 
@@ -99,7 +100,7 @@ class _PatientProfManageState extends State<PatientProfManage> {
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Profile Updated Successfully')));
+            const SnackBar(content: Text('Profile Updated Successfully')));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
@@ -117,7 +118,7 @@ class _PatientProfManageState extends State<PatientProfManage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text(
+        title: const Text(
           'View Profile',
           style: TextStyle(
             fontFamily: 'LilitaOne',
@@ -126,7 +127,7 @@ class _PatientProfManageState extends State<PatientProfManage> {
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -144,7 +145,7 @@ class _PatientProfManageState extends State<PatientProfManage> {
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
@@ -158,33 +159,33 @@ class _PatientProfManageState extends State<PatientProfManage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 _buildTextField(
                   labelText: 'Your ID',
                   controller: _idController,
                   readOnly: true,
                   maxLines: 2,
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.assignment_ind_sharp, // Changed icon to a phone icon
                     color: Color.fromARGB(255, 106, 184, 217),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 _buildTextField(
                   labelText: 'Full Name',
                   controller: _fullNameController,
                   readOnly: true,
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.person, // Changed icon to a phone icon
                     color: Color.fromARGB(255, 106, 184, 217),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 _buildTextField(
                   labelText: 'Phone Number',
                   controller: _phoneController,
                   keyboardType: TextInputType.phone,
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.phone_android, // Changed icon to a phone icon
                     color: Color.fromARGB(255, 106, 184, 217),
                   ),
@@ -196,7 +197,7 @@ class _PatientProfManageState extends State<PatientProfManage> {
                               _isEditingPhone = false;
                             });
                           },
-                          icon: Icon(Icons.check,color: Color.fromARGB(227, 28, 107, 181),),
+                          icon: const Icon(Icons.check,color: Color.fromARGB(227, 28, 107, 181),),
                         )
                       : IconButton(
                           onPressed: () {
@@ -204,15 +205,15 @@ class _PatientProfManageState extends State<PatientProfManage> {
                               _isEditingPhone = true;
                             });
                           },
-                          icon: Icon(Icons.edit,color: Color.fromARGB(225, 166, 167, 169),),
+                          icon: const Icon(Icons.edit,color: Color.fromARGB(225, 166, 167, 169),),
                         ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 _buildTextField(
                   labelText: 'Age',
                   controller: _ageController,
                   keyboardType: TextInputType.number,
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.event_busy_outlined, // Changedicon to a person icon
                     color: Color.fromARGB(255, 106, 184, 217),
                   ),
@@ -224,7 +225,7 @@ class _PatientProfManageState extends State<PatientProfManage> {
                               _isEditingAge = false;
                             });
                           },
-                          icon: Icon(Icons.check,color: Color.fromARGB(227, 28, 107, 181),),
+                          icon: const Icon(Icons.check,color: Color.fromARGB(227, 28, 107, 181),),
                         )
                       : IconButton(
                           onPressed: () {
@@ -232,26 +233,22 @@ class _PatientProfManageState extends State<PatientProfManage> {
                               _isEditingAge = true;
                             });
                           },
-                          icon: Icon(Icons.edit,color: Color.fromARGB(225, 166, 167, 169),),
+                          icon: const Icon(Icons.edit,color: Color.fromARGB(225, 166, 167, 169),),
                         ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ListTile(
                   title: Text(
                     'Diagnosis Date: ${_selectedDate != null ? DateFormat('yyyy-MM-dd').format(_selectedDate!) : "Not set"}',
-                    style: TextStyle(fontSize: 16,
+                    style: const TextStyle(fontSize: 16,
                     fontFamily: 'LilitaOne',
                     color: Color.fromARGB(168, 21, 26, 30)),
                   ),
                   onTap: _presentDatePicker,
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 ElevatedButton(
                   onPressed: updateUserProfile,
-                  child: Text('Update Profile',
-                  style: TextStyle(fontSize: 16,
-                    fontFamily: 'LilitaOne',
-                  ),),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.blue,
@@ -259,8 +256,12 @@ class _PatientProfManageState extends State<PatientProfManage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 15),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                   ),
+                  child: const Text('Update Profile',
+                  style: TextStyle(fontSize: 16,
+                    fontFamily: 'LilitaOne',
+                  ),),
                 ),
               ],
             ),
@@ -281,10 +282,10 @@ class _PatientProfManageState extends State<PatientProfManage> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Color.fromARGB(
+        color: const Color.fromARGB(
             255, 212, 234, 249), // Background color for the text field
         borderRadius: BorderRadius.circular(12), // Rounded corners
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Color.fromARGB(255, 105, 105, 105),
             offset: Offset(3, 3),
@@ -307,7 +308,7 @@ class _PatientProfManageState extends State<PatientProfManage> {
           hintText: 'Enter $labelText',
           hintStyle: TextStyle(color: Colors.grey[400]),
           border: InputBorder.none, // No border, just the container shadow
-          contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+          contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
           prefixIcon: prefixIcon, // Added prefixIcon here
           suffixIcon: suffixIcon, // Added suffixIcon here
         ),
@@ -315,7 +316,7 @@ class _PatientProfManageState extends State<PatientProfManage> {
         readOnly: readOnly,
         maxLines: maxLines,
         keyboardType: keyboardType,
-        style: TextStyle(fontSize: 16),
+        style: const TextStyle(fontSize: 16),
       ),
     );
   }

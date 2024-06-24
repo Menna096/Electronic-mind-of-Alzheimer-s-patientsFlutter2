@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:signalr_core/signalr_core.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/login_api.dart';
-import 'package:vv/utils/token_manage.dart'; // Ensure this import is correct
+// Ensure this import is correct
 
 class AssignPatientPage extends StatefulWidget {
+  const AssignPatientPage({super.key});
+
   @override
   _AssignPatientPageState createState() => _AssignPatientPageState();
 }
@@ -35,11 +33,11 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Success'),
-              content: Text('Patient assigned successfully'),
+              title: const Text('Success'),
+              content: const Text('Patient assigned successfully'),
               actions: [
                 TextButton(
-                  child: Text('OK'),
+                  child: const Text('OK'),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
@@ -75,11 +73,11 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
             alignment: Alignment.center,
             child: Container(
               width: 300,
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12.0),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black26,
                     blurRadius: 8.0,
@@ -95,21 +93,21 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
                     Row(
                       children: [
                         IconButton(
-                          icon: Icon(Icons.close_rounded),
+                          icon: const Icon(Icons.close_rounded),
                           tooltip: 'Exit',
                           onPressed: () {
                             // Navigate to the target screen when the button is pressed
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MainPageFamily()),
+                                  builder: (context) => const MainPageFamily()),
                             );
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
-                        Text(
+                        const Text(
                           'Assign Patient \n To Caregiver',
                           style: TextStyle(
                             fontSize: 18,
@@ -118,7 +116,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 24),
+                    const SizedBox(height: 24),
                     TextFormField(
                       controller: _controller,
                       decoration: InputDecoration(
@@ -134,23 +132,23 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 24),
+                    const SizedBox(height: 24),
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState?.validate() ?? false) {
                           assignPatientToCaregiver(_controller.text.trim());
                         }
                       },
-                      child: Text(
-                        'Assign Patient',
-                        style: TextStyle(color: Colors.white),
-                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
-                        fixedSize: Size(150, 50),
+                        fixedSize: const Size(150, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
+                      ),
+                      child: const Text(
+                        'Assign Patient',
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ],

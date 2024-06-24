@@ -12,7 +12,7 @@ class CustomTextField extends StatelessWidget {
   bool? readOnly;
 
   CustomTextField({
-    Key? key,
+    super.key,
     required this.labelText,
     required this.controller,
     required this.suffixIcon,
@@ -20,7 +20,7 @@ class CustomTextField extends StatelessWidget {
     this.errorText,
     this.inputFormatters,
     this.keyboardType, required BorderRadius borderRadius, required Color fillColor, required OutlineInputBorder focusedBorder, required OutlineInputBorder enabledBorder, required OutlineInputBorder border, required TextStyle textStyle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,19 +29,19 @@ class CustomTextField extends StatelessWidget {
       obscureText: false,
       decoration: InputDecoration(
         labelText: labelText,
-        labelStyle: TextStyle(color: Color(0xFFa7a7a7)),
+        labelStyle: const TextStyle(color: Color(0xFFa7a7a7)),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
         suffixIcon: Icon(
           suffixIcon,
           size: 25,
-          color: Color(0xFFD0D0D0),
+          color: const Color(0xFFD0D0D0),
         ),
         filled: true,
         fillColor: Colors.white,
         errorText: errorText,
-        contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
+        contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
       ),
       inputFormatters: inputFormatters,
       keyboardType: keyboardType,

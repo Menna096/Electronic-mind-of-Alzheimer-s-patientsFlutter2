@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:signalr_core/signalr_core.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/page/addpat.dart';
 import 'package:vv/page/manage_patient.dart';
-import 'package:vv/utils/token_manage.dart';
 
 class update extends StatefulWidget {
+  const update({super.key});
+
   @override
   State<update> createState() => _updateState();
 }
@@ -27,7 +25,7 @@ class _updateState extends State<update> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => MainPageFamily()),
+              MaterialPageRoute(builder: (context) => const MainPageFamily()),
             );
           },
         ),
@@ -66,7 +64,7 @@ class _updateState extends State<update> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Addpat()),
+                  MaterialPageRoute(builder: (context) => const Addpat()),
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -91,7 +89,7 @@ class _updateState extends State<update> {
                 // Navigate to InputScreen page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ViewProfile()),
+                  MaterialPageRoute(builder: (context) => const ViewProfile()),
                 );
               },
               style: ElevatedButton.styleFrom(

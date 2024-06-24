@@ -19,16 +19,16 @@ class Custom_Text_field extends StatelessWidget {
           return null;
         }
       },
-      cursorColor: Color(0xff3B5998),
+      cursorColor: const Color(0xff3B5998),
       maxLines: maxlines,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(
+        hintStyle: const TextStyle(
           color: Color(0xffc4b3a8),
         ),
         border: buildBorder(),
         enabledBorder: buildBorder(),
-        focusedBorder: buildBorder(Color(0xff3B5998)),
+        focusedBorder: buildBorder(const Color(0xff3B5998)),
       ),
     );
   }
@@ -38,7 +38,7 @@ OutlineInputBorder buildBorder([Color? color]) {
   return OutlineInputBorder(
     borderRadius: BorderRadius.circular(8),
     borderSide: BorderSide(
-      color: color ?? Color.fromARGB(255, 255, 255, 255),
+      color: color ?? const Color.fromARGB(255, 255, 255, 255),
     ),
   );
 }

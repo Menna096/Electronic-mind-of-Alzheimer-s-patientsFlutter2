@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:vv/Notes/voice/core/utils/app_bottom_sheet.dart';
 import 'package:vv/Notes/voice/core/utils/constants/app_colors.dart';
@@ -9,13 +8,11 @@ import 'package:vv/Notes/voice/core/utils/constants/app_styles.dart';
 import 'package:vv/Notes/voice/home/manager/audio_recorder_manager/audio_recorder_file_helper.dart';
 import 'package:vv/Notes/voice/home/manager/voice_notes_cubit/voice_notes_cubit.dart';
 import 'package:vv/Notes/voice/home/model/voice_note_model.dart';
-import 'package:vv/Notes/voice/home/widgets/audio_player_view/audio_player_view.dart';
 import 'package:vv/Notes/voice/home/widgets/audio_recorder_view/audio_recorder_view.dart';
 import 'package:vv/Notes/voice/home/widgets/voice_note_card.dart';
-import 'package:vv/Notes/voice/core/utils/app_bottom_sheet.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key});
+  const HomePage({super.key, Key? key2});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +24,7 @@ class HomePage extends StatelessWidget {
 }
 
 class _HomeBody extends StatefulWidget {
-  const _HomeBody({Key? key});
+  const _HomeBody();
 
   @override
   State<_HomeBody> createState() => _HomeBodyState();
@@ -67,12 +64,12 @@ class _HomeBodyState extends State<_HomeBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xff3B5998),
+        backgroundColor: const Color(0xff3B5998),
         body: Stack(
           alignment: Alignment.center,
           children: [
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -95,7 +92,7 @@ class _HomeBodyState extends State<_HomeBody> {
                         "Voice Notes",
                         style: AppTextStyles.bold(
                           fontSize: 34,
-                          color: Color.fromARGB(255, 124, 147, 198),
+                          color: const Color.fromARGB(255, 124, 147, 198),
                         ),
                       ),
                     ),
@@ -205,7 +202,7 @@ class _HomeBodyState extends State<_HomeBody> {
 }
 
 class _AddRecordButton extends StatelessWidget {
-  const _AddRecordButton({Key? key});
+  const _AddRecordButton();
 
   @override
   Widget build(BuildContext context) {

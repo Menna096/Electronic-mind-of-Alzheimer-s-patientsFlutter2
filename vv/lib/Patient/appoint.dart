@@ -3,18 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/login_api.dart';
-import 'package:vv/widgets/background.dart';
 
 class AppointmentDetailScreen extends StatelessWidget {
   final Appointment appointment;
 
-  AppointmentDetailScreen({required this.appointment});
+  const AppointmentDetailScreen({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Appointment Details'),
+        title: const Text('Appointment Details'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -22,20 +21,20 @@ class AppointmentDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text('Appointment ID: ${appointment.id}',
-                style: TextStyle(fontSize: 18)),
-            SizedBox(height: 10),
-            Text('Date: ${appointment.date}', style: TextStyle(fontSize: 18)),
-            SizedBox(height: 10),
+                style: const TextStyle(fontSize: 18)),
+            const SizedBox(height: 10),
+            Text('Date: ${appointment.date}', style: const TextStyle(fontSize: 18)),
+            const SizedBox(height: 10),
             Text('Location: ${appointment.location}',
-                style: TextStyle(fontSize: 18)),
-            SizedBox(height: 10),
-            Text('Notes: ${appointment.notes}', style: TextStyle(fontSize: 18)),
-            SizedBox(height: 10),
+                style: const TextStyle(fontSize: 18)),
+            const SizedBox(height: 10),
+            Text('Notes: ${appointment.notes}', style: const TextStyle(fontSize: 18)),
+            const SizedBox(height: 10),
             Text('Family Name: ${appointment.familyName}',
-                style: TextStyle(fontSize: 18)),
-            SizedBox(height: 10),
+                style: const TextStyle(fontSize: 18)),
+            const SizedBox(height: 10),
             Text('Can Be Deleted: ${appointment.canBeDeleted}',
-                style: TextStyle(fontSize: 18)),
+                style: const TextStyle(fontSize: 18)),
           ],
         ),
       ),
@@ -44,6 +43,8 @@ class AppointmentDetailScreen extends StatelessWidget {
 }
 
 class AppointmentScreenPatient extends StatefulWidget {
+  const AppointmentScreenPatient({super.key});
+
   @override
   _AppointmentScreenPatientState createState() =>
       _AppointmentScreenPatientState();
@@ -64,7 +65,7 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
     fetchAppointments();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 5),
+      duration: const Duration(seconds: 5),
     )..addListener(() {
         setState(() {
           _position += 1;
@@ -114,7 +115,7 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
           backgroundColor: Colors.white,
           title: Text(
             appointment['notes'],
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
               color: Color(0xff3B5998),
@@ -126,29 +127,29 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
             children: [
               Text(
                 'Date: $formattedDate',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Text(
                 'Time: $formattedTime',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Text(
                 'Location: ${appointment['location']}',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Text(
                 'Created by: ${appointment['familyNameWhoCreatedAppointemnt']}',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(
+              child: const Text(
                 'Close',
                 style: TextStyle(
                   color: Color(0xff3B5998),
@@ -181,7 +182,7 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
           // Background with animated circular shapes
           Positioned.fill(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Color(0xff3B5998), Colors.white],
                   begin: Alignment.topLeft,
@@ -191,7 +192,7 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
             ),
           ),
           AnimatedPositioned(
-            duration: Duration(seconds: 1),
+            duration: const Duration(seconds: 1),
             top: _position,
             left: -100,
             child: CircleAvatar(
@@ -200,7 +201,7 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
             ),
           ),
           AnimatedPositioned(
-            duration: Duration(seconds: 1),
+            duration: const Duration(seconds: 1),
             bottom: -_position,
             right: -100,
             child: CircleAvatar(
@@ -210,7 +211,7 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
           ),
           // Main content
           isLoading
-              ? Center(child: CircularProgressIndicator())
+              ? const Center(child: CircularProgressIndicator())
               : errorMessage.isNotEmpty
                   ? Center(child: Text(errorMessage))
                   : NotificationListener<ScrollNotification>(
@@ -222,17 +223,17 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
                         controller: _scrollController,
                         slivers: [
                           SliverAppBar(
-                            title: Text('Appointments'),
+                            title: const Text('Appointments'),
                             backgroundColor: Colors.transparent,
                             elevation: 0,
                             pinned: true,
                             leading: IconButton(
-                              icon: Icon(Icons.arrow_back),
+                              icon: const Icon(Icons.arrow_back),
                               onPressed: () {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => mainpatient(),
+                                    builder: (context) => const mainpatient(),
                                   ),
                                 );
                               },
@@ -252,19 +253,19 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
                                       child: Card(
                                         color: Colors.white.withOpacity(0.8),
                                         margin:
-                                            EdgeInsets.symmetric(vertical: 8),
+                                            const EdgeInsets.symmetric(vertical: 8),
                                         elevation: 3,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(15),
                                         ),
                                         child: ListTile(
-                                          leading: Icon(
+                                          leading: const Icon(
                                               Icons.calendar_today_rounded,
                                               color: Color(0xff3B5998)),
                                           title: Text(
                                             appointment['notes'],
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -273,11 +274,11 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
                                             _formatDateTime(DateTime.parse(
                                                 appointment[
                                                     'date'])), // Format DateTime including time and AM/PM
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 18,
                                             ),
                                           ),
-                                          trailing: Icon(
+                                          trailing: const Icon(
                                               Icons.arrow_forward_ios,
                                               color: Color(0xff3B5998)),
                                         ),

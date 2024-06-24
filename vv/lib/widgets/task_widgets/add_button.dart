@@ -5,7 +5,7 @@ class AddTaskButton extends StatelessWidget {
   final Color backgroundColor;
   final String buttonText;
   const AddTaskButton(
-      {required this.onPressed,
+      {super.key, required this.onPressed,
       required this.backgroundColor,
       required this.buttonText, required RoundedRectangleBorder shape});
 

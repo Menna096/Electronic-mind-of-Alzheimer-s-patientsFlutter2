@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 
 class Notes_View extends StatelessWidget {
+  const Notes_View({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,18 +20,18 @@ class Notes_View extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40),
               ),
-              backgroundColor: Color.fromARGB(255, 79, 105, 162),
+              backgroundColor: const Color.fromARGB(255, 79, 105, 162),
               context: context,
               builder: (context) {
                 return const AddNoteBottomSheet();
               });
         },
-        child: Icon(
+        child: const Icon(
           Icons.add,
           color: Color.fromARGB(255, 248, 248, 247),
         ),
       ),
-      body: NotesViewBody(),
+      body: const NotesViewBody(),
     );
     
   }

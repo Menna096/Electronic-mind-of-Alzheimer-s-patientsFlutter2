@@ -27,7 +27,7 @@ class AudioRecorderView extends StatelessWidget {
 }
 
 class _AudioRecorderViewBody extends StatefulWidget {
-  const _AudioRecorderViewBody({super.key});
+  const _AudioRecorderViewBody();
 
   @override
   State<_AudioRecorderViewBody> createState() => _AudioRecorderViewBodyState();
@@ -128,7 +128,7 @@ class _AudioRecorderViewBodyState extends State<_AudioRecorderViewBody> {
   }
 }
 class _TimerText extends StatelessWidget {
-  const _TimerText({super.key});
+  const _TimerText();
 
   @override
   Widget build(BuildContext context) {

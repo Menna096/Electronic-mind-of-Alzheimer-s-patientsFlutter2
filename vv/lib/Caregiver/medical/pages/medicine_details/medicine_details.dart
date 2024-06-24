@@ -1,13 +1,10 @@
-import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/Caregiver/medical/constants.dart';
 import 'package:vv/Caregiver/medical/global_bloc.dart';
-import 'package:vv/Caregiver/medical/pages/home_page.dart';
 import 'package:vv/Caregiver/medical/pages/success_screen/success_screen.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/utils/storage_manage.dart';
@@ -15,8 +12,7 @@ import 'package:vv/utils/storage_manage.dart';
 class MedicineDetails extends StatefulWidget {
   final dynamic data; // Accepting dynamic data directly
   final VoidCallback onDelete; // Callback to notify deletion
-  const MedicineDetails({Key? key, required this.data, required this.onDelete})
-      : super(key: key);
+  const MedicineDetails({super.key, required this.data, required this.onDelete});
 
   @override
   _MedicineDetailsState createState() => _MedicineDetailsState();
@@ -25,7 +21,7 @@ class MedicineDetails extends StatefulWidget {
 class _MedicineDetailsState extends State<MedicineDetails> {
   @override
   Widget build(BuildContext context) {
-    final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
+    final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Details'.tr()),
@@ -55,7 +51,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                         'Delete'.tr(),
                         style: Theme.of(context)
                             .textTheme
-                            .subtitle1!
+                            .titleMedium!
                             .copyWith(color: kScaffoldColor),
                       ),
                     ),
@@ -88,41 +84,36 @@ class _MedicineDetailsState extends State<MedicineDetails> {
           title: Text(
             'Delete This Reminder?'.tr(),
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.subtitle1,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text('Cancel'.tr(), style: Theme.of(context).textTheme.caption),
+              child: Text('Cancel'.tr(), style: Theme.of(context).textTheme.bodySmall),
             ),
             TextButton(
               onPressed: () async {
                 try {
                   String? reminderId = widget.data['reminderId'].toString();
                   print("Reminder ID: $reminderId"); // Debug print
-                  if (reminderId != null) {
-                    var response = await DioService().dio.delete(
-                        'https://electronicmindofalzheimerpatients.azurewebsites.net/Caregiver/DeleteMedicationReminder/$reminderId');
-                    print(
-                        "Response Status: ${response.statusCode}"); // Debug print
-                    if (response.statusCode == 200) {
-                      ScaffoldMessenger.of(dialogContext).showSnackBar(SnackBar(
-                          content: Text('Reminder Deleted Successfully'.tr())));
-                      widget.onDelete();
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  SuccessScreen())); // Notify the HomePage of the deletion
-                    } else {
-                      ScaffoldMessenger.of(dialogContext).showSnackBar(SnackBar(
-                          content: Text('Failed to Delete Reminder: ${response.statusCode}'.tr())));
-                    }
+                  var response = await DioService().dio.delete(
+                      'https://electronicmindofalzheimerpatients.azurewebsites.net/Caregiver/DeleteMedicationReminder/$reminderId');
+                  print(
+                      "Response Status: ${response.statusCode}"); // Debug print
+                  if (response.statusCode == 200) {
+                    ScaffoldMessenger.of(dialogContext).showSnackBar(SnackBar(
+                        content: Text('Reminder Deleted Successfully'.tr())));
+                    widget.onDelete();
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const SuccessScreen())); // Notify the HomePage of the deletion
                   } else {
-                    ScaffoldMessenger.of(dialogContext).showSnackBar(
-                        SnackBar(content: Text('No Reminder ID Found'.tr())));
+                    ScaffoldMessenger.of(dialogContext).showSnackBar(SnackBar(
+                        content: Text('Failed to Delete Reminder: ${response.statusCode}'.tr())));
                   }
-                } catch (e) {
+                                } catch (e) {
                   print("Error: $e"); // Debug print
                   // ScaffoldMessenger.of(dialogContext)
                   //     .showSnackBar(SnackBar(content: Text('Error: $e')));
@@ -132,14 +123,14 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                   Navigator.pushReplacement(
                       dialogContext,
                       MaterialPageRoute(
-                          builder: (context) => mainpagecaregiver()));
+                          builder: (context) => const mainpagecaregiver()));
                 }
               },
               child: Text(
                 'OK'.tr(),
                 style: Theme.of(context)
                     .textTheme
-                    .caption!
+                    .bodySmall!
                     .copyWith(color: kSecondaryColor),
               ),
             )
@@ -152,7 +143,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
 
 class MainSection extends StatelessWidget {
   final dynamic data;
-  const MainSection({Key? key, required this.data}) : super(key: key);
+  const MainSection({super.key, required this.data});
 
   // This function returns the widget for the icon based on the medicine type
   Widget _makeIcon(int type, double size) {
@@ -209,7 +200,7 @@ class MainSection extends StatelessWidget {
             Text(typeName,
                 style: Theme.of(context)
                     .textTheme
-                    .subtitle1), // Display the type name below the icon
+                    .titleMedium), // Display the type name below the icon
           ],
         ),
         SizedBox(width: 2.w),
@@ -217,7 +208,7 @@ class MainSection extends StatelessWidget {
           children: [
             Hero(
               tag:
-                  "$medicineName-${medicineType.toString()}-${dosage}", // Unique tag for Hero widget
+                  "$medicineName-${medicineType.toString()}-$dosage", // Unique tag for Hero widget
               child: Material(
                 color: Colors.transparent,
                 child: MainInfoTab(
@@ -239,7 +230,7 @@ class MainSection extends StatelessWidget {
 
 class ExtendedSection extends StatelessWidget {
   final dynamic data;
-  const ExtendedSection({Key? key, required this.data}) : super(key: key);
+  const ExtendedSection({super.key, required this.data});
 
   // Method to convert medicine type code to string description
   static String _getTypeName(int type) {
@@ -295,8 +286,7 @@ class MainInfoTab extends StatelessWidget {
   final String fieldTitle;
   final String fieldInfo;
   const MainInfoTab(
-      {Key? key, required this.fieldTitle, required this.fieldInfo})
-      : super(key: key);
+      {super.key, required this.fieldTitle, required this.fieldInfo});
 
   @override
   Widget build(BuildContext context) {
@@ -307,10 +297,10 @@ class MainInfoTab extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(fieldTitle, style: Theme.of(context).textTheme.subtitle2),
+            Text(fieldTitle, style: Theme.of(context).textTheme.titleSmall),
             SizedBox(height: 0.3.h),
             Text(fieldInfo,
-                style: Theme.of(context).textTheme.headline5), // Corrected line
+                style: Theme.of(context).textTheme.headlineSmall), // Corrected line
           ],
         ),
       ),
@@ -320,8 +310,7 @@ class MainInfoTab extends StatelessWidget {
 
 class ExtendedInfoTab extends StatelessWidget {
   const ExtendedInfoTab(
-      {Key? key, required this.fieldTitle, required this.fieldInfo})
-      : super(key: key);
+      {super.key, required this.fieldTitle, required this.fieldInfo});
   final String fieldTitle;
   final String fieldInfo;
 
@@ -336,14 +325,14 @@ class ExtendedInfoTab extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 1.h),
             child: Text(
               fieldTitle,
-              style: Theme.of(context).textTheme.subtitle2!.copyWith(
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
                     color: kTextColor,
                   ),
             ),
           ),
           Text(
             fieldInfo,
-            style: Theme.of(context).textTheme.caption!.copyWith(
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
                   color: kSecondaryColor,
                 ),
           ),

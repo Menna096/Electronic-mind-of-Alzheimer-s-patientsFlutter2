@@ -6,7 +6,7 @@ import 'package:vv/Notes/voice/home/widgets/play_pause_button.dart';
 
 class AudioPlayerView extends StatefulWidget {
   final String path;
-  const AudioPlayerView({Key? key, required this.path,}) : super(key: key);
+  const AudioPlayerView({super.key, required this.path,});
 
   @override
   State<AudioPlayerView> createState() => _AudioPlayerViewState();

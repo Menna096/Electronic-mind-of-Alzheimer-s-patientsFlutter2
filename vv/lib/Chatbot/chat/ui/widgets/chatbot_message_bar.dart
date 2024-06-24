@@ -1,7 +1,8 @@
-import 'package:chat_bot/actions/action_answer.dart';
-import 'package:chat_bot/chat/utils/chatbot_state.dart';
-import 'package:chat_bot/helpers/texts.dart';
+
 import 'package:flutter/material.dart';
+import 'package:vv/Chatbot/actions/action_answer.dart';
+import 'package:vv/Chatbot/chat/utils/chatbot_state.dart';
+import 'package:vv/Chatbot/helpers/texts.dart';
 
 class ChatBotMessageBar extends StatelessWidget {
   final TextEditingController controller;

@@ -6,7 +6,7 @@ import 'package:vv/Family/Registerfamily/profile/widgets/choice_modal.dart';
 class ProfilePicture extends StatefulWidget {
   final void Function(File?)? onImageSelected;
 
-  const ProfilePicture({Key? key, this.onImageSelected}) : super(key: key);
+  const ProfilePicture({super.key, this.onImageSelected});
 
   @override
   State<ProfilePicture> createState() => _ProfilePictureState();

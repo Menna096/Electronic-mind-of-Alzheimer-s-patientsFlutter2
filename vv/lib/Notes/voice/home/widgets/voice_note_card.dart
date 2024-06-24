@@ -12,7 +12,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class VoiceNoteCard extends StatelessWidget {
   final VoiceNoteModel voiceNoteInfo;
-  const VoiceNoteCard({Key? key, required this.voiceNoteInfo}) : super(key: key);
+  const VoiceNoteCard({super.key, required this.voiceNoteInfo});
 
   @override
   Widget build(BuildContext context) {

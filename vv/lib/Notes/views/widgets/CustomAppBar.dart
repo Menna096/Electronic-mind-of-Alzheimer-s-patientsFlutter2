@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:vv/Notes/views/widgets/CustomSearchIcon.dart';
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({
-    Key? key,
+  const CustomAppBar({super.key, 
+    Key? key2,
     required this.title,
     required this.icon,
     this.onPressed,
@@ -19,21 +18,21 @@ class CustomAppBar extends StatelessWidget {
       children: [
         Text(
           title ,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 38,
             fontFamily: 'PatuaOne',
             color: Color.fromARGB(255, 124, 147, 198),
             fontWeight: FontWeight.bold,
           ),
         ),
-        Spacer(),
+        const Spacer(),
        if (icon != null) // Display the icon only if it's not null
           GestureDetector(
             onTap: onPressed,
             child: Container(
               width: 45, // Adjust size to accommodate circular shape
               height: 45, // Adjust size to accommodate circular shape
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Color.fromARGB(255, 124, 147, 198), // You can change color according to your design
               ),
@@ -41,7 +40,7 @@ class CustomAppBar extends StatelessWidget {
                 child: Icon(
                   icon,
                   size: 25, // Adjust icon size as needed
-                  color: Color.fromARGB(255, 255, 255, 255), // You can change icon color
+                  color: const Color.fromARGB(255, 255, 255, 255), // You can change icon color
                 ),
               ),
             ),

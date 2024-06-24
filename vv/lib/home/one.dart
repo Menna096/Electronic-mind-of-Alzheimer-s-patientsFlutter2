@@ -5,7 +5,7 @@ import 'package:vv/home/comp/onboarding_content.dart';
 
 class Onboarding extends StatefulWidget {
   final void Function()? showSignInScreen;
-  const Onboarding({Key? key, required this.showSignInScreen}) : super(key: key);
+  const Onboarding({super.key, required this.showSignInScreen});
 
   @override
   State<Onboarding> createState() => _OnboardingState();
@@ -169,20 +169,20 @@ class _OnboardingState extends State<Onboarding> {
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => LoginPageAll(),
+                              builder: (context) => const LoginPageAll(),
                             ),
                           );
                         },
                         style: ButtonStyle(
-                          elevation: MaterialStateProperty.all(2),
-                          shape: MaterialStateProperty.all(
+                          elevation: WidgetStateProperty.all(2),
+                          shape: WidgetStateProperty.all(
                             const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(20),
                               ),
                             ),
                           ),
-                          backgroundColor: MaterialStateProperty.all(const Color(0xffFFFFFF)),
+                          backgroundColor: WidgetStateProperty.all(const Color(0xffFFFFFF)),
                         ),
                         child: Text(
                           'Skip',
@@ -205,7 +205,7 @@ class _OnboardingState extends State<Onboarding> {
                             if (currentIndex == contents.length - 1) { // If it's the last page
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => LoginPageAll(),
+                                  builder: (context) => const LoginPageAll(),
                                 ),
                               );
                             } else { // If it's not the last page
@@ -216,15 +216,15 @@ class _OnboardingState extends State<Onboarding> {
                             }
                           },
                           style: ButtonStyle(
-                            elevation: MaterialStateProperty.all(2),
-                            shape: MaterialStateProperty.all(
+                            elevation: WidgetStateProperty.all(2),
+                            shape: WidgetStateProperty.all(
                               const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(20),
                                 ),
                               ),
                             ),
-                            backgroundColor: MaterialStateProperty.all(const Color(0xff3B5998)),
+                            backgroundColor: WidgetStateProperty.all(const Color(0xff3B5998)),
                           ),
                           child: Text(
                             'Next',

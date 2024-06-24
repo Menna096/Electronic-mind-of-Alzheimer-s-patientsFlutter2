@@ -1,6 +1,7 @@
-import 'package:chat_bot/actions/actions.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:vv/Chatbot/actions/actions.dart';
 
 import 'chat_bot_platform_interface.dart';
 
@@ -17,11 +18,11 @@ class ChatBotPlugin extends ChatBotPluginPlatform {
   }
 
   @override
-  Future<Action?> identifyAction(String text) async {
+  Future<ActionChatbot?> identifyAction(String text) async {
     final actionName = await methodChannel.invokeMethod('identifyAction', text) as String?;
     if (actionName == null) return null;
 
-    final action = Action.getActionByName(actionName);
+    final action = ActionChatbot.getActionByName(actionName);
     if (action is UnknownAction) return null;
     return action;
   }

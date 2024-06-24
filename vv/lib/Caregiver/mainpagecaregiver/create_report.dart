@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart'; // Import mainpagecaregiver.dart
 import 'package:vv/api/login_api.dart';
@@ -10,6 +9,8 @@ import 'package:vv/utils/storage_manage.dart';
 import 'package:vv/widgets/background.dart';
 
 class ReportScreen extends StatefulWidget {
+  const ReportScreen({super.key});
+
   @override
   _ReportScreenState createState() => _ReportScreenState();
 }
@@ -31,14 +32,14 @@ class _ReportScreenState extends State<ReportScreen> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
+            colorScheme: const ColorScheme.light(
               primary: Color.fromARGB(255, 84, 134, 235), // header background color
               onPrimary: Colors.white, // header text color
               onSurface: Color.fromARGB(255, 84, 134, 235), // body text color
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: Color.fromARGB(255, 84, 134, 235), // button text color
+                foregroundColor: const Color.fromARGB(255, 84, 134, 235), // button text color
               ),
             ),
           ),
@@ -63,16 +64,16 @@ class _ReportScreenState extends State<ReportScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 4.0),
         child: ElevatedButton(
           onPressed: () => _selectDate(context, controller),
-          child: Text(
-            controller.text.isEmpty ? label.tr() : controller.text,
-            style: const TextStyle(color: Colors.white),
-          ),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 77, 125, 221),
+            backgroundColor: const Color.fromARGB(255, 77, 125, 221),
             padding: const EdgeInsets.symmetric(vertical: 18.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
+          ),
+          child: Text(
+            controller.text.isEmpty ? label.tr() : controller.text,
+            style: const TextStyle(color: Colors.white),
           ),
         ),
       ),
@@ -104,7 +105,7 @@ class _ReportScreenState extends State<ReportScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => mainpagecaregiver()), // Navigate to MainPageCaregiver
+              builder: (context) => const mainpagecaregiver()), // Navigate to MainPageCaregiver
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -129,7 +130,7 @@ class _ReportScreenState extends State<ReportScreen> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => mainpagecaregiver()), // Use the correct route
+                  builder: (context) => const mainpagecaregiver()), // Use the correct route
             );
           },
         ),
@@ -145,7 +146,7 @@ class _ReportScreenState extends State<ReportScreen> {
                 children: <Widget>[
                   Text(
                     'Create Report'.tr(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 30.0,
                       fontFamily: 'LilitaOne',
                       color: Color.fromARGB(255, 77, 125, 221),
@@ -164,7 +165,7 @@ class _ReportScreenState extends State<ReportScreen> {
                         children: <Widget>[
                           Text(
                             'Date Range'.tr(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'dubai',
@@ -196,7 +197,7 @@ class _ReportScreenState extends State<ReportScreen> {
                         children: <Widget>[
                           Text(
                             'Report Content'.tr(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'dubai',
@@ -208,7 +209,7 @@ class _ReportScreenState extends State<ReportScreen> {
                             controller: _reportContentController,
                             decoration: InputDecoration(
                               hintText: 'Enter the details of the report here'.tr(),
-                              hintStyle: TextStyle(
+                              hintStyle: const TextStyle(
                                   color: Color.fromARGB(255, 174, 170, 170),
                                   fontFamily: 'dubai'),
                               contentPadding: const EdgeInsets.symmetric(
@@ -238,6 +239,14 @@ class _ReportScreenState extends State<ReportScreen> {
                   const SizedBox(height: 50),
                   ElevatedButton(
                     onPressed: _submitReport,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 73, 173, 83),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
                     child: const Text(
                       'Submit Report',
                       style: TextStyle(
@@ -246,14 +255,6 @@ class _ReportScreenState extends State<ReportScreen> {
                           fontWeight: FontWeight.w800,
                           fontFamily: 'Acme'),
                     ).tr(),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 73, 173, 83),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 50, vertical: 15),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                    ),
                   ),
                 ],
               ),

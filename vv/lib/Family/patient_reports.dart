@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:signalr_core/signalr_core.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/login_api.dart';
-import 'package:vv/utils/storage_manage.dart';
-import 'package:vv/utils/token_manage.dart';
-import 'package:vv/widgets/background.dart';
 import 'package:vv/widgets/backgroundd.dart';
 
 class ReportListScreenFamily extends StatefulWidget {
+  const ReportListScreenFamily({super.key});
+
   @override
   _ReportListScreenFamilyState createState() => _ReportListScreenFamilyState();
 }
@@ -49,15 +44,15 @@ class _ReportListScreenFamilyState extends State<ReportListScreenFamily> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => MainPageFamily()),
+              MaterialPageRoute(builder: (context) => const MainPageFamily()),
             ); // Go back to the previous page
           },
         ),
-        title: Text(
+        title: const Text(
           "Patient's Reports",
           style: TextStyle(
             fontFamily: 'LilitaOne',
@@ -66,7 +61,7 @@ class _ReportListScreenFamilyState extends State<ReportListScreenFamily> {
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -84,20 +79,20 @@ class _ReportListScreenFamilyState extends State<ReportListScreenFamily> {
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
         ),
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Backgroundd(
               SingleChildScrollView: null,
               child: SingleChildScrollView(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: reports.length,
                   itemBuilder: (context, index) {
                     final report = reports[index];
@@ -111,7 +106,7 @@ class _ReportListScreenFamilyState extends State<ReportListScreenFamily> {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                               colors: [Color(0xFF6A95E9), Color.fromARGB(255, 50, 149, 173)],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
@@ -121,14 +116,14 @@ class _ReportListScreenFamilyState extends State<ReportListScreenFamily> {
                                 color: Colors.grey.withOpacity(0.1),
                                 spreadRadius: 2,
                                 blurRadius: 5,
-                                offset: Offset(0, 3), // changes position of shadow
+                                offset: const Offset(0, 3), // changes position of shadow
                               ),
                             ],
                           ),
                           child: ListTile(
-                            contentPadding: EdgeInsets.all(15),
+                            contentPadding: const EdgeInsets.all(15),
                             title: Text(report['reportContent'],
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Outfit',
@@ -136,11 +131,11 @@ class _ReportListScreenFamilyState extends State<ReportListScreenFamily> {
                                 )),
                             subtitle: Text(
                                 'From: ${report['fromDate']} To: ${report['toDate']}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 14,
                                   color: Colors.white70,
                                 )),
-                            leading: Icon(Icons.eco_rounded, color: Color.fromARGB(255, 236, 236, 236)),
+                            leading: const Icon(Icons.eco_rounded, color: Color.fromARGB(255, 236, 236, 236)),
                           ),
                         ),
                       ),

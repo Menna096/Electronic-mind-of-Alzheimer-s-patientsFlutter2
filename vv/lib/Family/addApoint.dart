@@ -2,19 +2,12 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:vv/Family/appoint_list.dart';
 import 'package:vv/api/login_api.dart';
-import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
-import 'package:vv/widgets/task_widgets/add_button.dart';
-import 'package:vv/widgets/task_widgets/details_container.dart';
-import 'package:vv/widgets/task_widgets/name_textfield.dart';
-import 'package:vv/widgets/task_widgets/timeselectcontainer.dart';
-import 'package:vv/widgets/task_widgets/timeselectraw.dart';
 
 class APIService {
   static final Dio _dio = Dio();
@@ -47,7 +40,7 @@ class NotificationService {
     tz.initializeTimeZones();
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
-    final InitializationSettings settings =
+    const InitializationSettings settings =
         InitializationSettings(android: initializationSettingsAndroid);
     await _notificationsPlugin.initialize(settings);
 
@@ -79,7 +72,7 @@ class NotificationService {
 }
 
 class AddAppointmentScreen extends StatefulWidget {
-  const AddAppointmentScreen();
+  const AddAppointmentScreen({super.key});
 
   @override
   _AddAppointmentScreenState createState() => _AddAppointmentScreenState();
@@ -157,7 +150,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => AppointListScreen()),
+                        builder: (context) => const AppointListScreen()),
                   );
                 },
                 child:  Text('OK'.tr()),
@@ -198,24 +191,24 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => AppointListScreen()),
+              MaterialPageRoute(builder: (context) => const AppointListScreen()),
             );
           },
         ),
         title: Text(
           "Add Appointment".tr(),
-          style: TextStyle(
+          style: const TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
             color: Colors.white,
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -233,7 +226,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
@@ -262,14 +255,14 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 235, 242, 255),
+                color: const Color.fromARGB(255, 235, 242, 255),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.3),
                     spreadRadius: 2,
                     blurRadius: 5,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
@@ -278,7 +271,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                 decoration: InputDecoration(
                   hintText: 'Add Location'.tr(),
                   border: InputBorder.none,
-                  prefixIcon: Icon(Icons.location_pin),
+                  prefixIcon: const Icon(Icons.location_pin),
                 ),
               ),
             ),
@@ -289,14 +282,14 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 235, 242, 255),
+                color: const Color.fromARGB(255, 235, 242, 255),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.3),
                     spreadRadius: 2,
                     blurRadius: 5,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
@@ -305,7 +298,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                 decoration: InputDecoration(
                   hintText: 'Add Notes'.tr(),
                   border: InputBorder.none,
-                  prefixIcon: Icon(Icons.notes),
+                  prefixIcon: const Icon(Icons.notes),
                 ),
               ),
             ),
@@ -318,33 +311,33 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 16.0, vertical: 12.0),
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 235, 242, 255),
+                  color: const Color.fromARGB(255, 235, 242, 255),
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.3),
                       spreadRadius: 2,
                       blurRadius: 5,
-                      offset: Offset(0, 3),
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.access_time_outlined,
                       color: Color(0xFF6A95E9),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         startTime != null
                             ? formatTimeOfDay(startTime!)
                             : 'Select Start Time'.tr(),
-                        style: TextStyle(fontSize: 16, fontFamily: 'Acme'),
+                        style: const TextStyle(fontSize: 16, fontFamily: 'Acme'),
                       ),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.arrow_forward_ios,
                       color: Color(0xFF6A95E9),
                     ),
@@ -361,31 +354,31 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 16.0, vertical: 12.0),
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 235, 242, 255),
+                  color: const Color.fromARGB(255, 235, 242, 255),
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.3),
                       spreadRadius: 2,
                       blurRadius: 5,
-                      offset: Offset(0, 3),
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.calendar_today_outlined,
                       color: Color(0xFF6A95E9),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         formattedSelectedDate ?? 'Select Start Date'.tr(),
-                        style: TextStyle(fontSize: 16, fontFamily: 'Acme'),
+                        style: const TextStyle(fontSize: 16, fontFamily: 'Acme'),
                       ),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.arrow_forward_ios,
                       color: Color(0xFF6A95E9),
                     ),
@@ -415,7 +408,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 58, 157, 50), // Changed color
+                  backgroundColor: const Color.fromARGB(255, 58, 157, 50), // Changed color
                   padding: const EdgeInsets.symmetric(
                       horizontal: 40.0, vertical: 16.0),
                   textStyle: const TextStyle(fontSize: 20),
@@ -425,7 +418,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                 ),
                 child: Text(
                   'Done'.tr(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     

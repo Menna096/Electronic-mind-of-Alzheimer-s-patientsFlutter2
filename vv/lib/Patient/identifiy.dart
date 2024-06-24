@@ -4,9 +4,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/login_api.dart';
-import 'package:vv/faceid.dart';
 
 class ImageUploadScreen extends StatefulWidget {
+  const ImageUploadScreen({super.key});
+
   @override
   _ImageUploadScreenState createState() => _ImageUploadScreenState();
 }
@@ -47,21 +48,21 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Choose an option"),
+          title: const Text("Choose an option"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text("Pick from gallery"),
+                leading: const Icon(Icons.photo_library),
+                title: const Text("Pick from gallery"),
                 onTap: () {
                   Navigator.pop(context);
                   _getImage(ImageSource.gallery);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text("Capture from camera"),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text("Capture from camera"),
                 onTap: () {
                   Navigator.pop(context);
                   _getImage(ImageSource.camera);
@@ -127,15 +128,15 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => mainpatient()),
+              MaterialPageRoute(builder: (context) => const mainpatient()),
             ); // Go back to the previous page
           },
         ),
-        title: Text(
+        title: const Text(
           "Identify Person",
           style: TextStyle(
             fontFamily: 'LilitaOne',
@@ -144,7 +145,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -162,7 +163,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
@@ -177,7 +178,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 80), // Adjust for AppBar height
+                  const SizedBox(height: 80), // Adjust for AppBar height
                   Center(
                     child: AnimatedBuilder(
                       animation: _animationController,
@@ -206,7 +207,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
                                       ),
                                     )
                                   : _image == null
-                                      ? Icon(Icons.image_outlined, size: 60)
+                                      ? const Icon(Icons.image_outlined, size: 60)
                                       : ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(16),
@@ -224,12 +225,12 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
                       child: Container(),
                     ),
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   _responseData != null &&
                           _responseData!['personsInImage'] != null
                       ? ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount:
                               (_responseData!['personsInImage'] as List).length,
                           itemBuilder: (context, index) {
@@ -242,20 +243,20 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
                                   CircleAvatar(
                                     radius: 25,
                                     backgroundColor: Colors.blueGrey[100],
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.person,
                                       size: 20,
                                       color: Color.fromARGB(255, 65, 97, 202),
                                     ),
                                   ),
-                                  SizedBox(width: 16),
+                                  const SizedBox(width: 16),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         person['familyName'],
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
                                         ),
@@ -274,22 +275,22 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
                             );
                           },
                         )
-                      : SizedBox.shrink(),
+                      : const SizedBox.shrink(),
                 ],
               ),
             ),
           ),
           if (_isLoading)
-            Center(
+            const Center(
               child: CircularProgressIndicator(),
             ),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showPickerDialog(context),
-        label: Text('Select Image'),
-        icon: Icon(Icons.image),
-        backgroundColor: Color(0xFF6A95E9),
+        label: const Text('Select Image'),
+        icon: const Icon(Icons.image),
+        backgroundColor: const Color(0xFF6A95E9),
       ),
     );
   }
@@ -298,7 +299,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
 class AnimatedBackground extends StatelessWidget {
   final AnimationController animationController;
 
-  AnimatedBackground({required this.animationController});
+  const AnimatedBackground({super.key, required this.animationController});
 
   @override
   Widget build(BuildContext context) {
@@ -306,7 +307,7 @@ class AnimatedBackground extends StatelessWidget {
       animation: animationController,
       builder: (context, child) {
         return Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 Color(0xFF6A95E9),

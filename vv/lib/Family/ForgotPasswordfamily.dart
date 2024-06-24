@@ -3,11 +3,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:vv/Family/LoginPageAll.dart';
-import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
 import 'package:vv/widgets/text_forgot_var_set.dart';
 
 class ForgotPasswordfamily extends StatefulWidget {
+  const ForgotPasswordfamily({super.key});
+
   @override
   _ForgotPasswordfamilyState createState() => _ForgotPasswordfamilyState();
 }
@@ -15,8 +16,8 @@ class ForgotPasswordfamily extends StatefulWidget {
 class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily> {
   final _emailController = TextEditingController();
   final _dio = Dio();
-  final _storage = FlutterSecureStorage();
-  String _emailError = '';
+  final _storage = const FlutterSecureStorage();
+  final String _emailError = '';
   final _scrollController = ScrollController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _loading = false;
@@ -42,14 +43,14 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily> {
                 Navigator.pop(context);
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginPageAll()),
+                  MaterialPageRoute(builder: (context) => const LoginPageAll()),
                 );
               }
             : () {
                 Navigator.pop(context);
               },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       String errorMessage =
           'unexpectedGeneralError'.tr(namedArgs: {'error': e.toString()});
       if (e.response != null) {
@@ -107,7 +108,7 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily> {
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, size: 30, color: Color(0xff3B5998)),
+          icon: const Icon(Icons.arrow_back, size: 30, color: Color(0xff3B5998)),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -124,12 +125,12 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ForgetPass_var_setpass_Text(text: 'forgotPassword'.tr()),
-                  SizedBox(height: 1),
+                  const SizedBox(height: 1),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(right: 10, top: 30),
+                        margin: const EdgeInsets.only(right: 10, top: 30),
                         child: Image.asset(
                           'images/forgotpass.png',
                           width: 350,
@@ -138,17 +139,17 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                 
                   
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Padding(
-                    padding: EdgeInsets.only(left: 30.0, right: 30),
+                    padding: const EdgeInsets.only(left: 30.0, right: 30),
                     child: TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
                         hintText: 'emailHint'.tr(),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.email,
                           color: Color.fromARGB(255, 218, 216, 216),
                         ),
@@ -162,9 +163,9 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 1.0),
+                  const SizedBox(height: 1.0),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                     child: ElevatedButton(
                       onPressed: () {
                         String email = _emailController.text.trim();
@@ -190,10 +191,10 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily> {
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: Color(0xFF0386D0),
+                        backgroundColor: const Color(0xFF0386D0),
                         padding:
-                            EdgeInsets.symmetric(vertical: 18, horizontal: 30),
-                        textStyle: TextStyle(
+                            const EdgeInsets.symmetric(vertical: 18, horizontal: 30),
+                        textStyle: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -201,7 +202,7 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily> {
                       ),
                       child: Text(
                         'ok'.tr(),
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       ),
                     ),
                   ),
@@ -212,7 +213,7 @@ class _ForgotPasswordfamilyState extends State<ForgotPasswordfamily> {
           if (_loading)
             Container(
               color: Colors.black.withOpacity(0.5),
-              child: Center(
+              child: const Center(
                 child: CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(
                     Color(0xff3B5998),

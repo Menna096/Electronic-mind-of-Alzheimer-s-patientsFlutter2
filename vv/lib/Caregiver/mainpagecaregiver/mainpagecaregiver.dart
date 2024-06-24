@@ -11,6 +11,8 @@ import 'package:vv/Family/String_manager.dart';
 import 'package:vv/utils/storage_manage.dart';
 
 class mainpagecaregiver extends StatefulWidget {
+  const mainpagecaregiver({super.key});
+
   @override
   State<mainpagecaregiver> createState() => _mainpagecaregiverState();
 }
@@ -32,14 +34,14 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
         elevation: 0,
         title: Text(
           'Settings'.tr(),
-          style: TextStyle(
+          style: const TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
             color: Colors.white,
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -57,7 +59,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
@@ -65,7 +67,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
       ),
       drawer: Drawer(
         child: Container(
-          color: Color(0xffD6DCE9),
+          color: const Color(0xffD6DCE9),
           child: ListView(
             children: [
               DrawerHeader(
@@ -76,7 +78,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                       fontSize:
                           25.sp, // Use Sizer to make the font size responsive
                       fontFamily: 'Acme',
-                      color: Color(0xFF0386D0),
+                      color: const Color(0xFF0386D0),
                     ),
                   ),
                 ),
@@ -84,7 +86,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
               ListTile(
                 leading: Icon(
                   Icons.perm_contact_calendar_rounded,
-                  color: Color.fromARGB(255, 84, 134, 235),
+                  color: const Color.fromARGB(255, 84, 134, 235),
                   size: 24.sp, // Use Sizer for icon size
                 ),
                 title: Text(
@@ -92,20 +94,20 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                   style: TextStyle(
                     fontSize:
                         20.sp, // Use Sizer to make the font size responsive
-                    color: Color(0xFF595858),
+                    color: const Color(0xFF595858),
                   ),
                 ),
                 onTap: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => caregiverCode()),
+                    MaterialPageRoute(builder: (context) => const caregiverCode()),
                   );
                 },
               ),
               ListTile(
                 leading: Icon(
                   Icons.logout,
-                  color: Color.fromARGB(214, 209, 8, 8),
+                  color: const Color.fromARGB(214, 209, 8, 8),
                   size: 24.sp, // Use Sizer for icon size
                 ),
                 title: Text(
@@ -113,13 +115,13 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                   style: TextStyle(
                     fontSize:
                         20.sp, // Use Sizer to make the font size responsive
-                    color: Color(0xFF595858),
+                    color: const Color(0xFF595858),
                   ),
                 ),
                 onTap: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPageAll()),
+                    MaterialPageRoute(builder: (context) => const LoginPageAll()),
                   );
                 },
               ),
@@ -128,7 +130,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -148,12 +150,12 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
               child: Center(
                 child: Container(
                   padding:
-                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),
-                  margin: EdgeInsets.symmetric(
+                      const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),
+                  margin: const EdgeInsets.symmetric(
                       horizontal:
                           16.0), // Adjust this value to control the width
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       colors: [
                         Color(0xFF6A95E9),
                         Color.fromARGB(255, 116, 196, 216),
@@ -165,7 +167,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                   ),
                   child: Text(
                     '${'Patient Name:'.tr()} $_patientname',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 19,
                       color: Colors.white,
                       fontFamily: 'LilitaOne',
@@ -182,7 +184,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                 onTap: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => PatientAllGame()),
+                    MaterialPageRoute(builder: (context) => const PatientAllGame()),
                   );
                 },
                 child: Container(
@@ -215,7 +217,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Pills()),
+                    MaterialPageRoute(builder: (context) => const Pills()),
                   );
                 },
                 child: Container(
@@ -227,7 +229,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                 ),
               ),
             ),
-            Column(
+            const Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -250,11 +252,11 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
           ),
           title: Row(
             children: [
-              Icon(Icons.report, color: Colors.blueAccent),
-              SizedBox(width: 10),
+              const Icon(Icons.report, color: Colors.blueAccent),
+              const SizedBox(width: 10),
               Text(
                 "Report Options".tr(),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                   fontFamily: 'LilitaOne',
                   color: Color.fromARGB(255, 239, 237, 237),
@@ -265,20 +267,20 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Divider(color: Colors.blueAccent),
-              SizedBox(height: 10),
+              const Divider(color: Colors.blueAccent),
+              const SizedBox(height: 10),
               Text(
                 "Choose an option below:".tr(),
-                style: TextStyle(fontSize: 18, color: Colors.black54),
+                style: const TextStyle(fontSize: 18, color: Colors.black54),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextButton.icon(
-                icon: Icon(Icons.create, color: Colors.white),
+                icon: const Icon(Icons.create, color: Colors.white),
                 label: Text("Create A New Report".tr()),
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.blueAccent,
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
@@ -288,14 +290,14 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                   _createReport();
                 },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextButton.icon(
-                icon: Icon(Icons.report_gmailerrorred, color: Colors.white),
+                icon: const Icon(Icons.report_gmailerrorred, color: Colors.white),
                 label: Text(" Get Patient's Report".tr()),
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.blueAccent,
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
@@ -315,14 +317,14 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
   void _createReport() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => ReportScreen()),
+      MaterialPageRoute(builder: (context) => const ReportScreen()),
     );
   }
 
   void _getPatientsReport() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => ReportListScreen()),
+      MaterialPageRoute(builder: (context) => const ReportListScreen()),
     );
   }
 

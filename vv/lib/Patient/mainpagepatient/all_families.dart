@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'package:vv/Patient/gpsssss/pages/google_map_page.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/login_api.dart'; // Ensure this is correctly implemented
-import 'package:vv/map_location_picker.dart';
 import 'package:vv/models/family_data.dart';
 import 'package:vv/utils/storage_manage.dart';
-import 'package:vv/utils/token_manage.dart'; // Ensure this is correctly implemented
+// Ensure this is correctly implemented
 
 class UnusualFamilyList extends StatefulWidget {
+  const UnusualFamilyList({super.key});
+
   @override
   _UnusualFamilyListState createState() => _UnusualFamilyListState();
 }
@@ -57,20 +57,20 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff3B5998),
+      backgroundColor: const Color(0xff3B5998),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => mainpatient()),
+              MaterialPageRoute(builder: (context) => const mainpatient()),
             );
           },
         ),
-        title: Text(
+        title: const Text(
           "Family Members",
           style: TextStyle(
             fontFamily: 'LilitaOne',
@@ -79,7 +79,7 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -97,7 +97,7 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
@@ -117,7 +117,7 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
                     _position2 = _controller.value * 100; // Slower movement
 
                     return Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           colors: [Color.fromARGB(255, 236, 239, 241),Color.fromARGB(109, 106, 148, 233)],
                           begin: Alignment.topLeft,
@@ -128,7 +128,7 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
                         children: [
                           // Animated circles
                           AnimatedPositioned(
-                            duration: Duration(milliseconds: 500),
+                            duration: const Duration(milliseconds: 500),
                             top: _position1,
                             left: -100,
                             child: CircleAvatar(
@@ -138,7 +138,7 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
                             ),
                           ),
                           AnimatedPositioned(
-                            duration: Duration(milliseconds: 700), // Slower movement
+                            duration: const Duration(milliseconds: 700), // Slower movement
                             bottom: -_position2,
                             right: -100,
                             child: CircleAvatar(
@@ -163,15 +163,15 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
                     builder: (context, snapshot) {
                       if (snapshot.connectionState ==
                           ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
                         return Center(child: Text('Error: ${snapshot.error}'));
                       } else if (!snapshot.hasData ||
                           snapshot.data!.isEmpty) {
-                        return Center(child: Text('No family members found'));
+                        return const Center(child: Text('No family members found'));
                       } else {
                         return ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
@@ -184,8 +184,8 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
                               background: Container(
                                 color: Colors.red,
                                 alignment: AlignmentDirectional.centerEnd,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 20.0),
+                                child: const Padding(
+                                  padding: EdgeInsets.only(right: 20.0),
                                   child: Icon(
                                     Icons.delete,
                                     color: Colors.white,
@@ -193,14 +193,14 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
                                 ),
                               ),
                               child: Card(
-                                margin: EdgeInsets.symmetric(
+                                margin: const EdgeInsets.symmetric(
                                     vertical: 8, horizontal: 16),
                                 elevation: 4,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: ListTile(
-                                  contentPadding: EdgeInsets.symmetric(
+                                  contentPadding: const EdgeInsets.symmetric(
                                     vertical: 16,
                                     horizontal: 16,
                                   ),
@@ -210,8 +210,8 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
                                     radius: 30,
                                   ),
                                   title: Text(
-                                    '${member.familyName}',
-                                    style: TextStyle(
+                                    member.familyName,
+                                    style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -220,19 +220,19 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(height: 4),
+                                      const SizedBox(height: 4),
                                       Text(
                                         member.relationility,
-                                        style: TextStyle(fontSize: 14),
+                                        style: const TextStyle(fontSize: 14),
                                       ),
                                       if (member.familyDescriptionForPatient !=
                                           null)
-                                        SizedBox(height: 4),
+                                        const SizedBox(height: 4),
                                       if (member.familyDescriptionForPatient !=
                                           null)
                                         Text(
                                           member.familyDescriptionForPatient!,
-                                          style: TextStyle(fontSize: 14),
+                                          style: const TextStyle(fontSize: 14),
                                         ),
                                     ],
                                   ),
@@ -260,7 +260,7 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
                                         ),
                                       );
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.location_on,
                                       color: Color(0xFF6A95E9), // Set icon color to blue
                                     ),

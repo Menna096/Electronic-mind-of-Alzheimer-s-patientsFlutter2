@@ -3,21 +3,22 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/api/login_api.dart';
-import 'package:vv/widgets/backbutton.dart';
 import 'package:vv/widgets/background.dart';
 
 class ViewProfile extends StatefulWidget {
+  const ViewProfile({super.key});
+
   @override
   _ViewProfileState createState() => _ViewProfileState();
 }
 
 class _ViewProfileState extends State<ViewProfile> {
-  TextEditingController _fullNameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _relationalityController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _ageController = TextEditingController();
-  TextEditingController _distanceController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _relationalityController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _distanceController = TextEditingController();
   DateTime? _selectedDate;
 
   @override
@@ -91,7 +92,7 @@ class _ViewProfileState extends State<ViewProfile> {
         print('User profile updated successfully');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: const Text('User profile updated successfully'),
+            content: Text('User profile updated successfully'),
           ),
         );
       } else {
@@ -121,12 +122,12 @@ class _ViewProfileState extends State<ViewProfile> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text(
+        title: const Text(
           "Manage Patient Profile",
           style: TextStyle(
             fontFamily: 'LilitaOne',
@@ -135,7 +136,7 @@ class _ViewProfileState extends State<ViewProfile> {
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
               begin: Alignment.topLeft,
@@ -153,7 +154,7 @@ class _ViewProfileState extends State<ViewProfile> {
             ],
           ),
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(50.0),
           ),
@@ -167,38 +168,38 @@ class _ViewProfileState extends State<ViewProfile> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 _buildTextField(
                   labelText: 'Full Name',
                   controller: _fullNameController,
                   icon: Icons.account_circle,
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 _buildTextField(
                   labelText: 'Email',
                   controller: _emailController,
                   icon: Icons.email,
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 _buildTextField(
                   labelText: 'Phone Number',
                   controller: _phoneController,
                   icon: Icons.phone,
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 _buildTextField(
                   labelText: 'Age',
                   controller: _ageController,
                   icon: Icons.calendar_today,
                   keyboardType: TextInputType.number,
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 _buildTextField(
                   labelText: 'Relationality',
                   controller: _relationalityController,
                   icon: Icons.person,
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 _buildTextField(
                   labelText: 'Diagnosis Date',
                   controller: TextEditingController(
@@ -210,29 +211,29 @@ class _ViewProfileState extends State<ViewProfile> {
                   readOnly: true,
                   onTap: _presentDatePicker,
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 _buildTextField(
                   labelText: 'Maximum Distance',
                   controller: _distanceController,
                   icon: Icons.location_on_sharp,
                   keyboardType: TextInputType.number,
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: updateUserProfile,
-                  child: Text('Update',style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.white,
-                                          fontFamily: 'Acme'),),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 64, 158, 45), // Adjust button color here
-                    padding: EdgeInsets.symmetric(vertical: 16.0), // Adjust button padding
+                    backgroundColor: const Color.fromARGB(255, 64, 158, 45), // Adjust button color here
+                    padding: const EdgeInsets.symmetric(vertical: 16.0), // Adjust button padding
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                   ),
+                  child: const Text('Update',style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.white,
+                                          fontFamily: 'Acme'),),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
               ],
             ),
           ),
@@ -254,19 +255,19 @@ class _ViewProfileState extends State<ViewProfile> {
       children: [
         Text(
           labelText,
-          style: TextStyle(
+          style: const TextStyle(
             color: Color.fromARGB(255, 83, 83, 83), // Adjust color as needed
             fontSize: 17.0,
             fontFamily: 'Acme', // Adjust font size as needed
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.1),
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
                 blurRadius: 10,
                 spreadRadius: 1,
               ),
@@ -286,7 +287,7 @@ class _ViewProfileState extends State<ViewProfile> {
                 borderSide: BorderSide.none,
               ),
               contentPadding:
-                  EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+                  const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
               prefixIcon: Icon(icon, color: Colors.blue), // Adjust icon color as needed
             ),
           ),
