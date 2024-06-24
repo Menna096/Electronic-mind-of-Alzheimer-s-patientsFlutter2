@@ -29,9 +29,11 @@
 
 
     <application
-        android:label="vv"
+        android:label="Elder Helper"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -58,5 +60,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data android:name="com.google.android.geo.API_KEY"
+                  android:value="AIzaSyCB4OrB7PgyXUrxNgf3-IZVsaHPpyt-kBM"/>
     </application>
 </manifest>
