@@ -237,7 +237,7 @@ class _AppointListScreenState extends State<AppointListScreen> {
                 ],
               ),
             ),
-            const DaySelector(),
+            
             Expanded(
               child: ListView.builder(
                 itemCount: appointments.length,

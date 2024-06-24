@@ -146,7 +146,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   Text(
                     'Create Report'.tr(),
                     style: TextStyle(
-                      fontSize: 47.0,
+                      fontSize: 30.0,
                       fontFamily: 'LilitaOne',
                       color: Color.fromARGB(255, 77, 125, 221),
                     ),

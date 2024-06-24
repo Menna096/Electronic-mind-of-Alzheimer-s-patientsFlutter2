@@ -80,329 +80,330 @@ class _mainpatientState extends State<mainpatient> {
     super.initState();
     _getDataFromToken();
     // initializeSignalR();
-    initializeConnection();
-    initializeNotifications();
-    initializeConnectionmedicine();
-    initializeNotificationsMedicine();
+    //initializeConnection();
+    //initializeNotifications();
+    //initializeConnectionmedicine();
+    //initializeNotificationsMedicine();
   }
 
-  void initializeConnectionmedicine() async {
-    medicineHubConnection = HubConnectionBuilder()
-        .withUrl(
-          'https://electronicmindofalzheimerpatients.azurewebsites.net/hubs/medicineReminder',
-          HttpConnectionOptions(
-            accessTokenFactory: () async => await TokenManager.getToken(),
-            logging: (level, message) => print('SignalR log: $message'),
-          ),
-        )
-        .withAutomaticReconnect()
-        .build();
+  // void initializeConnectionmedicine() async {
+  //   medicineHubConnection = HubConnectionBuilder()
+  //       .withUrl(
+  //         'https://electronicmindofalzheimerpatients.azurewebsites.net/hubs/medicineReminder',
+  //         HttpConnectionOptions(
+  //           accessTokenFactory: () async => await TokenManager.getToken(),
+  //           logging: (level, message) => print('SignalR log: $message'),
+  //         ),
+  //       )
+  //       .withAutomaticReconnect()
+  //       .build();
 
-    medicineHubConnection.onclose((error) {
-      print('Connection Closed. Error: $error');
-      setState(() {});
-    });
+  //   medicineHubConnection.onclose((error) {
+  //     print('Connection Closed. Error: $error');
+  //     setState(() {});
+  //   });
 
-    await startConnectionMedicine();
-    setupListenerMedicine();
-  }
+  //   await startConnectionMedicine();
+  //   setupListenerMedicine();
+  // }
 
-  void initializeNotificationsMedicine() {
-    var initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+  // void initializeNotificationsMedicine() {
+  //   var initializationSettingsAndroid =
+  //       AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    var initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-    );
+  //   var initializationSettings = InitializationSettings(
+  //     android: initializationSettingsAndroid,
+  //   );
 
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse:
-            (NotificationResponse response) async {
-      String? payload = response.payload;
-      print('Notification payload: $payload');
-      if (payload != null) {
-        Reminder? reminder =
-            reminders.firstWhere((reminder) => reminder.MedicationId == payload,
-                orElse: () => Reminder(
-                      MedicationId: '',
-                      Medication_Name: '',
-                      Dosage: '',
-                      medicineType: 0,
-                      Repeater: 0,
-                      startDate: DateTime(1970, 1, 1),
-                      endDate: DateTime(1970, 1, 1),
-                    ));
-        print('Appointment found: ${reminder.MedicationId}');
-        if (reminder != null && reminder.MedicationId.isNotEmpty) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => MedicineDetailsPatient(
-                    reminder: reminder,
-                  )));
-        }
-      }
-    });
-  }
+  //   flutterLocalNotificationsPlugin.initialize(initializationSettings,
+  //       onDidReceiveNotificationResponse:
+  //           (NotificationResponse response) async {
+  //     String? payload = response.payload;
+  //     print('Notification payload: $payload');
+  //     if (payload != null) {
+  //       Reminder? reminder =
+  //           reminders.firstWhere((reminder) => reminder.MedicationId == payload,
+  //               orElse: () => Reminder(
+  //                     MedicationId: '',
+  //                     Medication_Name: '',
+  //                     Dosage: '',
+  //                     medicineType: 0,
+  //                     Repeater: 0,
+  //                     startDate: DateTime(1970, 1, 1),
+  //                     endDate: DateTime(1970, 1, 1),
+  //                   ));
+  //       print('Appointment found: ${reminder.MedicationId}');
+  //       if (reminder != null && reminder.MedicationId.isNotEmpty) {
+  //         Navigator.of(context).push(MaterialPageRoute(
+  //             builder: (context) => MedicineDetailsPatient(
+  //                   reminder: reminder,
+  //                 )));
+  //       }
+  //     }
+  //   });
+  // }
 
-  Future<void> startConnectionMedicine() async {
-    try {
-      await medicineHubConnection.start();
-      print('Connection started!');
-      setState(() {});
-    } catch (e) {
-      print('Error starting connection: $e');
-      setState(() {});
-    }
-  }
+  // Future<void> startConnectionMedicine() async {
+  //   try {
+  //     await medicineHubConnection.start();
+  //     print('Connection started!');
+  //     setState(() {});
+  //   } catch (e) {
+  //     print('Error starting connection: $e');
+  //     setState(() {});
+  //   }
+  // }
 
-  void setupListenerMedicine() {
-    medicineHubConnection.on('ReceiveMedicineReminder', (arguments) {
-      print('Raw arguments: $arguments');
-      if (arguments != null) {
-        setState(() {
-          try {
-            Map<String, dynamic> reminderData = json.decode(arguments[1]);
-            print('Decoded JSON: $reminderData');
-            Reminder reminder = Reminder.fromJson(reminderData);
-            print('Parsed appointment: ${reminder.MedicationId}');
-            reminders.add(reminder);
-            String notificationBody = _buildNotificationBodyMedicine(reminder);
-            _showNotificationMedicine('New Medicine Added, See it',
-                notificationBody, reminder.MedicationId);
-            _scheduleNotificationMedicine(reminder);
-          } catch (e) {
-            print('Error decoding JSON: $e');
-          }
-        });
-      } else {
-        print('Invalid or null arguments received');
-      }
-    });
-  }
+  // void setupListenerMedicine() {
+  //   medicineHubConnection.on('ReceiveMedicineReminder', (arguments) {
+  //     print('Raw arguments: $arguments');
+  //     if (arguments != null) {
+  //       setState(() {
+  //         try {
+  //           Map<String, dynamic> reminderData = json.decode(arguments[1]);
+  //           print('Decoded JSON: $reminderData');
+  //           Reminder reminder = Reminder.fromJson(reminderData);
+  //           print('Parsed appointment: ${reminder.MedicationId}');
+  //           reminders.add(reminder);
+  //           String notificationBody = _buildNotificationBodyMedicine(reminder);
+  //           _showNotificationMedicine('New Medicine Added, See it',
+  //               notificationBody, reminder.MedicationId);
+  //           _scheduleNotificationMedicine(reminder);
+  //         } catch (e) {
+  //           print('Error decoding JSON: $e');
+  //         }
+  //       });
+  //     } else {
+  //       print('Invalid or null arguments received');
+  //     }
+  //   });
+  // }
 
-  Future<void> _showNotificationMedicine(
-      String title, String body, String medicationId) async {
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'your_channel_id',
-      'your_channel_name',
-      importance: Importance.max,
-      priority: Priority.high,
-      sound: RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
-    );
-    var platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-    );
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      title,
-      body,
-      platformChannelSpecifics,
-      payload: medicationId,
-    );
-  }
+  // Future<void> _showNotificationMedicine(
+  //     String title, String body, String medicationId) async {
+  //   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  //     'your_channel_id',
+  //     'your_channel_name',
+  //     importance: Importance.max,
+  //     priority: Priority.high,
+  //     sound: RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
+  //   );
+  //   var platformChannelSpecifics = NotificationDetails(
+  //     android: androidPlatformChannelSpecifics,
+  //   );
+  //   await flutterLocalNotificationsPlugin.show(
+  //     0,
+  //     title,
+  //     body,
+  //     platformChannelSpecifics,
+  //     payload: medicationId,
+  //   );
+  // }
 
-  void _scheduleNotificationMedicine(Reminder reminder) async {
-    try {
-      String timezone = await FlutterTimezone.getLocalTimezone();
-      tz.initializeTimeZones();
-      final location = tz.getLocation(timezone);
-      final scheduledDateTime = tz.TZDateTime.from(
-        reminder.startDate,
-        location,
-      );
+  // void _scheduleNotificationMedicine(Reminder reminder) async {
+  //   try {
+  //     String timezone = await FlutterTimezone.getLocalTimezone();
+  //     tz.initializeTimeZones();
+  //     final location = tz.getLocation(timezone);
+  //     final scheduledDateTime = tz.TZDateTime.from(
+  //       reminder.startDate,
+  //       location,
+  //     );
 
-      print('Scheduled DateTime: $scheduledDateTime');
-      var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'your_channel_id',
-        'your_channel_name',
-        importance: Importance.max,
-        priority: Priority.high,
-        sound:
-            RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
-      );
-      var platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-      );
+  //     print('Scheduled DateTime: $scheduledDateTime');
+  //     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  //       'your_channel_id',
+  //       'your_channel_name',
+  //       importance: Importance.max,
+  //       priority: Priority.high,
+  //       sound:
+  //           RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
+  //     );
+  //     var platformChannelSpecifics = NotificationDetails(
+  //       android: androidPlatformChannelSpecifics,
+  //     );
 
-      await flutterLocalNotificationsPlugin.zonedSchedule(
-        0,
-        'Medication Time Now',
-        _buildNotificationBodyMedicine(reminder),
-        scheduledDateTime,
-        platformChannelSpecifics,
-        payload: reminder.MedicationId,
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.time,
-      );
+  //     await flutterLocalNotificationsPlugin.zonedSchedule(
+  //       0,
+  //       'Medication Time Now',
+  //       _buildNotificationBodyMedicine(reminder),
+  //       scheduledDateTime,
+  //       platformChannelSpecifics,
+  //       payload: reminder.MedicationId,
+  //       androidAllowWhileIdle: true,
+  //       uiLocalNotificationDateInterpretation:
+  //           UILocalNotificationDateInterpretation.absoluteTime,
+  //       matchDateTimeComponents: DateTimeComponents.time,
+  //     );
 
-      print('Notification scheduled successfully');
-    } catch (e) {
-      print('Error scheduling notification: $e');
-    }
-  }
+  //     print('Notification scheduled successfully');
+  //   } catch (e) {
+  //     print('Error scheduling notification: $e');
+  //   }
+  // }
 
-  String _buildNotificationBodyMedicine(Reminder reminder) {
-    return 'Medication: ${reminder.Medication_Name}, Dosage: ${reminder.Dosage}';
-  }
+  // String _buildNotificationBodyMedicine(Reminder reminder) {
+  //   return 'Medication: ${reminder.Medication_Name}, Dosage: ${reminder.Dosage}';
+  // }
 
-  void initializeConnection() async {
-    appointmentHubConnection = HubConnectionBuilder()
-        .withUrl(
-          'https://electronicmindofalzheimerpatients.azurewebsites.net/hubs/Appointment',
-          HttpConnectionOptions(
-            accessTokenFactory: () async => await TokenManager.getToken(),
-            logging: (level, message) => print('SignalR log: $message'),
-          ),
-        )
-        .withAutomaticReconnect()
-        .build();
+  // void initializeConnection() async {
+  //   appointmentHubConnection = HubConnectionBuilder()
+  //       .withUrl(
+  //         'https://electronicmindofalzheimerpatients.azurewebsites.net/hubs/Appointment',
+  //         HttpConnectionOptions(
+  //           accessTokenFactory: () async => await TokenManager.getToken(),
+  //           logging: (level, message) => print('SignalR log: $message'),
+  //         ),
+  //       )
+  //       .withAutomaticReconnect()
+  //       .build();
 
-    appointmentHubConnection.onclose((error) {
-      print('Connection Closed. Error: $error');
-      setState(() {});
-    });
+  //   appointmentHubConnection.onclose((error) {
+  //     print('Connection Closed. Error: $error');
+  //     setState(() {});
+  //   });
 
-    await startConnection();
-    setupListener();
-  }
+  //   await startConnection();
+  //   setupListener();
+  // }
 
-  void initializeNotifications() {
-    var initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+  // void initializeNotifications() {
+  //   var initializationSettingsAndroid =
+  //       AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    var initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-    );
+  //   var initializationSettings = InitializationSettings(
+  //     android: initializationSettingsAndroid,
+  //   );
 
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse:
-            (NotificationResponse response) async {
-      String? payload = response.payload;
-      print('Notification payload: $payload');
-      if (payload != null) {
-        Appointment? appointment =
-            appointments.firstWhere((appointment) => appointment.id == payload,
-                orElse: () => Appointment(
-                      id: '',
-                      date: '',
-                      location: '',
-                      notes: '',
-                      familyName: '',
-                      canBeDeleted: false,
-                    ));
-        print('Appointment found: ${appointment.id}');
-        if (appointment != null && appointment.id.isNotEmpty) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => AppointmentDetailScreen(
-                    appointment: appointment,
-                  )));
-        }
-      }
-    });
-  }
+  //   flutterLocalNotificationsPlugin.initialize(initializationSettings,
+  //       onDidReceiveNotificationResponse:
+  //           (NotificationResponse response) async {
+  //     String? payload = response.payload;
+  //     print('Notification payload: $payload');
+  //     if (payload != null) {
+  //       Appointment? appointment =
+  //           appointments.firstWhere((appointment) => appointment.id == payload,
+  //               orElse: () => Appointment(
+  //                     id: '',
+  //                     date: '',
+  //                     location: '',
+  //                     notes: '',
+  //                     familyName: '',
+  //                     canBeDeleted: false,
+  //                   ));
+  //       print('Appointment found: ${appointment.id}');
+  //       if (appointment != null && appointment.id.isNotEmpty) {
+  //         Navigator.of(context).push(MaterialPageRoute(
+  //             builder: (context) => AppointmentDetailScreen(
+  //                   appointment: appointment,
+  //                 )));
+  //       }
+  //     }
+  //   });
+  // }
 
-  Future<void> startConnection() async {
-    try {
-      await appointmentHubConnection.start();
-      print('Connection started!');
-      setState(() {});
-    } catch (e) {
-      print('Error starting connection: $e');
-      setState(() {});
-    }
-  }
+  // Future<void> startConnection() async {
+  //   try {
+  //     await appointmentHubConnection.start();
+  //     print('Connection started!');
+  //     setState(() {});
+  //   } catch (e) {
+  //     print('Error starting connection: $e');
+  //     setState(() {});
+  //   }
+  // }
 
-  void setupListener() {
-    appointmentHubConnection.on('ReceiveAppointment', (arguments) {
-      print('Raw arguments: $arguments');
-      if (arguments != null && arguments.length > 1) {
-        setState(() {
-          try {
-            Map<String, dynamic> appointmentData = json.decode(arguments[1]);
-            print('Decoded JSON: $appointmentData');
-            Appointment appointment = Appointment.fromJson(appointmentData);
-            print('Parsed appointment: ${appointment.id}');
-            appointments.add(appointment);
-            _showNotification('New Appointment Added',
-                _buildNotificationBody(appointment), appointment.id);
-            _scheduleNotification(appointment);
-          } catch (e) {
-            print('Error decoding JSON: $e');
-          }
-        });
-      } else {
-        print('Invalid or null arguments received');
-      }
-    });
-  }
+  // void setupListener() {
+  //   appointmentHubConnection.on('ReceiveAppointment', (arguments) {
+  //     print('Raw arguments: $arguments');
+  //     if (arguments != null && arguments.length > 1) {
+  //       setState(() {
+  //         try {
+  //           Map<String, dynamic> appointmentData = json.decode(arguments[1]);
+  //           print('Decoded JSON: $appointmentData');
+  //           Appointment appointment = Appointment.fromJson(appointmentData);
+  //           print('Parsed appointment: ${appointment.id}');
+  //           appointments.add(appointment);
+  //           _showNotification('New Appointment Added',
+  //               _buildNotificationBody(appointment), appointment.id);
+  //           _scheduleNotification(appointment);
+  //         } catch (e) {
+  //           print('Error decoding JSON: $e');
+  //         }
+  //       });
+  //     } else {
+  //       print('Invalid or null arguments received');
+  //     }
+  //   });
+  // }
 
-  Future<void> _showNotification(
-      String title, String body, String appointmentId) async {
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'your_channel_id',
-      'your_channel_name',
-      importance: Importance.max,
-      priority: Priority.high,
-      sound: RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
-    );
-    var platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-    );
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      title,
-      body,
-      platformChannelSpecifics,
-      payload: appointmentId,
-    );
-  }
+  // Future<void> _showNotification(
+  //     String title, String body, String appointmentId) async {
+  //   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  //     'your_channel_id',
+  //     'your_channel_name',
+  //     importance: Importance.max,
+  //     priority: Priority.high,
+  //     sound: RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
+  //   );
+  //   var platformChannelSpecifics = NotificationDetails(
+  //     android: androidPlatformChannelSpecifics,
+  //   );
+  //   await flutterLocalNotificationsPlugin.show(
+  //     0,
+  //     title,
+  //     body,
+  //     platformChannelSpecifics,
+  //     payload: appointmentId,
+  //   );
+  // }
 
-  void _scheduleNotification(Appointment appointment) async {
-    try {
-      String timezone = await FlutterTimezone.getLocalTimezone();
-      tz.initializeTimeZones();
-      final location = tz.getLocation(timezone);
-      final scheduledDateTime = tz.TZDateTime.from(
-        DateTime.parse(appointment.date),
-        location,
-      );
+  // void _scheduleNotification(Appointment appointment) async {
+  //   try {
+  //     String timezone = await FlutterTimezone.getLocalTimezone();
+  //     tz.initializeTimeZones();
+  //     final location = tz.getLocation(timezone);
+  //     final scheduledDateTime = tz.TZDateTime.from(
+  //       DateTime.parse(appointment.date),
+  //       location,
+  //     );
 
-      print('Scheduled DateTime: $scheduledDateTime');
-      var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'your_channel_id',
-        'your_channel_name',
-        importance: Importance.max,
-        priority: Priority.high,
-        sound:
-            RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
-      );
-      var platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-      );
+  //     print('Scheduled DateTime: $scheduledDateTime');
+  //     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  //       'your_channel_id',
+  //       'your_channel_name',
+  //       importance: Importance.max,
+  //       priority: Priority.high,
+  //       sound:
+  //           RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
+  //     );
+  //     var platformChannelSpecifics = NotificationDetails(
+  //       android: androidPlatformChannelSpecifics,
+  //     );
 
-      await flutterLocalNotificationsPlugin.zonedSchedule(
-        0,
-        'Appointment Time Now',
-        _buildNotificationBody(appointment), // Only notes will be shown
-        scheduledDateTime,
-        platformChannelSpecifics,
-        payload: appointment.id,
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.time,
-      );
+  //     await flutterLocalNotificationsPlugin.zonedSchedule(
+  //       0,
+  //       'Appointment Time Now',
+  //       _buildNotificationBody(appointment), // Only notes will be shown
+  //       scheduledDateTime,
+  //       platformChannelSpecifics,
+  //       payload: appointment.id,
+  //       androidAllowWhileIdle: true,
+  //       uiLocalNotificationDateInterpretation:
+  //           UILocalNotificationDateInterpretation.absoluteTime,
+  //       matchDateTimeComponents: DateTimeComponents.time,
+  //     );
 
-      print('Notification scheduled successfully');
-    } catch (e) {
-      print('Error scheduling notification: $e');
-    }
-  }
+  //     print('Notification scheduled successfully');
+  //   } catch (e) {
+  //     print('Error scheduling notification: $e');
+  //   }
+  // }
 
-  String _buildNotificationBody(Appointment appointment) {
-    return appointment.notes;
-  }
+  // String _buildNotificationBody(Appointment appointment) {
+  //   return appointment.notes;
+  // }
+
 
   Future<void> _getDataFromToken() async {
     _token = await TokenManager.getToken();
@@ -415,91 +416,83 @@ class _mainpatientState extends State<mainpatient> {
     }
   }
 
-  Future<void> initializeSignalR() async {
-    final token = await TokenManager.getToken();
-    _connection = HubConnectionBuilder()
-        .withUrl(
-      'https://electronicmindofalzheimerpatients.azurewebsites.net/hubs/GPS',
-      HttpConnectionOptions(
-        accessTokenFactory: () => Future.value(token),
-        logging: (level, message) => print(message),
-      ),
-    )
-        .withAutomaticReconnect(
-            [0, 2000, 10000, 30000]) // Configuring automatic reconnect
-        .build();
+  // Future<void> initializeSignalR() async {
+  //   final token = await TokenManager.getToken();
+  //   _connection = HubConnectionBuilder()
+  //       .withUrl(
+  //     'https://electronicmindofalzheimerpatients.azurewebsites.net/hubs/GPS',
+  //     HttpConnectionOptions(
+  //       accessTokenFactory: () => Future.value(token),
+  //       logging: (level, message) => print(message),
+  //     ),
+  //   )
+  //       .withAutomaticReconnect(
+  //           [0, 2000, 10000, 30000]) // Configuring automatic reconnect
+  //       .build();
 
-    _connection.onclose((error) async {
-      print('Connection closed. Error: $error');
-      await reconnect();
-    });
+  //   _connection.onclose((error) async {
+  //     print('Connection closed. Error: $error');
+  //     await reconnect();
+  //   });
 
-    try {
-      await _connection.start();
-      print('SignalR connection established.');
-      _locationTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
-        sendCurrentLocation();
-      });
-    } catch (e) {
-      print('Failed to start SignalR connection: $e');
-      await reconnect();
-    }
-  }
+  //   try {
+  //     await _connection.start();
+  //     print('SignalR connection established.');
+  //     _locationTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
+  //       sendCurrentLocation();
+  //     });
+  //   } catch (e) {
+  //     print('Failed to start SignalR connection: $e');
+  //     await reconnect();
+  //   }
+  // }
 
-  Future<void> reconnect() async {
-    int retryInterval = 1000; // Initial retry interval to 1 second
-    while (_connection.state != HubConnectionState.connected) {
-      await Future.delayed(Duration(milliseconds: retryInterval));
-      try {
-        await _connection.start();
-        print("Reconnected to SignalR server.");
-        return; // Exit the loop if connected
-      } catch (e) {
-        print("Reconnect failed: $e");
-        retryInterval = (retryInterval < 5000)
-            ? retryInterval + 1000
-            : 5000; // Cap retry interval at 5 seconds
-      }
-    }
-  }
+  // Future<void> reconnect() async {
+  //   int retryInterval = 1000; // Initial retry interval to 1 second
+  //   while (_connection.state != HubConnectionState.connected) {
+  //     await Future.delayed(Duration(milliseconds: retryInterval));
+  //     try {
+  //       await _connection.start();
+  //       print("Reconnected to SignalR server.");
+  //       return; // Exit the loop if connected
+  //     } catch (e) {
+  //       print("Reconnect failed: $e");
+  //       retryInterval = (retryInterval < 5000)
+  //           ? retryInterval + 1000
+  //           : 5000; // Cap retry interval at 5 seconds
+  //     }
+  //   }
+  // }
 
-  Future<void> sendCurrentLocation() async {
-    try {
-      final position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+  // Future<void> sendCurrentLocation() async {
+  //   try {
+  //     final position = await Geolocator.getCurrentPosition(
+  //         desiredAccuracy: LocationAccuracy.high);
 
-      // Decode token to get main latitude, longitude, and max distance
-      Map<String, dynamic> decodedToken = JwtDecoder.decode(_token!);
-      double mainLat = double.parse(decodedToken['MainLatitude']);
-      double mainLon = double.parse(decodedToken['MainLongitude']);
-      double maxDistance = double.parse(decodedToken['MaxDistance']);
+  //     // Decode token to get main latitude, longitude, and max distance
+  //     Map<String, dynamic> decodedToken = JwtDecoder.decode(_token!);
+  //     double mainLat = double.parse(decodedToken['MainLatitude']);
+  //     double mainLon = double.parse(decodedToken['MainLongitude']);
+  //     double maxDistance = double.parse(decodedToken['MaxDistance']);
 
-      // Calculate distance using Haversine formula
-      double distance = HaversineCalculator.haversine(
-          position.latitude, mainLat, position.longitude, mainLon);
-      print('$maxDistance,mainlong$mainLon,mainlat$mainLat,$position');
-      print('$distance');
-      // Check if the distance is greater than the maximum allowed distance
-      if (distance > maxDistance) {
-        // If distance is greater, perform the invoke function
-        await _connection.invoke('SendGPSToFamilies',
-            args: [position.latitude, position.longitude]);
-        print('Location sent: ${position.latitude}, ${position.longitude}');
-      } else {
-        print('Distance less than max distance. Location not sent.');
-      }
-    } catch (e) {
-      print('Error sending location: $e');
-    }
-  }
-
-  @override
-  void dispose() {
-    // Dispose any resources
-    _locationTimer?.cancel();
-    _connection.stop();
-    super.dispose();
-  }
+  //     // Calculate distance using Haversine formula
+  //     double distance = HaversineCalculator.haversine(
+  //         position.latitude, mainLat, position.longitude, mainLon);
+  //     print('$maxDistance,mainlong$mainLon,mainlat$mainLat,$position');
+  //     print('$distance');
+  //     // Check if the distance is greater than the maximum allowed distance
+  //     if (distance > maxDistance) {
+  //       // If distance is greater, perform the invoke function
+  //       await _connection.invoke('SendGPSToFamilies',
+  //           args: [position.latitude, position.longitude]);
+  //       print('Location sent: ${position.latitude}, ${position.longitude}');
+  //     } else {
+  //       print('Distance less than max distance. Location not sent.');
+  //     }
+  //   } catch (e) {
+  //     print('Error sending location: $e');
+  //   }
+  // }
 
   @override
  Widget build(BuildContext context) {
@@ -803,7 +796,7 @@ class _mainpatientState extends State<mainpatient> {
                     onTap: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => const Home()),
+                        MaterialPageRoute(builder: (context) =>  Home()),
                       );
                     },
                     child: Image.asset(

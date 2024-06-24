@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/login_api.dart';
 
 class PatientLocationsScreen extends StatefulWidget {
@@ -88,10 +89,56 @@ class _PatientLocationsScreenState extends State<PatientLocationsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Patient Locations Today'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => MainPageFamily()),
+            );
+          },
+        ),
+        title: Text(
+          "Patient Location Today",
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 20,
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 10),
+                blurRadius: 10.0,
+              ),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(50.0),
+          ),
+        ),
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
+              ),
+            )
           : data != null && data.isNotEmpty
               ? ListView.builder(
                   itemCount: data.length,
@@ -104,45 +151,101 @@ class _PatientLocationsScreenState extends State<PatientLocationsScreen> {
                           AsyncSnapshot<String> snapshot) {
                         if (snapshot.hasData) {
                           String address = snapshot.data!;
-                          return ListTile(
-                            title: Text('Address: $address'),
-                            subtitle: Text(
-                                'Time: ${formatTime(location['timeStamp'])}'),
-                            trailing: OutlinedButton(
-                              onPressed: () {
-                                openMap(location['latitude'],
-                                    location['longitude']);
-                              },
-                              child: Text('View on Map'),
+                          return Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            elevation: 5,
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 10),
+                            child: ListTile(
+                              
+                              title: Text(
+                                address,
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              subtitle: Text(
+                                  'Time: ${formatTime(location['timeStamp'])}'),
+                              trailing: IconButton(
+                                icon: Icon(Icons.location_on_sharp, color: Colors.blueAccent),
+                                onPressed: () {
+                                  openMap(location['latitude'],
+                                      location['longitude']);
+                                },
+                              ),
                             ),
                           );
                         } else if (snapshot.hasError) {
-                          return ListTile(
-                            title: Text('Error retrieving address'),
-                            subtitle: Text(
-                                'Time: ${formatTime(location['timeStamp'])}'),
-                            trailing: OutlinedButton(
-                              onPressed: () {
-                                // Add your button logic here
-                                // This function will be called when the button is pressed
-                              },
-                              child: Text('View on Map'),
+                          return Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            elevation: 5,
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 10),
+                            child: ListTile(
+                              leading: Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.redAccent.withOpacity(0.2),
+                                ),
+                                child: Icon(
+                                  Icons.error,
+                                  color: Colors.redAccent,
+                                  size: 24,
+                                ),
+                              ),
+                              title: Text('Error retrieving address'),
+                              subtitle: Text(
+                                  'Time: ${formatTime(location['timeStamp'])}'),
+                              trailing: IconButton(
+                                icon: Icon(Icons.refresh, color: Colors.blueAccent),
+                                onPressed: () {
+                                  openMap(location['latitude'],
+                                      location['longitude']);
+                                },
+                              ),
                             ),
                           );
                         } else {
-                          return ListTile(
-                            title: Text('Loading address...'),
-                            subtitle: Text(
-                                'Time: ${formatTime(location['timeStamp'])}'),
-                            trailing: CircularProgressIndicator(),
+                          return Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            elevation: 5,
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 10),
+                            child: ListTile(
+                              leading: Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.blueAccent.withOpacity(0.2),
+                                ),
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
+                                  strokeWidth: 3,
+                                ),
+                              ),
+                              title: Text('Loading address...'),
+                              subtitle: Text(
+                                  'Time: ${formatTime(location['timeStamp'])}'),
+                            ),
                           );
                         }
                       },
                     );
                   },
                 )
-              : Center(child: Text('No data available')),
+              : Center(
+                  child: Text(
+                    'No data available',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                ),
+     
+      
     );
   }
 }
-
