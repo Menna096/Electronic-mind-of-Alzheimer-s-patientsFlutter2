@@ -201,7 +201,7 @@ class BottomContainer extends StatelessWidget {
         } else {
           return GridView.builder(
             padding: EdgeInsets.only(top: 1.h),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
             ),
             itemCount: snapshot.data!.length,
@@ -254,8 +254,7 @@ class MedicineCard extends StatelessWidget {
           children: [
             Hero(tag: "$medicineName$medicineType", child: icon),
             Text(medicineName, style: Theme.of(context).textTheme.headline6),
-            Text('dosage_text'.tr(namedArgs: {'dosage': dosage.toString()}),
-                style: Theme.of(context).textTheme.subtitle1),
+           
           ],
         ),
       ),
@@ -267,16 +266,16 @@ Widget _makeIcon(int type) {
   switch (type) {
     case 0:
       return Image.asset('lib/page/task_screens/assets/icons/pills.gif',
-          height: 13.5.h);
+          height: 10.5.h);
     case 1:
       return Image.asset('lib/page/task_screens/assets/icons/syringe.gif',
-          height: 13.5.h);
+          height: 10.5.h);
     case 2:
       return Image.asset('lib/page/task_screens/assets/icons/liquid.gif',
-          height: 13.5.h);
+          height: 10.5.h);
     case 3:
       return Image.asset('lib/page/task_screens/assets/icons/tablet.gif',
-          height: 13.5.h);
+          height: 10.5.h);
     default:
       return Icon(Icons.error, size: 24.sp); // Default icon if type is unknown
   }

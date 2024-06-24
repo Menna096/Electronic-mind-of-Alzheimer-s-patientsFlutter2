@@ -7,6 +7,7 @@ import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart' as path;
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:sizer/sizer.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/String_manager.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart'; // Adjust path as per your project structure
@@ -37,8 +38,8 @@ class CameraScreen extends StatefulWidget {
 
 class _CameraScreenState extends State<CameraScreen> {
   File? _image; // Initialize as nullable
-
   final picker = ImagePicker();
+  bool _isLoading = false; // Add a loading state
 
   @override
   void initState() {
@@ -55,78 +56,91 @@ class _CameraScreenState extends State<CameraScreen> {
       builder: (BuildContext context) {
         return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
+            borderRadius: BorderRadius.circular(20.0.sp), // Use Sizer for border radius
           ),
           child: Container(
-            padding: EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(20.0.sp), // Use Sizer for padding
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(20.0.sp), // Use Sizer for border radius
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Icon(
-                  Icons.info_outline,
-                  size: 50,
-                  color: Colors.blue,
+            child: SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: 80.h, // Set maximum height for the dialog content
                 ),
-                SizedBox(height: 10),
-                Text(
-                  context.tr(StringManager.title),
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  context.tr(StringManager.message),
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                        ),
-                      ),
-                      child: Text(
-                        context.tr(StringManager.not_patient),
-                      ),
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginPageAll()),
-                        );
-                      },
+                    Icon(
+                      Icons.info_outline,
+                      size: 50.sp, // Use Sizer for icon size
+                      color: Colors.blue,
                     ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.green,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
+                    SizedBox(height: 10.sp), // Use Sizer for spacing
+                    Text(
+                      context.tr(StringManager.title),
+                      style: TextStyle(
+                        fontSize: 20.sp, // Use Sizer for font size
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 10.sp), // Use Sizer for spacing
+                    Text(
+                      context.tr(StringManager.message),
+                      style: TextStyle(
+                        fontSize: 14.sp, // Use Sizer for font size
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 20.sp), // Use Sizer for spacing
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Flexible(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.red,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0.sp), // Use Sizer for border radius
+                              ),
+                            ),
+                            child: Text(
+                              context.tr(StringManager.not_patient),
+                              style: TextStyle(fontSize: 10.sp), // Use Sizer for font size
+                            ),
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => LoginPageAll()),
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        context.tr(StringManager.use_face_id),
-                      ),
-                      onPressed: () {
-                        getImage();
-                      },
+                        SizedBox(width: 10.sp), // Use Sizer for spacing between buttons
+                        Flexible(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.green,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0.sp), // Use Sizer for border radius
+                              ),
+                            ),
+                            child: Text(
+                              context.tr(StringManager.use_face_id),
+                              style: TextStyle(fontSize: 10.sp), // Use Sizer for font size
+                            ),
+                            onPressed: () {
+                              getImage();
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
         );
@@ -140,18 +154,18 @@ class _CameraScreenState extends State<CameraScreen> {
         source: ImageSource.camera,
         preferredCameraDevice: CameraDevice.front, // Specify front camera
       );
-
+      Navigator.pop(context);
       setState(() {
         if (pickedFile != null) {
           _image = File(pickedFile.path);
-          uploadImage(
-              _image!); // Automatically upload the image once it's captured
+          _isLoading = true; // Start loading
+          uploadImage(_image!); // Automatically upload the image once it's captured
         } else {
           print('No image selected.');
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => LoginPageAll()),
-          );
+          //Navigator.pushReplacement(
+           // context,
+            //MaterialPageRoute(builder: (context) => LoginPageAll()),
+          //);
         }
       });
     } catch (e) {
@@ -164,8 +178,7 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   Future<void> uploadImage(File imageFile) async {
-    String uploadUrl =
-        "https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/LoginWithFaceId";
+    String uploadUrl = "https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/LoginWithFaceId";
     Dio dio = Dio();
 
     // Get the MIME type
@@ -179,8 +192,7 @@ class _CameraScreenState extends State<CameraScreen> {
     final mimeTypeData = mimeType.split('/');
     FormData formData = FormData.fromMap({
       "Image": await MultipartFile.fromFile(imageFile.path,
-          filename:
-              "image.${path.extension(imageFile.path)}", // Use the correct file extension
+          filename: "image.${path.extension(imageFile.path)}", // Use the correct file extension
           contentType: MediaType(mimeTypeData[0], mimeTypeData[1])),
     });
 
@@ -193,6 +205,12 @@ class _CameraScreenState extends State<CameraScreen> {
       print("Upload successful, Response: ${response.data}");
     } catch (e) {
       print("Error during upload: $e");
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginPageAll()));
+    } finally {
+      setState(() {
+        _isLoading = false; // Stop loading
+      });
     }
   }
 
@@ -203,23 +221,26 @@ class _CameraScreenState extends State<CameraScreen> {
     if (userRole == 'Patient') {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-            builder: (context) =>
-                mainpatient()), // Adjust class name if necessary
+        MaterialPageRoute(builder: (context) => mainpatient()), // Adjust class name if necessary
       );
     }
-
-    // Do not call _authenticateWithBiometric here
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AnimatedBackground(
-        child: Center(
-          child:
-              _image == null ? Text('No image selected.') : Image.file(_image!),
-        ),
+      body: Stack(
+        children: [
+          AnimatedBackground(
+            child: Center(
+              child: _image == null ? Text('No image selected.') : Image.file(_image!),
+            ),
+          ),
+          if (_isLoading) // Show loading indicator
+            Center(
+              child: CircularProgressIndicator(),
+            ),
+        ],
       ),
     );
   }

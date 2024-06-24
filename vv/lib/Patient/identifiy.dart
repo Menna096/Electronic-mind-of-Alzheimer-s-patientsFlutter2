@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
-import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/faceid.dart';
@@ -12,11 +11,36 @@ class ImageUploadScreen extends StatefulWidget {
   _ImageUploadScreenState createState() => _ImageUploadScreenState();
 }
 
-class _ImageUploadScreenState extends State<ImageUploadScreen> {
+class _ImageUploadScreenState extends State<ImageUploadScreen>
+    with SingleTickerProviderStateMixin {
   File? _image;
   final picker = ImagePicker();
   Map<String, dynamic>? _responseData;
-  bool _isLoading = false; // Track the loading state
+  bool _isLoading = false;
+  late AnimationController _animationController;
+  late Animation<double> _sizeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+    _sizeAnimation = Tween<double>(begin: 1.0, end: 1.2).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+    _animationController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   Future<void> _showPickerDialog(BuildContext context) {
     return showDialog(
@@ -71,18 +95,15 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
     String url =
         'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/RecognizeFaces';
 
-    // Add your valid token here
-
     FormData formData = FormData.fromMap({
-      'image':
-          await MultipartFile.fromFile(_image!.path, filename: 'upload.jpg'),
+      'image': await MultipartFile.fromFile(_image!.path, filename: 'upload.jpg'),
     });
 
     try {
       Response response = await DioService().dio.post(
-            url,
-            data: formData,
-          );
+        url,
+        data: formData,
+      );
 
       // Update the response data
       setState(() {
@@ -101,7 +122,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // White background
+      extendBodyBehindAppBar: true, // Extend the body behind the AppBar
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -149,119 +170,112 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
       ),
       body: Stack(
         children: [
-          AnimatedBackground(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 20),
-                    Center(
-                      child: Container(
-                        height: 260,
-                        width: 200,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: Colors.grey[300]!),
-                          color: Colors.grey[200],
-                        ),
-                        child: Center(
-                          child: _responseData != null &&
-                                  _responseData!['imageAfterResultUrl'] != null
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(16),
-                                  child: Image.network(
-                                    _responseData!['imageAfterResultUrl'],
-                                    height: 260,
-                                    width: 200,
-                                    fit: BoxFit.contain, // Use BoxFit.contain here
-                                  ),
-                                )
-                              : _image == null
-                                  ? Icon(Icons.image_outlined, size: 60)
-                                  : ClipRRect(
-                                      borderRadius: BorderRadius.circular(16),
-                                      child: Image.file(
-                                        _image!,
-                                        height: 260,
-                                        width: 200,
-                                        fit: BoxFit.contain, // Use BoxFit.contain here
-                                      ),
-                                    ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 30),
-                    _responseData != null &&
-                            _responseData!['personsInImage'] != null
-                        ? Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 16, horizontal: 20),
+          AnimatedBackground(animationController: _animationController),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 80), // Adjust for AppBar height
+                  Center(
+                    child: AnimatedBuilder(
+                      animation: _animationController,
+                      builder: (context, child) {
+                        return Transform.scale(
+                          scale: _sizeAnimation.value,
+                          child: Container(
+                            height: 260,
+                            width: 200,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey[300]!,
-                                  blurRadius: 4,
-                                  offset: Offset(0, 2),
-                                ),
-                              ],
+                              border: Border.all(color: Colors.grey[300]!),
+                              color: Colors.grey[200],
                             ),
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount:
-                                  (_responseData!['personsInImage'] as List)
-                                      .length,
-                              itemBuilder: (context, index) {
-                                final person = (_responseData!['personsInImage']
-                                    as List)[index];
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  child: Row(
+                            child: Center(
+                              child: _responseData != null &&
+                                      _responseData!['imageAfterResultUrl'] !=
+                                          null
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(16),
+                                      child: Image.network(
+                                        _responseData!['imageAfterResultUrl'],
+                                        height: 260,
+                                        width: 200,
+                                        fit: BoxFit.contain,
+                                      ),
+                                    )
+                                  : _image == null
+                                      ? Icon(Icons.image_outlined, size: 60)
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          child: Image.file(
+                                            _image!,
+                                            height: 260,
+                                            width: 200,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(),
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  _responseData != null &&
+                          _responseData!['personsInImage'] != null
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount:
+                              (_responseData!['personsInImage'] as List).length,
+                          itemBuilder: (context, index) {
+                            final person =
+                                (_responseData!['personsInImage'] as List)[index];
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 25,
+                                    backgroundColor: Colors.blueGrey[100],
+                                    child: Icon(
+                                      Icons.person,
+                                      size: 20,
+                                      color: Color.fromARGB(255, 65, 97, 202),
+                                    ),
+                                  ),
+                                  SizedBox(width: 16),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      CircleAvatar(
-                                        radius: 25,
-                                        backgroundColor: Colors.blueGrey[100],
-                                        child: Icon(
-                                          Icons.person,
-                                          size: 20,
-                                          color: Color.fromARGB(255, 65, 97, 202),
+                                      Text(
+                                        person['familyName'],
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
                                         ),
                                       ),
-                                      SizedBox(width: 16),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            person['familyName'],
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                          Text(
-                                            person[
-                                                'relationalityOfThisPatient'],
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey[600],
-                                            ),
-                                          ),
-                                        ],
+                                      Text(
+                                        person['relationalityOfThisPatient'],
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[600],
+                                        ),
                                       ),
                                     ],
                                   ),
-                                );
-                              },
-                            ),
-                          )
-                        : SizedBox.shrink(),
-                  ],
-                ),
+                                ],
+                              ),
+                            );
+                          },
+                        )
+                      : SizedBox.shrink(),
+                ],
               ),
             ),
           ),
@@ -277,6 +291,37 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
         icon: Icon(Icons.image),
         backgroundColor: Color(0xFF6A95E9),
       ),
+    );
+  }
+}
+
+class AnimatedBackground extends StatelessWidget {
+  final AnimationController animationController;
+
+  AnimatedBackground({required this.animationController});
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: animationController,
+      builder: (context, child) {
+        return Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF6A95E9),
+                Color(0xFF38A4C0),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp,
+            ),
+          ),
+          child: child,
+        );
+      },
+      child: Container(),
     );
   }
 }

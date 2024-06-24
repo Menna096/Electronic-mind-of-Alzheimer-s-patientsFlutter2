@@ -255,7 +255,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
               Text(
                 "Report Options".tr(),
                 style: TextStyle(
-                  fontSize: 25,
+                  fontSize: 20,
                   fontFamily: 'LilitaOne',
                   color: Color.fromARGB(255, 239, 237, 237),
                 ),
