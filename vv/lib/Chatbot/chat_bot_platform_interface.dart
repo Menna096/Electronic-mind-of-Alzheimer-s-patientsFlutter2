@@ -1,8 +1,8 @@
 
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:vv/Chatbot/actions/actions.dart';
+import 'package:vv/Chatbot/chat_bot_method_channel.dart';
 
-import 'chat_bot_method_channel.dart';
 
 abstract class ChatBotPluginPlatform extends PlatformInterface {
   ChatBotPluginPlatform() : super(token: _token);
