@@ -79,7 +79,7 @@ dependencies:
   easy_localization: ^3.0.7
   responsive_sizer: ^3.3.1
   android_alarm_manager_plus: ^4.0.3
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
