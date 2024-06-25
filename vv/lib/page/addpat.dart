@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
@@ -29,7 +30,7 @@ class APIService {
               : 'Add failed with status code: ${response.statusCode}';
     } catch (error) {
       print('Add failed: $error');
-      return 'Add failed: $error';
+      return 'Add failed'.tr();
     }
   }
 }
@@ -118,7 +119,7 @@ class _AddpatState extends State<Addpat> {
           relationalityController.text.isEmpty ||
           selectedImage == null ||
           selectedDistance == null) {
-        throw 'Please fill in all fields, select an image, and choose a maximum distance.';
+        throw 'Please fill in all fields, select an image, and choose a maximum distance'.tr();
       }
       if (passwordController.text != confirmPasswordController.text) {
         throw 'Password and Confirm Password do not match.';

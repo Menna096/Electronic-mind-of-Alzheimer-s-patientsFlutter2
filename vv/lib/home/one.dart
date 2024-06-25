@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vv/Family/LoginPageAll.dart';
@@ -57,7 +58,7 @@ class _OnboardingState extends State<Onboarding> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Elder Helper',
+                        'Elder Helper'.tr(),
                         style: GoogleFonts.poppins(
                           fontSize: 33,
                           fontWeight: FontWeight.w600,
@@ -185,7 +186,7 @@ class _OnboardingState extends State<Onboarding> {
                           backgroundColor: WidgetStateProperty.all(const Color(0xffFFFFFF)),
                         ),
                         child: Text(
-                          'Skip',
+                          'Skip'.tr(),
                           style: GoogleFonts.roboto(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
@@ -227,7 +228,7 @@ class _OnboardingState extends State<Onboarding> {
                             backgroundColor: WidgetStateProperty.all(const Color(0xff3B5998)),
                           ),
                           child: Text(
-                            'Next',
+                            'Next'.tr(),
                             style: GoogleFonts.roboto(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,

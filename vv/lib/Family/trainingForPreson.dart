@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vv/faceid.dart';
@@ -46,11 +47,11 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
   ];
 
   final List<String> _imageInstructions = [
-    "Directly facing the camera, eyes looking straight ahead",
-    "The head turned slightly so the right side is more visible than the left",
-    "Turn your head to the right until your profile aligns with the camera",
-    "The head turned slightly so the left side is more visible than the right",
-    "Turn your head to the left until your profile aligns with the camera",
+    'instruction_1'.tr(),
+  'instruction_2'.tr(),
+  'instruction_3'.tr(),
+  'instruction_4'.tr(),
+  'instruction_5'.tr(),
   ];
 
   @override
@@ -72,16 +73,16 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'Instructions',
+                Text(
+                  'Instructions'.tr(),
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  'These images help the patient recognize you better. Please follow the instructions and upload five images.',
+                 Text(
+                  'These images help the patient recognize you better. Please follow the instructions and upload five images'.tr(),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
@@ -89,7 +90,7 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text('OK'),
+                  child:  Text('OK'.tr()),
                 ),
               ],
             ),
@@ -124,7 +125,7 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Capture Image'),
+              child:  Text('Capture Image'.tr()),
               onPressed: () async {
                 final XFile? image =
                     await _picker.pickImage(source: ImageSource.camera);
@@ -172,7 +173,7 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
                   if (_currentImageIndex < 5)
                     ElevatedButton(
                       onPressed: () => _showInstructionDialog(),
-                      child: Text('Capture Image ${_currentImageIndex + 1}'),
+                      child: Text('capture_image'.tr(args: [(_currentImageIndex + 1).toString()])),
                     ),
                 ],
               ),
@@ -202,8 +203,7 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        title: Text(
-                          'Image ${index + 1}',
+                        title: Text('Image ${index + 1}',
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         trailing: IconButton(
@@ -226,7 +226,7 @@ class _UploadImagesPagePersonState extends State<UploadImagesPagePerson> {
                     Navigator.pop(context,
                         _images.map((e) => File(e.file.path)).toList());
                   },
-                  child: const Text('Next'),
+                  child: Text('Next'.tr()),
                 ),
               ),
           ],

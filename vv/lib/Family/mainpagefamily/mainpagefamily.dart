@@ -35,7 +35,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
   @override
   void initState() {
     super.initState();
-      // initializeSignalR();
+    // initializeSignalR();
     // initNotifications();
     _getDataFromToken();
   }
@@ -51,7 +51,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
     }
   }
 
-   // Future<void> initNotifications() async {
+  // Future<void> initNotifications() async {
   //   const AndroidInitializationSettings initializationSettingsAndroid =
   //       AndroidInitializationSettings('@mipmap/ic_launcher');
   //   final InitializationSettings initializationSettings =
@@ -141,294 +141,297 @@ class _MainPageFamilyState extends State<MainPageFamily> {
   //   }
   // }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-  backgroundColor: Colors.transparent,
-  elevation: 0,
-  title: Text(
-    'Settings'.tr(),
-    style: TextStyle(
-      fontFamily: 'LilitaOne',
-      fontSize: 6.w, // Responsive font size
-      color: Colors.white,
-    ),
-  ),
-  flexibleSpace: Container(
-    decoration: BoxDecoration(
-      gradient: const LinearGradient(
-        colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
-      borderRadius: BorderRadius.vertical(
-        bottom: Radius.circular(2.h), // Responsive border radius
-      ),
-      boxShadow: [
-        BoxShadow(
-          color: const Color.fromARGB(66, 55, 134, 190),
-          offset: Offset(0, 1.h), // Responsive offset
-          blurRadius: 1.5.h, // Responsive blur radius
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          'Settings'.tr(),
+          style: TextStyle(
+            fontFamily: 'LilitaOne',
+            fontSize: 6.w, // Responsive font size
+            color: Colors.white,
+          ),
         ),
-      ],
-    ),
-  ),
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.vertical(
-      bottom: Radius.circular(10.w), // Responsive border radius
-    ),
-  ),
-),
-
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFF6A95E9), Color(0xFF38A4C0)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(2.h), // Responsive border radius
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: const Color.fromARGB(66, 55, 134, 190),
+                offset: Offset(0, 1.h), // Responsive offset
+                blurRadius: 1.5.h, // Responsive blur radius
+              ),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(10.w), // Responsive border radius
+          ),
+        ),
+      ),
       drawer: buildDrawer(context),
       resizeToAvoidBottomInset: false,
       body: Background(
         SingleChildScrollView: null,
         child: Column(
-  children: [
-    Padding(
-      padding: EdgeInsets.all(4.0.w), // Responsive padding
-      child: Row(
-  crossAxisAlignment: CrossAxisAlignment.start, // Adjust alignment as needed
-  children: [
-    CircleAvatar(
-      radius:12.0.w, // Responsive avatar radius
-      backgroundImage: NetworkImage(_photoUrl ?? ''),
-    ),
-    SizedBox(width: 2.0.w), // Responsive spacing
-    Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Welcome $_userName !👋🏻'.tr(),
-            style: TextStyle(
-              fontSize:4.5.w, // Responsive font size
-            ),
-            maxLines: 1, // Limit text to one line to prevent overflow
-            overflow: TextOverflow.ellipsis, // Handle overflow with ellipsis
-          ),
-          SizedBox(height: 1.0.h), // Responsive spacing
-          Text(
-            'To the Electronic mind'.tr(),
-            style: TextStyle(
-              fontSize: 4.5.w, // Responsive font size
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          SizedBox(height: 1.0.h), // Responsive spacing
-          Text(
-            'of Alzheimer patient'.tr(),
-            style: TextStyle(
-              fontSize: 4.5.w, // Responsive font size
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
-    ),
-  ],
-),
-
-    ),
-    Expanded(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 4.0.w), // Responsive padding
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const GalleryScreen()),
-                    );
-                  },
-                  child: Image.asset(
-                    'images/picfam.png',
-                    width: 25.0.w, // Responsive image width
-                    height: 25.0.w, // Responsive image height
+            Padding(
+              padding: EdgeInsets.all(8.0.w), // Responsive padding
+              child: Row(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start, // Adjust alignment as needed
+                children: [
+                  CircleAvatar(
+                    radius: 12.0.w, // Responsive avatar radius
+                    backgroundImage: NetworkImage(_photoUrl ?? ''),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const AddPatientScreen()),
-                    );
-                  },
-                  child: Image.asset(
-                    'images/patcode.png',
-                    width: 25.0.w, // Responsive image width
-                    height: 25.0.w, // Responsive image height
+                  SizedBox(width: 2.0.w), // Responsive spacing
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 2.0.w),
+                        Text(
+                          'Welcome {name}!'
+                              .tr(namedArgs: {'name': _userName ?? ''}),
+                          style: TextStyle(
+                            fontSize: 4.5.w, // Responsive font size
+                          ),
+                          maxLines:
+                              1, // Limit text to one line to prevent overflow
+                          overflow: TextOverflow
+                              .ellipsis, // Handle overflow with ellipsis
+                        ),
+                        SizedBox(height: 1.0.h), // Responsive spacing
+                        Text(
+                          'To The Electronic Mind Of Alzheimer Patient!👋🏻'
+                              .tr(),
+                          style: TextStyle(
+                            fontSize: 4.5.w, // Responsive font size
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const AssignPatientPage()),
-                    );
-                  },
-                  child: Image.asset(
-                    'images/asspat.png',
-                    width: 25.0.w, // Responsive image width
-                    height: 25.0.w, // Responsive image height
-                  ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 4.0.w), // Responsive padding
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const GalleryScreen()),
+                            );
+                          },
+                          child: Image.asset(
+                            'images/picfam.png',
+                            width: 25.0.w, // Responsive image width
+                            height: 25.0.w, // Responsive image height
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AddPatientScreen()),
+                            );
+                          },
+                          child: Image.asset(
+                            'images/patcode.png',
+                            width: 25.0.w, // Responsive image width
+                            height: 25.0.w, // Responsive image height
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AssignPatientPage()),
+                            );
+                          },
+                          child: Image.asset(
+                            'images/asspat.png',
+                            width: 25.0.w, // Responsive image width
+                            height: 25.0.w, // Responsive image height
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const PatientLocationsScreen()),
+                            );
+                          },
+                          child: Image.asset(
+                            'images/placefam.png',
+                            width: 25.0.w, // Responsive image width
+                            height: 25.0.w, // Responsive image height
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ReportListScreenFamily()),
+                            );
+                          },
+                          child: Image.asset(
+                            'images/Rports.png',
+                            width: 25.0.w, // Responsive image width
+                            height: 25.0.w, // Responsive image height
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AppointListScreen()),
+                            );
+                          },
+                          child: Image.asset(
+                            'images/appfam.png',
+                            width: 25.0.w, // Responsive image width
+                            height: 25.0.w, // Responsive image height
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const PatientLocationsScreen()),
-                    );
-                  },
-                  child: Image.asset(
-                    'images/placefam.png',
-                    width: 25.0.w, // Responsive image width
-                    height: 25.0.w, // Responsive image height
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ReportListScreenFamily()),
-                    );
-                  },
-                  child: Image.asset(
-                    'images/Rports.png',
-                    width:25.0.w, // Responsive image width
-                    height: 25.0.w, // Responsive image height
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const AppointListScreen()),
-                    );
-                  },
-                  child: Image.asset(
-                    'images/appfam.png',
-                    width: 25.0.w, // Responsive image width
-                    height: 25.0.w, // Responsive image height
-                  ),
-                ),
-              ],
+              ),
             ),
           ],
         ),
       ),
-    ),
-  ],
-),
-
-      ),
     );
   }
- Widget buildDrawer(BuildContext context) {
-  return Drawer(
-    child: Container(
-      color: const Color(0xffD6DCE9),
-      child: ListView(
-        children: [
-          DrawerHeader(
-            child: Center(
-              child: Text(
-                'Elder Helper',
-                style: TextStyle(
-                  fontSize: 8.w, // Responsive font size
-                  fontFamily: 'Acme',
-                  color: const Color(0xFF0386D0),
+
+  Widget buildDrawer(BuildContext context) {
+    return Drawer(
+      child: Container(
+        color: const Color(0xffD6DCE9),
+        child: ListView(
+          children: [
+            DrawerHeader(
+              child: Center(
+                child: Text(
+                  'Elder Helper'.tr(),
+                  style: TextStyle(
+                    fontSize: 8.w, // Responsive font size
+                    fontFamily: 'Acme',
+                    color: const Color(0xFF0386D0),
+                  ),
                 ),
               ),
             ),
-          ),
-          buildDrawerItem(
-            Icons.person_add_alt_1_sharp,
-            'Add Patient'.tr(),
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => const update()));
-            },
-          ),
-          buildDrawerItem(
-            Icons.person_add_alt_1_sharp,
-            'Add Person Without Account'.tr(),
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => const AddPerson()));
-            },
-          ),
-          buildDrawerlogout(
-            Icons.logout_outlined,
-            'Log Out'.tr(),
-            onTap: () {
-              TokenManager.deleteToken();
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const LoginPageAll()));
-            },
-          ),
-        ],
+            buildDrawerItem(
+              Icons.person_add_alt_1_sharp,
+              'Add Patient'.tr(),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const update()));
+              },
+            ),
+            buildDrawerItem(
+              Icons.person_add_alt_1_sharp,
+              'Add Person Without Account'.tr(),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const AddPerson()));
+              },
+            ),
+            buildDrawerlogout(
+              Icons.logout_outlined,
+              'Log Out'.tr(),
+              onTap: () {
+                TokenManager.deleteToken();
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const LoginPageAll()));
+              },
+            ),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-Widget buildDrawerItem(IconData icon, String title, {Function? onTap}) {
-  return ListTile(
-    leading: Icon(
-      icon,
-      color: const Color(0xFF0386D0),
-      size: 8.w, // Responsive icon size
-    ),
-    title: Text(
-      title,
-      style: TextStyle(
-        fontSize: 3.5.w, // Responsive font size
-        color: const Color(0xFF595858),
+  Widget buildDrawerItem(IconData icon, String title, {Function? onTap}) {
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: const Color(0xFF0386D0),
+        size: 8.w, // Responsive icon size
       ),
-    ),
-    onTap: onTap as void Function()?,
-  );
-}
-
-Widget buildDrawerlogout(IconData icon, String title, {Function? onTap}) {
-  return ListTile(
-    leading: Icon(
-      icon,
-      color: const Color.fromARGB(255, 174, 5, 5),
-      size: 8.w, // Responsive icon size
-    ),
-    title: Text(
-      title,
-      style: TextStyle(
-        fontSize: 3.5.w, // Responsive font size
-        color: const Color(0xFF595858),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 3.5.w, // Responsive font size
+          color: const Color(0xFF595858),
+        ),
       ),
-    ),
-    onTap: onTap as void Function()?,
-  );
-}
+      onTap: onTap as void Function()?,
+    );
+  }
 
-
+  Widget buildDrawerlogout(IconData icon, String title, {Function? onTap}) {
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: const Color.fromARGB(255, 174, 5, 5),
+        size: 8.w, // Responsive icon size
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 3.5.w, // Responsive font size
+          color: const Color(0xFF595858),
+        ),
+      ),
+      onTap: onTap as void Function()?,
+    );
+  }
 }
