@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/login_api.dart';
@@ -52,8 +53,8 @@ class _ReportListScreenFamilyState extends State<ReportListScreenFamily> {
             ); // Go back to the previous page
           },
         ),
-        title: const Text(
-          "Patient's Reports",
+        title: Text(
+          "Patient's Reports".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -130,7 +131,7 @@ class _ReportListScreenFamilyState extends State<ReportListScreenFamily> {
                                   color: Colors.white,
                                 )),
                             subtitle: Text(
-                                'From: ${report['fromDate']} To: ${report['toDate']}',
+                                '${report['fromDate']} --- ${report['toDate']}',
                                 style: const TextStyle(
                                   fontSize: 14,
                                   color: Colors.white70,

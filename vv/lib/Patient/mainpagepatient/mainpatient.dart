@@ -727,13 +727,13 @@ class _mainpatientState extends State<mainpatient> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const ChatScreen()),
-                              );
-                            },
+                            // onTap: () {
+                            //   Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => const ChatScreen()),
+                            //   );
+                            // },
                             child: Image.asset(
                               'images/Chatbot.png',
                               width: 30.0.w,

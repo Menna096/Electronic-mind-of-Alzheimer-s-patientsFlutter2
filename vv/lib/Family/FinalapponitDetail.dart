@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:vv/Family/appoint_list.dart';
 
@@ -21,8 +22,8 @@ class AppointmentDetailsScreen extends StatelessWidget {
             );
           },
         ),
-        title: const Text(
-          "Appointment Details",
+        title: Text(
+          "Appointment Details".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -72,7 +73,7 @@ class AppointmentDetailsScreen extends StatelessWidget {
                   children: [
                     const SizedBox(height: 10.0),
                     Text(
-                      'Location: ${appointment['location']}',
+                       'location'.tr(args: ['${appointment['location']}']),
                       style: const TextStyle(
                           fontSize: 26.0,
                           color: Color.fromARGB(255, 83, 137, 184),
@@ -80,7 +81,7 @@ class AppointmentDetailsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10.0),
                     Text(
-                      'Notes: ${appointment['notes']}',
+                      'notes'.tr(args: ['${appointment['notes']}']),
                       style: const TextStyle(
                           fontSize: 26.0,
                           color: Color.fromARGB(255, 83, 137, 184),
