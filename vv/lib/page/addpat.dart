@@ -122,7 +122,7 @@ class _AddpatState extends State<Addpat> {
         throw 'Please fill in all fields, select an image, and choose a maximum distance'.tr();
       }
       if (passwordController.text != confirmPasswordController.text) {
-        throw 'Password and Confirm Password do not match.';
+        throw 'Password and Confirm Password do not match'.tr();
       }
 
       var formData = FormData.fromMap({
@@ -152,18 +152,18 @@ class _AddpatState extends State<Addpat> {
       if (response == true) {
         await checkTrain(); // Check for training need after adding the patient
       } else {
-        throw 'Add failed. Please try again. Error: $response';
+        throw 'Add failed. Please try again'.tr();
       }
     } catch (error) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Add Failed'),
+          title:  Text('Add Failed'.tr()),
           content: Text(error.toString()),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
+              child:  Text('OK'.tr()),
             ),
           ],
         ),
@@ -240,8 +240,8 @@ class _AddpatState extends State<Addpat> {
                 );
               },
             ),
-            title: const Text(
-              "Add Account",
+            title: Text(
+              "Add Account".tr(),
               style: TextStyle(
                 fontFamily: 'LilitaOne',
                 fontSize: 23,
@@ -289,25 +289,25 @@ class _AddpatState extends State<Addpat> {
                         ProfilePicture(onImageSelected: _handleImageSelected),
                         const SizedBox(height: 25),
                         _buildModernTextField(
-                          labelText: 'Full Name',
+                          labelText: 'Full Name'.tr(),
                           controller: fullNameController,
                           suffixIcon: Icons.person,
                         ),
                         const SizedBox(height: 15),
                         _buildModernTextField(
-                          labelText: 'Description For Patient',
+                          labelText: 'Description For Patient'.tr(),
                           controller: descriptionController,
                           suffixIcon: Icons.description,
                         ),
                         const SizedBox(height: 15),
                         _buildModernTextField(
-                          labelText: 'Email Address',
+                          labelText: 'Email Address'.tr(),
                           controller: emailController,
                           suffixIcon: Icons.email,
                         ),
                         const SizedBox(height: 15),
                         _buildModernTextField(
-                          labelText: 'Password',
+                          labelText: 'Password'.tr(),
                           controller: passwordController,
                           suffixIcon: Icons.lock,
                           obscureText: _obscurePassword,
@@ -319,7 +319,7 @@ class _AddpatState extends State<Addpat> {
                         ),
                         const SizedBox(height: 15),
                         _buildModernTextField(
-                          labelText: 'Confirm Password',
+                          labelText: 'Confirm Password'.tr(),
                           controller: confirmPasswordController,
                           suffixIcon: Icons.lock,
                           obscureText: _obscureConfirmPassword,
@@ -332,20 +332,20 @@ class _AddpatState extends State<Addpat> {
                         ),
                         const SizedBox(height: 15),
                         _buildModernTextField(
-                          labelText: 'Phone Number',
+                          labelText: 'Phone Number'.tr(),
                           controller: phoneNumberController,
                           suffixIcon: Icons.phone,
                         ),
                         const SizedBox(height: 15),
                         _buildModernTextField(
-                          labelText: 'Age',
+                          labelText: 'Age'.tr(),
                           controller: ageController,
                           suffixIcon: Icons.calendar_today,
                           keyboardType: TextInputType.number,
                         ),
                         const SizedBox(height: 15),
                         _buildModernTextField(
-                          labelText: 'Relationality',
+                          labelText: 'Relationality'.tr(),
                           controller: relationalityController,
                           suffixIcon: Icons.group,
                         ),
@@ -374,7 +374,7 @@ class _AddpatState extends State<Addpat> {
                                 child: Container(
                                   padding: const EdgeInsets.all(10.0),
                                   child: Text(
-                                    '$distance m',
+                                    'distance_in_meters'.tr(args: [distance.toString()]),
                                     style: const TextStyle(
                                       color: Colors.black87,
                                       fontSize: 16,
@@ -385,7 +385,7 @@ class _AddpatState extends State<Addpat> {
                               );
                             }).toList(),
                             icon: const Icon(Icons.arrow_drop_down),
-                            hint: const Text('Select Maximum Distance'),
+                            hint: Text('Select Maximum Distance'.tr()),
                             style: const TextStyle(
                               color: Colors.black87,
                             ),
@@ -397,8 +397,8 @@ class _AddpatState extends State<Addpat> {
                           onPressed: presentDatePicker,
                           icon: const Icon(Icons.date_range),
                           label: Text(selectedDate == null
-                              ? 'Select Diagnosis Date'
-                              : 'Diagnosis Date: ${DateFormat.yMMMd().format(selectedDate!)}'),
+                              ? 'Select Diagnosis Date'.tr()
+                              : 'diagnosis_date'.tr(args: [DateFormat.yMMMd(context.locale.toString()).format(selectedDate!)])),
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.all(15.0),
                             shape: RoundedRectangleBorder(
@@ -442,8 +442,8 @@ class _AddpatState extends State<Addpat> {
                                 backgroundColor: Colors.transparent,
                                 shadowColor: Colors.transparent,
                               ),
-                              child: const Text(
-                                'Pick Location',
+                              child:  Text(
+                                'Pick Location'.tr(),
                                 style: TextStyle(
                                     fontSize: 16, color: Colors.white),
                               ),
@@ -479,8 +479,8 @@ class _AddpatState extends State<Addpat> {
                                       valueColor: AlwaysStoppedAnimation<Color>(
                                           Colors.white),
                                     )
-                                  : const Text(
-                                      'Done',
+                                  : Text(
+                                      'Done'.tr(),
                                       style: TextStyle(
                                           fontSize: 20,
                                           color: Colors.white,

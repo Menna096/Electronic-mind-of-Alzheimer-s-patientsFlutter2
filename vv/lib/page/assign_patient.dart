@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:vv/Family/enterimage.dart';
 
@@ -34,8 +35,8 @@ class _assignPatientState extends State<assignPatient> {
 
         // Show SnackBar on the previous screen (since the current one is popped)
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Patient assigned successfully"),
+          SnackBar(
+            content: Text("Patient assigned successfully".tr()),
             duration: Duration(seconds: 2),
           ),
         );
@@ -43,8 +44,8 @@ class _assignPatientState extends State<assignPatient> {
         // Handle error
         print("Failed to send data");
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Patient assign failed. Please try again"),
+          SnackBar(
+            content: Text("Patient assign failed. Please try again".tr()),
             duration: Duration(seconds: 2),
           ),
         );
@@ -137,10 +138,10 @@ class _assignPatientState extends State<assignPatient> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const Row(
+                    Row(
                       children: [
                         Text(
-                          'Assign Patient',
+                          'Assign Patient'.tr(),
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -150,8 +151,8 @@ class _assignPatientState extends State<assignPatient> {
                     ),
                     const SizedBox(height: 24),
                     TextField(
-                      decoration: const InputDecoration(
-                        labelText: 'Patient Code',
+                      decoration: InputDecoration(
+                        labelText: 'Patient Code'.tr(),
                         border: OutlineInputBorder(),
                       ),
                       controller: _patientCodeController,
@@ -167,47 +168,47 @@ class _assignPatientState extends State<assignPatient> {
                         }
                       },
                       items: <String>[
-                        'Mother',
-                        'Father',
-                        'Brother',
-                        'Sister',
-                        'Grandmother',
-                        'Grandfather',
-                        'Grandson',
-                        'Granddaughter',
-                        'Husband',
-                        'Wife',
-                        'Son',
-                        'Daughter',
-                        'Aunt',
-                        'Uncle',
-                        'Niece',
-                        'Nephew',
-                        'Cousin',
-                        'Mother-in-law',
-                        'Father-in-law',
-                        'Brother-in-law',
-                        'Sister-in-law',
-                        'Stepfather',
-                        'Stepmother',
-                        'Stepbrother',
-                        'Stepsister',
-                        'Half-brother',
-                        'Half-sister'
+                        'Mother'.tr(),
+                        'Father'.tr(),
+                        'Brother'.tr(),
+                        'Sister'.tr(),
+                        'Grandmother'.tr(),
+                        'Grandfather'.tr(),
+                        'Grandson'.tr(),
+                        'Granddaughter'.tr(),
+                        'Husband'.tr(),
+                        'Wife'.tr(),
+                        'Son'.tr(),
+                        'Daughter'.tr(),
+                        'Aunt'.tr(),
+                        'Uncle'.tr(),
+                        'Niece'.tr(),
+                        'Nephew'.tr(),
+                        'Cousin'.tr(),
+                        'Mother-in-law'.tr(),
+                        'Father-in-law'.tr(),
+                        'Brother-in-law'.tr(),
+                        'Sister-in-law'.tr(),
+                        'Stepfather'.tr(),
+                        'Stepmother'.tr(),
+                        'Stepbrother'.tr(),
+                        'Stepsister'.tr(),
+                        'Half-brother'.tr(),
+                        'Half-sister'.tr(),
                       ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
                         );
                       }).toList(),
-                      decoration: const InputDecoration(
-                        labelText: 'Relationility',
-                        labelStyle: TextStyle(
-                            color: Color.fromARGB(255, 0, 0, 0)),
+                      decoration: InputDecoration(
+                        labelText: 'Relationility'.tr(),
+                        labelStyle:
+                            TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                         border: InputBorder.none,
                         filled: true,
                         fillColor: Colors.white,
-                        hintText: 'Select Relationility',
+                        hintText: 'Select Relationility'.tr(),
                         hintStyle: TextStyle(
                             color: Color.fromARGB(255, 0, 0, 0),
                             fontWeight: FontWeight.w300),
@@ -217,8 +218,8 @@ class _assignPatientState extends State<assignPatient> {
                     ),
                     const SizedBox(height: 12),
                     TextField(
-                      decoration: const InputDecoration(
-                        labelText: 'Description For Patient',
+                      decoration: InputDecoration(
+                        labelText: 'Description For Patient'.tr(),
                         border: OutlineInputBorder(),
                       ),
                       controller: _descriptionContrller,
@@ -233,8 +234,8 @@ class _assignPatientState extends State<assignPatient> {
                           borderRadius: BorderRadius.circular(30.0),
                         ),
                       ),
-                      child: const Text(
-                        'Submit',
+                      child: Text(
+                        'Submit'.tr(),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -248,7 +249,7 @@ class _assignPatientState extends State<assignPatient> {
                           ),
                         );
                       },
-                      child: const Text('create new patient account'),
+                      child: Text('Create New Patient Account'.tr()),
                     ),
                   ],
                 ),

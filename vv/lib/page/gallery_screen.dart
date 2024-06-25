@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
@@ -35,12 +36,12 @@ class _GalleryScreenState extends State<GalleryScreen> {
           children: [
             ListTile(
               leading: const Icon(Icons.camera),
-              title: const Text('Camera'),
+              title:  Text('Camera'.tr()),
               onTap: () => Navigator.pop(context, ImageSource.camera),
             ),
             ListTile(
               leading: const Icon(Icons.photo_library),
-              title: const Text('Gallery'),
+              title: Text('Gallery'.tr()),
               onTap: () => Navigator.pop(context, ImageSource.gallery),
             ),
           ],
@@ -52,16 +53,16 @@ class _GalleryScreenState extends State<GalleryScreen> {
       final isVideo = await showDialog<bool>(
             context: context,
             builder: (BuildContext context) => AlertDialog(
-              title: const Text('Choose Media Type'),
-              content: const Text('What do you want to take?'),
+              title: Text('Choose Media Type'.tr()),
+              content: Text('What do you want to take?'.tr()),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.pop(context, false),
-                  child: const Text('Photo'),
+                  child: Text('Photo'.tr()),
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context, true),
-                  child: const Text('Video'),
+                  child:  Text('Video'.tr()),
                 ),
               ],
             ),
@@ -160,8 +161,8 @@ class _GalleryScreenState extends State<GalleryScreen> {
             ); // Go back to the previous page
           },
         ),
-        title: const Text(
-          "Pictures and Videos",
+        title: Text(
+          "Pictures and Videos".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,

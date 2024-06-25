@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:dio/dio.dart';
@@ -49,13 +50,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
   String formatDifficulty(int difficulty) {
     switch (difficulty) {
       case 0:
-        return 'Easy';
+        return 'Easy'.tr();
       case 1:
-        return 'Medium';
+        return 'Medium'.tr();
       case 2:
-        return 'Hard';
+        return 'Hard'.tr();
       default:
-        return 'Unknown';
+        return 'Unknown'.tr();
     }
   }
 
@@ -71,8 +72,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          "Game History",
+        title:  Text(
+          "Game History".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -121,8 +122,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              const Text(
-                "Game History",
+               Text(
+                "Game History".tr(),
                 style: TextStyle(
                   fontSize: 23,
                   fontFamily: 'Acme',
@@ -139,9 +140,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         ),
                       )
                     : gameHistories.isEmpty
-                        ? const Center(
+                        ?  Center(
                             child: Text(
-                              "No history available.",
+                              "No history available.".tr(),
                               style: TextStyle(
                                 fontSize: 18.0,
                                 color: Colors.white,
@@ -173,7 +174,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                               color: Color(0xFF6A95E9),
                                               size: 32),
                                           Text(
-                                              'Date: ${formatDate(item['gameDate'])}',
+                                              tr('gameDate', args: [formatDate(item['gameDate'])]),
                                               style: const TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   color: Color.fromARGB(
@@ -182,7 +183,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       ),
                                       const SizedBox(height: 7),
                                       Text(
-                                        'Difficulty: ${formatDifficulty(item['difficultyGame'])}',
+                                        'difficulty'.tr(args: [item['difficultyGame']]),
                                         style: const TextStyle(
                                             fontFamily: 'dubai',
                                             fontSize: 15,
@@ -191,7 +192,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        'Score: ${item['patientScore']}',
+                                        'score'.tr(args: [item['patientScore'].toString()]),
                                         style: const TextStyle(
                                             color: Color.fromARGB(
                                                 255, 143, 172, 212)),
