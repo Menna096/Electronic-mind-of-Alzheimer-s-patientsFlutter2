@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'dart:math';
 
+import 'package:vv/api/login_api.dart';
 
 class VideoCaptureScreen extends StatefulWidget {
   const VideoCaptureScreen({super.key});
@@ -16,7 +17,6 @@ class VideoCaptureScreen extends StatefulWidget {
 class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
   final ImagePicker _picker = ImagePicker();
   late Dio dio;
- 
 
   String randomText = ''; // Initialize the variable to hold random text
 
@@ -24,13 +24,10 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
   void initState() {
     super.initState();
     dio = Dio();
-   
   }
 
-  
   @override
   void dispose() {
-   
     super.dispose();
   }
 
@@ -80,13 +77,11 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
       });
 
       // Include the authorization token in the headers
-      dio.options.headers['Authorization'] =
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2YWFkYzQ0Ny0zM2Q0LTRmODItOTk3Mi1jNzAwYzNkOGU2NGIiLCJlbWFpbCI6InBhdGllbnQyMjk5MDBAZ21haWwuY29tIiwiRnVsbE5hbWUiOiJtZW5uYSIsIlBob25lTnVtYmVyIjoiMzM1NDMzMiIsInVpZCI6IjZmYmE4ZDg4LTk4ODAtNGZlMC1hODAwLWU5NjIyMDY1ZWNiOSIsIlVzZXJBdmF0YXIiOiJodHRwczovL2VsZWN0cm9uaWNtaW5kb2ZhbHpoZWltZXJwYXRpZW50cy5henVyZXdlYnNpdGVzLm5ldC9Vc2VyIEF2YXRhci82ZmJhOGQ4OC05ODgwLTRmZTAtYTgwMC1lOTYyMjA2NWVjYjlfNTQ0YTdhNTUtOTQ4Yi00MGVjLTkxMjMtODMxMWI0OTU3NTdiLmpwZyIsInJvbGVzIjoiUGF0aWVudCIsImV4cCI6MTcyMTAxNTEwNCwiaXNzIjoiQXJ0T2ZDb2RpbmciLCJhdWQiOiJBbHpoZWltYXJBcHAifQ.0b_MxqQnpJaSBi9QgHZX9RCx0IVRb0YYwA4kg-vIGN8';
 
-      var response = await dio.post(
-        'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/AskToSeeSecretFile',
-        data: formData,
-      );
+      var response = await DioService().dio.post(
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/AskToSeeSecretFile',
+            data: formData,
+          );
 
       if (response.statusCode == 200) {
         print('Video uploaded successfully');
