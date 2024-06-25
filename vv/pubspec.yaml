@@ -156,6 +156,9 @@ flutter:
     - images/Persons_copy.png
     - images/Pictures_copy.png
     - images/Places_copy.png
+    - images/history(2).png
+    - images/medicinearabic.png
+    - images/report(1).png
 
 fonts:
   - family: dubai
