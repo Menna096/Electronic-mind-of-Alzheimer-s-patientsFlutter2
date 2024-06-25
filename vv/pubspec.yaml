@@ -147,6 +147,15 @@ flutter:
     - images/robot.png
     - assets/
     - assets/translations/
+    - images/Chatbot_copy.png
+    - images/dailytasks_copy.png
+    - images/Files_copy.png
+    - images/Games_(1)_copy.png
+    - images/Medicines_copy.png
+    - images/Notes_copy.png
+    - images/Persons_copy.png
+    - images/Pictures_copy.png
+    - images/Places_copy.png
 
 fonts:
   - family: dubai

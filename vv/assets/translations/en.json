@@ -336,7 +336,19 @@
      "Take control of your medication. Never miss a dose again. Stay organized. Stay healthy" : "Take control of your medication. Never miss a dose again. Stay organized. Stay healthy",
      "Skip" :"Skip",
      "Missing required field(s) in Patient JSON data" : "Missing required field(s) in Patient JSON data",
-     "Please fill in all fields, select an image, and choose a maximum distance" :"Please fill in all fields, select an image, and choose a maximum distance"
+     "Please fill in all fields, select an image, and choose a maximum distance" :"Please fill in all fields, select an image, and choose a maximum distance",
+     "images/Chatbot.png":"images/Chatbot.png",
+"images/appoinmentpat.png":"images/appoinmentpat.png",
+"images/dailytasks.png":"images/dailytasks.png",
+"images/Files.png":"images/Files.png",
+"images/Games (1).png":"images/Games (1).png",
+"images/Medicines.png":"images/Medicines.png",
+"images/Notes.png":"images/Notes.png",
+"images/Persons.png":"images/Persons.png",
+"images/Pictures.png":"images/Pictures.png",
+"images/Places.png":"images/Places.png"
+
+
     
    
     

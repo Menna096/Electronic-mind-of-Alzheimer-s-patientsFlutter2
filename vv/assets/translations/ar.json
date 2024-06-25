@@ -336,7 +336,18 @@
      "Track your progress" :"تتبع تقدمك",
      "Take control of your medication. Never miss a dose again. Stay organized. Stay healthy" : "تحكم في دوائك. لا تفوت جرعة مرة أخرى. كن منظمًا. كن بصحة جيدة",
      "Skip" :"تخطي",
-     "Missing required field(s) in Patient JSON data" : "الحقل (الحقول) المطلوبة مفقود في بيانات للمريض"
+     "Missing required field(s) in Patient JSON data" : "الحقل (الحقول) المطلوبة مفقود في بيانات للمريض",
+     "images/Chatbot.png":"images/Chatbot_copy.png",
+"images/appoinmentpat.png":"images/appoinmentpat.png",
+"images/dailytasks.png":"images/dailytasks_copy.png",
+"images/Files.png":"images/Files_copy.png",
+"images/Games (1).png":"images/Games_(1)_copy.png",
+"images/Medicines.png":"images/Medicines_copy.png",
+"images/Notes.png":"images/Notes_copy.png",
+"images/Persons.png":"images/Persons_copy.png",
+"images/Pictures.png":"images/Pictures_copy.png",
+"images/Places.png":"images/Places_copy.png"
+
 
   
 
