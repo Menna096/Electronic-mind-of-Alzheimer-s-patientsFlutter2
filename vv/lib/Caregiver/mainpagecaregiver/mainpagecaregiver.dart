@@ -100,7 +100,8 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                 onTap: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const caregiverCode()),
+                    MaterialPageRoute(
+                        builder: (context) => const caregiverCode()),
                   );
                 },
               ),
@@ -121,7 +122,8 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                 onTap: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginPageAll()),
+                    MaterialPageRoute(
+                        builder: (context) => const LoginPageAll()),
                   );
                 },
               ),
@@ -149,8 +151,8 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
               right: 0,
               child: Center(
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 20.0, horizontal: 24.0),
                   margin: const EdgeInsets.symmetric(
                       horizontal:
                           16.0), // Adjust this value to control the width
@@ -184,12 +186,13 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                 onTap: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const PatientAllGame()),
+                    MaterialPageRoute(
+                        builder: (context) => const PatientAllGame()),
                   );
                 },
                 child: Container(
                   child: Image.asset(
-                    'images/history.png',
+                    'images/history.png'.tr(),
                     width: 115,
                     height: 110,
                   ),
@@ -203,7 +206,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                 onTap: _showDialog,
                 child: Container(
                   child: Image.asset(
-                    'images/Report.png',
+                    'images/Report.png'.tr(),
                     width: 110,
                     height: 110,
                   ),
@@ -222,7 +225,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                 },
                 child: Container(
                   child: Image.asset(
-                    'images/Medicinescare.png',
+                    'images/Medicinescare.png'.tr(),
                     width: 111,
                     height: 115,
                   ),
@@ -280,7 +283,8 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.blueAccent,
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
@@ -292,12 +296,14 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
               ),
               const SizedBox(height: 10),
               TextButton.icon(
-                icon: const Icon(Icons.report_gmailerrorred, color: Colors.white),
+                icon:
+                    const Icon(Icons.report_gmailerrorred, color: Colors.white),
                 label: Text(" Get Patient's Report".tr()),
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.blueAccent,
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
