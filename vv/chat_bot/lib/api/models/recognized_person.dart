@@ -16,16 +16,17 @@ class RecognizedPerson {
       required this.descriptionOfPatient,
       required this.familyAvatarUrl});
 
-  RecognizedPerson.fromJson(Map<String, dynamic> raw)
-      : this(
-          familyName: raw["familyName"],
-          relation: raw["relationalityOfThisPatient"],
-          familyLatitude: raw["familyLatitude"],
-          familyLongitude: raw["familyLongitude"],
-          familyPhoneNumber: raw["familyPhoneNumber"],
-          descriptionOfPatient: raw["descriptionForPatient"],
-          familyAvatarUrl: raw["familyAvatarUrl"],
-        );
+  factory RecognizedPerson.fromJson(Map<String, dynamic> raw) {
+    return RecognizedPerson(
+      familyName: raw["familyName"],
+      relation: raw["relationalityOfThisPatient"],
+      familyLatitude: raw["familyLatitude"],
+      familyLongitude: raw["familyLongitude"],
+      familyPhoneNumber: raw["familyPhoneNumber"],
+      descriptionOfPatient: raw["descriptionForPatient"],
+      familyAvatarUrl: raw["familyAvatarUrl"],
+    );
+  }
 
   @override
   String toString() {
