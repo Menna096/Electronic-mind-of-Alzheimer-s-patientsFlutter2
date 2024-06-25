@@ -2,13 +2,18 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:chat_bot/chat/ui/chat_screen.dart';
+import 'package:chat_bot/chatbot_secrets.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:signalr_core/signalr_core.dart';
 import 'package:sizer/sizer.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Notes/views/Notes_view/Notes_view.dart';
 import 'package:vv/Patient/appoint.dart';
@@ -21,9 +26,6 @@ import 'package:vv/Patient/med.dart';
 import 'package:vv/daily_task/pages/home/home_page.dart';
 import 'package:vv/page/level_select.dart';
 import 'package:vv/utils/token_manage.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 class Appointment {
   String id;
@@ -70,8 +72,7 @@ class _mainpatientState extends State<mainpatient> {
   late HubConnection appointmentHubConnection;
   List<Appointment> appointments = [];
 
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   List<Reminder> reminders = [];
   late HubConnection medicineHubConnection;
 
@@ -108,30 +109,26 @@ class _mainpatientState extends State<mainpatient> {
   }
 
   void initializeNotificationsMedicine() {
-    var initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
 
     var initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
     );
 
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse:
-            (NotificationResponse response) async {
+    flutterLocalNotificationsPlugin.initialize(initializationSettings, onDidReceiveNotificationResponse: (NotificationResponse response) async {
       String? payload = response.payload;
       print('Notification payload: $payload');
       if (payload != null) {
-        Reminder? reminder =
-            reminders.firstWhere((reminder) => reminder.MedicationId == payload,
-                orElse: () => Reminder(
-                      MedicationId: '',
-                      Medication_Name: '',
-                      Dosage: '',
-                      medicineType: 0,
-                      Repeater: 0,
-                      startDate: DateTime(1970, 1, 1),
-                      endDate: DateTime(1970, 1, 1),
-                    ));
+        Reminder? reminder = reminders.firstWhere((reminder) => reminder.MedicationId == payload,
+            orElse: () => Reminder(
+                  MedicationId: '',
+                  Medication_Name: '',
+                  Dosage: '',
+                  medicineType: 0,
+                  Repeater: 0,
+                  startDate: DateTime(1970, 1, 1),
+                  endDate: DateTime(1970, 1, 1),
+                ));
         print('Appointment found: ${reminder.MedicationId}');
         if (reminder != null && reminder.MedicationId.isNotEmpty) {
           Navigator.of(context).push(MaterialPageRoute(
@@ -166,8 +163,7 @@ class _mainpatientState extends State<mainpatient> {
             print('Parsed appointment: ${reminder.MedicationId}');
             reminders.add(reminder);
             String notificationBody = _buildNotificationBodyMedicine(reminder);
-            _showNotificationMedicine('New Medicine Added, See it',
-                notificationBody, reminder.MedicationId);
+            _showNotificationMedicine('New Medicine Added, See it', notificationBody, reminder.MedicationId);
             _scheduleNotificationMedicine(reminder);
           } catch (e) {
             print('Error decoding JSON: $e');
@@ -179,8 +175,7 @@ class _mainpatientState extends State<mainpatient> {
     });
   }
 
-  Future<void> _showNotificationMedicine(
-      String title, String body, String medicationId) async {
+  Future<void> _showNotificationMedicine(String title, String body, String medicationId) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'your_channel_id',
       'your_channel_name',
@@ -216,8 +211,7 @@ class _mainpatientState extends State<mainpatient> {
         'your_channel_name',
         importance: Importance.max,
         priority: Priority.high,
-        sound:
-            RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
+        sound: RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
       );
       var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
@@ -231,8 +225,7 @@ class _mainpatientState extends State<mainpatient> {
         platformChannelSpecifics,
         payload: reminder.MedicationId,
         androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
+        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.time,
       );
 
@@ -268,29 +261,25 @@ class _mainpatientState extends State<mainpatient> {
   }
 
   void initializeNotifications() {
-    var initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
 
     var initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
     );
 
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse:
-            (NotificationResponse response) async {
+    flutterLocalNotificationsPlugin.initialize(initializationSettings, onDidReceiveNotificationResponse: (NotificationResponse response) async {
       String? payload = response.payload;
       print('Notification payload: $payload');
       if (payload != null) {
-        Appointment? appointment =
-            appointments.firstWhere((appointment) => appointment.id == payload,
-                orElse: () => Appointment(
-                      id: '',
-                      date: '',
-                      location: '',
-                      notes: '',
-                      familyName: '',
-                      canBeDeleted: false,
-                    ));
+        Appointment? appointment = appointments.firstWhere((appointment) => appointment.id == payload,
+            orElse: () => Appointment(
+                  id: '',
+                  date: '',
+                  location: '',
+                  notes: '',
+                  familyName: '',
+                  canBeDeleted: false,
+                ));
         print('Appointment found: ${appointment.id}');
         if (appointment != null && appointment.id.isNotEmpty) {
           Navigator.of(context).push(MaterialPageRoute(
@@ -324,8 +313,7 @@ class _mainpatientState extends State<mainpatient> {
             Appointment appointment = Appointment.fromJson(appointmentData);
             print('Parsed appointment: ${appointment.id}');
             appointments.add(appointment);
-            _showNotification('New Appointment Added',
-                _buildNotificationBody(appointment), appointment.id);
+            _showNotification('New Appointment Added', _buildNotificationBody(appointment), appointment.id);
             _scheduleNotification(appointment);
           } catch (e) {
             print('Error decoding JSON: $e');
@@ -337,8 +325,7 @@ class _mainpatientState extends State<mainpatient> {
     });
   }
 
-  Future<void> _showNotification(
-      String title, String body, String appointmentId) async {
+  Future<void> _showNotification(String title, String body, String appointmentId) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'your_channel_id',
       'your_channel_name',
@@ -374,8 +361,7 @@ class _mainpatientState extends State<mainpatient> {
         'your_channel_name',
         importance: Importance.max,
         priority: Priority.high,
-        sound:
-            RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
+        sound: RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
       );
       var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
@@ -389,8 +375,7 @@ class _mainpatientState extends State<mainpatient> {
         platformChannelSpecifics,
         payload: appointment.id,
         androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
+        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.time,
       );
 
@@ -425,8 +410,7 @@ class _mainpatientState extends State<mainpatient> {
         logging: (level, message) => print(message),
       ),
     )
-        .withAutomaticReconnect(
-            [0, 2000, 10000, 30000]) // Configuring automatic reconnect
+        .withAutomaticReconnect([0, 2000, 10000, 30000]) // Configuring automatic reconnect
         .build();
 
     _connection.onclose((error) async {
@@ -456,17 +440,14 @@ class _mainpatientState extends State<mainpatient> {
         return; // Exit the loop if connected
       } catch (e) {
         print("Reconnect failed: $e");
-        retryInterval = (retryInterval < 5000)
-            ? retryInterval + 1000
-            : 5000; // Cap retry interval at 5 seconds
+        retryInterval = (retryInterval < 5000) ? retryInterval + 1000 : 5000; // Cap retry interval at 5 seconds
       }
     }
   }
 
   Future<void> sendCurrentLocation() async {
     try {
-      final position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+      final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
       // Decode token to get main latitude, longitude, and max distance
       Map<String, dynamic> decodedToken = JwtDecoder.decode(_token!);
@@ -475,15 +456,13 @@ class _mainpatientState extends State<mainpatient> {
       double maxDistance = double.parse(decodedToken['MaxDistance']);
 
       // Calculate distance using Haversine formula
-      double distance = HaversineCalculator.haversine(
-          position.latitude, mainLat, position.longitude, mainLon);
+      double distance = HaversineCalculator.haversine(position.latitude, mainLat, position.longitude, mainLon);
       print('$maxDistance,mainlong$mainLon,mainlat$mainLat,$position');
       print('$distance');
       // Check if the distance is greater than the maximum allowed distance
       if (distance > maxDistance) {
         // If distance is greater, perform the invoke function
-        await _connection.invoke('SendGPSToFamilies',
-            args: [position.latitude, position.longitude]);
+        await _connection.invoke('SendGPSToFamilies', args: [position.latitude, position.longitude]);
         print('Location sent: ${position.latitude}, ${position.longitude}');
       } else {
         print('Distance less than max distance. Location not sent.');
@@ -542,9 +521,7 @@ class _mainpatientState extends State<mainpatient> {
                   child: Text(
                     'Elder Helper',
                     style: TextStyle(
-                      fontSize: SizerUtil.deviceType == DeviceType.mobile
-                          ? 8.0.w
-                          : 44.0,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile ? 8.0.w : 44.0,
                       fontFamily: 'Acme',
                       color: const Color(0xFF0386D0),
                     ),
@@ -555,23 +532,19 @@ class _mainpatientState extends State<mainpatient> {
                 leading: Icon(
                   Icons.manage_accounts_rounded,
                   color: const Color.fromARGB(255, 84, 134, 235),
-                  size:
-                      SizerUtil.deviceType == DeviceType.mobile ? 5.0.w : 24.0,
+                  size: SizerUtil.deviceType == DeviceType.mobile ? 5.0.w : 24.0,
                 ),
                 title: Text(
                   'Manage Profile',
                   style: TextStyle(
-                    fontSize: SizerUtil.deviceType == DeviceType.mobile
-                        ? 4.5.w
-                        : 20.0,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile ? 4.5.w : 20.0,
                     color: const Color(0xFF595858),
                   ),
                 ),
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const PatientProfManage()),
+                    MaterialPageRoute(builder: (context) => const PatientProfManage()),
                   );
                 },
               ),
@@ -579,15 +552,12 @@ class _mainpatientState extends State<mainpatient> {
                 leading: Icon(
                   Icons.logout,
                   color: const Color.fromARGB(214, 209, 8, 8),
-                  size:
-                      SizerUtil.deviceType == DeviceType.mobile ? 5.0.w : 24.0,
+                  size: SizerUtil.deviceType == DeviceType.mobile ? 5.0.w : 24.0,
                 ),
                 title: Text(
                   'Log Out',
                   style: TextStyle(
-                    fontSize: SizerUtil.deviceType == DeviceType.mobile
-                        ? 4.5.w
-                        : 20.0,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile ? 4.5.w : 20.0,
                     color: const Color(0xFF595858),
                   ),
                 ),
@@ -595,8 +565,7 @@ class _mainpatientState extends State<mainpatient> {
                   TokenManager.deleteToken();
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginPageAll()),
+                    MaterialPageRoute(builder: (context) => const LoginPageAll()),
                   );
                 },
               ),
@@ -618,19 +587,15 @@ class _mainpatientState extends State<mainpatient> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 4.0.w, vertical: 2.0.h), // Responsive padding
+              padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 2.0.h), // Responsive padding
               child: Row(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start, // Ensure text starts from the top
+                crossAxisAlignment: CrossAxisAlignment.start, // Ensure text starts from the top
                 children: [
                   CircleAvatar(
                     radius: 12.w, // Responsive avatar radius
                     backgroundImage: NetworkImage(_photoUrl ?? ''),
                   ),
-                  SizedBox(
-                      width:
-                          4.0.w), // Responsive spacing between avatar and text
+                  SizedBox(width: 4.0.w), // Responsive spacing between avatar and text
                   Flexible(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -640,10 +605,8 @@ class _mainpatientState extends State<mainpatient> {
                           style: TextStyle(
                             fontSize: 3.w, // Responsive font size
                           ),
-                          maxLines:
-                              1, // Ensure the text doesn't exceed one line
-                          overflow: TextOverflow
-                              .ellipsis, // Handle overflow with ellipsis
+                          maxLines: 1, // Ensure the text doesn't exceed one line
+                          overflow: TextOverflow.ellipsis, // Handle overflow with ellipsis
                         ),
                         Text(
                           'To the Electronic mind',
@@ -681,9 +644,7 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const AppointmentScreenPatient()),
+                                MaterialPageRoute(builder: (context) => const AppointmentScreenPatient()),
                               );
                             },
                             child: Image.asset(
@@ -696,9 +657,7 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const MedicinesPage()),
+                                MaterialPageRoute(builder: (context) => const MedicinesPage()),
                               );
                             },
                             child: Image.asset(
@@ -716,9 +675,7 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const UnusualFamilyList()),
+                                MaterialPageRoute(builder: (context) => const UnusualFamilyList()),
                               );
                             },
                             child: Image.asset(
@@ -728,13 +685,12 @@ class _mainpatientState extends State<mainpatient> {
                             ),
                           ),
                           GestureDetector(
-                            // onTap: () {
-                            //   Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => const ChatScreen()),
-                            //   );
-                            // },
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => ChatScreen(token: authToken)), // todo: replace authToken with your token
+                              );
+                            },
                             child: Image.asset(
                               'images/Chatbot.png'.tr(),
                               width: 30.0.w,
@@ -750,8 +706,7 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Notes_View()),
+                                MaterialPageRoute(builder: (context) => const Notes_View()),
                               );
                             },
                             child: Image.asset(
@@ -764,9 +719,7 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SecretFilePage()),
+                                MaterialPageRoute(builder: (context) => const SecretFilePage()),
                               );
                             },
                             child: Image.asset(
@@ -784,9 +737,7 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ImageUploadScreen()),
+                                MaterialPageRoute(builder: (context) => const ImageUploadScreen()),
                               );
                             },
                             child: Image.asset(
@@ -799,9 +750,7 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const GalleryScreenPatient()),
+                                MaterialPageRoute(builder: (context) => const GalleryScreenPatient()),
                               );
                             },
                             child: Image.asset(
@@ -819,8 +768,7 @@ class _mainpatientState extends State<mainpatient> {
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Home()),
+                                MaterialPageRoute(builder: (context) => const Home()),
                               );
                             },
                             child: Image.asset(
@@ -831,9 +779,7 @@ class _mainpatientState extends State<mainpatient> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      const LevelSelectionScreen()));
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LevelSelectionScreen()));
                             },
                             child: Image.asset(
                               'images/Games (1).png'.tr(),
@@ -856,16 +802,12 @@ class _mainpatientState extends State<mainpatient> {
 }
 
 class HaversineCalculator {
-  static double haversine(
-      double newLat1, double mainLat2, double newLon1, double mainLon2) {
+  static double haversine(double newLat1, double mainLat2, double newLon1, double mainLon2) {
     const double r = 6371e3; // meters
     var dLat = _toRadians(mainLat2 - newLat1);
     var dLon = _toRadians(mainLon2 - newLon1);
 
-    var a = pow(sin(dLat / 2), 2) +
-        cos(_toRadians(newLat1)) *
-            cos(_toRadians(mainLat2)) *
-            pow(sin(dLon / 2), 2);
+    var a = pow(sin(dLat / 2), 2) + cos(_toRadians(newLat1)) * cos(_toRadians(mainLat2)) * pow(sin(dLon / 2), 2);
     var c = 2 * atan2(sqrt(a), sqrt(1 - a));
 
     var d = r * c;
