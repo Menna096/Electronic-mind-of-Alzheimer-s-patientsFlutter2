@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:chat_bot/chat/ui/chat_screen.dart';
-import 'package:chat_bot/chatbot_secrets.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -64,6 +63,7 @@ class mainpatient extends StatefulWidget {
 }
 
 class _mainpatientState extends State<mainpatient> {
+  
   String? _token;
   String? _photoUrl;
   String? _userName;
@@ -685,10 +685,11 @@ class _mainpatientState extends State<mainpatient> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {
+                            onTap: () async {
+                              String? token = await TokenManager.getToken();
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => ChatScreen(token: authToken)), // todo: replace authToken with your token
+                                MaterialPageRoute(builder: (context) => ChatScreen(token: token!)), // todo: replace authToken with your token
                               );
                             },
                             child: Image.asset(
