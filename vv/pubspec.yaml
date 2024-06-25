@@ -79,6 +79,8 @@ dependencies:
   easy_localization: ^3.0.7
   responsive_sizer: ^3.3.1
   android_alarm_manager_plus: ^4.0.3
+  chat_bot:
+    path: chat_bot
   
 dev_dependencies:
   flutter_test:
@@ -147,6 +149,18 @@ flutter:
     - images/robot.png
     - assets/
     - assets/translations/
+    - images/Chatbot_copy.png
+    - images/dailytasks_copy.png
+    - images/Files_copy.png
+    - images/Games_(1)_copy.png
+    - images/Medicines_copy.png
+    - images/Notes_copy.png
+    - images/Persons_copy.png
+    - images/Pictures_copy.png
+    - images/Places_copy.png
+    - images/history(2).png
+    - images/medicinearabic.png
+    - images/report(1).png
 
 fonts:
   - family: dubai
