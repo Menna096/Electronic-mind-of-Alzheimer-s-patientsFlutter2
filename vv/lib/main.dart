@@ -10,6 +10,7 @@ import 'package:vv/Notes/simple_bloc_observer.dart';
 import 'package:vv/daily_task/pages/home/bloc/home_bloc.dart';
 import 'package:vv/daily_task/pages/input/bloc/input_bloc.dart';
 import 'package:vv/faceid.dart';
+import 'package:vv/home/one.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
-            home: const CameraScreen(),
+            home: Onboarding(showSignInScreen: () {  },),
           );
         },
       ),

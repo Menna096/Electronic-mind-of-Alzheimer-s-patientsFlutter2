@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:geocoding/geocoding.dart';
@@ -69,11 +70,11 @@ class _PatientLocationsScreenState extends State<PatientLocationsScreen> {
         }
         return address;
       } else {
-        return 'Address not found';
+        return 'Address not found'.tr();
       }
     } catch (e) {
       print('Error retrieving address: $e');
-      return 'Error retrieving address';
+      return 'Error retrieving address'.tr();
     }
   }
 
@@ -101,8 +102,8 @@ class _PatientLocationsScreenState extends State<PatientLocationsScreen> {
             );
           },
         ),
-        title: const Text(
-          "Patient Location Today",
+        title: Text(
+          "Patient Location Today".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 20,
@@ -166,7 +167,7 @@ class _PatientLocationsScreenState extends State<PatientLocationsScreen> {
                                 style: const TextStyle(fontWeight: FontWeight.w600),
                               ),
                               subtitle: Text(
-                                  'Time: ${formatTime(location['timeStamp'])}'),
+                                  'time'.tr(args: [formatTime(location['timeStamp'])]),),
                               trailing: IconButton(
                                 icon: const Icon(Icons.location_on_sharp, color: Colors.blueAccent),
                                 onPressed: () {
@@ -199,7 +200,7 @@ class _PatientLocationsScreenState extends State<PatientLocationsScreen> {
                               ),
                               title: const Text('Error retrieving address'),
                               subtitle: Text(
-                                  'Time: ${formatTime(location['timeStamp'])}'),
+                                  '${'time_label'.tr()}: ${formatTime(location['timeStamp'])}'),
                               trailing: IconButton(
                                 icon: const Icon(Icons.refresh, color: Colors.blueAccent),
                                 onPressed: () {
@@ -229,9 +230,10 @@ class _PatientLocationsScreenState extends State<PatientLocationsScreen> {
                                   strokeWidth: 3,
                                 ),
                               ),
-                              title: const Text('Loading address...'),
+                              title:  Text('Loading address...'.tr()),
                               subtitle: Text(
-                                  'Time: ${formatTime(location['timeStamp'])}'),
+  '${'time_label'.tr()}: ${formatTime(location['timeStamp'])}'),
+                                  
                             ),
                           );
                         }
@@ -239,9 +241,9 @@ class _PatientLocationsScreenState extends State<PatientLocationsScreen> {
                     );
                   },
                 )
-              : const Center(
+              : Center(
                   child: Text(
-                    'No data available',
+                    'No data available'.tr(),
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                 ),

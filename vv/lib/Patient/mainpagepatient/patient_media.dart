@@ -121,13 +121,13 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
       body: Background(
         SingleChildScrollView: null,
         child: Padding(
-          padding: const EdgeInsets.all(1.0),
+          padding:
+              const EdgeInsets.all(8.0), // Adjusted padding for better spacing
           child: GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 1,
+              crossAxisCount: 1, // Changed to 2 for larger images
               crossAxisSpacing: 20.0,
               mainAxisSpacing: 16.0,
-              childAspectRatio: 1.5,
             ),
             itemCount: mediaItems.length,
             itemBuilder: (context, index) {
@@ -148,10 +148,18 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
                                   ? Image.network(
                                       mediaItem.path,
                                       fit: BoxFit.cover,
+                                      width: double
+                                          .infinity, // Ensures the image covers the width
+                                      height: double
+                                          .infinity, // Ensures the image covers the height
                                     )
                                   : Image.network(
                                       mediaItem.path,
                                       fit: BoxFit.cover,
+                                      width: double
+                                          .infinity, // Ensures the video thumbnail covers the width
+                                      height: double
+                                          .infinity, // Ensures the video thumbnail covers the height
                                     ),
                             ),
                             if (mediaItem.type == MediaType.video)
@@ -161,7 +169,8 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(0.12),
+                        padding: const EdgeInsets.all(
+                            8.0), // Adjusted padding for better spacing
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -218,8 +227,8 @@ class CustomCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: child,
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        child: Center(child: child),
       ),
     );
   }

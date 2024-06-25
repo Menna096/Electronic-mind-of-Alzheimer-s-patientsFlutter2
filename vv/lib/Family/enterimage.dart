@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
@@ -56,7 +57,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-                'Instructions for Image ${replaceIndex != null ? replaceIndex + 1 : _images.length + 1}'),
+          'instructionsForImage'.tr(args: ['${replaceIndex! + 1}']),),
             content: FutureBuilder(
               future: _fetchInstructionData(replaceIndex),
               builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
@@ -93,7 +94,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
                   Navigator.of(context).pop();
                   _captureImage(replaceIndex);
                 },
-                child: const Text('Capture Image'),
+                child: Text('Capture Image'.tr()),
               ),
             ],
           );
@@ -131,7 +132,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
           'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyTrainingImages',
           data: formData);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Upload successful! Status: ${response.statusCode}"),
+        content: Text("Upload successful".tr()),
         backgroundColor: Colors.green,
       ));
 
@@ -142,7 +143,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Error uploading images: $e"),
+        content: Text("Error uploading images".tr()),
         backgroundColor: Colors.red,
       ));
       print('Error uploading images: $e');
@@ -181,7 +182,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
                 padding: const EdgeInsets.all(20.0),
                 child: ElevatedButton(
                   onPressed: () => _pickImage(),
-                  child: Text('Add Image ${_images.length + 1}'),
+                  child: Text('addImage'.tr(args: ['${_images.length + 1}'])),
                 ),
               ),
             Expanded(
@@ -207,7 +208,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
                           child: Image.file(File(_images[index].file.path),
                               fit: BoxFit.cover),
                         ),
-                        title: Text('Image ${index + 1}'),
+                        title: Text('imageIndex'.tr(args: ['${index + 1}']),),
                         trailing: IconButton(
                           icon: const Icon(Icons.camera_alt),
                           onPressed: () => _pickImage(replaceIndex: index),
@@ -223,7 +224,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: ElevatedButton(
                   onPressed: _uploadImages,
-                  child: const Text('Upload Images'),
+                  child: Text('Upload Images'.tr()),
                 ),
               ),
           ],

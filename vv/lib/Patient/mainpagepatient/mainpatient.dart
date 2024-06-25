@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:chat_bot/chat/ui/chat_screen.dart';
 import 'package:chat_bot/chatbot_secrets.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
@@ -647,7 +648,7 @@ class _mainpatientState extends State<mainpatient> {
                               );
                             },
                             child: Image.asset(
-                              'images/appoinmentpat.png',
+                              'images/appoinmentpat.png'.tr(),
                               width: 30.0.w,
                               height: 30.0.w,
                             ),
@@ -660,7 +661,7 @@ class _mainpatientState extends State<mainpatient> {
                               );
                             },
                             child: Image.asset(
-                              'images/Medicines.png',
+                              'images/Medicines.png'.tr(),
                               width: 30.0.w,
                               height: 30.0.w,
                             ),
@@ -678,7 +679,7 @@ class _mainpatientState extends State<mainpatient> {
                               );
                             },
                             child: Image.asset(
-                              'images/Places.png',
+                              'images/Places.png'.tr(),
                               width: 30.0.w,
                               height: 30.0.w,
                             ),
@@ -691,7 +692,7 @@ class _mainpatientState extends State<mainpatient> {
                               );
                             },
                             child: Image.asset(
-                              'images/Chatbot.png',
+                              'images/Chatbot.png'.tr(),
                               width: 30.0.w,
                               height: 30.0.w,
                             ),
@@ -709,7 +710,7 @@ class _mainpatientState extends State<mainpatient> {
                               );
                             },
                             child: Image.asset(
-                              'images/Notes.png',
+                              'images/Notes.png'.tr(),
                               width: 30.0.w,
                               height: 30.0.w,
                             ),
@@ -722,7 +723,7 @@ class _mainpatientState extends State<mainpatient> {
                               );
                             },
                             child: Image.asset(
-                              'images/Files.png',
+                              'images/Files.png'.tr(),
                               width: 30.0.w,
                               height: 30.0.w,
                             ),
@@ -740,7 +741,7 @@ class _mainpatientState extends State<mainpatient> {
                               );
                             },
                             child: Image.asset(
-                              'images/Persons.png',
+                              'images/Persons.png'.tr(),
                               width: 30.0.w,
                               height: 30.0.w,
                             ),
@@ -753,7 +754,7 @@ class _mainpatientState extends State<mainpatient> {
                               );
                             },
                             child: Image.asset(
-                              'images/Pictures.png',
+                              'images/Pictures.png'.tr(),
                               width: 30.0.w,
                               height: 30.0.w,
                             ),
@@ -771,7 +772,7 @@ class _mainpatientState extends State<mainpatient> {
                               );
                             },
                             child: Image.asset(
-                              'images/dailytasks.png',
+                              'images/dailytasks.png'.tr(),
                               width: 28.0.w,
                               height: 28.0.w,
                             ),
@@ -781,7 +782,7 @@ class _mainpatientState extends State<mainpatient> {
                               Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LevelSelectionScreen()));
                             },
                             child: Image.asset(
-                              'images/Games (1).png',
+                              'images/Games (1).png'.tr(),
                               width: 27.0.w,
                               height: 27.0.w,
                             ),

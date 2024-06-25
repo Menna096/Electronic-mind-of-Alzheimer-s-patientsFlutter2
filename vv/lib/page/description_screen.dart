@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:vv/api/dio_ser.dart';
-
 import 'package:vv/models/media_item.dart';
 import 'package:vv/widgets/background.dart';
 
@@ -10,7 +9,8 @@ class DescriptionScreen extends StatefulWidget {
   final String mediaPath;
   final MediaType type;
 
-  const DescriptionScreen({super.key, required this.mediaPath, required this.type});
+  const DescriptionScreen(
+      {super.key, required this.mediaPath, required this.type});
 
   @override
   _DescriptionScreenState createState() => _DescriptionScreenState();
@@ -55,38 +55,47 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Add picture or video')),
+      resizeToAvoidBottomInset:
+          true, // Ensures the UI adjusts when the keyboard is open
       body: Background(
         SingleChildScrollView: null,
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            CircleAvatar(
-              radius: 100,
-              backgroundImage: FileImage(File(widget.mediaPath)),
-              child: widget.type == MediaType.video
-                  ? const Icon(Icons.play_circle_fill, size: 100)
-                  : null,
-            ),
-            const SizedBox(height: 20),
-            const Text('Enter a simple description about the picture/video'),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                controller: _descriptionController,
-                decoration: const InputDecoration(
-                  hintText: 'Description',
+        child: SingleChildScrollView(
+          // Make the screen scrollable
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                CircleAvatar(
+                  radius: 100,
+                  backgroundImage: FileImage(File(widget.mediaPath)),
+                  child: widget.type == MediaType.video
+                      ? const Icon(Icons.play_circle_fill, size: 100)
+                      : null,
                 ),
-              ),
+                const SizedBox(height: 20),
+                const Text(
+                    'Enter a simple description about the picture/video'),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextField(
+                    controller: _descriptionController,
+                    decoration: const InputDecoration(
+                      hintText: 'Description',
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: _saveMedia,
+                  child: const Text('Save'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Cancel'),
+                ),
+              ],
             ),
-            ElevatedButton(
-              onPressed: _saveMedia,
-              child: const Text('Save'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
-            ),
-          ],
+          ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/page/addpat.dart';
@@ -46,11 +47,11 @@ class _updateState extends State<update> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Center(
+             Center(
               child: Padding(
                 padding: EdgeInsets.only(top: 1.0),
                 child: Text(
-                  'Manage Patient Profile',
+                  'Manage Patient Profile'.tr(),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -76,8 +77,8 @@ class _updateState extends State<update> {
                   borderRadius: BorderRadius.circular(27.0),
                 ),
               ),
-              child: const Text(
-                'Create Account',
+              child:  Text(
+                'Create Account'.tr(),
                 style: TextStyle(
                   fontSize: 18,
                 ),
@@ -101,8 +102,8 @@ class _updateState extends State<update> {
                   borderRadius: BorderRadius.circular(27.0),
                 ),
               ),
-              child: const Text(
-                'Edit Account',
+              child: Text(
+                'Edit Account'.tr(),
                 style: TextStyle(
                   fontSize: 18,
                 ),

@@ -16,7 +16,9 @@ class _PatientProfManageState extends State<PatientProfManage> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
-  TextEditingController messageController = TextEditingController();
+  final TextEditingController _diagnosisDateController =
+      TextEditingController();
+  final TextEditingController messageController = TextEditingController();
   DateTime? _selectedDate;
 
   bool _isEditingPhone = false;
@@ -34,23 +36,9 @@ class _PatientProfManageState extends State<PatientProfManage> {
     _idController.dispose();
     _phoneController.dispose();
     _ageController.dispose();
+    _diagnosisDateController.dispose();
     messageController.dispose();
     super.dispose();
-  }
-
-  void _presentDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: _selectedDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    ).then((pickedDate) {
-      if (pickedDate != null) {
-        setState(() {
-          _selectedDate = pickedDate;
-        });
-      }
-    });
   }
 
   Future<void> _fetchUserData() async {
@@ -64,6 +52,8 @@ class _PatientProfManageState extends State<PatientProfManage> {
           _ageController.text = response.data['age'].toString();
           _selectedDate = DateFormat('yyyy-MM-ddTHH:mm:ss')
               .parse(response.data['diagnosisDate']);
+          _diagnosisDateController.text =
+              DateFormat('yyyy-MM-dd').format(_selectedDate!);
           messageController.text = response.data['message'];
           _idController.text = response.data['patientId'];
         });
@@ -161,22 +151,11 @@ class _PatientProfManageState extends State<PatientProfManage> {
               children: [
                 const SizedBox(height: 20),
                 _buildTextField(
-                  labelText: 'Your ID',
-                  controller: _idController,
-                  readOnly: true,
-                  maxLines: 2,
-                  prefixIcon: const Icon(
-                    Icons.assignment_ind_sharp, // Changed icon to a phone icon
-                    color: Color.fromARGB(255, 106, 184, 217),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                _buildTextField(
                   labelText: 'Full Name',
                   controller: _fullNameController,
                   readOnly: true,
                   prefixIcon: const Icon(
-                    Icons.person, // Changed icon to a phone icon
+                    Icons.person,
                     color: Color.fromARGB(255, 106, 184, 217),
                   ),
                 ),
@@ -186,7 +165,7 @@ class _PatientProfManageState extends State<PatientProfManage> {
                   controller: _phoneController,
                   keyboardType: TextInputType.phone,
                   prefixIcon: const Icon(
-                    Icons.phone_android, // Changed icon to a phone icon
+                    Icons.phone_android,
                     color: Color.fromARGB(255, 106, 184, 217),
                   ),
                   readOnly: !_isEditingPhone,
@@ -197,7 +176,8 @@ class _PatientProfManageState extends State<PatientProfManage> {
                               _isEditingPhone = false;
                             });
                           },
-                          icon: const Icon(Icons.check,color: Color.fromARGB(227, 28, 107, 181),),
+                          icon: const Icon(Icons.check,
+                              color: Color.fromARGB(227, 28, 107, 181)),
                         )
                       : IconButton(
                           onPressed: () {
@@ -205,7 +185,8 @@ class _PatientProfManageState extends State<PatientProfManage> {
                               _isEditingPhone = true;
                             });
                           },
-                          icon: const Icon(Icons.edit,color: Color.fromARGB(225, 166, 167, 169),),
+                          icon: const Icon(Icons.edit,
+                              color: Color.fromARGB(225, 166, 167, 169)),
                         ),
                 ),
                 const SizedBox(height: 20),
@@ -214,7 +195,7 @@ class _PatientProfManageState extends State<PatientProfManage> {
                   controller: _ageController,
                   keyboardType: TextInputType.number,
                   prefixIcon: const Icon(
-                    Icons.event_busy_outlined, // Changedicon to a person icon
+                    Icons.event_busy_outlined,
                     color: Color.fromARGB(255, 106, 184, 217),
                   ),
                   readOnly: !_isEditingAge,
@@ -225,7 +206,8 @@ class _PatientProfManageState extends State<PatientProfManage> {
                               _isEditingAge = false;
                             });
                           },
-                          icon: const Icon(Icons.check,color: Color.fromARGB(227, 28, 107, 181),),
+                          icon: const Icon(Icons.check,
+                              color: Color.fromARGB(227, 28, 107, 181)),
                         )
                       : IconButton(
                           onPressed: () {
@@ -233,18 +215,19 @@ class _PatientProfManageState extends State<PatientProfManage> {
                               _isEditingAge = true;
                             });
                           },
-                          icon: const Icon(Icons.edit,color: Color.fromARGB(225, 166, 167, 169),),
+                          icon: const Icon(Icons.edit,
+                              color: Color.fromARGB(225, 166, 167, 169)),
                         ),
                 ),
                 const SizedBox(height: 20),
-                ListTile(
-                  title: Text(
-                    'Diagnosis Date: ${_selectedDate != null ? DateFormat('yyyy-MM-dd').format(_selectedDate!) : "Not set"}',
-                    style: const TextStyle(fontSize: 16,
-                    fontFamily: 'LilitaOne',
-                    color: Color.fromARGB(168, 21, 26, 30)),
+                _buildTextField(
+                  labelText: 'Diagnosis Date',
+                  controller: _diagnosisDateController,
+                  readOnly: true,
+                  prefixIcon: const Icon(
+                    Icons.calendar_today,
+                    color: Color.fromARGB(255, 106, 184, 217),
                   ),
-                  onTap: _presentDatePicker,
                 ),
                 const SizedBox(height: 15),
                 ElevatedButton(
@@ -252,16 +235,18 @@ class _PatientProfManageState extends State<PatientProfManage> {
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.blue,
-                    
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 15),
                   ),
-                  child: const Text('Update Profile',
-                  style: TextStyle(fontSize: 16,
-                    fontFamily: 'LilitaOne',
-                  ),),
+                  child: const Text(
+                    'Update Profile',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'LilitaOne',
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -277,8 +262,8 @@ class _PatientProfManageState extends State<PatientProfManage> {
     int maxLines = 1,
     bool readOnly = false,
     TextInputType keyboardType = TextInputType.text,
-    Icon? prefixIcon, // Added prefixIcon parameter
-    Widget? suffixIcon, // Added suffixIcon parameter
+    Icon? prefixIcon,
+    Widget? suffixIcon,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -305,10 +290,11 @@ class _PatientProfManageState extends State<PatientProfManage> {
             color: Colors.grey[600],
             fontWeight: FontWeight.w600,
           ),
-          hintText: 'Enter $labelText',
+          hintText: labelText,
           hintStyle: TextStyle(color: Colors.grey[400]),
           border: InputBorder.none, // No border, just the container shadow
-          contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
           prefixIcon: prefixIcon, // Added prefixIcon here
           suffixIcon: suffixIcon, // Added suffixIcon here
         ),

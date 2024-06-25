@@ -2,8 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
+import 'package:vv/Patient/gpsssss/pages/google_map_page.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/login_api.dart';
+// Import the NavigationScreen
 
 class ImageUploadScreen extends StatefulWidget {
   const ImageUploadScreen({super.key});
@@ -97,14 +99,15 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
         'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/RecognizeFaces';
 
     FormData formData = FormData.fromMap({
-      'image': await MultipartFile.fromFile(_image!.path, filename: 'upload.jpg'),
+      'image':
+          await MultipartFile.fromFile(_image!.path, filename: 'upload.jpg'),
     });
 
     try {
       Response response = await DioService().dio.post(
-        url,
-        data: formData,
-      );
+            url,
+            data: formData,
+          );
 
       // Update the response data
       setState(() {
@@ -207,7 +210,8 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
                                       ),
                                     )
                                   : _image == null
-                                      ? const Icon(Icons.image_outlined, size: 60)
+                                      ? const Icon(Icons.image_outlined,
+                                          size: 60)
                                       : ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(16),
@@ -234,42 +238,84 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
                           itemCount:
                               (_responseData!['personsInImage'] as List).length,
                           itemBuilder: (context, index) {
-                            final person =
-                                (_responseData!['personsInImage'] as List)[index];
+                            final person = (_responseData!['personsInImage']
+                                as List)[index];
+                            if (person['familyName'] == 'Unknown') {
+                              return const SizedBox.shrink();
+                            }
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 10),
-                              child: Row(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  CircleAvatar(
-                                    radius: 25,
-                                    backgroundColor: Colors.blueGrey[100],
-                                    child: const Icon(
-                                      Icons.person,
-                                      size: 20,
-                                      color: Color.fromARGB(255, 65, 97, 202),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  Row(
                                     children: [
-                                      Text(
-                                        person['familyName'],
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
+                                      CircleAvatar(
+                                        radius: 25,
+                                        backgroundColor: Colors.blueGrey[100],
+                                        backgroundImage: NetworkImage(person[
+                                            'familyAvatarUrl']), // Use the familyAvatarUrl
                                       ),
-                                      Text(
-                                        person['relationalityOfThisPatient'],
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey[600],
-                                        ),
+                                      const SizedBox(width: 16),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            person['familyName'],
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          Text(
+                                            person[
+                                                'relationalityOfThisPatient'],
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                          Text(
+                                            person['descriptionForPatient'],
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                          Text(
+                                            person['familyPhoneNumber'],
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Spacer(
+                                        flex: 1,
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          final latitude =
+                                              person['familyLatitude'];
+                                          final longitude =
+                                              person['familyLongitude'];
+                                          print('$latitude,$longitude');
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  NavigationScreen(
+                                                      latitude, longitude),
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(Icons.location_on),
                                       ),
                                     ],
                                   ),
+                                  const SizedBox(height: 8),
                                 ],
                               ),
                             );
