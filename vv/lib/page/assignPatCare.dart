@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
@@ -33,11 +34,11 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text('Success'),
-              content: const Text('Patient assigned successfully'),
+              title:  Text('Success'.tr()),
+              content:  Text('Patient assigned successfully'.tr()),
               actions: [
                 TextButton(
-                  child: const Text('OK'),
+                  child:  Text('OK'.tr()),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
@@ -94,7 +95,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.close_rounded),
-                          tooltip: 'Exit',
+                          tooltip: 'Exit'.tr(),
                           onPressed: () {
                             // Navigate to the target screen when the button is pressed
                             Navigator.pushReplacement(
@@ -107,8 +108,8 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
                         const SizedBox(
                           width: 20,
                         ),
-                        const Text(
-                          'Assign Patient \n To Caregiver',
+                         Text(
+                          'Assign Patient To Caregiver'.tr(),
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -120,14 +121,14 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
                     TextFormField(
                       controller: _controller,
                       decoration: InputDecoration(
-                        labelText: 'Enter Caregiver Code',
+                        labelText: 'Enter Caregiver Code'.tr(),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a caregiver code';
+                          return 'Please enter a caregiver code'.tr();
                         }
                         return null;
                       },
@@ -146,8 +147,8 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
                           borderRadius: BorderRadius.circular(30.0),
                         ),
                       ),
-                      child: const Text(
-                        'Assign Patient',
+                      child:  Text(
+                        'Assign Patient'.tr(),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

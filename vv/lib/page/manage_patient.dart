@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/api/login_api.dart';
@@ -91,8 +92,8 @@ class _ViewProfileState extends State<ViewProfile> {
       if (response.statusCode == 200) {
         print('User profile updated successfully');
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('User profile updated successfully'),
+           SnackBar(
+            content: Text('User profile updated successfully'.tr()),
           ),
         );
       } else {
@@ -101,7 +102,7 @@ class _ViewProfileState extends State<ViewProfile> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-                'Failed to update user profile. Status code: ${response.statusCode}'),
+                'Failed to update user profile'.tr()),
           ),
         );
       }
@@ -109,7 +110,7 @@ class _ViewProfileState extends State<ViewProfile> {
       print('An error occurred: $error');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('An error occurred: $error'),
+          content: Text('An error occurred'.tr()),
         ),
       );
     }
@@ -127,8 +128,8 @@ class _ViewProfileState extends State<ViewProfile> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          "Manage Patient Profile",
+        title:  Text(
+          "Manage Patient Profile".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -170,38 +171,38 @@ class _ViewProfileState extends State<ViewProfile> {
               children: [
                 const SizedBox(height: 20),
                 _buildTextField(
-                  labelText: 'Full Name',
+                  labelText: 'Full Name'.tr(),
                   controller: _fullNameController,
                   icon: Icons.account_circle,
                 ),
                 const SizedBox(height: 15),
                 _buildTextField(
-                  labelText: 'Email',
+                  labelText: 'Email'.tr(),
                   controller: _emailController,
                   icon: Icons.email,
                 ),
                 const SizedBox(height: 15),
                 _buildTextField(
-                  labelText: 'Phone Number',
+                  labelText: 'Phone Number'.tr(),
                   controller: _phoneController,
                   icon: Icons.phone,
                 ),
                 const SizedBox(height: 15),
                 _buildTextField(
-                  labelText: 'Age',
+                  labelText: 'Age'.tr(),
                   controller: _ageController,
                   icon: Icons.calendar_today,
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 15),
                 _buildTextField(
-                  labelText: 'Relationality',
+                  labelText: 'Relationality'.tr(),
                   controller: _relationalityController,
                   icon: Icons.person,
                 ),
                 const SizedBox(height: 15),
                 _buildTextField(
-                  labelText: 'Diagnosis Date',
+                  labelText: 'Diagnosis Date'.tr(),
                   controller: TextEditingController(
                     text: _selectedDate == null
                         ? ''
@@ -213,7 +214,7 @@ class _ViewProfileState extends State<ViewProfile> {
                 ),
                 const SizedBox(height: 15),
                 _buildTextField(
-                  labelText: 'Maximum Distance',
+                  labelText: 'Maximum Distance'.tr(),
                   controller: _distanceController,
                   icon: Icons.location_on_sharp,
                   keyboardType: TextInputType.number,
@@ -228,7 +229,7 @@ class _ViewProfileState extends State<ViewProfile> {
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                   ),
-                  child: const Text('Update',style: TextStyle(
+                  child:  Text('Update'.tr(),style: TextStyle(
                                           fontSize: 18,
                                           color: Colors.white,
                                           fontFamily: 'Acme'),),

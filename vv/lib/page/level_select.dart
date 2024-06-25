@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 // Assuming you have imported Dio for network requests
 import 'package:vv/api/login_api.dart';
@@ -122,7 +123,7 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                         children: [
                           const SizedBox(height: 45),
                           Text(
-                            'Memory Card Game',
+                            'Memory Card Game'.tr(),
                             style: TextStyle(
                               fontSize: 35,
                               fontFamily: 'LilitaOne',
@@ -149,7 +150,8 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const HistoryScreen(),
+                                      builder: (context) =>
+                                          const HistoryScreen(),
                                     ),
                                   );
                                 },
@@ -169,8 +171,9 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                                 borderRadius: BorderRadius.circular(20),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: const Color.fromARGB(136, 69, 121, 173)
-                                        .withOpacity(0.3),
+                                    color:
+                                        const Color.fromARGB(136, 69, 121, 173)
+                                            .withOpacity(0.3),
                                     spreadRadius: 3,
                                     blurRadius: 4,
                                     offset: const Offset(-1, 5),
@@ -181,7 +184,8 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                               child: Column(
                                 children: [
                                   Text(
-                                    'Current Score: $currentScore',
+                                    tr('currentScore',
+                                        args: [currentScore.toString()]),
                                     style: const TextStyle(
                                       fontSize: 20,
                                       color: Color.fromARGB(255, 50, 58, 145),
@@ -191,7 +195,7 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                                   ),
                                   const SizedBox(height: 10),
                                   Text(
-                                    'Max Score: $maxScore',
+                                    tr('maxScore', args: [maxScore.toString()]),
                                     style: const TextStyle(
                                       fontSize: 20,
                                       color: Color.fromARGB(255, 50, 58, 145),
@@ -203,8 +207,8 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                               ),
                             ),
                           const SizedBox(height: 50),
-                          const Text(
-                            'Select a Level',
+                          Text(
+                            'Select a Level'.tr(),
                             style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
@@ -219,23 +223,27 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                                 context,
                                 recommendedLevel != null
                                     ? recommendedLevel == 0
-                                        ? 'Recommended Level: Easy'
+                                        ? tr('recommendedLevelEasy')
                                         : recommendedLevel == 1
-                                            ? 'Recommended Level: Medium'
+                                            ? tr('recommendedLevelMedium')
                                             : recommendedLevel == 2
-                                                ? 'Recommended Level: Hard'
-                                                : 'Recommended Level: $recommendedLevel'
-                                    : 'Loading...',
+                                                ? tr('recommendedLevelHard')
+                                                : tr('recommendedLevelGeneric',
+                                                    args: [
+                                                        recommendedLevel
+                                                            .toString()
+                                                      ])
+                                    : tr('loading'),
                                 recommendedLevel != null
                                     ? recommendedLevel! + 1
                                     : 0,
                               ),
                               const SizedBox(height: 16),
-                              buildLevelButton(context, "Easy (6 pairs)", 1),
+                              buildLevelButton(context, tr('levelEasy'), 1),
                               const SizedBox(height: 16),
-                              buildLevelButton(context, "Medium (12 pairs)", 2),
+                              buildLevelButton(context, tr('levelMedium'), 2),
                               const SizedBox(height: 16),
-                              buildLevelButton(context, "Hard (18 pairs)", 3),
+                              buildLevelButton(context, tr('levelHard'), 3),
                             ],
                           ),
                           const Spacer(),

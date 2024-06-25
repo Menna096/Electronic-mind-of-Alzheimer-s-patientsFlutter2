@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:vv/api/dio_ser.dart';
 import 'package:vv/models/media_item.dart';
@@ -54,7 +55,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add picture or video')),
+      appBar: AppBar(title:  Text('Add picture or video'.tr())),
       resizeToAvoidBottomInset:
           true, // Ensures the UI adjusts when the keyboard is open
       body: Background(
@@ -74,24 +75,24 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
                       : null,
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                    'Enter a simple description about the picture/video'),
+                 Text(
+                    'Enter a simple description about the picture/video'.tr()),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: TextField(
                     controller: _descriptionController,
-                    decoration: const InputDecoration(
-                      hintText: 'Description',
+                    decoration:  InputDecoration(
+                      hintText: 'Description'.tr(),
                     ),
                   ),
                 ),
                 ElevatedButton(
                   onPressed: _saveMedia,
-                  child: const Text('Save'),
+                  child:  Text('Save'.tr()),
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Cancel'),
+                  child:  Text('Cancel'.tr()),
                 ),
               ],
             ),
