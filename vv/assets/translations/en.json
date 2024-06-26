@@ -512,7 +512,6 @@
   "congratulations!" :"congratulations!",
   "Choose Profile photo" :"Choose Profile photo",
   "score_label": "Score: {}",
-  "time_label": "Time: {}",
   "dosage": "Dosage:",
   "dosage_label": "Dosage:",
   "type_label": "Type:",
@@ -535,7 +534,10 @@
   "Date: $formattedDate": "Date: {}",
   "Time: $formattedTime": "Time: {}",
   "Location: ${appointment['location']}": "Location: {}",
-  "Created by: ${appointment['familyNameWhoCreatedAppointemnt']}": "Created by: {}"
+  "date_label": "Date: {}",
+  "time_label": "Time: {}",
+  "location_label": "Location: {}",
+  "created_by_label": "Created by: {}"
 
 
   

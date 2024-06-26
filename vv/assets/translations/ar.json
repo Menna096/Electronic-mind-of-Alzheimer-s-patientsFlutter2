@@ -523,7 +523,6 @@
   "congratulations!": "تهانينا!",
   "Choose Profile photo": "اختر صورة الملف الشخصي",
   "score_label": "النقاط: {}",
-  "time_label": "الوقت: {}",
    "dosage": "الجرعة:",
   "dosage_label": "الجرعة:",
   "type_label": "النوع:",
@@ -545,7 +544,10 @@
   "Date: $formattedDate": "التاريخ: {}",
   "Time: $formattedTime": "الوقت: {}",
   "Location: ${appointment['location']}": "الموقع: {}",
-  "Created by: ${appointment['familyNameWhoCreatedAppointemnt']}": "تم الإنشاء بواسطة: {}"
+  "date_label": "التاريخ: {}",
+  "time_label": "الوقت: {}",
+  "location_label": "الموقع: {}",
+  "created_by_label": "تم الإنشاء بواسطة: {}"
 
 
 

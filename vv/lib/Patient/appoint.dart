@@ -129,22 +129,23 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Date: $formattedDate',
+                'date_label'.tr(args: [formattedDate]),
                 style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 5),
               Text(
-                'Time: $formattedTime',
+                'time_label'.tr(args: [formattedTime]),
                 style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 5),
               Text(
-                'Location: ${appointment['location']}',
+                'location_label'.tr(args: [appointment['location']]),
                 style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 5),
               Text(
-                'Created by: ${appointment['familyNameWhoCreatedAppointemnt']}',
+                'created_by_label'
+                    .tr(args: [appointment['familyNameWhoCreatedAppointemnt']]),
                 style: const TextStyle(fontSize: 16),
               ),
             ],
