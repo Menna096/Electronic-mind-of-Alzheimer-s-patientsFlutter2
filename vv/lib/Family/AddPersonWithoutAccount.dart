@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart'; // Import for input formatters
+import 'package:vv/Family/trainingForPreson.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/Family/Registerfamily/profile/widgets/prof_pic.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
@@ -60,7 +61,8 @@ class _AddPersonState extends State<AddPerson> {
       if (fullNameController.text.isEmpty ||
           phoneNumberController.text.isEmpty ||
           relationility.isEmpty) {
-        throw 'Please fill in all fields, select an image, and provide latitude and longitude'.tr();
+        throw 'Please fill in all fields, select an image, and provide latitude and longitude'
+            .tr();
       }
 
       var formData = FormData.fromMap({
@@ -81,14 +83,15 @@ class _AddPersonState extends State<AddPerson> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title:  Text('Add Successful'.tr()),
+            title: Text('Add Successful'.tr()),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const MainPageFamily()),
+                    MaterialPageRoute(
+                        builder: (context) => const MainPageFamily()),
                   );
                 },
                 child: const Text('OK'),
@@ -103,12 +106,12 @@ class _AddPersonState extends State<AddPerson> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title:  Text('Add Failed'.tr()),
+          title: Text('Add Failed'.tr()),
           content: Text(error.toString()),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child:  Text('OK'.tr()),
+              child: Text('OK'.tr()),
             ),
           ],
         ),
@@ -126,6 +129,7 @@ class _AddPersonState extends State<AddPerson> {
       capturedImages = images;
     });
   }
+
   File? selectedImage;
   void _handleImageSelected(File? image) {
     setState(() {
@@ -216,7 +220,8 @@ class _AddPersonState extends State<AddPerson> {
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
                         ),
-                        suffixIcon: const Icon(Icons.person_2_sharp, color: Colors.blue),
+                        suffixIcon: const Icon(Icons.person_2_sharp,
+                            color: Colors.blue),
                       ),
                       style: const TextStyle(
                         fontSize: 16,
@@ -322,7 +327,8 @@ class _AddPersonState extends State<AddPerson> {
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
                         ),
-                        suffixIcon: const Icon(Icons.description, color: Colors.blue),
+                        suffixIcon:
+                            const Icon(Icons.description, color: Colors.blue),
                       ),
                       style: const TextStyle(
                         fontSize: 16,
@@ -364,14 +370,37 @@ class _AddPersonState extends State<AddPerson> {
                           borderRadius: BorderRadius.circular(27.0),
                         ),
                       ),
-                      child:  Text('Pick Location Here'.tr()),
+                      child: Text('Pick Location Here'.tr()),
                     ),
-                    
+                    ElevatedButton(
+                      onPressed: () async {
+                        List<File>? images = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UploadImagesPagePerson(
+                              fullName: fullNameController.text,
+                              phoneNumber: phoneNumberController.text,
+                              relation: relationility,
+                              latitude: Latt,
+                              longitude: Longg,
+                              description: descriptionForPatientController.text,
+                            ),
+                          ),
+                        );
+
+                        if (images != null) {
+                          // Handle the received images, along with the other data
+                          receiveImages(images);
+                        }
+                      },
+                      child: Text('Go to Upload Images Page'.tr()),
+                    ),
                     const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: _isLoading ? null : _add,
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        foregroundColor:
+                            const Color.fromARGB(255, 255, 255, 255),
                         backgroundColor: const Color(0xFF0386D0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0),

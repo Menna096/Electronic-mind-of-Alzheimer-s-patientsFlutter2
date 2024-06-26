@@ -161,6 +161,12 @@ flutter:
     - images/history(2).png
     - images/medicinearabic.png
     - images/report(1).png
+    - images/appfam_copy.png
+    - images/asspat_copy.png
+    - images/patcode_copy.png
+    - images/Pictures_copyfam.png
+    - images/Places_copyfam.png
+    - images/Rports_copy.png
 
 fonts:
   - family: dubai
