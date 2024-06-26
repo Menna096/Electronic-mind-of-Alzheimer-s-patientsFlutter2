@@ -11,6 +11,7 @@ import 'package:vv/daily_task/pages/home/bloc/home_bloc.dart';
 import 'package:vv/daily_task/pages/input/bloc/input_bloc.dart';
 import 'package:vv/faceid.dart';
 import 'package:vv/home/one.dart';
+import 'package:vv/utils/token_manage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,7 +65,30 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
-            home: Onboarding(showSignInScreen: () {  },),
+            home: FutureBuilder<String?>(
+              future: TokenManager
+                  .getToken(), // Replace with your storage utility method
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Scaffold(
+                    body: Center(child: CircularProgressIndicator()),
+                  );
+                } else {
+                  final String? token = snapshot.data;
+                  if (token != null && token.isNotEmpty) {
+                    // Token exists, navigate to CameraScreen
+                    return CameraScreen();
+                  } else {
+                    // Token does not exist, show Onboarding with sign-in screen
+                    return Onboarding(
+                      showSignInScreen: () {
+                        // Handle sign-in action if needed
+                      },
+                    );
+                  }
+                }
+              },
+            ),
           );
         },
       ),

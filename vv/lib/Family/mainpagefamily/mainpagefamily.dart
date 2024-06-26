@@ -248,9 +248,9 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                             );
                           },
                           child: Image.asset(
-                            'images/picfam.png',
-                            width: 25.0.w, // Responsive image width
-                            height: 25.0.w, // Responsive image height
+                            'images/Picfamm.png',
+                            width: 40.0.w, // Responsive image width
+                            height: 40.0.w, // Responsive image height
                           ),
                         ),
                         GestureDetector(
@@ -263,9 +263,9 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                             );
                           },
                           child: Image.asset(
-                            'images/patcode.png',
-                            width: 25.0.w, // Responsive image width
-                            height: 25.0.w, // Responsive image height
+                            'images/Pattcode.png',
+                            width: 40.0.w, // Responsive image width
+                            height: 40.0.w, // Responsive image height
                           ),
                         ),
                       ],
@@ -283,9 +283,9 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                             );
                           },
                           child: Image.asset(
-                            'images/asspat.png',
-                            width: 25.0.w, // Responsive image width
-                            height: 25.0.w, // Responsive image height
+                            'images/assignCare.png',
+                            width: 40.0.w, // Responsive image width
+                            height: 40.0.w, // Responsive image height
                           ),
                         ),
                         GestureDetector(
@@ -298,9 +298,9 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                             );
                           },
                           child: Image.asset(
-                            'images/placefam.png',
-                            width: 25.0.w, // Responsive image width
-                            height: 25.0.w, // Responsive image height
+                            'images/PlaceFamm.png',
+                            width: 40.0.w, // Responsive image width
+                            height: 40.0.w, // Responsive image height
                           ),
                         ),
                       ],
@@ -318,9 +318,9 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                             );
                           },
                           child: Image.asset(
-                            'images/Rports.png',
-                            width: 25.0.w, // Responsive image width
-                            height: 25.0.w, // Responsive image height
+                            'images/reppfamm.png',
+                            width: 40.0.w, // Responsive image width
+                            height: 40.0.w, // Responsive image height
                           ),
                         ),
                         GestureDetector(
@@ -333,9 +333,9 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                             );
                           },
                           child: Image.asset(
-                            'images/appfam.png',
-                            width: 25.0.w, // Responsive image width
-                            height: 25.0.w, // Responsive image height
+                            'images/Appointmmfam.png',
+                            width: 40.0.w, // Responsive image width
+                            height: 40.0.w, // Responsive image height
                           ),
                         ),
                       ],
