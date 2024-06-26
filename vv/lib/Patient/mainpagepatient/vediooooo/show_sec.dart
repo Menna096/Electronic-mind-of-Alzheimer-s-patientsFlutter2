@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart'; 
@@ -60,8 +61,8 @@ class _SecretFilePageState extends State<SecretFilePage> {
             );
           },
         ),
-        title: const Text(
-          "Secret File",
+        title:  Text(
+          "Secret File".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -99,9 +100,9 @@ class _SecretFilePageState extends State<SecretFilePage> {
           color: Colors.grey[100],
         ),
         child: secretFiles.isEmpty
-            ? const Center(
+            ?  Center(
                 child: Text(
-                  'No Secret Files Available',
+                  'No Secret Files Available'.tr(),
                   style: TextStyle(fontSize: 18, color: Colors.grey),
                 ),
               )

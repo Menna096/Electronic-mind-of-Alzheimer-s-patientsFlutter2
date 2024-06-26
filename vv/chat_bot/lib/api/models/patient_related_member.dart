@@ -2,7 +2,7 @@ class PatientRelatedMember {
   final String familyId;
   final String familyName;
   final String relation;
-  final String familyDescriptionForPatient;
+  final String? familyDescriptionForPatient;
   final String hisImageUrl;
 
   PatientRelatedMember({

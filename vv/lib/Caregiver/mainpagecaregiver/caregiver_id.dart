@@ -174,6 +174,7 @@
 //     );
 //   }
 // }
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vv/Caregiver/mainpagecaregiver/mainpagecaregiver.dart';
@@ -187,7 +188,7 @@ class caregiverCode extends StatefulWidget {
 }
 
 class _caregiverCodeState extends State<caregiverCode> {
-  String caregiverCode = 'Loading...';
+  String caregiverCode = 'Loading...'.tr();
   @override
   void initState() {
     super.initState();
@@ -206,7 +207,7 @@ class _caregiverCodeState extends State<caregiverCode> {
       } else {
         setState(() {
           caregiverCode =
-              'Error loading ID'; // Set an error message or handle differently
+              'Error loading ID'.tr(); // Set an error message or handle differently
         });
       }
     } catch (e) {
@@ -219,7 +220,7 @@ class _caregiverCodeState extends State<caregiverCode> {
 
   @override
   Widget build(BuildContext context) {
-    if (caregiverCode == 'Loading...') {
+    if (caregiverCode == 'Loading...'.tr()) {
       return Scaffold(
         backgroundColor: Colors.grey.shade300,
         body: const Center(child: CircularProgressIndicator()),
@@ -259,8 +260,8 @@ class _caregiverCodeState extends State<caregiverCode> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const Text(
-                    'Your ID',
+                   Text(
+                    'Your ID'.tr(),
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -269,7 +270,7 @@ class _caregiverCodeState extends State<caregiverCode> {
                   const SizedBox(height: 24),
                   TextField(
                     decoration: InputDecoration(
-                      labelText: 'Caregiver ID',
+                      labelText: 'Caregiver ID'.tr(),
                       border: OutlineInputBorder(
                         borderRadius:
                             BorderRadius.circular(8.0), // Rounded corners
@@ -286,8 +287,8 @@ class _caregiverCodeState extends State<caregiverCode> {
                           Clipboard.setData(ClipboardData(text: caregiverCode))
                               .then((_) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Your ID copied to clipboard!'),
+                               SnackBar(
+                                content: Text('Your ID copied to clipboard'.tr()),
                                 duration: Duration(seconds: 2),
                               ),
                             );
@@ -303,7 +304,7 @@ class _caregiverCodeState extends State<caregiverCode> {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'Please send it to the family',
+                    'Please send it to the family'.tr(),
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.grey.shade600),
                   ),
@@ -324,8 +325,8 @@ class _caregiverCodeState extends State<caregiverCode> {
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                     ),
-                    child: const Text(
-                      'Done',
+                    child:  Text(
+                      'Done'.tr(),
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
@@ -24,14 +25,13 @@ class _FileUploadPageState extends State<FileUploadPage> {
   @override
   void initState() {
     super.initState();
-   
+
     _fileNameController = TextEditingController();
     _fileDescriptionController = TextEditingController();
   }
- 
+
   @override
   void dispose() {
-    
     _fileNameController.dispose();
     _fileDescriptionController.dispose();
     super.dispose();
@@ -44,8 +44,8 @@ class _FileUploadPageState extends State<FileUploadPage> {
     if (fileName.isEmpty ||
         fileDescription.isEmpty ||
         _selectedFile.path.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Please fill in all the fields and select a file.'),
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Please fill in all the fields and select a file'.tr()),
         backgroundColor: Colors.red,
       ));
       return;
@@ -62,22 +62,22 @@ class _FileUploadPageState extends State<FileUploadPage> {
 
     try {
       final response = await DioService().dio.post(
-        'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/AddSecretFile',
-        data: formData,
-        options: Options(
-          headers: {
-            HttpHeaders.authorizationHeader: 'Bearer $authToken',
-          },
-        ),
-      );
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/AddSecretFile',
+            data: formData,
+            options: Options(
+              headers: {
+                HttpHeaders.authorizationHeader: 'Bearer $authToken',
+              },
+            ),
+          );
 
       if (response.statusCode == 200) {
-        print('File uploaded successfully');
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('File uploaded successfully'),
+        print('File uploaded successfully'.tr());
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('File uploaded successfully'.tr()),
           backgroundColor: Colors.green,
         ));
-        
+
         // Navigate to the "mainpatient" page here
         Navigator.push(
           context,
@@ -135,8 +135,8 @@ class _FileUploadPageState extends State<FileUploadPage> {
                 const SizedBox(
                   height: 60,
                 ),
-                const Text(
-                  'File Name ',
+                Text(
+                  'File Name '.tr(),
                   style: TextStyle(
                     fontSize: 18.0,
                     fontFamily: 'ConcertOne',
@@ -156,8 +156,8 @@ class _FileUploadPageState extends State<FileUploadPage> {
                   ),
                 ),
                 const SizedBox(height: 40.0),
-                const Text(
-                  'File Description ',
+                Text(
+                  'File Description '.tr(),
                   style: TextStyle(
                     fontSize: 18.0,
                     fontFamily: 'ConcertOne',
@@ -184,8 +184,8 @@ class _FileUploadPageState extends State<FileUploadPage> {
                     Icons.attach_file,
                     color: Colors.white,
                   ),
-                  label: const Text(
-                    'Choose File',
+                  label: Text(
+                    'Choose File'.tr(),
                     style: TextStyle(
                         fontSize: 16.0,
                         fontFamily: 'LilitaOne',
@@ -196,14 +196,14 @@ class _FileUploadPageState extends State<FileUploadPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 24.0),
                   ),
                 ),
                 const SizedBox(height: 20.0),
                 if (_selectedFile.path.isNotEmpty)
                   Text(
-                    'Selected File: ${path.basename(_selectedFile.path)}',
+  '${'Selected File: '.tr()}${path.basename(_selectedFile.path)}',
                     style: const TextStyle(fontSize: 16.0),
                   ),
                 const SizedBox(height: 20.0),
@@ -218,7 +218,7 @@ class _FileUploadPageState extends State<FileUploadPage> {
                   ),
                   child: Center(
                     child: Text(
-                      'Done',
+                      'Done'.tr(),
                       style: Theme.of(context).textTheme.titleSmall!.copyWith(
                             color: Colors.white,
                             fontSize: 20,
@@ -235,5 +235,3 @@ class _FileUploadPageState extends State<FileUploadPage> {
     );
   }
 }
-
-

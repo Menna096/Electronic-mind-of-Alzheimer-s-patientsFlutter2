@@ -1,3 +1,5 @@
+import 'package:geocoding/geocoding.dart';
+
 class FamilyLocation {
   final double latitude;
   final double longitude;
@@ -13,4 +15,7 @@ class FamilyLocation {
       longitude: json['longitude'],
     );
   }
+  
+
+  
 }

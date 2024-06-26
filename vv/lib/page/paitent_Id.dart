@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
@@ -14,7 +15,7 @@ class AddPatientScreen extends StatefulWidget {
 }
 
 class _AddPatientScreenState extends State<AddPatientScreen> {
-  String patientCode = 'Loading...';
+  String patientCode = 'Loading...'.tr();
 
   @override
   void initState() {
@@ -58,7 +59,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
   @override
   Widget build(BuildContext context) {
     // If patientCode is still 'Loading...', we show a loading indicator instead of immediately building the UI
-    if (patientCode == 'Loading...') {
+    if (patientCode == 'Loading...'.tr()) {
       return Scaffold(
         backgroundColor: Colors.grey.shade300,
         body: const Center(child: CircularProgressIndicator()),
@@ -98,8 +99,8 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const Text(
-                    'Add Patient',
+                   Text(
+                    'Add Patient'.tr(),
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -108,7 +109,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                   const SizedBox(height: 24),
                   TextField(
                     decoration: InputDecoration(
-                      labelText: 'Patient ID',
+                      labelText: 'Patient ID'.tr(),
                       border: OutlineInputBorder(
                         borderRadius:
                             BorderRadius.circular(8.0), // Rounded corners
@@ -125,9 +126,9 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           Clipboard.setData(ClipboardData(text: patientCode))
                               .then((_) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
+                               SnackBar(
                                 content:
-                                    Text('Patient ID copied to clipboard!'),
+                                    Text('Patient ID copied to clipboard!'.tr()),
                                 duration: Duration(seconds: 2),
                               ),
                             );
@@ -143,7 +144,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'Please send it to anyone responsible for the patient',
+                    'Please send it to anyone responsible for the patient'.tr(),
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.grey.shade600),
                   ),
@@ -164,8 +165,8 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                     ),
-                    child: const Text(
-                      'Done',
+                    child: Text(
+                      'Done'.tr(),
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

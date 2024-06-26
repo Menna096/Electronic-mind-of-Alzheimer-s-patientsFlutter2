@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:chat_bot/api/chat_bot_api_helper.dart';
+import 'package:chat_bot/api/models/Pair.dart';
 import 'package:chat_bot/api/models/appointment.dart';
 import 'package:chat_bot/api/models/game_data.dart';
 import 'package:chat_bot/api/models/patient_profile.dart';
@@ -9,6 +10,8 @@ import 'package:chat_bot/api/models/recognized_person.dart';
 import 'package:chat_bot/chat_bot_errors.dart';
 import 'package:chat_bot/helpers/logger.dart';
 import 'package:chat_bot/helpers/texts.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_webapi/directions.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
@@ -35,10 +38,13 @@ class PatientAPI {
           // Headers
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
-            "Authorization": _token,
+            'Authorization': 'Bearer ${_token}',
           });
       // * Handle the response
-      if (response.statusCode != 200) throw CBError(code: response.statusCode, message: Texts.errorOccurredWhileDoingAction);
+      if (response.statusCode != 200)
+        throw CBError(
+            code: response.statusCode,
+            message: Texts.errorOccurredWhileDoingAction);
       // * Return the response body
       return jsonDecode(response.body);
     } catch (e) {
@@ -51,17 +57,20 @@ class PatientAPI {
     // * Resolve the endpoint
     final endpoint = helper.resolveEndpoint("RecognizeFaces");
     // * Create the request
-    final request = http.MultipartRequest('POST', endpoint)..files.add(await http.MultipartFile.fromPath('Image', imagePath));
-    request.headers[HttpHeaders.authorizationHeader] = _token;
+    final request = http.MultipartRequest('POST', endpoint)
+      ..files.add(await http.MultipartFile.fromPath('Image', imagePath));
+    request.headers[HttpHeaders.authorizationHeader] = 'Bearer ${_token}';
     try {
       // * Send the request
       final response = await request.send();
       // * Handle the response
       final responseData = await response.stream.bytesToString();
-      logger.log("code: ${response.statusCode}, rawResponse: '${responseData.trim()}'");
+      logger.log(
+          "code: ${response.statusCode}, rawResponse: '${responseData.trim()}'");
       final jsonResponse = decodeJsonResponse(responseData);
       if (response.statusCode == 200) {
-        final List<RecognizedPerson> recognizedPersons = List.empty(growable: true);
+        final List<RecognizedPerson> recognizedPersons =
+            List.empty(growable: true);
         for (Map<String, dynamic> rawPerson in jsonResponse["personsInImage"]) {
           try {
             recognizedPersons.add(RecognizedPerson.fromJson(rawPerson));
@@ -70,7 +79,8 @@ class PatientAPI {
             continue;
           }
         }
-        logger.log("Recognized ${recognizedPersons.length} person in the photo.");
+        logger
+            .log("Recognized ${recognizedPersons.length} person in the photo.");
         return recognizedPersons;
       } else {
         // * Request failed
@@ -100,7 +110,7 @@ class PatientAPI {
           // Headers
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
-            HttpHeaders.authorizationHeader: _token,
+            HttpHeaders.authorizationHeader: 'Bearer ${_token}',
           });
       // * Handle the response
       if (response.statusCode != 200) {
@@ -122,13 +132,17 @@ class PatientAPI {
         // Headers
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          HttpHeaders.authorizationHeader: _token,
+          HttpHeaders.authorizationHeader: 'Bearer ${_token}',
         },
       );
       // * Handle the response
-      if (response.statusCode != 200) throw CBError(code: response.statusCode, message: Texts.errorOccurredWhileDoingAction);
+      if (response.statusCode != 200)
+        throw CBError(
+            code: response.statusCode,
+            message: Texts.errorOccurredWhileDoingAction);
       // * Return the response body
-      return resolveJsonList<PatientRelatedMember>(jsonDecode(response.body), process: (json) {
+      return resolveJsonList<PatientRelatedMember>(jsonDecode(response.body),
+          process: (json) {
         return PatientRelatedMember.fromJson(json);
       });
     } catch (e) {
@@ -137,7 +151,8 @@ class PatientAPI {
     }
   }
 
-  Future<String> updatePatientProfile(String phoneNumber, int age, String diagnosisDate, int maximumDistance) async {
+  Future<String> updatePatientProfile(String phoneNumber, int age,
+      String diagnosisDate, int maximumDistance) async {
     // * Validate if phone number length is > 1
     if (phoneNumber.isEmpty) throw CBError(message: Texts.invalidPhoneNumber);
     // Make post request
@@ -147,7 +162,7 @@ class PatientAPI {
       // Headers
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: _token,
+        HttpHeaders.authorizationHeader: 'Bearer ${_token}',
       },
       // Request body
       body: jsonEncode(<String, Object>{
@@ -166,27 +181,78 @@ class PatientAPI {
     }
   }
 
-  Future<FamilyLocation> getFamilyLocation(String familyId) async {
-    try {
-      final response = await http.get(
+  Future<List<Pair<String, String>>> getFamilyLocation(
+      List<Pair<String, String>> familyIds) async {
+    List<Pair<String, String>> locations = [];
+
+    for (Pair<String, String> familyId in familyIds) {
+      try {
+        final response = await http.get(
           // API endpoint
-          helper.resolveEndpoint("GetFamilyLocation/$familyId"),
+          helper.resolveEndpoint("GetFamilyLocation/${familyId.second}"),
           // Headers
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
-            HttpHeaders.authorizationHeader: _token,
-          });
-      // * Handle the response
-      if (response.statusCode != 200) throw CBError(code: response.statusCode, message: response.body);
-      // * Return the response body
-      return FamilyLocation.fromJson(decodeJsonResponse(response.body)); // todo: double check the json fields.
+            HttpHeaders.authorizationHeader: 'Bearer ${_token}',
+          },
+        );
+
+        // Handle the response
+        if (response.statusCode != 200) {
+          throw CBError(code: response.statusCode, message: response.body);
+        }
+
+        // Parse the response body
+        FamilyLocation loc =
+            FamilyLocation.fromJson(decodeJsonResponse(response.body));
+
+        // Optionally, get the address for each location
+        await getAddress(loc.latitude, loc.longitude).then((value) {
+          locations.add(Pair(familyId.first, value));
+        });
+      } catch (e) {
+        logger.log("getFamilyLocation[ERROR] for $familyId: $e");
+        // Optionally handle errors for individual family IDs here
+      }
+    }
+
+    return locations;
+  }
+
+  Future<String> getAddress(double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, longitude);
+      if (placemarks.isNotEmpty) {
+        Placemark placemark = placemarks[0];
+        String address = placemark.street ?? '';
+        if (placemark.subLocality != null) {
+          address += ', ${placemark.subLocality!}';
+        }
+        if (placemark.locality != null) {
+          address += ', ${placemark.locality!}';
+        }
+        if (placemark.subAdministrativeArea != null) {
+          address += ', ${placemark.subAdministrativeArea!}';
+        }
+        if (placemark.administrativeArea != null) {
+          address += ', ${placemark.administrativeArea!}';
+        }
+        if (placemark.country != null) {
+          address += ', ${placemark.country!}';
+        }
+        return address;
+      } else {
+        return 'Address not found';
+      }
     } catch (e) {
-      logger.log("getFamilyLocation[ERROR]: $e");
-      rethrow;
+      print('Error retrieving address: $e');
+      return 'Error retrieving address';
     }
   }
 
-  Future<String> markMedicationReminder(String medictaionId, bool isTaken) async {
+  Future<String> markMedicationReminder(
+      String medictaionId, bool isTaken) async {
     // Make post request
     final response = await http.post(
       // API endpoint
@@ -194,7 +260,7 @@ class PatientAPI {
       // Headers
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: _token,
+        HttpHeaders.authorizationHeader: 'Bearer ${_token}',
       },
       // Request body
       body: jsonEncode(<String, Object>{
@@ -208,16 +274,19 @@ class PatientAPI {
     }
     return response.body;
     final decodedResponse = decodeJsonResponse(response.body);
-    return decodedResponse["?"]; // ? don't know that success response json look like.
+    return decodedResponse[
+        "?"]; // ? don't know that success response json look like.
   }
 
-  Future<String> addSecretFile({required String filePath, String? fileDescription}) async {
+  Future<String> addSecretFile(
+      {required String filePath, String? fileDescription}) async {
     final XFile file = XFile(filePath);
     // * Resolve the endpoint
     final endpoint = helper.resolveEndpoint("AddSecretFile");
     // * Create the request
-    final request = http.MultipartRequest('POST', endpoint)..files.add(await http.MultipartFile.fromPath('File', filePath));
-    request.headers[HttpHeaders.authorizationHeader] = _token;
+    final request = http.MultipartRequest('POST', endpoint)
+      ..files.add(await http.MultipartFile.fromPath('File', filePath));
+    request.headers[HttpHeaders.authorizationHeader] = 'Bearer ${_token}';
     request.fields["FileName"] = file.name;
     request.fields["File_Description"] = fileDescription ?? file.name;
     try {
@@ -241,8 +310,9 @@ class PatientAPI {
     // * Resolve the endpoint
     final endpoint = helper.resolveEndpoint("AskToSeeSecretFile");
     // * Create the request
-    final request = http.MultipartRequest('POST', endpoint)..files.add(await http.MultipartFile.fromPath('Video', videoPath));
-    request.headers[HttpHeaders.authorizationHeader] = _token;
+    final request = http.MultipartRequest('POST', endpoint)
+      ..files.add(await http.MultipartFile.fromPath('Video', videoPath));
+    request.headers[HttpHeaders.authorizationHeader] = 'Bearer ${_token}';
     try {
       // * Send the request
       final response = await request.send();
@@ -267,7 +337,7 @@ class PatientAPI {
       // Headers
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        HttpHeaders.authorizationHeader: _token,
+        HttpHeaders.authorizationHeader: 'Bearer ${_token}',
       },
       // Request body
       body: jsonEncode(<String, Object>{
@@ -282,7 +352,8 @@ class PatientAPI {
   }
 
   Future<List<SecretFile>> getSecretFile() async {
-    final jsons = (await simpleGetRequest(endpoint: "GetSecretFile"))["secretFiles"];
+    final jsons =
+        (await simpleGetRequest(endpoint: "GetSecretFile"))["secretFiles"];
     return resolveJsonList<SecretFile>(jsons, process: (json) {
       return SecretFile.fromJson(json);
     });
@@ -321,12 +392,19 @@ class PatientAPI {
 }
 
 class ApiRunner {
-  static Future<void> run<T>({String? name, Function? onStart, required Future<T> Function() runner, required Function(T) onSuccess, required Function(CBError) onFail, Function? onFinish}) async {
+  static Future<void> run<T>(
+      {String? name,
+      Function? onStart,
+      required Future<T> Function() runner,
+      required Function(T) onSuccess,
+      required Function(CBError) onFail,
+      Function? onFinish}) async {
     try {
       if (onStart != null) await onStart();
       await onSuccess(await runner());
     } catch (e) {
-      print("Error while running api '${name ?? ""}': ${e is! CBError ? CBError(message: e.toString()) : e}");
+      print(
+          "Error while running api '${name ?? ""}': ${e is! CBError ? CBError(message: e.toString()) : e}");
       await onFail(CBError(message: Texts.errorOccurredWhileDoingAction));
     } finally {
       if (onFinish != null) await onFinish();

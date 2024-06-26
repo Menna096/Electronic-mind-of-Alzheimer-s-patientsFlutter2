@@ -1,9 +1,10 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
-import 'dart:math';
 
 import 'package:vv/api/login_api.dart';
 
@@ -48,17 +49,17 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text('Confirm Upload'),
-          content: const Text('Are you sure you want to send this video?'),
+          title: Text('Confirm Upload'.tr()),
+          content: Text('Are you sure you want to send this video?'.tr()),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: Text('Cancel'.tr()),
               onPressed: () {
                 Navigator.of(dialogContext).pop();
               },
             ),
             TextButton(
-              child: const Text('Send'),
+              child: Text('Send'.tr()),
               onPressed: () {
                 Navigator.of(dialogContext).pop();
                 _uploadFile(filePath);
@@ -76,8 +77,6 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
         'video': await MultipartFile.fromFile(filePath),
       });
 
-      // Include the authorization token in the headers
-
       var response = await DioService().dio.post(
             'https://electronicmindofalzheimerpatients.azurewebsites.net/Patient/AskToSeeSecretFile',
             data: formData,
@@ -85,17 +84,16 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
 
       if (response.statusCode == 200) {
         print('Video uploaded successfully');
-        // Display a SnackBar with the success message
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Video uploaded successfully'),
+          SnackBar(
+            content: Text('Video uploaded successfully'.tr()),
           ),
         );
       } else {
         print('Failed to upload video');
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to upload video,Try Again'),
+          SnackBar(
+            content: Text('Failed to upload video, Try Again'.tr()),
           ),
         );
       }
@@ -103,7 +101,7 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
       print('Error uploading video: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error uploading video: $e'),
+          content: Text('Error uploading video'.tr()),
         ),
       );
     }
@@ -112,9 +110,8 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
   // Function to generate random text
   void generateRandomText() {
     setState(() {
-      // Generate a random integer between 0 and 100
       int randomNumber = Random().nextInt(101);
-      randomText = 'Random Number: $randomNumber'; // Set the random text
+      randomText = ' $randomNumber';
     });
   }
 
@@ -122,31 +119,47 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Video Capture Example'),
+        title: Text('Video Capture'.tr()),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                _addMedia();
-              },
-              child: const Text('Capture Video'),
-            ),
-            const SizedBox(height: 20), // Add some space between the buttons
-            ElevatedButton(
-              onPressed: () {
-                generateRandomText(); // Call the function to generate random text
-              },
-              child: const Text('Generate Random Text'),
-            ),
-            const SizedBox(height: 20), // Add some space between the buttons
-            Text(
-              randomText, // Display the random text
-              style: const TextStyle(fontSize: 18),
-            ),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton.icon(
+                onPressed: _addMedia,
+                icon: const Icon(Icons.videocam),
+                label: Text('Capture Video'.tr()),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                  textStyle: const TextStyle(fontSize: 18),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                onPressed: generateRandomText,
+                icon: const Icon(Icons.shuffle),
+                label: Text('Generate Random Text'.tr()),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                  textStyle: const TextStyle(fontSize: 18),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                randomText,
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );
