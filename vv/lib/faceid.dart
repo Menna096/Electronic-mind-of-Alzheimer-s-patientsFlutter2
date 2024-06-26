@@ -235,7 +235,7 @@ class _CameraScreenState extends State<CameraScreen> {
         children: [
           AnimatedBackground(
             child: Center(
-              child: _image == null ? const Text('No image selected.') : Image.file(_image!),
+              child: _image == null ?  Text('No image selected'.tr()) : Image.file(_image!),
             ),
           ),
           if (_isLoading) // Show loading indicator

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
@@ -50,13 +51,13 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Choose an option"),
+          title: Text("Choose an option".tr()),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
                 leading: const Icon(Icons.photo_library),
-                title: const Text("Pick from gallery"),
+                title:  Text("Pick from gallery".tr()),
                 onTap: () {
                   Navigator.pop(context);
                   _getImage(ImageSource.gallery);
@@ -64,7 +65,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
               ),
               ListTile(
                 leading: const Icon(Icons.camera_alt),
-                title: const Text("Capture from camera"),
+                title:  Text("Capture from camera".tr()),
                 onTap: () {
                   Navigator.pop(context);
                   _getImage(ImageSource.camera);
@@ -139,8 +140,8 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
             ); // Go back to the previous page
           },
         ),
-        title: const Text(
-          "Identify Person",
+        title: Text(
+          "Identify Person".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -334,7 +335,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showPickerDialog(context),
-        label: const Text('Select Image'),
+        label: Text('Select Image'.tr()),
         icon: const Icon(Icons.image),
         backgroundColor: const Color(0xFF6A95E9),
       ),

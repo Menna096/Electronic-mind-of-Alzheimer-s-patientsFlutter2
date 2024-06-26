@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
@@ -90,15 +91,15 @@ class _PatientProfManageState extends State<PatientProfManage> {
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Profile Updated Successfully')));
+             SnackBar(content: Text('Profile Updated Successfully'.tr())));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
-                'Failed to update profile. Status code: ${response.statusCode}')));
+                'Failed to update profile'.tr())));
       }
     } catch (error) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('An error occurred: $error')));
+          .showSnackBar(SnackBar(content: Text('An error occurred'.tr())));
     }
   }
 
@@ -108,8 +109,8 @@ class _PatientProfManageState extends State<PatientProfManage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
-          'View Profile',
+        title:  Text(
+          'View Profile'.tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -151,7 +152,7 @@ class _PatientProfManageState extends State<PatientProfManage> {
               children: [
                 const SizedBox(height: 20),
                 _buildTextField(
-                  labelText: 'Full Name',
+                  labelText: 'Full Name'.tr(),
                   controller: _fullNameController,
                   readOnly: true,
                   prefixIcon: const Icon(
@@ -161,7 +162,7 @@ class _PatientProfManageState extends State<PatientProfManage> {
                 ),
                 const SizedBox(height: 20),
                 _buildTextField(
-                  labelText: 'Phone Number',
+                  labelText: 'Phone Number'.tr(),
                   controller: _phoneController,
                   keyboardType: TextInputType.phone,
                   prefixIcon: const Icon(
@@ -191,7 +192,7 @@ class _PatientProfManageState extends State<PatientProfManage> {
                 ),
                 const SizedBox(height: 20),
                 _buildTextField(
-                  labelText: 'Age',
+                  labelText: 'Age'.tr(),
                   controller: _ageController,
                   keyboardType: TextInputType.number,
                   prefixIcon: const Icon(
@@ -219,16 +220,7 @@ class _PatientProfManageState extends State<PatientProfManage> {
                               color: Color.fromARGB(225, 166, 167, 169)),
                         ),
                 ),
-                const SizedBox(height: 20),
-                _buildTextField(
-                  labelText: 'Diagnosis Date',
-                  controller: _diagnosisDateController,
-                  readOnly: true,
-                  prefixIcon: const Icon(
-                    Icons.calendar_today,
-                    color: Color.fromARGB(255, 106, 184, 217),
-                  ),
-                ),
+               
                 const SizedBox(height: 15),
                 ElevatedButton(
                   onPressed: updateUserProfile,
@@ -240,8 +232,8 @@ class _PatientProfManageState extends State<PatientProfManage> {
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 15),
                   ),
-                  child: const Text(
-                    'Update Profile',
+                  child: Text(
+                    'Update Profile'.tr(),
                     style: TextStyle(
                       fontSize: 16,
                       fontFamily: 'LilitaOne',

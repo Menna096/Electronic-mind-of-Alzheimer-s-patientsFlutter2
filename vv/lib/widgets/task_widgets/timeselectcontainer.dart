@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class TimeSelectionContainer extends StatelessWidget {
@@ -37,7 +38,7 @@ class TimeSelectionContainer extends StatelessWidget {
               ),
               const SizedBox(height: 4.0),
               Text(
-                time != null ? time!.format(context) : 'Select Time',
+                time != null ? time!.format(context) : 'Select Time'.tr(),
                 style: const TextStyle(
                   color: Color.fromARGB(255, 113, 113, 113),
                   fontSize: 18.0,

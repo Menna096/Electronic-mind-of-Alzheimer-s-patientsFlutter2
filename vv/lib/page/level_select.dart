@@ -151,7 +151,7 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const HistoryScreen(),
+                                           HistoryScreen(),
                                     ),
                                   );
                                 },
@@ -184,8 +184,7 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                               child: Column(
                                 children: [
                                   Text(
-                                    tr('currentScore',
-                                        args: [currentScore.toString()]),
+                                   tr('currentScore', args: ['$currentScore']),
                                     style: const TextStyle(
                                       fontSize: 20,
                                       color: Color.fromARGB(255, 50, 58, 145),
@@ -195,7 +194,8 @@ class _LevelSelectionScreenState extends State<LevelSelectionScreen>
                                   ),
                                   const SizedBox(height: 10),
                                   Text(
-                                    tr('maxScore', args: [maxScore.toString()]),
+                                    tr('maxScore', args: ['$maxScore']),
+                    
                                     style: const TextStyle(
                                       fontSize: 20,
                                       color: Color.fromARGB(255, 50, 58, 145),

@@ -190,7 +190,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title:  Text('Game Over'.tr()),
+          title: Text('Game Over'.tr()),
           content: Text('you_lost_try_again'.tr(args: [score.toString()])),
           actions: <Widget>[
             TextButton(
@@ -226,7 +226,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
   void showCelebrationAnimation() {
     Duration timeTaken = DateTime.now().difference(startTime);
     String timeTakenString =
-    '${timeTaken.inMinutes} ${'minutes'.tr()} ${timeTaken.inSeconds.remainder(60)} ${'seconds'.tr()}';
+        '${timeTaken.inMinutes} ${'minutes'.tr()} ${timeTaken.inSeconds.remainder(60)} ${'seconds'.tr()}';
 
     showDialog(
       context: context,
@@ -235,12 +235,12 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const VictoryAnimationScreen(),
-           Text(
-  'congratulations_message'.tr(namedArgs: {
-    'score': score.toString(),
-    'timeTaken': timeTakenString,
-  }),
-),
+            Text(
+              'congratulations_message'.tr(namedArgs: {
+                'score': score.toString(),
+                'timeTaken': timeTakenString,
+              }),
+            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
@@ -255,7 +255,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
                   borderRadius: BorderRadius.circular(27.0),
                 ),
               ),
-              child:  Text('Restart'.tr()),
+              child: Text('Restart'.tr()),
             ),
           ],
         ),
@@ -309,15 +309,13 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-  Text(
-    'score_text'.tr(namedArgs: {'score': score.toString()}),
-    style: const TextStyle(fontSize: 20),
-  ),
-  Text(
-    'time_text'.tr(namedArgs: {'time': timerSeconds.toString()}),
-    style: const TextStyle(fontSize: 20),
-  ),
-],
+                Text('score_label'.tr(args: [score.toString()]),
+                    style: const TextStyle(fontSize: 20)),
+                Text(
+                  'time_label'.tr(args: [timerSeconds.toString()]),
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ],
             ),
             Expanded(
               child: GridView.builder(
@@ -338,7 +336,7 @@ class _MemoryCardGameState extends State<MemoryCardGame> {
                 restartGame(visibilityDuration: 3);
               },
               // ignore: sort_child_properties_last
-              child:  Text('Restart'.tr()),
+              child: Text('Restart'.tr()),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: const Color(0xFF0386D0),
