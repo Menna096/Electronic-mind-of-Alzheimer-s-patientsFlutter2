@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
@@ -61,12 +62,13 @@ class _FullScreenViewerpatientState extends State<FullScreenViewerpatient> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const GalleryScreenPatient()),
+              MaterialPageRoute(
+                  builder: (context) => const GalleryScreenPatient()),
             );
           },
         ),
-        title: const Text(
-          "Media Viewer",
+        title: Text(
+          "Media Viewer".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -186,18 +188,16 @@ class _FullScreenViewerpatientState extends State<FullScreenViewerpatient> {
                   child: Text(
                     widget.mediaItem.description,
                     style: const TextStyle(
-                      fontSize: 26,
-                     
-                      color: Colors.white,
-                      fontFamily: 'ConcertOne'
-                    ),
+                        fontSize: 26,
+                        color: Colors.white,
+                        fontFamily: 'ConcertOne'),
                     textAlign: TextAlign.center,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
-                    "Uploaded on: ${formatDateString(widget.mediaItem.uploadedDate)}", // Formatted date
+                    '${'uploaded_on'.tr()} ${formatDateString(widget.mediaItem.uploadedDate)}', // Formatted date
                     style: const TextStyle(
                       fontSize: 14,
                       color: Colors.white70,
@@ -207,7 +207,7 @@ class _FullScreenViewerpatientState extends State<FullScreenViewerpatient> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: Text(
-                    "Uploaded by: ${widget.mediaItem.uploaderFamilyName}",
+                    '${'uploaded_by'.tr()}: ${widget.mediaItem.uploaderFamilyName}',
                     style: const TextStyle(
                       fontSize: 14,
                       color: Colors.white70,

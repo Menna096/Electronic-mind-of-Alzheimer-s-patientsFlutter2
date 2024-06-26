@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:vv/page/assign_patient.dart';
 import 'package:vv/page/paitent_Id.dart';
@@ -8,10 +9,10 @@ class AddOrGetCode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Patient Code'), // Title changed as per your request
+      title:  Text('Patient Code'.tr()), // Title changed as per your request
       actions: <Widget>[
         TextButton(
-          child: const Text('Get Patient Code'),
+          child: Text('Get Patient Code'.tr()),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -21,7 +22,7 @@ class AddOrGetCode extends StatelessWidget {
           },
         ),
         TextButton(
-          child: const Text('Assign Patient'),
+          child:  Text('Assign Patient'.tr()),
           onPressed: () {
             Navigator.pushReplacement(
               context,

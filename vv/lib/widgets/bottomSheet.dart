@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -33,8 +34,8 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
       ),
       child: Column(
         children: <Widget>[
-          const Text(
-            "Choose Profile photo",
+           Text(
+            "Choose Profile photo".tr(),
             style: TextStyle(
               fontSize: 20.0,
             ),
@@ -50,7 +51,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                 onPressed: () {
                   takePhoto(ImageSource.camera);
                 },
-                label: const Text("Camera"),
+                label: Text("Camera".tr()),
               ),
               const SizedBox(width: 10), // Add spacing between buttons
               ElevatedButton.icon(
@@ -58,7 +59,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                 onPressed: () {
                   takePhoto(ImageSource.gallery);
                 },
-                label: const Text("Gallery"),
+                label:  Text("Gallery".tr()),
               ),
             ],
           ),

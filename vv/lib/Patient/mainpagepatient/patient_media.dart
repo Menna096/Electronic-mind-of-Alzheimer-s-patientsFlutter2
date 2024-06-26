@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/Patient/mainpagepatient/fullscreenMedia.dart';
@@ -85,8 +86,8 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
             );
           },
         ),
-        title: const Text(
-          "Pictures and Videos",
+        title: Text(
+          "Pictures and Videos".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -185,7 +186,7 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
                             ),
                             const SizedBox(height: 3.0),
                             Text(
-                              'Uploaded on: ${formatDateString(mediaItem.uploadedDate)}',
+                              ' ${tr('uploaded_on')} ${formatDateString(mediaItem.uploadedDate)}',
                               style: const TextStyle(
                                   fontSize: 12,
                                   color: Color.fromARGB(255, 80, 80, 80),
@@ -193,7 +194,7 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
                             ),
                             const SizedBox(height: 4.0),
                             Text(
-                              'By: ${mediaItem.uploaderFamilyName}',
+                              tr('byLabel', args: [mediaItem.uploaderFamilyName]),
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey,

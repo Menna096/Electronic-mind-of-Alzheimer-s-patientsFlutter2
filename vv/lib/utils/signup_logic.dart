@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -20,12 +21,12 @@ void handleSignUp({
     if (passwordController.text == confirmPasswordController.text) {
       navigateToMainPage();
       displaySuccessMessage(context,
-          'User was successfully created! Please verify your email before Login');
+          'User was successfully created! Please verify your email before Login'.tr());
     } else {
-      displayErrorSnackBar(context, 'Passwords do not match.');
+      displayErrorSnackBar(context, 'Passwords do not match'.tr());
     }
   } else {
-    displayErrorSnackBar(context, 'Please fill in all fields.');
+    displayErrorSnackBar(context, 'Please fill in all fields'.tr());
   }
 }
 

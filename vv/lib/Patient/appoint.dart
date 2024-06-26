@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
@@ -13,27 +14,29 @@ class AppointmentDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Appointment Details'),
+        title: Text('Appointment Details'.tr()),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Appointment ID: ${appointment.id}',
+            Text('Appointment ID: ${appointment.id}'.tr(),
                 style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 10),
-            Text('Date: ${appointment.date}', style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 10),
-            Text('Location: ${appointment.location}',
+            Text('Date: ${appointment.date}'.tr(),
                 style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 10),
-            Text('Notes: ${appointment.notes}', style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 10),
-            Text('Family Name: ${appointment.familyName}',
+            Text('Location: ${appointment.location}'.tr(),
                 style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 10),
-            Text('Can Be Deleted: ${appointment.canBeDeleted}',
+            Text('Notes: ${appointment.notes}'.tr(),
+                style: const TextStyle(fontSize: 18)),
+            const SizedBox(height: 10),
+            Text('Family Name: ${appointment.familyName}'.tr(),
+                style: const TextStyle(fontSize: 18)),
+            const SizedBox(height: 10),
+            Text('Can Be Deleted: ${appointment.canBeDeleted}'.tr(),
                 style: const TextStyle(fontSize: 18)),
           ],
         ),
@@ -94,7 +97,7 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
       });
     } catch (e) {
       setState(() {
-        errorMessage = 'Error fetching appointments: $e';
+        errorMessage = 'Error fetching appointments'.tr();
         isLoading = false;
       });
     }
@@ -149,8 +152,8 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
-                'Close',
+              child: Text(
+                'Close'.tr(),
                 style: TextStyle(
                   color: Color(0xff3B5998),
                   fontWeight: FontWeight.bold,
@@ -223,7 +226,7 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
                         controller: _scrollController,
                         slivers: [
                           SliverAppBar(
-                            title: const Text('Appointments'),
+                            title: Text('Appointments'.tr()),
                             backgroundColor: Colors.transparent,
                             elevation: 0,
                             pinned: true,
@@ -252,8 +255,8 @@ class _AppointmentScreenPatientState extends State<AppointmentScreenPatient>
                                           showAppointmentDetails(appointment),
                                       child: Card(
                                         color: Colors.white.withOpacity(0.8),
-                                        margin:
-                                            const EdgeInsets.symmetric(vertical: 8),
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 8),
                                         elevation: 3,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:

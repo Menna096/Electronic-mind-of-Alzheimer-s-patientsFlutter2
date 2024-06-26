@@ -134,12 +134,7 @@ class _mainpatientState extends State<mainpatient> {
                       endDate: DateTime(1970, 1, 1),
                     ));
         print('Appointment found: ${reminder.MedicationId}');
-        if (reminder != null && reminder.MedicationId.isNotEmpty) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => MedicineDetailsPatient(
-                    reminder: reminder,
-                  )));
-        }
+       
       }
     });
   }
@@ -167,7 +162,7 @@ class _mainpatientState extends State<mainpatient> {
             print('Parsed appointment: ${reminder.MedicationId}');
             reminders.add(reminder);
             String notificationBody = _buildNotificationBodyMedicine(reminder);
-            _showNotificationMedicine('New Medicine Added, See it',
+            _showNotificationMedicine('New Medicine Added, See it'.tr(),
                 notificationBody, reminder.MedicationId);
             _scheduleNotificationMedicine(reminder);
           } catch (e) {
@@ -226,7 +221,7 @@ class _mainpatientState extends State<mainpatient> {
 
       await flutterLocalNotificationsPlugin.zonedSchedule(
         0,
-        'Medication Time Now',
+        'Medication Time Now'.tr(),
         _buildNotificationBodyMedicine(reminder),
         scheduledDateTime,
         platformChannelSpecifics,
@@ -244,7 +239,7 @@ class _mainpatientState extends State<mainpatient> {
   }
 
   String _buildNotificationBodyMedicine(Reminder reminder) {
-    return 'Medication: ${reminder.Medication_Name}, Dosage: ${reminder.Dosage}';
+    return '${'medication'.tr()}: ${reminder.Medication_Name}, ${'dosage'.tr()}: ${reminder.Dosage}';
   }
 
   void initializeConnection() async {
@@ -325,7 +320,7 @@ class _mainpatientState extends State<mainpatient> {
             Appointment appointment = Appointment.fromJson(appointmentData);
             print('Parsed appointment: ${appointment.id}');
             appointments.add(appointment);
-            _showNotification('New Appointment Added',
+            _showNotification('New Appointment Added'.tr(),
                 _buildNotificationBody(appointment), appointment.id);
             _scheduleNotification(appointment);
           } catch (e) {
@@ -384,7 +379,7 @@ class _mainpatientState extends State<mainpatient> {
 
       await flutterLocalNotificationsPlugin.zonedSchedule(
         0,
-        'Appointment Time Now',
+        'Appointment Time Now'.tr(),
         _buildNotificationBody(appointment), // Only notes will be shown
         scheduledDateTime,
         platformChannelSpecifics,
@@ -501,7 +496,7 @@ class _mainpatientState extends State<mainpatient> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Settings',
+          'Settings'.tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: SizerUtil.deviceType == DeviceType.mobile ? 5.5.w : 23,
@@ -541,7 +536,7 @@ class _mainpatientState extends State<mainpatient> {
               DrawerHeader(
                 child: Center(
                   child: Text(
-                    'Elder Helper',
+                    'Elder Helper'.tr(),
                     style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 8.0.w
@@ -560,7 +555,7 @@ class _mainpatientState extends State<mainpatient> {
                       SizerUtil.deviceType == DeviceType.mobile ? 5.0.w : 24.0,
                 ),
                 title: Text(
-                  'Manage Profile',
+                  'Manage Profile'.tr(),
                   style: TextStyle(
                     fontSize: SizerUtil.deviceType == DeviceType.mobile
                         ? 4.5.w
@@ -584,7 +579,7 @@ class _mainpatientState extends State<mainpatient> {
                       SizerUtil.deviceType == DeviceType.mobile ? 5.0.w : 24.0,
                 ),
                 title: Text(
-                  'Log Out',
+                  'Log Out'.tr(),
                   style: TextStyle(
                     fontSize: SizerUtil.deviceType == DeviceType.mobile
                         ? 4.5.w
@@ -636,10 +631,12 @@ class _mainpatientState extends State<mainpatient> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(height: 2.h),
                         Text(
-                          'Welcome $_userName !👋🏻',
+                          'Welcome {name}!'
+                              .tr(namedArgs: {'name': _userName ?? ''}),
                           style: TextStyle(
-                            fontSize: 3.w, // Responsive font size
+                            fontSize: 4.w, // Responsive font size
                           ),
                           maxLines:
                               1, // Ensure the text doesn't exceed one line
@@ -647,17 +644,10 @@ class _mainpatientState extends State<mainpatient> {
                               .ellipsis, // Handle overflow with ellipsis
                         ),
                         Text(
-                          'To the Electronic mind',
+                          'To The Electronic Mind Of Alzheimer Patient!👋🏻'
+                              .tr(),
                           style: TextStyle(
-                            fontSize: 3.w, // Responsive font size
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          'of Alzheimer patient',
-                          style: TextStyle(
-                            fontSize: 3.w, // Responsive font size
+                            fontSize: 4.w, // Responsive font size
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -678,21 +668,7 @@ class _mainpatientState extends State<mainpatient> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const AppointmentScreenPatient()),
-                              );
-                            },
-                            child: Image.asset(
-                              'images/appoinmentpat.png'.tr(),
-                              width: 30.0.w,
-                              height: 30.0.w,
-                            ),
-                          ),
+                          
                           GestureDetector(
                             onTap: () {
                               Navigator.pushReplacement(
@@ -708,11 +684,6 @@ class _mainpatientState extends State<mainpatient> {
                               height: 30.0.w,
                             ),
                           ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
                           GestureDetector(
                             onTap: () {
                               Navigator.pushReplacement(
@@ -728,6 +699,13 @@ class _mainpatientState extends State<mainpatient> {
                               height: 30.0.w,
                             ),
                           ),
+                          
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          
                           GestureDetector(
                             onTap: () async {
                               String? token = await TokenManager.getToken();
@@ -746,12 +724,7 @@ class _mainpatientState extends State<mainpatient> {
                               height: 30.0.w,
                             ),
                           ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GestureDetector(
+                            GestureDetector(
                             onTap: () {
                               Navigator.push(
                                 context,
@@ -765,6 +738,27 @@ class _mainpatientState extends State<mainpatient> {
                               height: 30.0.w,
                             ),
                           ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const GalleryScreenPatient()),
+                              );
+                            },
+                            child: Image.asset(
+                              'images/Pictures.png'.tr(),
+                              width: 30.0.w,
+                              height: 30.0.w,
+                            ),
+                          ),
+                         
                           GestureDetector(
                             onTap: () {
                               Navigator.pushReplacement(
@@ -802,19 +796,20 @@ class _mainpatientState extends State<mainpatient> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushReplacement(
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const GalleryScreenPatient()),
+                                        const AppointmentScreenPatient()),
                               );
                             },
                             child: Image.asset(
-                              'images/Pictures.png'.tr(),
+                              'images/appoinmentpat.png'.tr(),
                               width: 30.0.w,
-                              height: 30.0.w,
+                              height: 25.0.w,
                             ),
                           ),
+                         
                         ],
                       ),
                       Row(
