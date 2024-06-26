@@ -7,6 +7,7 @@ import 'package:vv/api/login_api.dart'; // Ensure this import has the necessary 
 import 'package:vv/models/media_patient.dart';
 import 'package:vv/widgets/background.dart';
 import 'package:vv/models/media_item.dart'; // Importing the modified MediaItem model
+import 'dart:io';
 
 class GalleryScreenPatient extends StatefulWidget {
   const GalleryScreenPatient({super.key});
@@ -146,24 +147,36 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: mediaItem.type == MediaType.image
-                                  ? Image.network(
-                                      mediaItem.path,
-                                      fit: BoxFit.cover,
-                                      width: double
-                                          .infinity, // Ensures the image covers the width
-                                      height: double
-                                          .infinity, // Ensures the image covers the height
-                                    )
-                                  : Image.network(
-                                      mediaItem.path,
-                                      fit: BoxFit.cover,
-                                      width: double
-                                          .infinity, // Ensures the video thumbnail covers the width
-                                      height: double
-                                          .infinity, // Ensures the video thumbnail covers the height
+                                  ? (mediaItem.isNetwork
+                                      ? Image.network(
+                                          mediaItem.path,
+                                          fit: BoxFit.cover,
+                                          width: double
+                                              .infinity, // Ensures the image covers the width
+                                          height: double
+                                              .infinity, // Ensures the image covers the height
+                                        )
+                                      : Image.file(
+                                          File(mediaItem.path),
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                        ))
+                                  : const DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage('images/vid.png'),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Icon(Icons.play_circle_outline,
+                                            size: 50, color: Colors.white),
+                                      ),
                                     ),
                             ),
-                            if (mediaItem.type == MediaType.video)
+                            if (mediaItem.type == MediaType.video &&
+                                mediaItem.isNetwork)
                               const Icon(Icons.play_circle_outline,
                                   size: 40, color: Colors.white),
                           ],
@@ -194,7 +207,8 @@ class _GalleryScreenPatientState extends State<GalleryScreenPatient> {
                             ),
                             const SizedBox(height: 4.0),
                             Text(
-                              tr('byLabel', args: [mediaItem.uploaderFamilyName]),
+                              tr('byLabel',
+                                  args: [mediaItem.uploaderFamilyName]),
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey,
