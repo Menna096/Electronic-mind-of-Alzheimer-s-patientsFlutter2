@@ -168,6 +168,18 @@ flutter:
     - images/Places_copyfam.png
     - images/Rports_copy.png
     - images/appfam_copy - Copy.png
+    - images/appoint.png
+    - images/bot.png
+    - images/game.png
+    - images/identify.png
+    - images/med.png
+    - images/notess.png
+    - images/pic.png
+    - images/place.png
+    - images/sec.png
+    - images/task.png
+
+
 
 fonts:
   - family: dubai

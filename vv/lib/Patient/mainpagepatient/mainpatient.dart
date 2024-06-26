@@ -134,7 +134,6 @@ class _mainpatientState extends State<mainpatient> {
                       endDate: DateTime(1970, 1, 1),
                     ));
         print('Appointment found: ${reminder.MedicationId}');
-       
       }
     });
   }
@@ -668,7 +667,6 @@ class _mainpatientState extends State<mainpatient> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          
                           GestureDetector(
                             onTap: () {
                               Navigator.pushReplacement(
@@ -678,10 +676,34 @@ class _mainpatientState extends State<mainpatient> {
                                         const MedicinesPage()),
                               );
                             },
-                            child: Image.asset(
-                              'images/Medicines.png'.tr(),
-                              width: 30.0.w,
-                              height: 30.0.w,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                width: 30.0
+                                    .w, // Set the desired width of the container
+                                height: 30.0
+                                    .w, // Set the desired height of the container
+                                decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(113, 255, 255, 255),
+                                  borderRadius: BorderRadius.circular(
+                                      30.0), // Adjust the radius as needed
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .center, // Center vertically
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .center, // Center horizontally
+                                  children: [
+                                    Image.asset(
+                                      'images/med.png',
+                                      width: 15.0.w,
+                                      height: 15.0.w,
+                                    ),
+                                    Text('medicine')
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                           GestureDetector(
@@ -693,19 +715,37 @@ class _mainpatientState extends State<mainpatient> {
                                         const UnusualFamilyList()),
                               );
                             },
-                            child: Image.asset(
-                              'images/Places.png'.tr(),
-                              width: 30.0.w,
-                              height: 30.0.w,
+                            child: Container(
+                              width: 30.0
+                                  .w, // Set the desired width of the container
+                              height: 30.0
+                                  .w, // Set the desired height of the container
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(113, 255, 255, 255),
+                                borderRadius: BorderRadius.circular(
+                                    30.0), // Adjust the radius as needed
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .center, // Center vertically
+                                crossAxisAlignment: CrossAxisAlignment
+                                    .center, // Center horizontally
+                                children: [
+                                  Image.asset(
+                                    'images/place.png',
+                                    width: 15.0.w,
+                                    height: 15.0.w,
+                                  ),
+                                  Text('Plcaes')
+                                ],
+                              ),
                             ),
                           ),
-                          
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          
                           GestureDetector(
                             onTap: () async {
                               String? token = await TokenManager.getToken();
@@ -718,13 +758,37 @@ class _mainpatientState extends State<mainpatient> {
                                             token!)), // todo: replace authToken with your token
                               );
                             },
-                            child: Image.asset(
-                              'images/Chatbot.png'.tr(),
-                              width: 30.0.w,
-                              height: 30.0.w,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                width: 30.0
+                                    .w, // Set the desired width of the container
+                                height: 30.0
+                                    .w, // Set the desired height of the container
+                                decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(113, 255, 255, 255),
+                                  borderRadius: BorderRadius.circular(
+                                      30.0), // Adjust the radius as needed
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .center, // Center vertically
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .center, // Center horizontally
+                                  children: [
+                                    Image.asset(
+                                      'images/bot.png',
+                                      width: 15.0.w,
+                                      height: 15.0.w,
+                                    ),
+                                    Text('Chatbot')
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                            GestureDetector(
+                          GestureDetector(
                             onTap: () {
                               Navigator.push(
                                 context,
@@ -732,10 +796,30 @@ class _mainpatientState extends State<mainpatient> {
                                     builder: (context) => const Notes_View()),
                               );
                             },
-                            child: Image.asset(
-                              'images/Notes.png'.tr(),
-                              width: 30.0.w,
-                              height: 30.0.w,
+                            child: Container(
+                              width: 30.0
+                                  .w, // Set the desired width of the container
+                              height: 30.0
+                                  .w, // Set the desired height of the container
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(113, 255, 255, 255),
+                                borderRadius: BorderRadius.circular(
+                                    30.0), // Adjust the radius as needed
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .center, // Center vertically
+                                crossAxisAlignment: CrossAxisAlignment
+                                    .center, // Center horizontally
+                                children: [
+                                  Image.asset(
+                                    'images/notess.png',
+                                    width: 15.0.w,
+                                    height: 15.0.w,
+                                  ),
+                                  Text('Notes')
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -752,13 +836,37 @@ class _mainpatientState extends State<mainpatient> {
                                         const GalleryScreenPatient()),
                               );
                             },
-                            child: Image.asset(
-                              'images/Pictures.png'.tr(),
-                              width: 30.0.w,
-                              height: 30.0.w,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                width: 30.0
+                                    .w, // Set the desired width of the container
+                                height: 30.0
+                                    .w, // Set the desired height of the container
+                                decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(113, 255, 255, 255),
+                                  borderRadius: BorderRadius.circular(
+                                      30.0), // Adjust the radius as needed
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .center, // Center vertically
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .center, // Center horizontally
+                                  children: [
+                                    Image.asset(
+                                      'images/pic.png',
+                                      width: 15.0.w,
+                                      height: 15.0.w,
+                                    ),
+                                    Text('Pictures and'),
+                                    Text('Videos')
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                         
                           GestureDetector(
                             onTap: () {
                               Navigator.pushReplacement(
@@ -768,10 +876,30 @@ class _mainpatientState extends State<mainpatient> {
                                         const SecretFilePage()),
                               );
                             },
-                            child: Image.asset(
-                              'images/Files.png'.tr(),
-                              width: 30.0.w,
-                              height: 30.0.w,
+                            child: Container(
+                              width: 30.0
+                                  .w, // Set the desired width of the container
+                              height: 30.0
+                                  .w, // Set the desired height of the container
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(113, 255, 255, 255),
+                                borderRadius: BorderRadius.circular(
+                                    30.0), // Adjust the radius as needed
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .center, // Center vertically
+                                crossAxisAlignment: CrossAxisAlignment
+                                    .center, // Center horizontally
+                                children: [
+                                  Image.asset(
+                                    'images/sec.png',
+                                    width: 15.0.w,
+                                    height: 15.0.w,
+                                  ),
+                                  Text('Secret Files')
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -788,10 +916,34 @@ class _mainpatientState extends State<mainpatient> {
                                         const ImageUploadScreen()),
                               );
                             },
-                            child: Image.asset(
-                              'images/Persons.png'.tr(),
-                              width: 30.0.w,
-                              height: 30.0.w,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                width: 30.0
+                                    .w, // Set the desired width of the container
+                                height: 30.0
+                                    .w, // Set the desired height of the container
+                                decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(113, 255, 255, 255),
+                                  borderRadius: BorderRadius.circular(
+                                      30.0), // Adjust the radius as needed
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .center, // Center vertically
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .center, // Center horizontally
+                                  children: [
+                                    Image.asset(
+                                      'images/identify.png',
+                                      width: 15.0.w,
+                                      height: 15.0.w,
+                                    ),
+                                    Text('Identify Person')
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                           GestureDetector(
@@ -803,13 +955,32 @@ class _mainpatientState extends State<mainpatient> {
                                         const AppointmentScreenPatient()),
                               );
                             },
-                            child: Image.asset(
-                              'images/appoinmentpat.png'.tr(),
-                              width: 30.0.w,
-                              height: 25.0.w,
+                            child: Container(
+                              width: 30.0
+                                  .w, // Set the desired width of the container
+                              height: 30.0
+                                  .w, // Set the desired height of the container
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(113, 255, 255, 255),
+                                borderRadius: BorderRadius.circular(
+                                    30.0), // Adjust the radius as needed
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .center, // Center vertically
+                                crossAxisAlignment: CrossAxisAlignment
+                                    .center, // Center horizontally
+                                children: [
+                                  Image.asset(
+                                    'images/appoint.png',
+                                    width: 15.0.w,
+                                    height: 15.0.w,
+                                  ),
+                                  Text('Appointments')
+                                ],
+                              ),
                             ),
                           ),
-                         
                         ],
                       ),
                       Row(
@@ -823,10 +994,34 @@ class _mainpatientState extends State<mainpatient> {
                                     builder: (context) => const Home()),
                               );
                             },
-                            child: Image.asset(
-                              'images/dailytasks.png'.tr(),
-                              width: 28.0.w,
-                              height: 28.0.w,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                width: 30.0
+                                    .w, // Set the desired width of the container
+                                height: 30.0
+                                    .w, // Set the desired height of the container
+                                decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(113, 255, 255, 255),
+                                  borderRadius: BorderRadius.circular(
+                                      30.0), // Adjust the radius as needed
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .center, // Center vertically
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .center, // Center horizontally
+                                  children: [
+                                    Image.asset(
+                                      'images/task.png',
+                                      width: 15.0.w,
+                                      height: 15.0.w,
+                                    ),
+                                    Text('Daily Tasks')
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                           GestureDetector(
@@ -835,10 +1030,30 @@ class _mainpatientState extends State<mainpatient> {
                                   builder: (context) =>
                                       const LevelSelectionScreen()));
                             },
-                            child: Image.asset(
-                              'images/Games (1).png'.tr(),
-                              width: 27.0.w,
-                              height: 27.0.w,
+                            child: Container(
+                              width: 30.0
+                                  .w, // Set the desired width of the container
+                              height: 30.0
+                                  .w, // Set the desired height of the container
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(113, 255, 255, 255),
+                                borderRadius: BorderRadius.circular(
+                                    30.0), // Adjust the radius as needed
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .center, // Center vertically
+                                crossAxisAlignment: CrossAxisAlignment
+                                    .center, // Center horizontally
+                                children: [
+                                  Image.asset(
+                                    'images/game.png',
+                                    width: 15.0.w,
+                                    height: 15.0.w,
+                                  ),
+                                  Text('Games')
+                                ],
+                              ),
                             ),
                           ),
                         ],
