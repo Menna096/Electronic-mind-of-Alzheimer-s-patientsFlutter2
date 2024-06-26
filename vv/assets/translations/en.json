@@ -537,7 +537,16 @@
   "date_label": "Date: {}",
   "time_label": "Time: {}",
   "location_label": "Location: {}",
-  "created_by_label": "Created by: {}"
+  "created_by_label": "Created by: {}",
+  "medicine": "Medicine",
+  "Places": "Places",
+  "Chatbot": "Chatbot",
+  "Pictures and": "Pictures and",
+  "Videos": "Videos",
+  "Secret Files": "Secret Files",
+  "Daily Tasks": "Daily Tasks",
+  "Games": "Games"
+
 
 
   

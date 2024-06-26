@@ -700,7 +700,7 @@ class _mainpatientState extends State<mainpatient> {
                                       width: 15.0.w,
                                       height: 15.0.w,
                                     ),
-                                    Text('medicine')
+                                    Text('medicine'.tr())
                                   ],
                                 ),
                               ),
@@ -736,7 +736,7 @@ class _mainpatientState extends State<mainpatient> {
                                     width: 15.0.w,
                                     height: 15.0.w,
                                   ),
-                                  Text('Plcaes')
+                                  Text('Plcaes'.tr())
                                 ],
                               ),
                             ),
@@ -782,7 +782,7 @@ class _mainpatientState extends State<mainpatient> {
                                       width: 15.0.w,
                                       height: 15.0.w,
                                     ),
-                                    Text('Chatbot')
+                                    Text('Chatbot'.tr())
                                   ],
                                 ),
                               ),
@@ -813,11 +813,11 @@ class _mainpatientState extends State<mainpatient> {
                                     .center, // Center horizontally
                                 children: [
                                   Image.asset(
-                                    'images/notess.png',
+                                    'images/notess.png'.tr(),
                                     width: 15.0.w,
                                     height: 15.0.w,
                                   ),
-                                  Text('Notes')
+                                  Text('Notes'.tr())
                                 ],
                               ),
                             ),
@@ -860,8 +860,8 @@ class _mainpatientState extends State<mainpatient> {
                                       width: 15.0.w,
                                       height: 15.0.w,
                                     ),
-                                    Text('Pictures and'),
-                                    Text('Videos')
+                                    Text('Pictures and'.tr()),
+                                    Text('Videos'.tr())
                                   ],
                                 ),
                               ),
@@ -897,7 +897,7 @@ class _mainpatientState extends State<mainpatient> {
                                     width: 15.0.w,
                                     height: 15.0.w,
                                   ),
-                                  Text('Secret Files')
+                                  Text('Secret Files'.tr())
                                 ],
                               ),
                             ),
@@ -940,7 +940,7 @@ class _mainpatientState extends State<mainpatient> {
                                       width: 15.0.w,
                                       height: 15.0.w,
                                     ),
-                                    Text('Identify Person')
+                                    Text('Identify Person'.tr())
                                   ],
                                 ),
                               ),
@@ -976,7 +976,7 @@ class _mainpatientState extends State<mainpatient> {
                                     width: 15.0.w,
                                     height: 15.0.w,
                                   ),
-                                  Text('Appointments')
+                                  Text('Appointments'.tr())
                                 ],
                               ),
                             ),
@@ -1018,7 +1018,7 @@ class _mainpatientState extends State<mainpatient> {
                                       width: 15.0.w,
                                       height: 15.0.w,
                                     ),
-                                    Text('Daily Tasks')
+                                    Text('Daily Tasks'.tr())
                                   ],
                                 ),
                               ),
@@ -1051,7 +1051,7 @@ class _mainpatientState extends State<mainpatient> {
                                     width: 15.0.w,
                                     height: 15.0.w,
                                   ),
-                                  Text('Games')
+                                  Text('Games'.tr())
                                 ],
                               ),
                             ),
