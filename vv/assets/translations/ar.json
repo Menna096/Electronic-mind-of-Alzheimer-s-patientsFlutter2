@@ -547,7 +547,15 @@
   "date_label": "التاريخ: {}",
   "time_label": "الوقت: {}",
   "location_label": "الموقع: {}",
-  "created_by_label": "تم الإنشاء بواسطة: {}"
+  "created_by_label": "تم الإنشاء بواسطة: {}",
+  "medicine": "دواء",
+  "Places": "أماكن",
+  "Chatbot": "الدردشة",
+  "Pictures and": "صور و",
+  "Videos": "فيديوهات",
+  "Secret Files": "ملفات سرية",
+  "Daily Tasks": "المهام اليومية",
+  "Games": "ألعاب"
 
 
 
