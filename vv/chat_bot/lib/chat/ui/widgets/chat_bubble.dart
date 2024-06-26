@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chat_bot/api/models/Pair.dart';
 import 'package:chat_bot/api/models/appointment.dart';
 import 'package:chat_bot/api/models/family_location.dart';
 import 'package:chat_bot/api/models/game_data.dart';
@@ -36,9 +37,11 @@ class ChatBubble extends StatelessWidget {
       } else if (msg.payload is PatientProfile) {
         return PatientProfileCard(patient: msg.payload as PatientProfile);
       } else if (msg.payload is PatientRelatedMember) {
-        return PatientRelatedMemberCard(relatedMember: msg.payload as PatientRelatedMember);
-      } else if (msg.payload is FamilyLocation) {
-        return FamilyLocationCard(location: msg.payload as FamilyLocation);
+        return PatientRelatedMemberCard(
+            relatedMember: msg.payload as PatientRelatedMember);
+      } else if (msg.payload is List<Pair<String, String>>) {
+        return FamilyLocationCard(
+            location: msg.payload as List<Pair<String, String>>);
       } else if (msg.payload is SecretFile) {
         return SecretFileCard(file: msg.payload as SecretFile);
       } else if (msg.payload is Appointment) {
@@ -66,12 +69,16 @@ class ChatBubble extends StatelessWidget {
             color: message.isMe ? Colors.blue : const Color(0xFFE8E8EE),
             isSender: message.isMe,
             tail: showTail,
-            textStyle: TextStyle(color: message.isMe ? Colors.white : Colors.black, fontSize: 15.0),
+            textStyle: TextStyle(
+                color: message.isMe ? Colors.white : Colors.black,
+                fontSize: 15.0),
           );
         }
       case MessageType.image:
         // Image bubble
-        return BubbleNormalImage(id: message.content.hashCode.toString(), image: Image.file(File(message.content)));
+        return BubbleNormalImage(
+            id: message.content.hashCode.toString(),
+            image: Image.file(File(message.content)));
       default:
         return Container();
     }
@@ -264,7 +271,7 @@ class PatientRelatedMemberCard extends StatelessWidget {
 }
 
 class FamilyLocationCard extends StatelessWidget {
-  final FamilyLocation location;
+  final List<Pair<String, String>> location;
 
   const FamilyLocationCard({super.key, required this.location});
 
@@ -273,7 +280,7 @@ class FamilyLocationCard extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10.0),
+        margin: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 25.0),
         padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
           color: Colors.blue[100],
@@ -290,9 +297,20 @@ class FamilyLocationCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8.0),
-            Text('Latitude: ${location.latitude.toStringAsFixed(7)}'),
-            Text('Longitude: ${location.longitude.toStringAsFixed(7)}'),
+            ...List.generate(location.length, (index) {
+              return Container(
+                margin: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 25.0),
+                
+                child: Column(
+                  
+                  children: [
+                    const SizedBox(height: 8.0),
+                    Text('اسم الشخص : ${location[index].first}'),
+                    Text('يسكن فى المنطقة : ${location[index].second}')
+                  ],
+                ),
+              );
+            })
           ],
         ),
       ),
@@ -442,8 +460,10 @@ class MedicineBubble extends StatelessWidget {
             Text('Dosage: ${medicine.dosage}'),
             Text('Medicine Type: ${medicine.medicineType.name}'),
             Text('Repeater: ${medicine.repeater.name}'),
-            Text('Start Date: ${DateFormat('yyyy-MM-dd HH:mm').format(medicine.startDate)}'),
-            Text('End Date: ${DateFormat('yyyy-MM-dd HH:mm').format(medicine.endDate)}'),
+            Text(
+                'Start Date: ${DateFormat('yyyy-MM-dd HH:mm').format(medicine.startDate)}'),
+            Text(
+                'End Date: ${DateFormat('yyyy-MM-dd HH:mm').format(medicine.endDate)}'),
           ],
         ),
       ),
@@ -488,7 +508,8 @@ class MediaCard extends StatelessWidget {
                 style: const TextStyle(fontSize: 14),
               ),
               const SizedBox(height: 8),
-              if (media.mediaExtension == ".jpeg" || media.mediaExtension == ".png")
+              if (media.mediaExtension == ".jpeg" ||
+                  media.mediaExtension == ".png")
                 Center(
                   child: Image.network(
                     media.mediaUrl,
@@ -541,7 +562,8 @@ class GameDataBubble extends StatelessWidget {
             const SizedBox(height: 8.0),
             Text('Current Score: ${gameData.score.currentScore}'),
             Text('Max Score: ${gameData.score.maxScore}'),
-            Text('Recommended Difficulty: ${gameData.recommendedGameDifficulty}'),
+            Text(
+                'Recommended Difficulty: ${gameData.recommendedGameDifficulty}'),
           ],
         ),
       ),

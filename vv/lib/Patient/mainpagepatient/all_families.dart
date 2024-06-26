@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:vv/Patient/gpsssss/pages/google_map_page.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
@@ -44,7 +45,7 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
           .map((x) => FamilyMember.fromJson(x))
           .toList();
     } catch (e) {
-      throw Exception('Failed to load data');
+      throw Exception('Failed to load data'.tr());
     }
   }
 
@@ -70,8 +71,8 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
             );
           },
         ),
-        title: const Text(
-          "Family Members",
+        title:  Text(
+          "Family Members".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -165,10 +166,10 @@ class _UnusualFamilyListState extends State<UnusualFamilyList>
                           ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
+                        return Center(child: Text('Error'.tr()));
                       } else if (!snapshot.hasData ||
                           snapshot.data!.isEmpty) {
-                        return const Center(child: Text('No family members found'));
+                        return Center(child: Text('No family members found'.tr()));
                       } else {
                         return ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),

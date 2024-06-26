@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:chewie/chewie.dart';
@@ -74,8 +75,8 @@ class _DetailScreenSecretState extends State<DetailScreenSecret> {
             Navigator.pop(context); // Go back to the previous page
           },
         ),
-        title: const Text(
-          "Detail View",
+        title:  Text(
+          "Detail View".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
@@ -225,7 +226,7 @@ class ContentWidget extends StatelessWidget {
               ),
             );
           } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
+            return Text('Error'.tr());
           }
 
           return const Center(

@@ -20,9 +20,9 @@ class APIService {
       DioService().dio.options.headers['accept'] = '/';
       DioService().dio.options.headers['content-type'] = 'multipart/form-data';
       Response response = await DioService().dio.post(
-            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddPatient',
-            data: formData,
-          );
+        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/AddPatient',
+        data: formData,
+      );
       return response.statusCode == 200
           ? true
           : response.data != null && response.data['message'] != null
@@ -46,8 +46,7 @@ class _AddpatState extends State<Addpat> {
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
   final TextEditingController relationalityController = TextEditingController();
@@ -58,30 +57,43 @@ class _AddpatState extends State<Addpat> {
   late double long;
   int? selectedDistance;
   List<int> distances = [
-    150,
-    200,
-    250,
-    300,
-    350,
-    400,
-    450,
-    500,
-    550,
-    600,
-    650,
-    700,
-    750,
-    800,
-    850,
-    900,
-    950,
-    1000
+    150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000
   ];
   File? selectedImage;
   bool _isLoading = false;
 
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+
+  List<String> relations = [
+    'Mother'.tr(),
+    'Father'.tr(),
+    'Brother'.tr(),
+    'Sister'.tr(),
+    'Grandmother'.tr(),
+    'Grandfather'.tr(),
+    'Grandson'.tr(),
+    'Granddaughter'.tr(),
+    'Husband'.tr(),
+    'Wife'.tr(),
+    'Son'.tr(),
+    'Daughter'.tr(),
+    'Aunt'.tr(),
+    'Uncle'.tr(),
+    'Niece'.tr(),
+    'Nephew'.tr(),
+    'Cousin'.tr(),
+    'Mother-in-law'.tr(),
+    'Father-in-law'.tr(),
+    'Brother-in-law'.tr(),
+    'Sister-in-law'.tr(),
+    'Stepfather'.tr(),
+    'Stepmother'.tr(),
+    'Stepbrother'.tr(),
+    'Stepsister'.tr(),
+    'Half-brother'.tr(),
+    'Half-sister'.tr()
+  ];
 
   void presentDatePicker() {
     showDatePicker(
@@ -158,12 +170,12 @@ class _AddpatState extends State<Addpat> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title:  Text('Add Failed'.tr()),
+          title: Text('Add Failed'.tr()),
           content: Text(error.toString()),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child:  Text('OK'.tr()),
+              child: Text('OK'.tr()),
             ),
           ],
         ),
@@ -178,8 +190,8 @@ class _AddpatState extends State<Addpat> {
   Future<void> checkTrain() async {
     try {
       Response response = await DioService().dio.get(
-            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
-          );
+        'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
+      );
 
       if (response.statusCode == 200) {
         bool needTraining = response.data['needATraining'];
@@ -205,8 +217,7 @@ class _AddpatState extends State<Addpat> {
         const end = Offset.zero;
         const curve = Curves.ease;
 
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
         return SlideTransition(
           position: animation.drive(tween),
@@ -344,10 +355,47 @@ class _AddpatState extends State<Addpat> {
                           keyboardType: TextInputType.number,
                         ),
                         const SizedBox(height: 15),
-                        _buildModernTextField(
-                          labelText: 'Relationality'.tr(),
-                          controller: relationalityController,
-                          suffixIcon: Icons.group,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                          child: DropdownButtonFormField<String>(
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 20.0),
+                            ),
+                            value: relationalityController.text.isEmpty ? null : relationalityController.text,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                relationalityController.text = newValue!;
+                              });
+                            },
+                            items: relations.map((String relation) {
+                              return DropdownMenuItem<String>(
+                                value: relation,
+                                child: Container(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                    relation,
+                                    style: const TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            icon: const Icon(Icons.arrow_drop_down),
+                            hint: Text('Select Relationality'.tr()),
+                            style: const TextStyle(
+                              color: Colors.black87,
+                            ),
+                            dropdownColor: Colors.white,
+                          ),
                         ),
                         const SizedBox(height: 15),
                         Padding(
@@ -365,7 +413,7 @@ class _AddpatState extends State<Addpat> {
                             value: selectedDistance,
                             onChanged: (int? newValue) {
                               setState(() {
-                                selectedDistance = newValue!;
+                                selectedDistance = newValue;
                               });
                             },
                             items: distances.map((int distance) {
@@ -374,7 +422,7 @@ class _AddpatState extends State<Addpat> {
                                 child: Container(
                                   padding: const EdgeInsets.all(10.0),
                                   child: Text(
-                                    'distance_in_meters'.tr(args: [distance.toString()]),
+                                    distance.toString(),
                                     style: const TextStyle(
                                       color: Colors.black87,
                                       fontSize: 16,
@@ -393,103 +441,26 @@ class _AddpatState extends State<Addpat> {
                           ),
                         ),
                         const SizedBox(height: 15),
-                        ElevatedButton.icon(
-                          onPressed: presentDatePicker,
-                          icon: const Icon(Icons.date_range),
-                          label: Text(selectedDate == null
-                              ? 'Select Diagnosis Date'.tr()
-                              : 'diagnosis_date'.tr(args: [DateFormat.yMMMd(context.locale.toString()).format(selectedDate!)])),
+                        ElevatedButton(
+                          onPressed: _Add,
                           style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.all(15.0),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 30), backgroundColor: const Color(0xFF6A95E9),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
+                              borderRadius: BorderRadius.circular(30),
                             ),
-                            backgroundColor: const Color(0xFF6A95E9),
-                            foregroundColor: Colors.white,
                           ),
-                        ),
-                        const SizedBox(height: 15),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFF6A95E9), Color(0xFF6A95E9)],
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                            ),
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                final result = await Navigator.push(
-                                  context,
-                                  _createRoute(const MapLocationPicker(
-                                    apiKey:
-                                        'AIzaSyCB4OrB7PgyXUrxNgf3-IZVsaHPpyt-kBM',
-                                  )),
-                                );
-
-                                if (result != null) {
-                                  lati = result['latitude'];
-                                  long = result['longitude'];
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.all(15.0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                ),
-                                backgroundColor: Colors.transparent,
-                                shadowColor: Colors.transparent,
-                              ),
-                              child:  Text(
-                                'Pick Location'.tr(),
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.white),
-                              ),
+                          child: Text(
+                            _isLoading
+                                ? 'Loading...'.tr()
+                                : 'Add'.tr(),
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 15),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 7.0),
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [
-                                  Color.fromARGB(255, 64, 202, 94),
-                                  Color.fromARGB(255, 69, 181, 86)
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                            ),
-                            child: ElevatedButton(
-                              onPressed: _Add,
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.all(5.0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                ),
-                                backgroundColor: Colors.transparent,
-                                shadowColor: Colors.transparent,
-                              ),
-                              child: _isLoading
-                                  ? const CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          Colors.white),
-                                    )
-                                  : Text(
-                                      'Done'.tr(),
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.white,
-                                          fontFamily: 'Acme'),
-                                    ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
                       ],
                     ),
                   ),
@@ -506,57 +477,37 @@ class _AddpatState extends State<Addpat> {
     required String labelText,
     required TextEditingController controller,
     required IconData suffixIcon,
-    TextInputType keyboardType = TextInputType.text,
     bool obscureText = false,
-    VoidCallback? togglePasswordVisibility,
+    Function()? togglePasswordVisibility,
+    TextInputType keyboardType = TextInputType.text,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            offset: const Offset(0, 3),
-            blurRadius: 10,
-            spreadRadius: 1,
-          ),
-        ],
-        borderRadius: BorderRadius.circular(25.0),
-      ),
-      child: TextField(
-        controller: controller,
-        keyboardType: keyboardType,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
-          labelText: labelText,
-          suffixIcon: togglePasswordVisibility == null
-              ? Icon(suffixIcon, color: const Color(0xFF6A95E9))
-              : IconButton(
-                  icon: Icon(
-                    obscureText ? Icons.visibility_off : Icons.visibility,
-                    color: const Color(0xFF6A95E9),
-                  ),
-                  onPressed: togglePasswordVisibility,
-                ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25.0),
-            borderSide: BorderSide.none,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25.0),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25.0),
-            borderSide: const BorderSide(
-              color: Color.fromARGB(255, 69, 62, 208),
-            ),
-          ),
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      decoration: InputDecoration(
+        labelText: labelText,
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25.0),
         ),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+        suffixIcon: togglePasswordVisibility != null
+            ? GestureDetector(
+                onTap: togglePasswordVisibility,
+                child: Icon(
+                  obscureText ? Icons.visibility_off : Icons.visibility,
+                  color: Colors.black54,
+                ),
+              )
+            : Icon(
+                suffixIcon,
+                color: Colors.black54,
+              ),
       ),
+      style: const TextStyle(color: Colors.black87),
     );
   }
 }

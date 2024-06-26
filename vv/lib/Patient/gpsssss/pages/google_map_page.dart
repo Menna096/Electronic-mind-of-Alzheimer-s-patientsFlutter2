@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -209,12 +210,12 @@ class _NavigationScreenState extends State<NavigationScreen> {
   addMarker() {
     setState(() {
       sourcePosition = Marker(
-        markerId: const MarkerId('source'),
+        markerId:  MarkerId('source'.tr()),
         position: curLocation,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
       );
       destinationPosition = Marker(
-        markerId: const MarkerId('destination'),
+        markerId:  MarkerId('destination'.tr()),
         position: LatLng(widget.lat, widget.lng),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
       );
