@@ -16,10 +16,13 @@ class ViewProfile extends StatefulWidget {
 class _ViewProfileState extends State<ViewProfile> {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _relationalityController = TextEditingController();
+  final TextEditingController _relationalityController =
+      TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _distanceController = TextEditingController();
+  final TextEditingController _diagnosisDateController =
+      TextEditingController();
   DateTime? _selectedDate;
 
   @override
@@ -38,6 +41,8 @@ class _ViewProfileState extends State<ViewProfile> {
       if (pickedDate != null) {
         setState(() {
           _selectedDate = pickedDate;
+          _diagnosisDateController.text =
+              DateFormat('dd-MM-yyyy', 'en').format(pickedDate);
         });
       }
     });
@@ -54,11 +59,13 @@ class _ViewProfileState extends State<ViewProfile> {
           _phoneController.text = response.data['phoneNumber'];
           _ageController.text = response.data['age'].toString();
           _relationalityController.text = response.data['relationality'];
-          _distanceController.text =
-              response.data['maxDistance'].toString();
-          _selectedDate = DateFormat('dd/MM/yyyy')
-              .parse(response.data['diagnosisDate']);
+          _distanceController.text = response.data['maxDistance'].toString();
+          _selectedDate =
+              DateFormat('dd/MM/yyyy').parse(response.data['diagnosisDate']);
+          _diagnosisDateController.text =
+              DateFormat('yyyy-MM-dd', 'en').format(_selectedDate!);
         });
+        print('$_diagnosisDateController');
       } else {
         print('Failed to fetch data: ${response.statusCode}');
       }
@@ -72,27 +79,30 @@ class _ViewProfileState extends State<ViewProfile> {
         'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/UpdatePatientProfile';
 
     Map<String, dynamic> requestBody = {
+      'fullName': _fullNameController.text,
+      'email': _emailController.text,
+      'relationality': _relationalityController.text,
       'phoneNumber': _phoneController.text,
       'age': int.parse(_ageController.text),
       'maximumDistance': int.parse(_distanceController.text),
       'diagnosisDate': _selectedDate != null
-          ? DateFormat('yyyy-MM-dd').format(_selectedDate!)
+          ? DateFormat('yyyy-MM-dd', 'en').format(_selectedDate!)
           : null,
     };
 
     try {
       Response response = await DioService().dio.put(
-        apiUrl,
-        data: requestBody,
-        options: Options(
-          contentType: 'application/json; charset=UTF-8',
-        ),
-      );
+            apiUrl,
+            data: requestBody,
+            options: Options(
+              contentType: 'application/json; charset=UTF-8',
+            ),
+          );
 
       if (response.statusCode == 200) {
         print('User profile updated successfully');
         ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(
+          SnackBar(
             content: Text('User profile updated successfully'.tr()),
           ),
         );
@@ -101,8 +111,7 @@ class _ViewProfileState extends State<ViewProfile> {
             'Failed to update user profile. Status code: ${response.statusCode}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-                'Failed to update user profile'.tr()),
+            content: Text('Failed to update user profile'.tr()),
           ),
         );
       }
@@ -128,7 +137,7 @@ class _ViewProfileState extends State<ViewProfile> {
             Navigator.pop(context);
           },
         ),
-        title:  Text(
+        title: Text(
           "Manage Patient Profile".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
@@ -203,11 +212,7 @@ class _ViewProfileState extends State<ViewProfile> {
                 const SizedBox(height: 15),
                 _buildTextField(
                   labelText: 'Diagnosis Date'.tr(),
-                  controller: TextEditingController(
-                    text: _selectedDate == null
-                        ? ''
-                        : DateFormat('yyyy-MM-dd').format(_selectedDate!),
-                  ),
+                  controller: _diagnosisDateController,
                   icon: Icons.calendar_today,
                   readOnly: true,
                   onTap: _presentDatePicker,
@@ -223,16 +228,19 @@ class _ViewProfileState extends State<ViewProfile> {
                 ElevatedButton(
                   onPressed: updateUserProfile,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 64, 158, 45), // Adjust button color here
-                    padding: const EdgeInsets.symmetric(vertical: 16.0), // Adjust button padding
+                    backgroundColor: const Color.fromARGB(
+                        255, 64, 158, 45), // Adjust button color here
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16.0), // Adjust button padding
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                   ),
-                  child:  Text('Update'.tr(),style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.white,
-                                          fontFamily: 'Acme'),),
+                  child: Text(
+                    'Update'.tr(),
+                    style: TextStyle(
+                        fontSize: 18, color: Colors.white, fontFamily: 'Acme'),
+                  ),
                 ),
                 const SizedBox(height: 30),
               ],
@@ -289,7 +297,8 @@ class _ViewProfileState extends State<ViewProfile> {
               ),
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-              prefixIcon: Icon(icon, color: Colors.blue), // Adjust icon color as needed
+              prefixIcon:
+                  Icon(icon, color: Colors.blue), // Adjust icon color as needed
             ),
           ),
         ),
