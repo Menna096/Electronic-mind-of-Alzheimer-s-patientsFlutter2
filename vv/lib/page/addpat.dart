@@ -440,6 +440,43 @@ class _AddpatState extends State<Addpat> {
                             dropdownColor: Colors.white,
                           ),
                         ),
+                         const SizedBox(height: 15),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: _isLoading
+                          ? null
+                          : () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MapLocationPicker(
+                                    apiKey:
+                                        'AIzaSyCB4OrB7PgyXUrxNgf3-IZVsaHPpyt-kBM',
+                                    popOnNextButtonTaped: true,
+                                    currentLatLng:
+                                        const LatLng(29.146727, 76.464895),
+                                    onNext: (GeocodingResult? result) {
+                                      if (result != null) {
+                                        setState(() {
+                                          lati = result.geometry.location.lat;
+                                          long = result.geometry.location.lng;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor:
+                            const Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor: const Color.fromARGB(255, 3, 189, 56),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(27.0),
+                        ),
+                      ),
+                      child: Text('Pick Location Here'.tr()),
+                    ),
                         const SizedBox(height: 15),
                         ElevatedButton(
                           onPressed: _Add,
