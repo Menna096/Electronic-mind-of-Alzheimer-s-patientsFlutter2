@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vv/Family/LoginPageAll.dart';
+import 'package:vv/faceid.dart';
 import 'package:vv/home/comp/onboarding_content.dart';
 
 class Onboarding extends StatefulWidget {
@@ -62,7 +63,8 @@ class _OnboardingState extends State<Onboarding> {
                         style: GoogleFonts.poppins(
                           fontSize: 33,
                           fontWeight: FontWeight.w600,
-                          color: const Color(0xff3B5998), // Change text color to white
+                          color: const Color(
+                              0xff3B5998), // Change text color to white
                         ),
                       ),
                     ],
@@ -101,7 +103,8 @@ class _OnboardingState extends State<Onboarding> {
                                 fontWeight: FontWeight.w600,
                                 fontSize: 27,
                                 height: 1.2,
-                                color: Colors.white, // Change text color to white
+                                color:
+                                    Colors.white, // Change text color to white
                               ),
                               textAlign: TextAlign.start,
                             ),
@@ -114,7 +117,8 @@ class _OnboardingState extends State<Onboarding> {
                               style: const TextStyle(
                                 fontSize: 16,
                                 height: 2,
-                                color: Colors.white, // Change text color to white
+                                color:
+                                    Colors.white, // Change text color to white
                               ),
                               textAlign: TextAlign.start,
                             ),
@@ -161,7 +165,8 @@ class _OnboardingState extends State<Onboarding> {
                   height: 20.0,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align buttons to the left and right
+                  mainAxisAlignment: MainAxisAlignment
+                      .spaceBetween, // Align buttons to the left and right
                   children: [
                     SizedBox(
                       height: 50,
@@ -170,7 +175,7 @@ class _OnboardingState extends State<Onboarding> {
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const LoginPageAll(),
+                              builder: (context) => const CameraScreen(),
                             ),
                           );
                         },
@@ -183,33 +188,39 @@ class _OnboardingState extends State<Onboarding> {
                               ),
                             ),
                           ),
-                          backgroundColor: WidgetStateProperty.all(const Color(0xffFFFFFF)),
+                          backgroundColor:
+                              WidgetStateProperty.all(const Color(0xffFFFFFF)),
                         ),
                         child: Text(
                           'Skip'.tr(),
                           style: GoogleFonts.roboto(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
-                            color: const Color(0xff3B5998), // Change text color to white
+                            color: const Color(
+                                0xff3B5998), // Change text color to white
                           ),
                         ),
                       ),
                     ),
                     const SizedBox(width: 20), // Add space between the buttons
                     Visibility(
-                      visible: (currentIndex != contents.length - 1), // Check if it's not the last page
+                      visible: (currentIndex !=
+                          contents.length -
+                              1), // Check if it's not the last page
                       child: SizedBox(
                         height: 50,
                         width: 140,
                         child: FilledButton(
                           onPressed: () {
-                            if (currentIndex == contents.length - 1) { // If it's the last page
+                            if (currentIndex == contents.length - 1) {
+                              // If it's the last page
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => const LoginPageAll(),
+                                  builder: (context) => const CameraScreen(),
                                 ),
                               );
-                            } else { // If it's not the last page
+                            } else {
+                              // If it's not the last page
                               pageController.nextPage(
                                 duration: const Duration(milliseconds: 500),
                                 curve: Curves.decelerate,
@@ -225,7 +236,8 @@ class _OnboardingState extends State<Onboarding> {
                                 ),
                               ),
                             ),
-                            backgroundColor: WidgetStateProperty.all(const Color(0xff3B5998)),
+                            backgroundColor: WidgetStateProperty.all(
+                                const Color(0xff3B5998)),
                           ),
                           child: Text(
                             'Next'.tr(),
