@@ -679,9 +679,9 @@ class _mainpatientState extends State<mainpatient> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
-                                width: 30.0
+                                width: 25.0
                                     .w, // Set the desired width of the container
-                                height: 30.0
+                                height: 25.0
                                     .w, // Set the desired height of the container
                                 decoration: BoxDecoration(
                                   color:
@@ -697,8 +697,8 @@ class _mainpatientState extends State<mainpatient> {
                                   children: [
                                     Image.asset(
                                       'images/med.png',
-                                      width: 15.0.w,
-                                      height: 15.0.w,
+                                      width: 14.0.w,
+                                      height: 14.0.w,
                                     ),
                                     Text('medicine'.tr())
                                   ],
@@ -716,9 +716,9 @@ class _mainpatientState extends State<mainpatient> {
                               );
                             },
                             child: Container(
-                              width: 30.0
+                              width: 25.0
                                   .w, // Set the desired width of the container
-                              height: 30.0
+                              height: 25.0
                                   .w, // Set the desired height of the container
                               decoration: BoxDecoration(
                                 color: const Color.fromARGB(113, 255, 255, 255),
@@ -736,7 +736,7 @@ class _mainpatientState extends State<mainpatient> {
                                     width: 15.0.w,
                                     height: 15.0.w,
                                   ),
-                                  Text('Plcaes'.tr())
+                                  Text('Places'.tr())
                                 ],
                               ),
                             ),
@@ -761,9 +761,9 @@ class _mainpatientState extends State<mainpatient> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
-                                width: 30.0
+                                width: 25.0
                                     .w, // Set the desired width of the container
-                                height: 30.0
+                                height: 25.0
                                     .w, // Set the desired height of the container
                                 decoration: BoxDecoration(
                                   color:
@@ -797,9 +797,9 @@ class _mainpatientState extends State<mainpatient> {
                               );
                             },
                             child: Container(
-                              width: 30.0
+                              width: 25.0
                                   .w, // Set the desired width of the container
-                              height: 30.0
+                              height: 25.0
                                   .w, // Set the desired height of the container
                               decoration: BoxDecoration(
                                 color: const Color.fromARGB(113, 255, 255, 255),
@@ -839,9 +839,9 @@ class _mainpatientState extends State<mainpatient> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
-                                width: 30.0
+                                width: 25.0
                                     .w, // Set the desired width of the container
-                                height: 30.0
+                                height: 25.0
                                     .w, // Set the desired height of the container
                                 decoration: BoxDecoration(
                                   color:
@@ -857,8 +857,8 @@ class _mainpatientState extends State<mainpatient> {
                                   children: [
                                     Image.asset(
                                       'images/pic.png',
-                                      width: 15.0.w,
-                                      height: 15.0.w,
+                                      width: 13.0.w,
+                                      height: 13.0.w,
                                     ),
                                     Text('Pictures and'.tr()),
                                     Text('Videos'.tr())
@@ -877,9 +877,9 @@ class _mainpatientState extends State<mainpatient> {
                               );
                             },
                             child: Container(
-                              width: 30.0
+                              width: 25.0
                                   .w, // Set the desired width of the container
-                              height: 30.0
+                              height: 25.0
                                   .w, // Set the desired height of the container
                               decoration: BoxDecoration(
                                 color: const Color.fromARGB(113, 255, 255, 255),
@@ -919,9 +919,9 @@ class _mainpatientState extends State<mainpatient> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
-                                width: 30.0
+                                width: 25.0
                                     .w, // Set the desired width of the container
-                                height: 30.0
+                                height: 25.0
                                     .w, // Set the desired height of the container
                                 decoration: BoxDecoration(
                                   color:
@@ -956,9 +956,9 @@ class _mainpatientState extends State<mainpatient> {
                               );
                             },
                             child: Container(
-                              width: 30.0
+                              width: 25.0
                                   .w, // Set the desired width of the container
-                              height: 30.0
+                              height: 25.0
                                   .w, // Set the desired height of the container
                               decoration: BoxDecoration(
                                 color: const Color.fromARGB(113, 255, 255, 255),
@@ -997,9 +997,9 @@ class _mainpatientState extends State<mainpatient> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
-                                width: 30.0
+                                width: 25.0
                                     .w, // Set the desired width of the container
-                                height: 30.0
+                                height: 25.0
                                     .w, // Set the desired height of the container
                                 decoration: BoxDecoration(
                                   color:
@@ -1031,9 +1031,9 @@ class _mainpatientState extends State<mainpatient> {
                                       const LevelSelectionScreen()));
                             },
                             child: Container(
-                              width: 30.0
+                              width: 25.0
                                   .w, // Set the desired width of the container
-                              height: 30.0
+                              height: 25.0
                                   .w, // Set the desired height of the container
                               decoration: BoxDecoration(
                                 color: const Color.fromARGB(113, 255, 255, 255),
