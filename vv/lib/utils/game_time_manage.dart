@@ -33,6 +33,6 @@ class TimerManager {
 
   void reset() {
     _timer.cancel();
-    _secondsLeft = 30; // Reset to initial value
+    _secondsLeft = 120; // Reset to initial value
   }
 }

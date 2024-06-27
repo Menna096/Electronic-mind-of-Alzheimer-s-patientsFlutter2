@@ -9,6 +9,7 @@ import 'package:vv/Caregiver/medical/main.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/String_manager.dart';
 import 'package:vv/utils/storage_manage.dart';
+import 'package:vv/utils/token_manage.dart';
 
 class mainpagecaregiver extends StatefulWidget {
   const mainpagecaregiver({super.key});
@@ -120,6 +121,7 @@ class _mainpagecaregiverState extends State<mainpagecaregiver> {
                   ),
                 ),
                 onTap: () {
+                  TokenManager.deleteToken();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(

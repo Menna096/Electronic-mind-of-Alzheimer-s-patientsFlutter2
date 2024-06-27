@@ -9,7 +9,16 @@ import 'package:sizer/sizer.dart';
 import 'pages/home_page.dart';
 
 void main() {
-  runApp(const Pills());
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ar')],
+      path: 'assets/translations',
+      startLocale: const Locale('ar'),
+      fallbackLocale: const Locale('ar'),
+      saveLocale: true,
+      child: Pills(),
+    ),
+  );
 }
 
 class Pills extends StatefulWidget {
@@ -126,6 +135,9 @@ class _PillsState extends State<Pills> {
               ),
             ),
           ),
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
           home: const HomePage(),
         );
       }),
