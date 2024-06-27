@@ -320,7 +320,6 @@
   "instruction_5": "Turn your head to the left until your profile aligns with the camera",
   "Instructions" : "Instructions",
   "These images help the patient recognize you better. Please follow the instructions and upload five images" :"These images help the patient recognize you better. Please follow the instructions and upload five images",
-   "instructions_for_image": "Instructions for Image {}",
     "capture_image": "Capture Image {}",
      "image_label": "Image {}",
      "Next" :"Next",
@@ -564,7 +563,8 @@
   "No Voice Notes Yet!" :"No Voice Notes Yet!",
   "Retry" :"Retry",
   "Save note" :"Save note",
-  "Dismiss" :"Dismiss"
+  "Dismiss" :"Dismiss",
+  "instructions_for_image": "تعليمات الصورة {}"
   
 
 

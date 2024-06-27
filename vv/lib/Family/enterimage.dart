@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
@@ -56,7 +57,13 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-                'Instructions for Image ${replaceIndex != null ? replaceIndex + 1 : _images.length + 1}'),
+              'instructions_for_image'.tr(namedArgs: {
+                'index': (replaceIndex != null
+                        ? replaceIndex + 1
+                        : _images.length + 1)
+                    .toString()
+              }),
+            ),
             content: FutureBuilder(
               future: _fetchInstructionData(replaceIndex),
               builder: (BuildContext context, AsyncSnapshot<void> snapshot) {

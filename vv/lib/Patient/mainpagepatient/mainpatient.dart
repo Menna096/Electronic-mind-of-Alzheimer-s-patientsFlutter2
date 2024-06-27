@@ -648,7 +648,7 @@ class _mainpatientState extends State<mainpatient> {
                           style: TextStyle(
                             fontSize: 4.w, // Responsive font size
                           ),
-                          maxLines: 1,
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],
@@ -919,9 +919,9 @@ class _mainpatientState extends State<mainpatient> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
-                                width: 25.0
+                                width: 26.0
                                     .w, // Set the desired width of the container
-                                height: 25.0
+                                height: 26.0
                                     .w, // Set the desired height of the container
                                 decoration: BoxDecoration(
                                   color:
@@ -937,8 +937,8 @@ class _mainpatientState extends State<mainpatient> {
                                   children: [
                                     Image.asset(
                                       'images/identify.png',
-                                      width: 15.0.w,
-                                      height: 15.0.w,
+                                      width: 14.0.w,
+                                      height: 14.0.w,
                                     ),
                                     Text('Identify Person'.tr())
                                   ],
