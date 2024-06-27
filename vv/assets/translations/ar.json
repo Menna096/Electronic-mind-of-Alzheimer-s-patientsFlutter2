@@ -555,7 +555,13 @@
   "Videos": "فيديوهات",
   "Secret Files": "ملفات سرية",
   "Daily Tasks": "المهام اليومية",
-  "Games": "ألعاب"
+  "Games": "ألعاب",
+  "images/Picfamm.png":"images/صور.png",
+"images/Pattcode.png":"images/رمز.png",
+"images/assignCare.png":"images/تعيين.png",
+"images/PlaceFamm.png":"images/موقع.png",
+"images/reppfamm.png":"images/تقرير.png",
+"images/Appointmmfam.png":"images/مواعيد.png"
 
 
 

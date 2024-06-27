@@ -248,7 +248,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                             );
                           },
                           child: Image.asset(
-                            'images/Picfamm.png',
+                            'images/Picfamm.png'.tr(),
                             width: 40.0.w, // Responsive image width
                             height: 40.0.w, // Responsive image height
                           ),
@@ -263,7 +263,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                             );
                           },
                           child: Image.asset(
-                            'images/Pattcode.png',
+                            'images/Pattcode.png'.tr(),
                             width: 40.0.w, // Responsive image width
                             height: 40.0.w, // Responsive image height
                           ),
@@ -283,7 +283,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                             );
                           },
                           child: Image.asset(
-                            'images/assignCare.png',
+                            'images/assignCare.png'.tr(),
                             width: 40.0.w, // Responsive image width
                             height: 40.0.w, // Responsive image height
                           ),
@@ -298,7 +298,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                             );
                           },
                           child: Image.asset(
-                            'images/PlaceFamm.png',
+                            'images/PlaceFamm.png'.tr(),
                             width: 40.0.w, // Responsive image width
                             height: 40.0.w, // Responsive image height
                           ),
@@ -318,7 +318,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                             );
                           },
                           child: Image.asset(
-                            'images/reppfamm.png',
+                            'images/reppfamm.png'.tr(),
                             width: 40.0.w, // Responsive image width
                             height: 40.0.w, // Responsive image height
                           ),
@@ -333,7 +333,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
                             );
                           },
                           child: Image.asset(
-                            'images/Appointmmfam.png',
+                            'images/Appointmmfam.png'.tr(),
                             width: 40.0.w, // Responsive image width
                             height: 40.0.w, // Responsive image height
                           ),
