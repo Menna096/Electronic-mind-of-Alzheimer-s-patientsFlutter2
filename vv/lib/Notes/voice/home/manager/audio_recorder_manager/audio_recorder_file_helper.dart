@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:vv/Notes/voice/home/model/voice_note_model.dart';
@@ -52,9 +53,9 @@ class AudioRecorderFileHelper{
 
     try{
       await file.delete();
-      log('file deleted');
+      log('file deleted'.tr());
     }catch(e){
-      throw "File does not exist";
+      throw "File does not exist".tr();
     }
   }
 

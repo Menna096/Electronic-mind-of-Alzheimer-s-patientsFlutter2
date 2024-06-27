@@ -561,7 +561,20 @@
 "images/assignCare.png":"images/تعيين.png",
 "images/PlaceFamm.png":"images/موقع.png",
 "images/reppfamm.png":"images/تقرير.png",
-"images/Appointmmfam.png":"images/مواعيد.png"
+"images/Appointmmfam.png":"images/مواعيد.png",
+"Title": "العنوان",
+"Content": "المحتوى",
+"field is required": "الحقل مطلوب",
+"Edit Note": "تعديل الملاحظة",
+"No Notes Yet!": "لا توجد ملاحظات حتى الآن!",
+"File does not exist": "الملف غير موجود",
+"Could not delete the record": "تعذر حذف السجل",
+"file deleted": "تم حذف الملف",
+"Voice Notes": "ملاحظات صوتية",
+"No Voice Notes Yet!": "لا توجد ملاحظات صوتية حتى الآن!",
+"Retry": "إعادة المحاولة",
+"Save note": "حفظ الملاحظة",
+"Dismiss": "تجاهل"
 
 
 

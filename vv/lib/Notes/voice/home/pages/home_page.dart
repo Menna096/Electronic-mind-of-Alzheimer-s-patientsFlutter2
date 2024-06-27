@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -89,7 +90,7 @@ class _HomeBodyState extends State<_HomeBody> {
                     Padding(
                      padding: const EdgeInsets.only(top: 30, left: 28, right: 28),
                       child: Text(
-                        "Voice Notes",
+                        "Voice Notes".tr(),
                         style: AppTextStyles.bold(
                           fontSize: 34,
                           color: const Color.fromARGB(255, 124, 147, 198),
@@ -140,7 +141,7 @@ class _HomeBodyState extends State<_HomeBody> {
                                   height: 16,
                                 ),
                                 Text(
-                                  "No Voice Notes Yet!",
+                                  "No Voice Notes Yet!".tr(),
                                   style: AppTextStyles.medium(
                                       color: const Color.fromARGB(255, 227, 226, 226),
                                       fontSize: 21),
@@ -160,7 +161,7 @@ class _HomeBodyState extends State<_HomeBody> {
                                           pagingController.retryLastFailedRequest();
                                         },
                                         child: Text(
-                                          "Retry",
+                                          "Retry".tr(),
                                           style: AppTextStyles.medium(),
                                         ))
                                   ],

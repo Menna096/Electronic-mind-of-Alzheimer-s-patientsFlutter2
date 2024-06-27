@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -30,7 +31,7 @@ class _Add_Note_FormState extends State<Add_Note_Form> {
             height: 32,
           ),
           Custom_Text_field(
-            hint: 'Title',
+            hint: 'Title'.tr(),
             OnSaved: (value) {
               title = value;
             },
@@ -40,7 +41,7 @@ class _Add_Note_FormState extends State<Add_Note_Form> {
             height: 16,
           ),
           Custom_Text_field(
-            hint: 'Content',
+            hint: 'Content'.tr(),
             maxlines: 7,
             OnSaved: (value) {
               subtitle = value;

@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vv/Notes/cubits/notes_cubit/notes_cubit.dart';
@@ -49,7 +50,7 @@ class _Edit_Notes_View_BodyState extends State<Edit_Notes_View_Body> {
                 BlocProvider.of<NotesCubit>(context).FetchAllNotes();
                 Navigator.pop(context);
               },
-              title: 'Edit Note',
+              title: 'Edit Note'.tr(),
               icon: Icons.check,
             ),
             const SizedBox(height: 50),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vv/Notes/cubits/notes_cubit/notes_cubit.dart';
@@ -48,8 +49,8 @@ class _NotesViewBodyState extends State<NotesViewBody> {
                     width: 100,
                     height: 100,
                   ),
-                  const Text(
-                    "No Notes Yet!",
+                   Text(
+                    "No Notes Yet!".tr(),
                     style: TextStyle(
                       color: Color.fromARGB(255, 227, 226, 226),
                       fontSize: 21,
@@ -74,8 +75,8 @@ class _NotesViewBodyState extends State<NotesViewBody> {
                       MaterialPageRoute(builder: (context) => const HomePage()),
                     );
                   },
-                  child: const CustomAppBar(
-                    title: 'Notes',
+                  child:  CustomAppBar(
+                    title: 'Notes'.tr(),
                     icon: Icons.voice_chat,
                     // Provide an icon here
                   ),

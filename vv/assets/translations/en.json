@@ -547,11 +547,25 @@
   "Daily Tasks": "Daily Tasks",
   "Games": "Games",
   "images/Picfamm.png":"images/Picfamm.png",
-"images/Pattcode.png":"images/Pattcode.png",
-"images/assignCare.png":"images/assignCare.png",
-"images/PlaceFamm.png":"images/PlaceFamm.png",
-"images/reppfamm.png":"images/reppfamm.png",
-"images/Appointmmfam.png":"images/Appointmmfam.png"
+  "images/Pattcode.png":"images/Pattcode.png",
+  "images/assignCare.png":"images/assignCare.png",
+  "images/PlaceFamm.png":"images/PlaceFamm.png",
+  "images/reppfamm.png":"images/reppfamm.png",
+  "images/Appointmmfam.png":"images/Appointmmfam.png",
+  "Title" :"Title",
+  "Content" :"Content",
+  "field is required" :"field is required",
+  "Edit Note" :"Edit Note",
+  "No Notes Yet!" :"No Notes Yet!",
+  "File does not exist" :"File does not exist",
+  "Could not delete the record" :"Could not delete the record",
+  "file deleted" :"file deleted",
+  "Voice Notes" :"Voice Notes",
+  "No Voice Notes Yet!" :"No Voice Notes Yet!",
+  "Retry" :"Retry",
+  "Save note" :"Save note",
+  "Dismiss" :"Dismiss"
+  
 
 
 
