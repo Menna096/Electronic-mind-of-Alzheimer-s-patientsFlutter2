@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class Custom_Text_field extends StatelessWidget {
@@ -14,7 +15,7 @@ class Custom_Text_field extends StatelessWidget {
       onSaved: OnSaved,
       validator: (value) {
         if (value?.isEmpty ?? true) {
-          return 'field is required';
+          return 'field is required'.tr();
         } else {
           return null;
         }

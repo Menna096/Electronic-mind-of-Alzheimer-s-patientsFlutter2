@@ -38,6 +38,8 @@ abstract class StringManager {
   static String Reportsubmittedsuccessfully = "Reportsubmittedsuccessfully";
   static String elderHelper = "elderHelper";
   static String LogOut = "LogOut";
+ 
+
   // static String confirm = "confirm";
 
   

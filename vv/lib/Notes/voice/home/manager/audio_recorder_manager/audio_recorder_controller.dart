@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 import 'package:path/path.dart' as path;
@@ -85,7 +86,7 @@ class AudioRecorderController{
       );
     }else{
       onStop(null);
-      onError("Could not stop the record");
+      onError("Could not stop the record".tr());
     }
 
   }
@@ -96,7 +97,7 @@ class AudioRecorderController{
     try{
       await _audioRecorderFileHelper.deleteRecord(filePath);
     }catch(e){
-      onError("Could not delete the record");
+      onError("Could not delete the record".tr());
     }
   }
 
