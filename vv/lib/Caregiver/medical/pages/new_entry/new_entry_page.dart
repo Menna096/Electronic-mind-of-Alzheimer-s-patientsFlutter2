@@ -125,7 +125,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title:  Text('Add New'.tr()),
+        title: Text('Add New'.tr()),
       ),
       body: SingleChildScrollView(
         child: Provider<NewEntryBloc>.value(
@@ -135,7 +135,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 PanelTitle(
+                PanelTitle(
                   title: 'Medicine Name'.tr(),
                   isRequired: true,
                 ),
@@ -151,7 +151,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       .titleSmall!
                       .copyWith(color: kOtherColor),
                 ),
-                 PanelTitle(
+                PanelTitle(
                   title: 'Dosage in mg'.tr(),
                   isRequired: false,
                 ),
@@ -171,7 +171,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                 SizedBox(
                   height: 1.h,
                 ),
-                 PanelTitle(title: 'Medicine Type'.tr(), isRequired: true),
+                PanelTitle(title: 'Medicine Type'.tr(), isRequired: true),
                 Padding(
                   padding: EdgeInsets.only(top: 1.h),
                   child: StreamBuilder<int>(
@@ -209,11 +209,11 @@ class _NewEntryPageState extends State<NewEntryPage> {
                     },
                   ),
                 ),
-                 PanelTitle(title: 'Interval Selection'.tr(), isRequired: true),
+                PanelTitle(title: 'Interval Selection'.tr(), isRequired: true),
                 const IntervalSelection(),
-                 PanelTitle(title: 'Starting Time'.tr(), isRequired: true),
+                PanelTitle(title: 'Starting Time'.tr(), isRequired: true),
                 const SelectTime(),
-                 PanelTitle(title: 'Ending Day'.tr(), isRequired: true),
+                PanelTitle(title: 'Ending Day'.tr(), isRequired: true),
                 const SelectDate(),
                 const Text(
                   "_______________________________________________________",
@@ -233,7 +233,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                     child: TextButton(
                       style: TextButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 20, 191, 80),
-                        shape:  const StadiumBorder(),
+                        shape: const StadiumBorder(),
                       ),
                       child: Center(
                         child: Text(
@@ -248,20 +248,22 @@ class _NewEntryPageState extends State<NewEntryPage> {
                         ),
                       ),
                       onPressed: () async {
-                         print('Button pressed, locale: ${context.locale}');
+                        print('Button pressed, locale: ${context.locale}');
                         String? medicineName;
                         int? dosage;
 
                         // Check if medicine name is empty
                         if (nameController.text.isEmpty) {
-                          _showErrorDialog("Please enter the medicine's name".tr());
+                          _showErrorDialog(
+                              "Please enter the medicine's name".tr());
                           return;
                         }
                         medicineName = nameController.text;
 
                         // Check if dosage is empty or invalid
                         if (dosageController.text.isEmpty) {
-                          _showErrorDialog("Please enter the dosage required".tr());
+                          _showErrorDialog(
+                              "Please enter the dosage required".tr());
                           return;
                         }
                         dosage = int.tryParse(dosageController.text) ?? 0;
@@ -275,7 +277,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
 
                         // Check if medicine type is selected
                         if (_newEntryBloc.selectedMedicineType!.value == -1) {
-                          _showErrorDialog("Please select a medicine type".tr());
+                          _showErrorDialog(
+                              "Please select a medicine type".tr());
                           return;
                         }
 
@@ -290,7 +293,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                         if (_newEntryBloc.selectedTimeOfDay$!.value ==
                             const TimeOfDay(hour: 0, minute: 0)) {
                           _showErrorDialog(
-                              "Please select the reminder's starting time".tr());
+                              "Please select the reminder's starting time"
+                                  .tr());
                           return;
                         }
 
@@ -331,9 +335,20 @@ class _NewEntryPageState extends State<NewEntryPage> {
                             ),
                           );
                           Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const PatientListScreen()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EasyLocalization(
+                                supportedLocales: [
+                                  Locale('en', 'US'),
+                                  Locale('es', 'ES')
+                                ],
+                                path:
+                                    'assets/translations', // <-- change the path to your language files
+                                fallbackLocale: Locale('en', 'US'),
+                                child: PatientListScreen(),
+                              ),
+                            ),
+                          );
                         } catch (error) {
                           // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -525,7 +540,7 @@ class _SelectDateState extends State<SelectDate> {
           onPressed: _selectDate,
           child: Center(
             child: Text(
-  _clicked ? _date.toString().split(' ')[0] : "select_date".tr(),
+              _clicked ? _date.toString().split(' ')[0] : "select_date".tr(),
               style: Theme.of(context)
                   .textTheme
                   .titleSmall!
@@ -581,9 +596,9 @@ class _SelectTimeState extends State<SelectTime> {
           },
           child: Center(
             child: Text(
-  _clicked
-      ? "${convertTime(_time.hour.toString())}:${convertTime(_time.minute.toString())}"
-      : "select_time".tr(),
+              _clicked
+                  ? "${convertTime(_time.hour.toString())}:${convertTime(_time.minute.toString())}"
+                  : "select_time".tr(),
               style: Theme.of(context)
                   .textTheme
                   .titleSmall!
