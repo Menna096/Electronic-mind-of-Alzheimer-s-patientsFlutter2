@@ -110,7 +110,7 @@ class _mainpatientState extends State<mainpatient> {
 
   void initializeNotificationsMedicine() {
     var initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
 
     var initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
@@ -264,7 +264,7 @@ class _mainpatientState extends State<mainpatient> {
 
   void initializeNotifications() {
     var initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
 
     var initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
@@ -287,7 +287,7 @@ class _mainpatientState extends State<mainpatient> {
                       canBeDeleted: false,
                     ));
         print('Appointment found: ${appointment.id}');
-        if (appointment != null && appointment.id.isNotEmpty) {
+        if (appointment.id.isNotEmpty) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => AppointmentDetailScreen(
                     appointment: appointment,
@@ -620,7 +620,7 @@ class _mainpatientState extends State<mainpatient> {
                     CrossAxisAlignment.start, // Ensure text starts from the top
                 children: [
                   CircleAvatar(
-                    radius: 12.w, // Responsive avatar radius
+                    radius: 10.w, // Responsive avatar radius
                     backgroundImage: NetworkImage(_photoUrl ?? ''),
                   ),
                   SizedBox(
@@ -749,7 +749,7 @@ class _mainpatientState extends State<mainpatient> {
                           GestureDetector(
                             onTap: () async {
                               String? token = await TokenManager.getToken();
-                              print("This a Token :  ${token}");
+                              print("This a Token :  $token");
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

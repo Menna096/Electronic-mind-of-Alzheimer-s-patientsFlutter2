@@ -13,13 +13,15 @@ import 'package:vv/faceid.dart';
 import 'package:vv/home/one.dart';
 import 'package:vv/utils/token_manage.dart';
 
+import 'daily_task/pages/home/home_page.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await AndroidAlarmManager.initialize();
 
   await Hive.initFlutter();
-  Bloc.observer = SimpleBlocObserver();
+  Bloc.observer = MyBlocObserver();
   Hive.registerAdapter(NoteModelAdapter());
   await Hive.openBox<NoteModel>('Notes_Box');
 
@@ -65,30 +67,32 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
-            home: FutureBuilder<String?>(
-              future: TokenManager
-                  .getToken(), // Replace with your storage utility method
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Scaffold(
-                    body: Center(child: CircularProgressIndicator()),
-                  );
-                } else {
-                  final String? token = snapshot.data;
-                  if (token != null && token.isNotEmpty) {
-                    // Token exists, navigate to CameraScreen
-                    return CameraScreen();
-                  } else {
-                    // Token does not exist, show Onboarding with sign-in screen
-                    return Onboarding(
-                      showSignInScreen: () {
-                        // Handle sign-in action if needed
-                      },
-                    );
-                  }
-                }
-              },
-            ),
+            // home: FutureBuilder<String?>(
+            //   future: TokenManager
+            //       .getToken(), // Replace with your storage utility method
+            //   builder: (context, snapshot) {
+            //     if (snapshot.connectionState == ConnectionState.waiting) {
+            //       return const Scaffold(
+            //         body: Center(child: CircularProgressIndicator()),
+            //       );
+            //     } else {
+            //       final String? token = snapshot.data;
+            //       if (token != null && token.isNotEmpty) {
+            //         // Token exists, navigate to CameraScreen
+            //         return const CameraScreen();
+            //       } else {
+            //         // Token does not exist, show Onboarding with sign-in screen
+            //         return Onboarding(
+            //           showSignInScreen: () {
+            //             // Handle sign-in action if needed
+            //           },
+            //         );
+            //       }
+            //     }
+            //   },
+            // ),
+
+            home: const Home(),
           );
         },
       ),

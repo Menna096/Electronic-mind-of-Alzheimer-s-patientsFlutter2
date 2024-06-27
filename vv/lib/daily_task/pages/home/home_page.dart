@@ -4,7 +4,6 @@ import 'package:animations/animations.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sizer/sizer.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/daily_task/common/database/task_database.dart';
 import 'package:vv/daily_task/common/entities/task.dart';
@@ -19,7 +18,7 @@ import 'package:vv/utils/token_manage.dart';
 import 'package:geolocator/geolocator.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -66,14 +65,14 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff3B5998),
+      backgroundColor: const Color(0xff3B5998),
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => mainpatient()),
+              MaterialPageRoute(builder: (context) => const mainpatient()),
             );
           },
         ),
@@ -82,21 +81,21 @@ class _HomeState extends State<Home> {
           preferredSize: const Size.fromHeight(1.0),
           child: Container(
             color: Colors.black,
-            height: 0.0.h,
+            height: 0.0,
           ),
         ),
         elevation: 0,
-        backgroundColor: Color.fromARGB(255, 128, 171, 236),
+        backgroundColor: const Color.fromARGB(255, 128, 171, 236),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // Aligning "Tasks" to the left
-             Text(
+            Text(
               'Tasks'.tr(),
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
             // Aligning the other widget to the right (if any)
-            SizedBox(width: 56.0), // Adjust the width as per your need
+            const SizedBox(width: 56.0), // Adjust the width as per your need
           ],
         ),
       ),
@@ -113,10 +112,10 @@ class _HomeState extends State<Home> {
             return isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : tasks.isEmpty
-                    ?  Center(
+                    ? Center(
                         child: Text(
                           'No Tasks'.tr(),
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Color.fromARGB(255, 47, 47, 47),
                               fontSize: 24),
                         ),
@@ -130,9 +129,9 @@ class _HomeState extends State<Home> {
                               index == 0
                                   ? Container(
                                       alignment: Alignment.centerLeft,
-                                      padding: EdgeInsets.only(
-                                        left: 10.w,
-                                        top: 20.h,
+                                      padding: const EdgeInsets.only(
+                                        left: 10,
+                                        top: 20,
                                       ),
                                       child: nonRepeatingTasks.isEmpty
                                           ? const SizedBox(
@@ -143,16 +142,23 @@ class _HomeState extends State<Home> {
                                     )
                                   : Container(
                                       alignment: Alignment.centerLeft,
-                                      padding: EdgeInsets.only(
-                                        left: 10.w,
-                                        top: 30.h,
+                                      padding: const EdgeInsets.only(
+                                        left: 10,
+                                        top: 30,
                                       ),
                                       child: repeatingTasks.isEmpty
                                           ? const SizedBox(
                                               width: 0,
                                               height: 0,
                                             )
-                                          : buildBigText(title: 'REPEATED'.tr()),
+                                          : Text(
+                                              "REPEATED".tr(),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
                                     ),
                               ListView.builder(
                                 shrinkWrap: true,
@@ -173,17 +179,17 @@ class _HomeState extends State<Home> {
                                       }
                                       InputController(context: context)
                                           .cancelNotification(
-                                              tasksList[index][i].id!);
+                                              tasksList[index][i].id);
                                       TasksDatabase.instance
-                                          .delete(tasksList[index][i].id!);
+                                          .delete(tasksList[index][i].id);
                                       refreshTasks(); // Refresh tasks after deletion
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
                                           content: Text(
                                             "Task completed".tr(),
-                                            style: TextStyle(
-                                              fontSize: 16.sp,
+                                            style: const TextStyle(
+                                              fontSize: 16,
                                               color: Colors.green,
                                             ),
                                           ),
@@ -209,14 +215,14 @@ class _HomeState extends State<Home> {
             const InputPage(),
         closedShape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(56.0 / 2),
+            Radius.circular(16.0),
           ),
         ),
-        closedColor: Color.fromARGB(255, 128, 171, 236),
+        closedColor: const Color.fromARGB(255, 128, 171, 236),
         closedBuilder: (BuildContext context, VoidCallback openContainer) {
           return SizedBox(
-            height: 7.0.h,
-            width: 15.0.w,
+            width: 56.0,
+            height: 56.0,
             child: Center(
               child: Icon(
                 Icons.add,
