@@ -12,7 +12,7 @@ class InputState {
     String? duration,
     String? list,
   })  : dateTime = dateTime ?? DateTime.now(),
-        duration = duration ?? 'No recurrence'.tr(),
+        duration = duration ?? 'no_recurrence'.tr(),
         list = list ?? 'Default'.tr();
 
   InputState copyWith({

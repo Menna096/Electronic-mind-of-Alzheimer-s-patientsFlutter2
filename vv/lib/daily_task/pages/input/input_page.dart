@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sizer/sizer.dart';
 import 'package:vv/daily_task/common/values/constant.dart';
 import 'package:vv/daily_task/pages/home/home_page.dart';
 import 'package:vv/daily_task/pages/input/bloc/input_bloc.dart';
@@ -25,9 +24,8 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   late InputController inputController;
-   late HubConnection _connection;
+  late HubConnection _connection;
   Timer? _locationTimer; // Initialize Dio
-
 
   @override
   void initState() {
@@ -36,6 +34,7 @@ class _InputPageState extends State<InputPage> {
     inputController = InputController(context: context);
     inputController.init();
   }
+
   Future<void> initializeSignalR() async {
     final token = await TokenManager.getToken();
     _connection = HubConnectionBuilder()
@@ -114,14 +113,14 @@ class _InputPageState extends State<InputPage> {
           preferredSize: const Size.fromHeight(1.0),
           child: Container(
             color: const Color.fromARGB(255, 244, 244, 244),
-            height: 1.0.h,
+            height: 1.0,
           ),
         ),
         scrolledUnderElevation: 0,
         backgroundColor: const Color.fromARGB(255, 150, 190, 251),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children:  [
+          children: [
             Text(
               'New Task'.tr(),
               style: const TextStyle(color: Colors.white),
@@ -131,27 +130,34 @@ class _InputPageState extends State<InputPage> {
         ),
       ),
       body: Container(
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xffFFFFFF), Color(0xff3B5998)],
+            colors: [Color(0xffFFFFFF), Color(0xff3B5998), Color(0xff3B5998)],
           ),
         ),
         child: BlocBuilder<InputBloc, InputState>(
           builder: (context, state) {
-            return SingleChildScrollView(
-              child: Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 20.0.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
+            return Padding(
+              padding: EdgeInsets.only(
+                  right: 16,
+                  left: 16,
+                  top: 20,
+                  bottom: MediaQuery.of(context).size.height * 0.1),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         buildHeadingText(title: 'What is to be done?'.tr()),
-                        SizedBox(height: 10.h),
+                        const SizedBox(height: 10),
                         buildTaskField(
                           onChanged: (task) {
                             context
@@ -161,13 +167,15 @@ class _InputPageState extends State<InputPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 30.h),
-                    Column(
+                  ),
+                  Expanded(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         buildHeadingText(title: 'Add to list'.tr()),
-                        SizedBox(
-                          height: 10.h,
+                        const SizedBox(
+                          height: 10,
                         ),
                         buildDropDown(
                           context: context,
@@ -182,13 +190,15 @@ class _InputPageState extends State<InputPage> {
                         )
                       ],
                     ),
-                    SizedBox(height: 30.h),
-                    Column(
+                  ),
+                  Expanded(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         buildHeadingText(title: 'Recurrence'.tr()),
-                        SizedBox(
-                          height: 10.h,
+                        const SizedBox(
+                          height: 10,
                         ),
                         buildDropDown(
                           context: context,
@@ -204,105 +214,102 @@ class _InputPageState extends State<InputPage> {
                         )
                       ],
                     ),
-                    SizedBox(height: 30.h),
-                    state.duration == AppConstant.INITIAL_RECURRENCE
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
+                  Expanded(
+                    child: Visibility(
+                      visible: state.duration == AppConstant.INITIAL_RECURRENCE,
+                      replacement: buildDurationText(state.duration),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'What is your deadline?'.tr(),
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 221, 221, 221),
+                            ),
+                          ),
+                          buildDateTimePicker(
+                            context: context,
+                            onDateTimeChanged: (dateTime) {
+                              context
+                                  .read<InputBloc>()
+                                  .add(DateAndTimeEvent(dateTime: dateTime));
+                            },
+                          ),
+                          Column(
                             children: [
-                              Text(
-                                'What is your deadline?'.tr(),
-                                style: TextStyle(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: const Color.fromARGB(255, 221, 221, 221),
-                                ),
-                              ),
-                              SizedBox(height: 10.h),
-                              buildDateTimePicker(
-                                context: context,
-                                onDateTimeChanged: (dateTime) {
-                                  context.read<InputBloc>().add(
-                                      DateAndTimeEvent(dateTime: dateTime));
-                                },
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              Column(
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Due date : '.tr(),
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: const Color.fromARGB(
-                                              255, 221, 221, 221),
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.calendar_today,
-                                            color: const Color.fromARGB(
-                                                255, 219, 219, 219),
-                                            size: 18.w,
-                                          ),
-                                          SizedBox(
-                                            width: 5.0.w,
-                                          ),
-                                          buildAlarmText(
-                                              text:
-                                                  '${state.dateTime!.day.toString()}/${state.dateTime!.month.toString()}/${state.dateTime!.year.toString()}'),
-                                        ],
-                                      ),
-                                    ],
+                                  Text(
+                                    'Due date : '.tr(),
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 221, 221, 221),
+                                    ),
                                   ),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        'Due time : '.tr(),
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: const Color.fromARGB(
-                                              255, 221, 221, 221),
-                                        ),
+                                      const Icon(
+                                        Icons.calendar_today,
+                                        color:
+                                            Color.fromARGB(255, 219, 219, 219),
+                                        size: 18,
                                       ),
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.timer,
-                                            color: const Color.fromARGB(
-                                                255, 219, 219, 219),
-                                            size: 18.w,
-                                          ),
-                                          SizedBox(
-                                            width: 5.0.w,
-                                          ),
-                                          state.dateTime!.minute < 10
-                                              ? buildAlarmText(
-                                                  text:
-                                                      '${state.dateTime!.hour.toString()}:0${state.dateTime!.minute.toString()}')
-                                              : buildAlarmText(
-                                                  text:
-                                                      '${state.dateTime!.hour.toString()}:${state.dateTime!.minute.toString()}'),
-                                        ],
-                                      )
+                                      buildAlarmText(
+                                          text:
+                                              '${state.dateTime!.day.toString()}/${state.dateTime!.month.toString()}/${state.dateTime!.year.toString()}'),
                                     ],
                                   ),
                                 ],
                               ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Due time : '.tr(),
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 221, 221, 221),
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.timer,
+                                        color:
+                                            Color.fromARGB(255, 219, 219, 219),
+                                        size: 18,
+                                      ),
+                                      const SizedBox(
+                                        width: 5.0,
+                                      ),
+                                      state.dateTime!.minute < 10
+                                          ? buildAlarmText(
+                                              text:
+                                                  '${state.dateTime!.hour.toString()}:0${state.dateTime!.minute.toString()}')
+                                          : buildAlarmText(
+                                              text:
+                                                  '${state.dateTime!.hour.toString()}:${state.dateTime!.minute.toString()}'),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ],
-                          )
-                        : buildDurationText(state.duration),
-                  ],
-                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               ),
             );
           },
