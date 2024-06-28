@@ -214,6 +214,8 @@
   "Task completed" :"Task completed",
   "Weekly" : "Weekly",
    "Daily" :"Daily",
+   
+   "You have Successfully Registered" :"You have Successfully Registered",
    "Every day at": "Every day at {hours}:{minute}",
   "every_day_time": "Every {dayOfWeek} at {hours}:{minute}",
   "Every Hour" :"Every Hour",
