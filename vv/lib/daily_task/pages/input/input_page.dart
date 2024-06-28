@@ -25,7 +25,7 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
   late InputController inputController;
   late HubConnection _connection;
-  Timer? _locationTimer; // Initialize Dio
+  Timer? _locationTimer;
 
   @override
   void initState() {
@@ -45,20 +45,17 @@ class _InputPageState extends State<InputPage> {
         logging: (level, message) => print(message),
       ),
     )
-        .withAutomaticReconnect(
-            [0, 2000, 10000, 30000]) // Configuring automatic reconnect
+        .withAutomaticReconnect([0, 2000, 10000, 30000])
         .build();
 
     _connection.onclose((error) async {
       print('Connection closed. Error: $error');
-      // Optionally initiate a manual reconnect here if automatic reconnect is not sufficient
       await reconnect();
     });
 
     try {
       await _connection.start();
       print('SignalR connection established.');
-      // Start sending location every minute after the connection is established
       _locationTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
         sendCurrentLocation();
       });
@@ -69,18 +66,16 @@ class _InputPageState extends State<InputPage> {
   }
 
   Future<void> reconnect() async {
-    int retryInterval = 1000; // Initial retry interval to 5 seconds
+    int retryInterval = 1000;
     while (_connection.state != HubConnectionState.connected) {
       await Future.delayed(Duration(milliseconds: retryInterval));
       try {
         await _connection.start();
         print("Reconnected to SignalR server.");
-        return; // Exit the loop if connected
+        return;
       } catch (e) {
         print("Reconnect failed: $e");
-        retryInterval = (retryInterval < 1000)
-            ? retryInterval + 1000
-            : 1000; // Increase retry interval, cap at 1 seconds
+        retryInterval = (retryInterval < 1000) ? retryInterval + 1000 : 1000;
       }
     }
   }
@@ -99,8 +94,8 @@ class _InputPageState extends State<InputPage> {
 
   @override
   void dispose() {
-    _locationTimer?.cancel(); // Cancel the timer when the widget is disposed
-    _connection.stop(); // Optionally stop the connection
+    _locationTimer?.cancel();
+    _connection.stop();
     super.dispose();
   }
 
@@ -125,34 +120,34 @@ class _InputPageState extends State<InputPage> {
               'New Task'.tr(),
               style: const TextStyle(color: Colors.white),
             ),
-            const SizedBox(width: 16.0), // Adjust spacing as needed
+            const SizedBox(width: 16.0),
           ],
         ),
       ),
-      body: Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xffFFFFFF), Color(0xff3B5998), Color(0xff3B5998)],
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xffFFFFFF), Color(0xff3B5998), Color(0xff3B5998)],
+            ),
           ),
-        ),
-        child: BlocBuilder<InputBloc, InputState>(
-          builder: (context, state) {
-            return Padding(
-              padding: EdgeInsets.only(
-                  right: 16,
-                  left: 16,
-                  top: 20,
-                  bottom: MediaQuery.of(context).size.height * 0.1),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                    child: Column(
+          child: BlocBuilder<InputBloc, InputState>(
+            builder: (context, state) {
+              return Padding(
+                padding: EdgeInsets.only(
+                    right: 16,
+                    left: 16,
+                    top: 20,
+                    bottom: MediaQuery.of(context).size.height * 0.1),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -167,9 +162,8 @@ class _InputPageState extends State<InputPage> {
                         ),
                       ],
                     ),
-                  ),
-                  Expanded(
-                    child: Column(
+                    const SizedBox(height: 20),
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -190,9 +184,8 @@ class _InputPageState extends State<InputPage> {
                         )
                       ],
                     ),
-                  ),
-                  Expanded(
-                    child: Column(
+                    const SizedBox(height: 20),
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -214,9 +207,8 @@ class _InputPageState extends State<InputPage> {
                         )
                       ],
                     ),
-                  ),
-                  Expanded(
-                    child: Visibility(
+                    const SizedBox(height: 20),
+                    Visibility(
                       visible: state.duration == AppConstant.INITIAL_RECURRENCE,
                       replacement: buildDurationText(state.duration),
                       child: Column(
@@ -308,11 +300,11 @@ class _InputPageState extends State<InputPage> {
                         ],
                       ),
                     ),
-                  )
-                ],
-              ),
-            );
-          },
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
