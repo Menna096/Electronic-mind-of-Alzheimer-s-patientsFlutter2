@@ -211,14 +211,6 @@ class _ViewProfileState extends State<ViewProfile> {
                 ),
                 const SizedBox(height: 15),
                 _buildTextField(
-                  labelText: 'Diagnosis Date'.tr(),
-                  controller: _diagnosisDateController,
-                  icon: Icons.calendar_today,
-                  readOnly: true,
-                  onTap: _presentDatePicker,
-                ),
-                const SizedBox(height: 15),
-                _buildTextField(
                   labelText: 'Maximum Distance'.tr(),
                   controller: _distanceController,
                   icon: Icons.location_on_sharp,

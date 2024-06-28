@@ -10,10 +10,8 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:sizer/sizer.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/String_manager.dart';
-import 'package:vv/Patient/mainpagepatient/mainpatient.dart'; // Adjust path as per your project structure
-// Adjust path as per your project structure
-import 'package:vv/utils/token_manage.dart'; // Adjust path as per your project structure
-// Import the animated background widget
+import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
+import 'package:vv/utils/token_manage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,10 +39,6 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
-  File? _image; // Initialize as nullable
-  final picker = ImagePicker();
-  bool _isLoading = false; // Add a loading state
-
   @override
   void initState() {
     super.initState();
@@ -56,47 +50,47 @@ class _CameraScreenState extends State<CameraScreen> {
   void _showLoginDialog() {
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevent dialog from closing on outside touch
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0.sp), // Use Sizer for border radius
+            borderRadius: BorderRadius.circular(20.0.sp),
           ),
           child: Container(
-            padding: EdgeInsets.all(20.0.sp), // Use Sizer for padding
+            padding: EdgeInsets.all(20.0.sp),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0.sp), // Use Sizer for border radius
+              borderRadius: BorderRadius.circular(20.0.sp),
             ),
             child: SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  maxHeight: 80.h, // Set maximum height for the dialog content
+                  maxHeight: 80.h,
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Icon(
                       Icons.info_outline,
-                      size: 50.sp, // Use Sizer for icon size
+                      size: 50.sp,
                       color: Colors.blue,
                     ),
-                    SizedBox(height: 10.sp), // Use Sizer for spacing
+                    SizedBox(height: 10.sp),
                     Text(
                       context.tr(StringManager.title),
                       style: TextStyle(
-                        fontSize: 20.sp, // Use Sizer for font size
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10.sp), // Use Sizer for spacing
+                    SizedBox(height: 10.sp),
                     Text(
                       context.tr(StringManager.message),
                       style: TextStyle(
-                        fontSize: 14.sp, // Use Sizer for font size
+                        fontSize: 14.sp,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 20.sp), // Use Sizer for spacing
+                    SizedBox(height: 20.sp),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -106,37 +100,42 @@ class _CameraScreenState extends State<CameraScreen> {
                               foregroundColor: Colors.white,
                               backgroundColor: Colors.red,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0.sp), // Use Sizer for border radius
+                                borderRadius: BorderRadius.circular(18.0.sp),
                               ),
                             ),
                             child: Text(
                               context.tr(StringManager.not_patient),
-                              style: TextStyle(fontSize: 10.sp), // Use Sizer for font size
+                              style: TextStyle(fontSize: 10.sp),
                             ),
                             onPressed: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const LoginPageAll()),
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginPageAll()),
                               );
                             },
                           ),
                         ),
-                        SizedBox(width: 10.sp), // Use Sizer for spacing between buttons
+                        SizedBox(width: 10.sp),
                         Flexible(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.white,
                               backgroundColor: Colors.green,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0.sp), // Use Sizer for border radius
+                                borderRadius: BorderRadius.circular(18.0.sp),
                               ),
                             ),
                             child: Text(
                               context.tr(StringManager.use_face_id),
-                              style: TextStyle(fontSize: 10.sp), // Use Sizer for font size
+                              style: TextStyle(fontSize: 10.sp),
                             ),
                             onPressed: () {
-                              getImage();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const CameraView()),
+                              );
                             },
                           ),
                         ),
@@ -149,52 +148,74 @@ class _CameraScreenState extends State<CameraScreen> {
           ),
         );
       },
+    ).then((_) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPageAll()),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          const AnimatedBackground(
+            child: Center(
+              child: Text('Welcome to the Camera Screen'),
+            ),
+          ),
+        ],
+      ),
     );
   }
+}
+
+class CameraView extends StatefulWidget {
+  const CameraView({super.key});
+
+  @override
+  _CameraViewState createState() => _CameraViewState();
+}
+
+class _CameraViewState extends State<CameraView> {
+  File? _image;
+  final picker = ImagePicker();
+  bool _isLoading = false;
 
   Future getImage() async {
     try {
       final pickedFile = await picker.pickImage(
         source: ImageSource.camera,
-        preferredCameraDevice: CameraDevice.front, // Specify front camera
+        preferredCameraDevice: CameraDevice.front,
       );
-      Navigator.pop(context);
       setState(() {
         if (pickedFile != null) {
           _image = File(pickedFile.path);
-          _isLoading = true; // Start loading
-          uploadImage(_image!); // Automatically upload the image once it's captured
+          _isLoading = true;
+          uploadImage(_image!);
         } else {
           print('No image selected.');
-          //Navigator.pushReplacement(
-           // context,
-            //MaterialPageRoute(builder: (context) => LoginPageAll()),
-          //);
         }
       });
     } catch (e) {
       print('Error picking image: $e');
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginPageAll()),
-      );
     }
   }
 
   Future<void> uploadImage(File imageFile) async {
-    String uploadUrl = "https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/LoginWithFaceId";
+    String uploadUrl =
+        "https://electronicmindofalzheimerpatients.azurewebsites.net/api/Authentication/LoginWithFaceId";
     Dio dio = Dio();
 
-    // Get the MIME type
     String? mimeType = lookupMimeType(imageFile.path);
-
     mimeType ??= 'application/octet-stream';
-
-    // Parse the MIME type into a MediaType object
     final mimeTypeData = mimeType.split('/');
+
     FormData formData = FormData.fromMap({
       "Image": await MultipartFile.fromFile(imageFile.path,
-          filename: "image.${path.extension(imageFile.path)}", // Use the correct file extension
+          filename: "image.${path.extension(imageFile.path)}",
           contentType: MediaType(mimeTypeData[0], mimeTypeData[1])),
     });
 
@@ -207,11 +228,9 @@ class _CameraScreenState extends State<CameraScreen> {
       print("Upload successful, Response: ${response.data}");
     } catch (e) {
       print("Error during upload: $e");
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const LoginPageAll()));
     } finally {
       setState(() {
-        _isLoading = false; // Stop loading
+        _isLoading = false;
       });
     }
   }
@@ -223,7 +242,7 @@ class _CameraScreenState extends State<CameraScreen> {
     if (userRole == 'Patient') {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const mainpatient()), // Adjust class name if necessary
+        MaterialPageRoute(builder: (context) => const mainpatient()),
       );
     }
   }
@@ -231,18 +250,46 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          AnimatedBackground(
-            child: Center(
-              child: _image == null ?  Text('No image selected'.tr()) : Image.file(_image!),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        title: Text('Face ID'.tr()),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: AnimatedBackground(
+        child: Stack(
+          children: [
+            Center(
+              child: _image == null
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                          'This feature is available to patients only. If you are not a patient, please go back.'
+                              .tr()),
+                    )
+                  : Image.file(_image!),
             ),
-          ),
-          if (_isLoading) // Show loading indicator
-            const Center(
-              child: CircularProgressIndicator(),
+            if (_isLoading)
+              const Center(
+                child: CircularProgressIndicator(),
+              ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ElevatedButton(
+                  onPressed: getImage,
+                  child: Text('Open Camera'.tr()),
+                ),
+              ),
             ),
-        ],
+          ],
+        ),
       ),
     );
   }

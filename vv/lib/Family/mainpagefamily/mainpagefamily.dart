@@ -11,6 +11,7 @@ import 'package:vv/Family/patient_reports.dart';
 import 'package:vv/Family/update.dart';
 import 'package:vv/page/assignPatCare.dart';
 import 'package:vv/page/gallery_screen.dart';
+import 'package:vv/page/manage_patient.dart';
 import 'package:vv/page/paitent_Id.dart';
 import 'package:vv/utils/token_manage.dart';
 import 'package:vv/widgets/background.dart';
@@ -372,8 +373,8 @@ class _MainPageFamilyState extends State<MainPageFamily> {
               Icons.person_add_alt_1_sharp,
               'Add Patient'.tr(),
               onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const update()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const ViewProfile()));
               },
             ),
             buildDrawerItem(

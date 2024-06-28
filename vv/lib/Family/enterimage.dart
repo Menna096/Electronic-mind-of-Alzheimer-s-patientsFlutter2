@@ -26,96 +26,204 @@ class UploadImagesPage extends StatefulWidget {
 class _UploadImagesPageState extends State<UploadImagesPage> {
   final ImagePicker _picker = ImagePicker();
   final List<ImageItem> _images = [];
-  final Dio _dio = Dio(); // Instance of Dio
-  List<dynamic> _imageSamplesWithInstructions = [];
+  int _currentImageIndex = 0;
 
-  Future<void> _fetchImagesWithInstructions() async {
-    try {
-      final response = await DioService().dio.get(
-            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
-            options: Options(
-              headers: {
-                'accept': '*/*',
-                'Authorization': 'Bearer your_access_token_here',
-              },
-            ),
-          );
-      setState(() {
-        _imageSamplesWithInstructions =
-            response.data['imagesSamplesWithInstractions'];
-      });
-    } catch (e) {
-      print('Error fetching images and instructions: $e');
-    }
+  final List<String> _instructionImages = [
+    'images/1.jpg',
+    'images/2.jpg',
+    'images/3.jpg',
+    'images/4.jpg',
+    'images/5.jpg',
+  ];
+
+  final List<String> _imageInstructions = [
+    'instruction_1'.tr(),
+    'instruction_2'.tr(),
+    'instruction_3'.tr(),
+    'instruction_4'.tr(),
+    'instruction_5'.tr(),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () => _showInstructionMessage());
   }
 
-  Future<void> _pickImage({int? replaceIndex}) async {
-    if (replaceIndex != null ||
-        _images.length < _imageSamplesWithInstructions.length) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-          'instructionsForImage'.tr(args: ['${replaceIndex! + 1}']),),
-            content: FutureBuilder(
-              future: _fetchInstructionData(replaceIndex),
-              builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: SpinKitCircle(
-                      color: Colors.blue, // Adjust color as needed
-                      size: 50.0, // Adjust size as needed
-                    ),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('Error fetching instructions: ${snapshot.error}');
-                } else {
-                  final instructionData = _imageSamplesWithInstructions[
-                      replaceIndex ?? _images.length];
-                  final imageUrl = instructionData['imageSampleUrl'];
-                  final instruction = instructionData['instraction'];
+  Future<void> _showInstructionMessage() async {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Instructions'.tr(),
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'These images help the patient recognize you better. Please follow the instructions and upload five images'
+                      .tr(),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'.tr()),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
-                  return SingleChildScrollView(
-                    child: ListBody(
-                      children: <Widget>[
-                        Image.network(imageUrl),
-                        const SizedBox(height: 10),
-                        Text(instruction),
-                      ],
-                    ),
-                  );
+  Future<void> _showInstructionDialog({int? replaceIndex}) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+          title: Text('Instructions for Image ${_currentImageIndex + 1}'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  _imageInstructions[_currentImageIndex],
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                Image.asset(
+                  _instructionImages[_currentImageIndex],
+                  height: 200,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Capture Image'.tr()),
+              onPressed: () async {
+                final XFile? image =
+                    await _picker.pickImage(source: ImageSource.camera);
+                if (image != null) {
+                  setState(() {
+                    if (replaceIndex != null) {
+                      _images[replaceIndex] = ImageItem(file: image);
+                    } else {
+                      _images.add(ImageItem(file: image));
+                    }
+                    _currentImageIndex++;
+                  });
                 }
+                Navigator.of(context).pop();
               },
             ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  _captureImage(replaceIndex);
-                },
-                child: Text('Capture Image'.tr()),
-              ),
-            ],
-          );
-        },
-      );
-    } else {
-      _captureImage(replaceIndex);
-    }
+          ],
+        );
+      },
+    );
   }
 
-  Future<void> _captureImage(int? replaceIndex) async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-    if (image != null) {
-      setState(() {
-        if (replaceIndex != null) {
-          _images[replaceIndex] = ImageItem(file: image);
-        } else {
-          _images.add(ImageItem(file: image));
-        }
-      });
-    }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      body: AnimatedBackground(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  const SizedBox(height: 60),
+                  if (_currentImageIndex < 5)
+                    ElevatedButton(
+                      onPressed: () => _showInstructionDialog(),
+                      child: Text('capture_image'
+                          .tr(args: [(_currentImageIndex + 1).toString()])),
+                    ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _images.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 8.0),
+                    child: Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.all(12),
+                        leading: Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Image.file(
+                            File(_images[index].file.path),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        title: Text(
+                          'Image ${index + 1}',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.camera_alt),
+                          onPressed: () =>
+                              _showInstructionDialog(replaceIndex: index),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            if (_currentImageIndex == 5)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    _uploadImages;
+                  },
+                  child: Text('Next'.tr()),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 
   void _uploadImages() async {
@@ -147,110 +255,6 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
         backgroundColor: Colors.red,
       ));
       print('Error uploading images: $e');
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchImagesWithInstructions();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
-      body: AnimatedBackground(
-        child: Column(
-          children: <Widget>[
-            if (_images.length < _imageSamplesWithInstructions.length)
-              const SizedBox(
-                height: 60,
-              ),
-            if (_images.length < 5) // Show button only if less than 5 images
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: ElevatedButton(
-                  onPressed: () => _pickImage(),
-                  child: Text('addImage'.tr(args: ['${_images.length + 1}'])),
-                ),
-              ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _images.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 8.0), // Adjust vertical spacing here
-                    child: Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(12),
-                        leading: Container(
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Image.file(File(_images[index].file.path),
-                              fit: BoxFit.cover),
-                        ),
-                        title: Text('imageIndex'.tr(args: ['${index + 1}']),),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.camera_alt),
-                          onPressed: () => _pickImage(replaceIndex: index),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            if (_images.length == _imageSamplesWithInstructions.length)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: ElevatedButton(
-                  onPressed: _uploadImages,
-                  child: Text('Upload Images'.tr()),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<void> _fetchInstructionData(int? replaceIndex) async {
-    try {
-      final response = await DioService().dio.get(
-            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyNeedATrainingImages',
-            options: Options(
-              headers: {
-                'accept': '*/*',
-                'Authorization': 'Bearer your_access_token_here',
-              },
-            ),
-          );
-      setState(() {
-        _imageSamplesWithInstructions =
-            response.data['imagesSamplesWithInstractions'];
-      });
-    } catch (e) {
-      print('Error fetching images and instructions: $e');
-      rethrow;
     }
   }
 }
