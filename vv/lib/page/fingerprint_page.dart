@@ -24,7 +24,7 @@ class FingerprintPage extends StatelessWidget {
       );
 
   Widget buildAuthenticate(BuildContext context) => buildButton(
-        text: 'Authenticate'.tr(),
+        text: 'Authenticate',
         onClicked: () async {
           final isAuthenticated = await LocalAuthApi.authenticate(context);
 

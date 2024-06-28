@@ -18,13 +18,14 @@ class AppointmentDetailsScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const AppointListScreen()),
+              MaterialPageRoute(
+                  builder: (context) => const AppointListScreen()),
             );
           },
         ),
         title: Text(
           "Appointment Details".tr(),
-          style: TextStyle(
+          style: const TextStyle(
             fontFamily: 'LilitaOne',
             fontSize: 23,
             color: Colors.white,
@@ -37,73 +38,63 @@ class AppointmentDetailsScreen extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(10.0),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Color.fromARGB(66, 55, 134, 190),
-                offset: Offset(0, 10),
-                blurRadius: 10.0,
-              ),
-            ],
           ),
         ),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(50.0),
+            bottom: Radius.circular(30.0),
           ),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Card(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
+                borderRadius: BorderRadius.circular(15.0),
               ),
-              elevation: 4,
+              elevation: 5,
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 285, horizontal: 101),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 10.0),
                     Text(
-                       'location'.tr(args: ['${appointment['location']}']),
+                      'Location:'.tr(),
                       style: const TextStyle(
-                          fontSize: 26.0,
-                          color: Color.fromARGB(255, 83, 137, 184),
-                          fontFamily: 'LilitaOne'),
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF616161),
+                      ),
                     ),
-                    const SizedBox(height: 10.0),
+                    const SizedBox(height: 8.0),
                     Text(
-                      'notes'.tr(args: ['${appointment['notes']}']),
+                      appointment['location'] ?? 'No location provided',
                       style: const TextStyle(
-                          fontSize: 26.0,
-                          color: Color.fromARGB(255, 83, 137, 184),
-                          fontFamily: 'LilitaOne'),
+                        fontSize: 16.0,
+                        color: Color(0xFF616161),
+                      ),
                     ),
-                    // SizedBox(height: 10.0),
-                    // Text(
-                    //   'Created by: ${appointment['familyNameWhoCreatedAppointemnt']}',
-                    //   style: TextStyle(
-                    //     fontSize: 26.0,
-                    //       color: Color.fromARGB(255, 83, 137, 184),
-                    //       fontFamily: 'LilitaOne'
-                    //   ),
-                    // ),
-                    // SizedBox(height: 10.0),
-                    // Text(
-                    //   'Can be deleted: ${appointment['canDeleted']}',
-                    //   style: TextStyle(
-                    //     fontSize: 18.0,
-                    //     color: Colors.indigo[600],
-                    //   ),
-                    // ),
+                    const Divider(),
+                    Text(
+                      'Notes:'.tr(),
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF616161),
+                      ),
+                    ),
+                    const SizedBox(height: 8.0),
+                    Text(
+                      appointment['notes'] ?? 'No notes provided',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        color: Color(0xFF616161),
+                      ),
+                    ),
                   ],
                 ),
               ),
