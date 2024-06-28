@@ -111,7 +111,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
                          Text(
                           'Assign Patient To Caregiver'.tr(),
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
