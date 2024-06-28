@@ -13,6 +13,7 @@ import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/local_auth_api.dart';
 import 'package:vv/api/login_api.dart';
+import 'package:vv/faceid.dart';
 import 'package:vv/utils/token_manage.dart';
 
 class LoginPageAll extends StatefulWidget {
@@ -261,68 +262,88 @@ class _LoginPageAllState extends State<LoginPageAll> {
       key: scaffoldMessengerKey,
       child: Scaffold(
         backgroundColor: const Color(0xff3B5998),
-        body:Stack(
-  children: [
-    Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(0xffFFFFFF),
-            Color(0xff3B5998),
+        body: Stack(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xffFFFFFF),
+                    Color(0xff3B5998),
+                  ],
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 5.w, // Responsive horizontal padding
+                    vertical: 5.h, // Responsive vertical padding
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 13.h), // Responsive height
+                      Text(
+                        context.tr(StringManager.Welcome),
+                        style: TextStyle(
+                          fontSize: 25.sp, // Responsive font size
+                          fontFamily: 'LilitaOne',
+                          foreground: Paint()
+                            ..shader = LinearGradient(
+                              colors: [Colors.blue[400]!, Colors.indigo[400]!],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ).createShader(
+                              Rect.fromLTWH(0, 0, 20.w,
+                                  0.5.h), // Adjust the size responsively
+                            ),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 5.h), // Responsive height
+                      _buildEmailTextField(),
+                      SizedBox(height: 1.h), // Responsive height
+                      _buildPasswordTextField(),
+                      SizedBox(height: 5.h), // Responsive height
+                      _isLoading
+                          ? const CircularProgressIndicator()
+                          : _buildLoginButton(),
+                      SizedBox(height: 6.h), // Responsive height
+                      _buildRegisterNowButton(),
+                      SizedBox(height: 1.h), // Responsive height
+                      _buildForgotPasswordButton(),
+                      SizedBox(height: 1.h), // Responsive height
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0.h),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CameraScreen()),
+                      );
+                    },
+                    icon: Icon(Icons.arrow_back),
+                    color: const Color.fromARGB(177, 28, 80, 183),
+                  ),
+                  Spacer(
+                    flex: 1,
+                  ),
+                  _buildLanguageIconButton(),
+                ],
+              ),
+            ),
           ],
         ),
-      ),
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 5.w, // Responsive horizontal padding
-            vertical: 5.h,   // Responsive vertical padding
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 13.h), // Responsive height
-              Text(
-                context.tr(StringManager.Welcome),
-                style: TextStyle(
-                  fontSize: 25.sp, // Responsive font size
-                  fontFamily: 'LilitaOne',
-                  foreground: Paint()
-                    ..shader = LinearGradient(
-                      colors: [Colors.blue[400]!, Colors.indigo[400]!],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ).createShader(
-                      Rect.fromLTWH(0, 0, 20.w, 0.5.h), // Adjust the size responsively
-                    ),
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 5.h), // Responsive height
-              _buildEmailTextField(),
-              SizedBox(height: 1.h), // Responsive height
-              _buildPasswordTextField(),
-              SizedBox(height: 5.h), // Responsive height
-              _isLoading
-                  ? const CircularProgressIndicator()
-                  : _buildLoginButton(),
-              SizedBox(height: 6.h), // Responsive height
-              _buildRegisterNowButton(),
-              SizedBox(height: 1.h), // Responsive height
-              _buildForgotPasswordButton(),
-              SizedBox(height: 1.h), // Responsive height
-            ],
-          ),
-        ),
-      ),
-    ),
-    _buildLanguageIconButton(),
-  ],
-),
-
       ),
     );
   }

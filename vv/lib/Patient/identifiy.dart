@@ -57,7 +57,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
             children: <Widget>[
               ListTile(
                 leading: const Icon(Icons.photo_library),
-                title:  Text("Pick from gallery".tr()),
+                title: Text("Pick from gallery".tr()),
                 onTap: () {
                   Navigator.pop(context);
                   _getImage(ImageSource.gallery);
@@ -65,7 +65,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
               ),
               ListTile(
                 leading: const Icon(Icons.camera_alt),
-                title:  Text("Capture from camera".tr()),
+                title: Text("Capture from camera".tr()),
                 onTap: () {
                   Navigator.pop(context);
                   _getImage(ImageSource.camera);
@@ -246,78 +246,84 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
                             }
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 25,
-                                        backgroundColor: Colors.blueGrey[100],
-                                        backgroundImage: NetworkImage(person[
-                                            'familyAvatarUrl']), // Use the familyAvatarUrl
-                                      ),
-                                      const SizedBox(width: 16),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            person['familyName'],
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                padding: EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 25,
+                                          backgroundColor: Colors.blueGrey[100],
+                                          backgroundImage: NetworkImage(person[
+                                              'familyAvatarUrl']), // Use the familyAvatarUrl
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Name: ${person['familyName']}',
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            person[
-                                                'relationalityOfThisPatient'],
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey[600],
+                                            Text(
+                                              'Relation: ${person['relationalityOfThisPatient']}',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.grey[600],
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            person['descriptionForPatient'],
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey[600],
+                                            Text(
+                                              'Description: ${person['descriptionForPatient']}',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.grey[600],
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            person['familyPhoneNumber'],
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey[600],
+                                            Text(
+                                              'Phone Number: ${person['familyPhoneNumber']}',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.grey[600],
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      Spacer(
-                                        flex: 1,
-                                      ),
-                                      IconButton(
-                                        onPressed: () {
-                                          final latitude =
-                                              person['familyLatitude'];
-                                          final longitude =
-                                              person['familyLongitude'];
-                                          print('$latitude,$longitude');
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  NavigationScreen(
-                                                      latitude, longitude),
-                                            ),
-                                          );
-                                        },
-                                        icon: Icon(Icons.location_on),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 8),
-                                ],
+                                          ],
+                                        ),
+                                        Spacer(
+                                          flex: 1,
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            final latitude =
+                                                person['familyLatitude'];
+                                            final longitude =
+                                                person['familyLongitude'];
+                                            print('$latitude,$longitude');
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    NavigationScreen(
+                                                        latitude, longitude),
+                                              ),
+                                            );
+                                          },
+                                          icon: Icon(Icons.location_on),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 8),
+                                  ],
+                                ),
                               ),
                             );
                           },
