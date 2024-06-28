@@ -371,7 +371,7 @@ class _MainPageFamilyState extends State<MainPageFamily> {
             ),
             buildDrawerItem(
               Icons.person_add_alt_1_sharp,
-              'Add Patient'.tr(),
+              'Manage Patient Profile'.tr(),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const ViewProfile()));

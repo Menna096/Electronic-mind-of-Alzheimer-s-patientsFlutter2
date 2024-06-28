@@ -171,7 +171,7 @@ class _RegisterFamilyState extends State<RegisterFamily> {
 
       if (response == true) {
         _showDialog('Registration Successful'.tr(), 
-                    'You have Successfully Registered. Please Confirm Email To Can Login'.tr(), 
+                    'You have Successfully Registered'.tr(), 
                     onPressed: () {
                       Navigator.pop(context);
                       Navigator.push(
