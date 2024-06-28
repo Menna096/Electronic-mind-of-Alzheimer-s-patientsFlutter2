@@ -89,6 +89,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
         );
       },
     );
+
   }
 
   Future<void> _showInstructionDialog({int? replaceIndex}) async {
@@ -156,6 +157,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
       body: AnimatedBackground(
         child: Column(
           children: <Widget>[
+
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
@@ -168,6 +170,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
                           .tr(args: [(_currentImageIndex + 1).toString()])),
                     ),
                 ],
+
               ),
             ),
             Expanded(
@@ -199,6 +202,8 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
                           'Image ${index + 1}',
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
+
+
                         trailing: IconButton(
                           icon: const Icon(Icons.camera_alt),
                           onPressed: () =>
@@ -214,10 +219,12 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: ElevatedButton(
+
                   onPressed: () {
                     _uploadImages;
                   },
                   child: Text('Next'.tr()),
+
                 ),
               ),
           ],

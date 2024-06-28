@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sizer/sizer.dart'; // Import the sizer package
+import 'package:vv/Family/LoginPageAll.dart';
+import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/Notes/cubits/notes_cubit/notes_cubit.dart';
 import 'package:vv/Notes/models/note_model.dart';
 import 'package:vv/Notes/simple_bloc_observer.dart';
@@ -13,13 +15,15 @@ import 'package:vv/faceid.dart';
 import 'package:vv/home/one.dart';
 import 'package:vv/utils/token_manage.dart';
 
+import 'daily_task/pages/home/home_page.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await AndroidAlarmManager.initialize();
 
   await Hive.initFlutter();
-  Bloc.observer = SimpleBlocObserver();
+  Bloc.observer = MyBlocObserver();
   Hive.registerAdapter(NoteModelAdapter());
   await Hive.openBox<NoteModel>('Notes_Box');
 
@@ -70,14 +74,14 @@ class MyApp extends StatelessWidget {
                   .getToken(), // Replace with your storage utility method
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Scaffold(
+                  return const Scaffold(
                     body: Center(child: CircularProgressIndicator()),
                   );
                 } else {
                   final String? token = snapshot.data;
                   if (token != null && token.isNotEmpty) {
                     // Token exists, navigate to CameraScreen
-                    return CameraScreen();
+                    return const CameraScreen();
                   } else {
                     // Token does not exist, show Onboarding with sign-in screen
                     return Onboarding(
@@ -89,6 +93,8 @@ class MyApp extends StatelessWidget {
                 }
               },
             ),
+
+            
           );
         },
       ),

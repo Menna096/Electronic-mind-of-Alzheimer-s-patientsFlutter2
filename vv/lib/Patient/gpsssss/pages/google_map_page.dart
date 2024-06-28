@@ -8,7 +8,6 @@ import 'package:location/location.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:math' show cos, sqrt, asin;
 
-
 class NavigationScreen extends StatefulWidget {
   final double lat;
   final double lng;
@@ -27,25 +26,19 @@ class _NavigationScreenState extends State<NavigationScreen> {
   loc.LocationData? _currentPosition;
   LatLng curLocation = const LatLng(23.0525, 72.5667);
   StreamSubscription<loc.LocationData>? locationSubscription;
-  
 
   @override
   void initState() {
     super.initState();
     getNavigation();
     addMarker();
-   
   }
 
   @override
   void dispose() {
     locationSubscription?.cancel();
     super.dispose();
-   
   }
-
-  
-
 
   @override
   Widget build(BuildContext context) {
@@ -162,6 +155,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     }
   }
 
+  //todo get directions
   getDirections(LatLng dst) async {
     List<LatLng> polylineCoordinates = [];
     List<dynamic> points = [];
@@ -210,12 +204,12 @@ class _NavigationScreenState extends State<NavigationScreen> {
   addMarker() {
     setState(() {
       sourcePosition = Marker(
-        markerId:  MarkerId('source'.tr()),
+        markerId: MarkerId('source'.tr()),
         position: curLocation,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
       );
       destinationPosition = Marker(
-        markerId:  MarkerId('destination'.tr()),
+        markerId: MarkerId('destination'.tr()),
         position: LatLng(widget.lat, widget.lng),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
       );

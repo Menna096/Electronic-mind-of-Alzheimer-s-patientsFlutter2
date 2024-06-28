@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../common/entities/task.dart';
 import '../../common/values/constant.dart';
@@ -10,7 +9,7 @@ Widget buildBigText({required String title, Color color = Colors.white}) {
     title,
     style: TextStyle(
       color: color,
-      fontSize: 20.sp,
+      fontSize: 20,
       fontWeight: FontWeight.bold,
     ),
   );
@@ -42,14 +41,14 @@ Widget buildTask({
     alignment: Alignment.center,
     children: [
       Container(
-        margin: EdgeInsets.all(10.w),
-        padding: EdgeInsets.only(bottom: 10.w, left: 7.w, right: 5.w),
+        margin: const EdgeInsets.all(10),
+        padding: const EdgeInsets.only(bottom: 10, left: 7, right: 5),
         constraints: const BoxConstraints(
           maxHeight: double.infinity,
         ),
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 232, 232, 232),
-          borderRadius: BorderRadius.circular(15.w),
+          borderRadius: BorderRadius.circular(15),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,11 +59,11 @@ Widget buildTask({
               children: [
                 Flexible(
                   child: Padding(
-                    padding: EdgeInsets.only(left: 10.w, top: 8.h),
+                    padding: const EdgeInsets.only(left: 10, top: 8),
                     child: Text(
                       text,
-                      style: TextStyle(
-                        fontSize: 18.sp,
+                      style: const TextStyle(
+                        fontSize: 18,
                         color: Colors.black, // Set text color to black
                       ),
                     ),
@@ -73,21 +72,21 @@ Widget buildTask({
                 Checkbox(value: done, onChanged: onChanged),
               ],
             ),
-            SizedBox(
-              height: 7.h,
+            const SizedBox(
+              height: 7,
             ),
             if (repeat != AppConstant.INITIAL_RECURRENCE)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
+                  const Row(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 10.w),
+                        padding: EdgeInsets.only(left: 10),
                         child: Text(
                           'Repeat ',
                           style: TextStyle(
-                            fontSize: 16.sp,
+                            fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.green,
                           ),
@@ -95,39 +94,39 @@ Widget buildTask({
                       ),
                       Icon(
                         Icons.repeat,
-                        size: 16.w,
+                        size: 16,
                         color: Colors.green,
                       )
                     ],
                   ),
                   repeat == 'Weekly'.tr()
                       ? Padding(
-                          padding: EdgeInsets.only(right: 14.w),
+                          padding: const EdgeInsets.only(right: 14),
                           child: Text(
                             'every_day_of_week'.tr(args: [dayOfWeek]),
-                            style: TextStyle(
-                              fontSize: 16.sp,
+                            style: const TextStyle(
+                              fontSize: 16,
                               color: Colors.green,
                             ),
                           ),
                         )
                       : repeat == 'Daily'.tr()
                           ? Padding(
-                              padding: EdgeInsets.only(right: 14.w),
+                              padding: const EdgeInsets.only(right: 14),
                               child: Text(
                                 'Every Day At $hours$minute'.tr(),
-                                style: TextStyle(
-                                  fontSize: 16.sp,
+                                style: const TextStyle(
+                                  fontSize: 16,
                                   color: Colors.green,
                                 ),
                               ),
                             )
                           : Padding(
-                              padding: EdgeInsets.only(right: 14.w),
+                              padding: const EdgeInsets.only(right: 14),
                               child: Text(
                                 'Every Hour'.tr(),
-                                style: TextStyle(
-                                  fontSize: 16.sp,
+                                style: const TextStyle(
+                                  fontSize: 16,
                                   color: Colors.green,
                                 ),
                               ),
@@ -139,22 +138,22 @@ Widget buildTask({
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 10.w),
+                    padding: const EdgeInsets.only(left: 10),
                     child: Text(
                       'Overdue :  '.tr(),
-                      style: TextStyle(
-                        fontSize: 16.sp,
+                      style: const TextStyle(
+                        fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Colors.red,
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 14.w),
+                    padding: const EdgeInsets.only(right: 14),
                     child: Text(
                       '$dayOfWeek, $day$month$year, $hours$minute',
-                      style: TextStyle(
-                        fontSize: 16.sp,
+                      style: const TextStyle(
+                        fontSize: 16,
                         color: Colors.red,
                       ),
                     ),
@@ -166,22 +165,22 @@ Widget buildTask({
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 10.w),
+                    padding: const EdgeInsets.only(left: 10),
                     child: Text(
                       'Due Date :  '.tr(),
-                      style: TextStyle(
-                        fontSize: 16.sp,
+                      style: const TextStyle(
+                        fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Colors.green,
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 14.w),
+                    padding: const EdgeInsets.only(right: 14),
                     child: Text(
                       '$dayOfWeek, $day$month$year, $hours$minute',
-                      style: TextStyle(
-                        fontSize: 16.sp,
+                      style: const TextStyle(
+                        fontSize: 16,
                         color: Colors.green,
                       ),
                     ),
