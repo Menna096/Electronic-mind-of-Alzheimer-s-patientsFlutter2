@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:easy_localization/easy_localization.dart';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import 'package:vv/Family/mainpagefamily/mainpagefamily.dart';
 import 'package:vv/api/login_api.dart';
 import 'package:vv/faceid.dart';
@@ -27,6 +29,7 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
   final ImagePicker _picker = ImagePicker();
   final List<ImageItem> _images = [];
   int _currentImageIndex = 0;
+  bool _isLoading = false;
 
   final List<String> _instructionImages = [
     'images/1.jpg',
@@ -89,7 +92,6 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
         );
       },
     );
-
   }
 
   Future<void> _showInstructionDialog({int? replaceIndex}) async {
@@ -154,86 +156,101 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
           },
         ),
       ),
-      body: AnimatedBackground(
-        child: Column(
-          children: <Widget>[
-
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  const SizedBox(height: 60),
-                  if (_currentImageIndex < 5)
-                    ElevatedButton(
-                      onPressed: () => _showInstructionDialog(),
-                      child: Text('capture_image'
-                          .tr(args: [(_currentImageIndex + 1).toString()])),
-                    ),
-                ],
-
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _images.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 8.0),
-                    child: Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(12),
-                        leading: Container(
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Image.file(
-                            File(_images[index].file.path),
-                            fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          AnimatedBackground(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 60),
+                      if (_currentImageIndex < 5)
+                        ElevatedButton(
+                          onPressed: () => _showInstructionDialog(),
+                          child: Text(
+                            'capture_image'.tr(
+                                args: [(_currentImageIndex + 1).toString()]),
                           ),
                         ),
-                        title: Text(
-                          'Image ${index + 1}',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _images.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 8.0),
+                        child: Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(12),
+                            leading: Container(
+                              height: 80,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: Image.file(
+                                File(_images[index].file.path),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            title: Text(
+                              'Image ${index + 1}',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.camera_alt),
+                              onPressed: () =>
+                                  _showInstructionDialog(replaceIndex: index),
+                            ),
+                          ),
                         ),
-
-
-                        trailing: IconButton(
-                          icon: const Icon(Icons.camera_alt),
-                          onPressed: () =>
-                              _showInstructionDialog(replaceIndex: index),
-                        ),
-                      ),
+                      );
+                    },
+                  ),
+                ),
+                if (_currentImageIndex == 5)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _uploadImages();
+                      },
+                      child: Text('Add'.tr()),
                     ),
-                  );
-                },
-              ),
+                  ),
+              ],
             ),
-            if (_currentImageIndex == 5)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: ElevatedButton(
-
-                  onPressed: () {
-                    _uploadImages;
-                  },
-                  child: Text('Next'.tr()),
-
+          ),
+          if (_isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: Center(
+                child: SpinKitFadingCircle(
+                  color: Colors.white,
+                  size: 50.0,
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
 
   void _uploadImages() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     var formData = FormData();
     for (var imageItem in _images) {
       formData.files.add(MapEntry(
@@ -242,26 +259,40 @@ class _UploadImagesPageState extends State<UploadImagesPage> {
             filename: imageItem.file.name),
       ));
     }
+
     try {
       var response = await DioService().dio.post(
-          'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyTrainingImages',
-          data: formData);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Upload successful".tr()),
-        backgroundColor: Colors.green,
-      ));
+            'https://electronicmindofalzheimerpatients.azurewebsites.net/api/Family/FamilyTrainingImages',
+            data: formData,
+          );
 
-      // Navigate to MainPageFamily on success
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const MainPageFamily()),
-      );
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Upload successful".tr()),
+          backgroundColor: Colors.green,
+        ));
+
+        // Navigate to MainPageFamily on success
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MainPageFamily()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Error uploading images".tr()),
+          backgroundColor: Colors.red,
+        ));
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Error uploading images".tr()),
         backgroundColor: Colors.red,
       ));
       print('Error uploading images: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 }

@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:vv/Patient/gpsssss/pages/google_map_page.dart';
 import 'package:vv/Patient/mainpagepatient/mainpatient.dart';
 import 'package:vv/api/login_api.dart';
-// Import the NavigationScreen
+import 'package:sizer/sizer.dart'; // Import the sizer package
 
 class ImageUploadScreen extends StatefulWidget {
   const ImageUploadScreen({super.key});
@@ -144,7 +144,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
           "Identify Person".tr(),
           style: TextStyle(
             fontFamily: 'LilitaOne',
-            fontSize: 23,
+            fontSize: 16.sp, // Use Sizer for font size
             color: Colors.white,
           ),
         ),
@@ -177,12 +177,12 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
         children: [
           AnimatedBackground(animationController: _animationController),
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(5.w), // Use Sizer for padding
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 80), // Adjust for AppBar height
+                  SizedBox(height: 10.h), // Adjust for AppBar height
                   Center(
                     child: AnimatedBuilder(
                       animation: _animationController,
@@ -190,8 +190,8 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
                         return Transform.scale(
                           scale: _sizeAnimation.value,
                           child: Container(
-                            height: 260,
-                            width: 200,
+                            height: 33.h, // Use Sizer for height
+                            width: 50.w, // Use Sizer for width
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(color: Colors.grey[300]!),
@@ -205,8 +205,8 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
                                       borderRadius: BorderRadius.circular(16),
                                       child: Image.network(
                                         _responseData!['imageAfterResultUrl'],
-                                        height: 260,
-                                        width: 200,
+                                        height: 33.h,
+                                        width: 50.w,
                                         fit: BoxFit.contain,
                                       ),
                                     )
@@ -218,8 +218,8 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
                                               BorderRadius.circular(16),
                                           child: Image.file(
                                             _image!,
-                                            height: 260,
-                                            width: 200,
+                                            height: 33.h,
+                                            width: 50.w,
                                             fit: BoxFit.contain,
                                           ),
                                         ),
@@ -230,7 +230,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
                       child: Container(),
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  SizedBox(height: 5.h), // Use Sizer for height
                   _responseData != null &&
                           _responseData!['personsInImage'] != null
                       ? ListView.builder(
@@ -245,13 +245,15 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
                               return const SizedBox.shrink();
                             }
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
+                              padding: EdgeInsets.only(
+                                  bottom: 2.h), // Use Sizer for padding
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                padding: EdgeInsets.all(16),
+                                padding: EdgeInsets.all(
+                                    4.w), // Use Sizer for padding
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -260,64 +262,71 @@ class _ImageUploadScreenState extends State<ImageUploadScreen>
                                         CircleAvatar(
                                           radius: 25,
                                           backgroundColor: Colors.blueGrey[100],
-                                          backgroundImage: NetworkImage(person[
-                                              'familyAvatarUrl']), // Use the familyAvatarUrl
+                                          backgroundImage: NetworkImage(
+                                              person['familyAvatarUrl']),
                                         ),
-                                        const SizedBox(width: 16),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Name: ${person['familyName']}',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
+                                        SizedBox(
+                                            width: 4.w), // Use Sizer for width
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Name: ${person['familyName']}',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 12
+                                                      .sp, // Use Sizer for font size
+                                                ),
                                               ),
-                                            ),
-                                            Text(
-                                              'Relation: ${person['relationalityOfThisPatient']}',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.grey[600],
+                                              Text(
+                                                'Relation: ${person['relationalityOfThisPatient']}',
+                                                style: TextStyle(
+                                                  fontSize: 10
+                                                      .sp, // Use Sizer for font size
+                                                  color: Colors.grey[600],
+                                                ),
                                               ),
-                                            ),
-                                            Text(
-                                              'Description: ${person['descriptionForPatient']}',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.grey[600],
+                                              Text(
+                                                'Description: ${person['descriptionForPatient']}',
+                                                style: TextStyle(
+                                                  fontSize: 10
+                                                      .sp, // Use Sizer for font size
+                                                  color: Colors.grey[600],
+                                                ),
                                               ),
-                                            ),
-                                            Text(
-                                              'Phone Number: ${person['familyPhoneNumber']}',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.grey[600],
+                                              Text(
+                                                'Phone Number: ${person['familyPhoneNumber']}',
+                                                style: TextStyle(
+                                                  fontSize: 10
+                                                      .sp, // Use Sizer for font size
+                                                  color: Colors.grey[600],
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                        Spacer(
-                                          flex: 1,
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            final latitude =
-                                                person['familyLatitude'];
-                                            final longitude =
-                                                person['familyLongitude'];
-                                            print('$latitude,$longitude');
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    NavigationScreen(
-                                                        latitude, longitude),
-                                              ),
-                                            );
-                                          },
-                                          icon: Icon(Icons.location_on),
+                                        Container(
+                                          width: 10.w, // Adjust width as needed
+                                          child: IconButton(
+                                            onPressed: () {
+                                              final latitude =
+                                                  person['familyLatitude'];
+                                              final longitude =
+                                                  person['familyLongitude'];
+                                              print('$latitude,$longitude');
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      NavigationScreen(
+                                                          latitude, longitude),
+                                                ),
+                                              );
+                                            },
+                                            icon: Icon(Icons.location_on),
+                                          ),
                                         ),
                                       ],
                                     ),
