@@ -52,13 +52,13 @@ post_install do |installer|
         'PERMISSION_EVENTS=0',
 
         ## dart: [PermissionGroup.calendarFullAccess, PermissionGroup.calendar (from iOS 17)]
-       'PERMISSION_EVENTS_FULL_ACCESS=0',
+       'PERMISSION_EVENTS_FULL_ACCESS=1',
 
         ## dart: PermissionGroup.reminders
         'PERMISSION_REMINDERS=1',
 
         ## dart: PermissionGroup.contacts
-        'PERMISSION_CONTACTS=0',
+        'PERMISSION_CONTACTS=1',
 
         ## dart: PermissionGroup.camera
         'PERMISSION_CAMERA=1',
@@ -67,7 +67,7 @@ post_install do |installer|
         'PERMISSION_MICROPHONE=1',
 
         ## dart: PermissionGroup.speech
-        'PERMISSION_SPEECH_RECOGNIZER=0',
+        'PERMISSION_SPEECH_RECOGNIZER=1',
 
         ## dart: PermissionGroup.photos
         'PERMISSION_PHOTOS=1',
@@ -79,22 +79,22 @@ post_install do |installer|
         'PERMISSION_NOTIFICATIONS=1',
 
         ## dart: PermissionGroup.mediaLibrary
-        'PERMISSION_MEDIA_LIBRARY=0',
+        'PERMISSION_MEDIA_LIBRARY=1',
 
         ## dart: PermissionGroup.sensors
-        'PERMISSION_SENSORS=0',
+        'PERMISSION_SENSORS=1',
 
         ## dart: PermissionGroup.bluetooth
-        'PERMISSION_BLUETOOTH=0',
+        'PERMISSION_BLUETOOTH=1',
 
         ## dart: PermissionGroup.appTrackingTransparency
-        'PERMISSION_APP_TRACKING_TRANSPARENCY=0',
+        'PERMISSION_APP_TRACKING_TRANSPARENCY=1',
 
         ## dart: PermissionGroup.criticalAlerts
-        'PERMISSION_CRITICAL_ALERTS=0',
+        'PERMISSION_CRITICAL_ALERTS=1',
 
         ## dart: PermissionGroup.assistant
-        'PERMISSION_ASSISTANT=0',
+        'PERMISSION_ASSISTANT=1',
       ]
     end
   end

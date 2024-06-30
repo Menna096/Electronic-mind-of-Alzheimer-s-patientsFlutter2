@@ -64,5 +64,5 @@ class GetMediaTarget extends ApiTarget {
 }
 
 class GetCurrentAndMaxScoreTarget extends ApiTarget {
-  GetCurrentAndMaxScoreTarget() : super("عرض بيانات الscore خاصتي");
+  GetCurrentAndMaxScoreTarget() : super("عرض بيانات النقاط خاصتي");
 }
