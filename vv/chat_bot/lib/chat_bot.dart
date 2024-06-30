@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -20,6 +22,14 @@ class ChatBot {
 
   PatientAPI get api => _api;
 
+
+/// Initializes the AndroidAlarmManagerPlus.
+  Future<void> _initializeAlarmManager() async {
+    final bool? initialized = await AndroidAlarmManager.initialize();
+    if (initialized != true) {
+      logger.log("Error: Failed to initialize AndroidAlarmManager.");
+    }
+  }
   /// Starts SpeechToText service in
   /// the android native side and return
   /// the detected text after he finishes.
@@ -59,5 +69,14 @@ class ChatBot {
   Future<String?> pickVideoFromGallery() async {
     final XFile? imgXFile = await _imagePicker.pickVideo(source: ImageSource.gallery);
     return imgXFile?.path;
+  }
+  /// Create an alarm at the specified timestamp.
+  Future<bool> createAlarm(String formattedTimestamp) async {
+    final DateTime? timestamp = DateTime.tryParse(formattedTimestamp);
+    if (timestamp == null) {
+      logger.log("Error: Invalid timestamp format.");
+      return false;
+    }
+    return await scheduleAlarm(id: Random().nextInt(1000), timestamp: timestamp);
   }
 }

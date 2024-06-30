@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:signalr_core/signalr_core.dart';
 import 'package:sizer/sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vv/Family/AddPersonWithoutAccount.dart';
 import 'package:vv/Family/LoginPageAll.dart';
 import 'package:vv/Family/appoint_list.dart';
@@ -26,8 +27,8 @@ class MainPageFamily extends StatefulWidget {
 
 class _MainPageFamilyState extends State<MainPageFamily> {
   late HubConnection _connection;
-  final String _currentLocation = "Waiting for location...".tr();
-  final bool _locationReceived = false;
+  String _currentLocation = "Waiting for location...".tr();
+  bool _locationReceived = false;
   final FlutterLocalNotificationsPlugin _notificationsPlugin =
       FlutterLocalNotificationsPlugin();
   String? _token;
@@ -52,95 +53,95 @@ class _MainPageFamilyState extends State<MainPageFamily> {
     }
   }
 
-  // Future<void> initNotifications() async {
-  //   const AndroidInitializationSettings initializationSettingsAndroid =
-  //       AndroidInitializationSettings('@mipmap/ic_launcher');
-  //   final InitializationSettings initializationSettings =
-  //       InitializationSettings(
-  //     android: initializationSettingsAndroid,
-  //   );
-  //   await _notificationsPlugin.initialize(
-  //     initializationSettings,
-  //     onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
-  //   );
-  // }
+  Future<void> initNotifications() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+    await _notificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
+    );
+  }
 
-  // void onDidReceiveNotificationResponse(
-  //     NotificationResponse notificationResponse) {
-  //   if (notificationResponse.payload != null) {
-  //     var data = notificationResponse.payload!.split(',');
-  //     double latitude = double.parse(data[0]);
-  //     double longitude = double.parse(data[1]);
-  //     _launchGoogleMaps(latitude, longitude);
-  //   }
-  // }
+  void onDidReceiveNotificationResponse(
+      NotificationResponse notificationResponse) {
+    if (notificationResponse.payload != null) {
+      var data = notificationResponse.payload!.split(',');
+      double latitude = double.parse(data[0]);
+      double longitude = double.parse(data[1]);
+      _launchGoogleMaps(latitude, longitude);
+    }
+  }
 
-  // Future<void> initializeSignalR() async {
-  //   _connection = HubConnectionBuilder()
-  //       .withUrl(
-  //         'https://electronicmindofalzheimerpatients.azurewebsites.net/hubs/GPS',
-  //         HttpConnectionOptions(
-  //           accessTokenFactory: () async => await TokenManager.getToken(),
-  //           logging: (level, message) => print(message),
-  //         ),
-  //       )
-  //       .withAutomaticReconnect()
-  //       .build();
+  Future<void> initializeSignalR() async {
+    _connection = HubConnectionBuilder()
+        .withUrl(
+          'https://electronicmindofalzheimerpatients.azurewebsites.net/hubs/GPS',
+          HttpConnectionOptions(
+            accessTokenFactory: () async => await TokenManager.getToken(),
+            logging: (level, message) => print(message),
+          ),
+        )
+        .withAutomaticReconnect()
+        .build();
 
-  //   _connection.on('ReceiveGPSToFamilies', (arguments) {
-  //     if (arguments != null && arguments.length >= 2) {
-  //       double latitude = arguments[0];
-  //       double longitude = arguments[1];
-  //       setState(() {
-  //          _currentLocation = 'current_location'.tr(args: [latitude.toString(), longitude.toString()]);
-  //         _locationReceived = true;
-  //       });
-  //       _showNotification(latitude, longitude);
-  //       print('Patient is out of the zone!!');
-  //     }
-  //   });
+    _connection.on('ReceiveGPSToFamilies', (arguments) {
+      if (arguments != null && arguments.length >= 2) {
+        double latitude = arguments[0];
+        double longitude = arguments[1];
+        setState(() {
+           _currentLocation = 'current_location'.tr(args: [latitude.toString(), longitude.toString()]);
+          _locationReceived = true;
+        });
+        _showNotification(latitude, longitude);
+        print('Patient is out of the zone!!');
+      }
+    });
 
-  //   try {
-  //     await _connection.start();
-  //     print('SignalR connection established.');
-  //   } catch (e) {
-  //     print('Failed to start SignalR connection: $e');
-  //     setState(() {
-  //       _currentLocation = 'Error starting connection'.tr();
-  //     });
-  //   }
-  // }
+    try {
+      await _connection.start();
+      print('SignalR connection established.');
+    } catch (e) {
+      print('Failed to start SignalR connection: $e');
+      setState(() {
+        _currentLocation = 'Error starting connection'.tr();
+      });
+    }
+  }
 
-  // Future<void> _showNotification(double latitude, double longitude) async {
-  //   AndroidNotificationDetails androidPlatformChannelSpecifics =
-  //       AndroidNotificationDetails(
-  //     'your channel id',
-  //     'your channel name',
-  //     channelDescription: 'your channel description',
-  //     importance: Importance.max,
-  //     priority: Priority.high,
-  //     ticker: 'ticker',
-  //     sound: RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
-  //   );
-  //   NotificationDetails platformChannelSpecifics =
-  //       NotificationDetails(android: androidPlatformChannelSpecifics);
-  //   await _notificationsPlugin.show(
-  //     0,
-  //     'New Location Received'.tr(),
-  //     'Patient is out of the zone'.tr(),
-  //     platformChannelSpecifics,
-  //     payload: '$latitude,$longitude',
-  //   );
-  // }
+  Future<void> _showNotification(double latitude, double longitude) async {
+    AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'your channel id',
+      'your channel name',
+      channelDescription: 'your channel description',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+      sound: RawResourceAndroidNotificationSound('sound.m4a'.split('.').first),
+    );
+    NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await _notificationsPlugin.show(
+      0,
+      'New Location Received'.tr(),
+      'Patient is out of the zone'.tr(),
+      platformChannelSpecifics,
+      payload: '$latitude,$longitude',
+    );
+  }
 
-  // Future<void> _launchGoogleMaps(double latitude, double longitude) async {
-  //   final url = 'geo:0,0?q=$latitude,$longitude';
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
+  Future<void> _launchGoogleMaps(double latitude, double longitude) async {
+    final url = 'geo:0,0?q=$latitude,$longitude';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
